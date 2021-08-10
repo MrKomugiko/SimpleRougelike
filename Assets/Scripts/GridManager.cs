@@ -8,13 +8,10 @@ public class GridManager : MonoBehaviour
     [SerializeField] GameObject _cellPrefab;
     [SerializeField] public Vector2Int _gridSize;
 
+
     public static List<CellScript> destroyedTilesPool = new List<CellScript>();
     public static Dictionary<Vector2Int,CellScript> CellGridTable = new Dictionary<Vector2Int, CellScript>();
 
-    public void PlaceBombAtRandomPosition()
-    {
-
-    }
 
     void Awake()
     {   
@@ -93,14 +90,15 @@ public class GridManager : MonoBehaviour
         CellGridTable[positionToFill].SetCell(positionToFill,false);
         CellGridTable[positionToFill].AssignType(GetRandomType());
     }
-    public static void SendToGraveyard(Vector2Int positionToMove)
+    public static void SendToGraveyard(Vector2Int cellPosition)
     {
-        if(CellGridTable.Where(cell=>cell.Key == positionToMove).FirstOrDefault().Value == null)
+        if(CellGridTable.Where(cell=>cell.Key == cellPosition).FirstOrDefault().Value == null)
             return;
         // 0# zwolnienei miejsca w ktore gracz przechodzi
-        destroyedTilesPool.Add(CellGridTable[positionToMove]);
-        CellGridTable[positionToMove].SetCell(new Vector2Int(-1, -1),false);
-        CellGridTable[positionToMove] = null;
+        destroyedTilesPool.Add(CellGridTable[cellPosition]);
+        
+        CellGridTable[cellPosition].SetCell(new Vector2Int(-1, -1),false);
+        CellGridTable[cellPosition] = null;
     }
     public static void CascadeMoveTo(CellScript movedCell, Vector2Int positionToMove)
     {
