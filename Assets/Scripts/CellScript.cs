@@ -9,10 +9,10 @@ using UnityEngine.UI;
 public class CellScript : MonoBehaviour
 {
     public Vector2Int CurrentPosition;
-    [SerializeField] public Image _cellImage;
+    [SerializeField] public SpriteRenderer _cellImage;
     [SerializeField] TextMeshProUGUI _cellCoordinates_TMP;
     [SerializeField] RectTransform _recTransform;
-    [SerializeField] Button _button;
+    [SerializeField]public Button _button;
     [SerializeField] private TileTypes _type;
 
     public List<GameObject> Trash = new List<GameObject>();
@@ -26,9 +26,16 @@ public class CellScript : MonoBehaviour
             _type = value; 
             if(value == TileTypes.wall)
             {
+                // TODO: przeniesc ta funkcionalnosc do Ispecialtilesa
                 // blokada ruchu 
                 _button.onClick.RemoveAllListeners();
                 _button.onClick.AddListener(()=>print("to jest sciana"));
+            }
+            if(value == TileTypes.treasure)
+            {
+                // TODO: przeniesc ta funkcionalnosc do Ispecialtilesa
+                // dodawanie golda 
+                _button.onClick.AddListener(()=>GameManager.instance.AddGold(value: 10));
             }
         }
     }
@@ -39,16 +46,21 @@ public class CellScript : MonoBehaviour
         set 
         {
             _specialTile = value; 
+            if(value == null) return;
+
+            
             AssignType(value.Type);
             this.name = value.Name;
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(()=>_specialTile.MakeAction());
 
-           Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e=>e.name == value.Icon).First() ,this.transform));
+            Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e=>e.name == value.Icon).First() ,this.transform));
+
         }
     }
     
     public void SetCell(Vector2Int _position, bool runAnimation = true) {
+        print("set cell");
         CurrentPosition = _position;
         _cellCoordinates_TMP.SetText(_position.ToString());
         
@@ -60,7 +72,12 @@ public class CellScript : MonoBehaviour
        if(_specialTile is Bomb_Cellcs) return;
             
         _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(()=>GridManager.CascadeMoveTo(GameManager.Player, this.CurrentPosition));
+        _button.onClick.AddListener(()=>
+            {
+                GameManager.instance.AddTurn();
+                GridManager.CascadeMoveTo(GameManager.Player, this.CurrentPosition);
+            }
+        );
     }
 
     internal void AddEffectImage(string imageUrl)
@@ -75,7 +92,7 @@ public class CellScript : MonoBehaviour
         for(int i = 1; i <=8; i++)
         {
             float progress = i/8.0f;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
             this._recTransform.localPosition = Vector3.Lerp(startingPosition,endPosition,progress);
         }
 
@@ -84,30 +101,32 @@ public class CellScript : MonoBehaviour
     }
     public void AssignType(TileTypes _type)
     {
-        this.Type = _type;
-        switch(Type)
-        {
-            case TileTypes.player:
-                this._cellImage.color = Color.green;
-                break;
-            case TileTypes.wall:
-                this._cellImage.color = Color.black;
-                break;
-            case TileTypes.grass:
-                this._cellImage.color = Color.gray;
-                break;
-            case TileTypes.bomb:
-                this._cellImage.color = Color.cyan;
-                break;
-            case TileTypes.treasure:
-                this._cellImage.color = Color.yellow;
-                break;
-            case TileTypes.monster:
-                this._cellImage.color = Color.red;
-                break;
+
+            this.Type = _type;
+
+            switch(Type)
+            {
+                case TileTypes.player:
+                    this._cellImage.color = Color.green;
+                    break;
+
+                case TileTypes.wall:
+                    Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s=>s.name == "wall").First(),this._recTransform));
+                    break;  
+
+                case TileTypes.monster:
+                    Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s=>s.name == "monster").First(),this._recTransform));
+                    break;
+
+                case TileTypes.treasure:
+                    Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s=>s.name == "treasure").First(),this._recTransform));
+                    break;  
+
+                default:
+                    this._cellImage.sprite = GameManager.instance.SpritesList.Where(s=>s.name == "basic").First();
+                    break;
         }
+
         this.gameObject.name = this.Type.ToString();
     }
-    
-    
 }

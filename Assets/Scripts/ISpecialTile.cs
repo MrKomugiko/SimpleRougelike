@@ -9,5 +9,5 @@ public interface ISpecialTile
     string Icon {get;set;}
     
     void MakeAction();
-    void SpawnOnMap();
+
 }

@@ -13,7 +13,7 @@ public class GridManager : MonoBehaviour
     public static Dictionary<Vector2Int,CellScript> CellGridTable = new Dictionary<Vector2Int, CellScript>();
 
 
-    void Awake()
+    void Start()
     {   
         for(int x = 0; x<_gridSize.x; x++)
         {
@@ -129,4 +129,6 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+    
+
 }
