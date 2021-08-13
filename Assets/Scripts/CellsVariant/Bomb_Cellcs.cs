@@ -18,6 +18,8 @@ public class Bomb_Cellcs : ISpecialTile, IFragile
 
     private int _turnsRequiredToActivate = 5;
     private int _spawnTurnNumber;
+
+    internal TickScript TickCounter {get;set;}
     
 
     public Bomb_Cellcs(CellScript parent, string name, string effect_Url, string icon_Url )
@@ -31,7 +33,13 @@ public class Bomb_Cellcs : ISpecialTile, IFragile
         this.Effect_Url = effect_Url;
         this.Icon_Url = icon_Url;
 
-        Debug.Log("pomyslnie utworzono Bombę, dla pola skojarzonego z pozycją "+ ParentCell.CurrentPosition);        
+        // Debug.Log("pomyslnie utworzono Bombę, dla pola skojarzonego z pozycją "+ ParentCell.CurrentPosition);  
+
+        var ticker = GameManager.instance.InstantiateTicker(this);
+        ParentCell.Trash.Add(ticker);      
+        this.TickCounter = ticker.GetComponentInChildren<TickScript>();
+        this.TickCounter.parent = ParentCell;
+        Debug.Log(ticker.name);
     }
     public List<CellScript> CellsToDestroy = new List<CellScript>();
     public void MakeAction()

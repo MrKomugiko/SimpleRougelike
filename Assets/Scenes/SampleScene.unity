@@ -1292,6 +1292,7 @@ MonoBehaviour:
   - {fileID: 179587530871585500, guid: 06dc07cf588f1894aa37964bf5c94525, type: 3}
   - {fileID: 1533482603691778679, guid: cd778c959e12edf4cb12aec36890b060, type: 3}
   - {fileID: 1533482603691778679, guid: ff7f68d62f06b7d448b8c6490c3bea5f, type: 3}
+  TickCounterPrefab: {fileID: 1903027645858663509, guid: ebc73671bed40fa4a85e7a20f5962f66, type: 3}
   WybuchWTrakcieWykonywania: 0
   SpritesList:
   - {fileID: -1265610725, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}

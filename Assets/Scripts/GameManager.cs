@@ -50,11 +50,11 @@ public class GameManager : MonoBehaviour
         );
     }
 
-  
-
-    public delegate void TestDelegate(Vector2Int position); // This defines what type of method you're going to call.
-    
-
+    [SerializeField] private GameObject TickCounterPrefab;
+    internal GameObject InstantiateTicker(Bomb_Cellcs bomb_Cellcs)
+    {
+        return Instantiate(TickCounterPrefab, bomb_Cellcs.ParentCell.transform);
+    }
     public void Countdown_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
     {
        foreach(var damagedCell in GameManager.DamagedCells)
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
     private int _currentTurnNumber = 0;
     public void AddTurn()
     {
-        CurrentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
+        _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
         TurnCounter_TMP.SetText((CurrentTurnNumber+=1).ToString());
         print("dodanie tury");
     }
@@ -122,14 +122,37 @@ public class GameManager : MonoBehaviour
         get => _currentTurnNumber; 
         set {
              _currentTurnNumber = value; 
-            foreach(var tile in GridManager.CellGridTable.Where(cell=>cell.Value.SpecialTile != null))
+            foreach(var tile in GridManager.CellGridTable.Where(cell=>cell.Value.SpecialTile != null).Select(c=>c.Value))
             {
-                if(tile.Value.SpecialTile is IFragile == false) continue;
-                if(tile.Value.SpecialTile.IsReadyToUse == true)
+                if(tile.SpecialTile is Bomb_Cellcs) 
+                {   
+                    if((tile.SpecialTile as Bomb_Cellcs).TickCounter != null)
+                    {
+                         print("tick");
+                        (tile.SpecialTile as Bomb_Cellcs).TickCounter.AddTick(1);
+                    }
+                }
+
+                if(tile.SpecialTile is IFragile == false) continue;
+
+                if(tile.SpecialTile.IsReadyToUse == true)
                 {
-                    tile.Value.Trash.ForEach(trash=>trash.GetComponent<SpriteRenderer>().color = Color.red);
+                    tile.Trash.ForEach(trash=>{
+                        if(trash != null)
+                        {
+                            var trash_SR = trash.GetComponent<SpriteRenderer>();  
+                            if(trash_SR != null)
+                            {
+                                if(trash_SR.name.Contains("icon"))
+                                {
+                                    trash_SR.color = Color.red;        
+                                }
+                            }
+                        }
+                    });
                     // jakas tam funkja ktora bedzie pokazywać status naładowania obiektu
                 }
+               
             }
         }
     }
