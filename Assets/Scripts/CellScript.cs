@@ -8,12 +8,14 @@ using UnityEngine.UI;
 
 public class CellScript : MonoBehaviour
 {
-    public Vector2Int CurrentPosition;
+    [SerializeField] private Vector2Int _currentPosition;
     [SerializeField] public SpriteRenderer _cellImage;
     [SerializeField] TextMeshProUGUI _cellCoordinates_TMP;
     [SerializeField] RectTransform _recTransform;
     [SerializeField]public Button _button;
     [SerializeField] private TileTypes _type;
+
+    [SerializeField] private int damagedTimes = 0;
 
     public List<GameObject> Trash = new List<GameObject>();
 
@@ -45,41 +47,112 @@ public class CellScript : MonoBehaviour
         get => _specialTile; 
         set 
         {
+            if(value == SpecialTile)
+                return;
             _specialTile = value; 
-            if(value == null) return;
+            if(value == null)
+                return;
 
-            
             AssignType(value.Type);
-            this.name = value.Name;
+            this.gameObject.name = value.Name;
+
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(()=>_specialTile.MakeAction());
+            _button.onClick.AddListener(()=>SpecialTile.MakeAction());
 
-            Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e=>e.name == value.Icon).First() ,this.transform));
-
+            Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e=>e.name == value.Icon_Url).First() ,this.transform));
         }
     }
-    
+
+    public Vector2Int CurrentPosition 
+    { 
+        get => _currentPosition; 
+        set 
+        { 
+            var direction = _currentPosition-value;
+            var oldPosition = _currentPosition;
+            _currentPosition = value; 
+
+            if(_specialTile != null)
+            {
+               // print("gettype = "+ _specialTile.GetType());    
+                if(_specialTile.IsReadyToUse)
+                {
+                    if(_specialTile is IFragile) 
+                    {
+                        {
+                            (_specialTile as IFragile).DetonateOnMove(_currentPosition, direction);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public int DamagedTimes { 
+        get => damagedTimes; 
+    set {
+        damagedTimes = value;
+        if(_specialTile != null)
+            {
+                if(_specialTile.Active)
+                {
+                    print("special tile został zaatakowany / zniszczony ? oberał = wykonaj jego akcje");
+                    _specialTile.MakeAction();
+                }
+            }
+        } 
+    }
+
     public void SetCell(Vector2Int _position, bool runAnimation = true) {
-        print("set cell");
+        
         CurrentPosition = _position;
         _cellCoordinates_TMP.SetText(_position.ToString());
         
         if(runAnimation == true)
             StartCoroutine(SlideAnimation(_recTransform.localPosition, new Vector2(CurrentPosition.x * _recTransform.rect.size.x, CurrentPosition.y * _recTransform.rect.size.y) ));
         else
-            _recTransform.localPosition = new Vector2(CurrentPosition.x * _recTransform.rect.size.x, CurrentPosition.y * _recTransform.rect.size.y);
+            StartCoroutine(FadeInAnimation(new Vector2(CurrentPosition.x * _recTransform.rect.size.x, CurrentPosition.y * _recTransform.rect.size.y) ));
+
         
-       if(_specialTile is Bomb_Cellcs) return;
-            
-        _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(()=>
+        if(SpecialTile == null)
+        {
+            _button.onClick.RemoveAllListeners();
+            _button.onClick.AddListener(()=>
             {
-                GameManager.instance.AddTurn();
-                GridManager.CascadeMoveTo(GameManager.Player, this.CurrentPosition);
+                MoveTo();
             }
-        );
+            );
+        }
+            
     }
 
+    private IEnumerator FadeInAnimation(Vector2 position)
+    {
+       // print("rozpoczęcie animacji xd");
+        this._cellImage.transform.localScale = Vector3.zero;
+        this._recTransform.localPosition = position;
+        for(int i = 1; i <=10; i++)
+        {
+            float progress = i/10.0f;
+            yield return new WaitForFixedUpdate();
+            this._cellImage.transform.localScale = Vector3.Lerp(Vector3.zero,new Vector3(150,150,1),progress);
+        }
+
+        // print("koneic animacji");
+        yield return null;
+    }
+
+    public void MoveTo()
+    {
+        print("click: move to");
+        if(GameManager.instance.WybuchWTrakcieWykonywania == true) {
+            print("poczekaj aż zakończą się wybuchy ;d");
+            return;
+        }
+
+        GameManager.instance.AddTurn();
+        GridManager.CascadeMoveTo(GameManager.Player, this.CurrentPosition);
+    }
     internal void AddEffectImage(string imageUrl)
     {
         // Instantiate(GameManager.instance.specialEffectList.Where(e=>e.name == this._specialTile.Effect).First() ,this._recTransform);
@@ -101,8 +174,11 @@ public class CellScript : MonoBehaviour
     }
     public void AssignType(TileTypes _type)
     {
-
             this.Type = _type;
+            if(Type == TileTypes.player) {
+            
+            };
+            this.gameObject.name = this.Type.ToString();
 
             switch(Type)
             {
@@ -119,14 +195,32 @@ public class CellScript : MonoBehaviour
                     break;
 
                 case TileTypes.treasure:
-                    Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s=>s.name == "treasure").First(),this._recTransform));
+                    if(SpecialTile == null){
+                        this.SpecialTile = new Treasure_Cell(
+                            parent: this,
+                            name: "Złote monety",
+                            icon_Url: "treasure",
+                            goldValue: 10
+                        );
+                    }
                     break;  
+
+                case TileTypes.bomb:
+                    if(SpecialTile == null){
+                        this.SpecialTile = new Bomb_Cellcs(
+                            parent: this, 
+                            name: "Mina przeciwpiechotna",
+                            effect_Url: "bomb_explosion_image",
+                            icon_Url: "bomb_icon"
+                        );
+                    }
+                    break; 
 
                 default:
                     this._cellImage.sprite = GameManager.instance.SpritesList.Where(s=>s.name == "basic").First();
                     break;
         }
 
-        this.gameObject.name = this.Type.ToString();
+      
     }
 }

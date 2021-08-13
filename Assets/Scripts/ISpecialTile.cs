@@ -2,12 +2,13 @@ using UnityEngine;
 
 public interface ISpecialTile
 {
-    Vector2Int Position {get;set;}
-    TileTypes Type {get;set;}
+    TileTypes Type {get;}
     string Name {get;set;}
-    string Effect {get;set;}
-    string Icon {get;set;}
-    
+    string Effect_Url {get;set;}
+    string Icon_Url {get;set;}
+    CellScript ParentCell { get; }
+    bool Active { get; set; }
+    bool IsReadyToUse { get; }
     void MakeAction();
 
 }

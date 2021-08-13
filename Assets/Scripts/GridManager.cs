@@ -28,11 +28,13 @@ public class GridManager : MonoBehaviour
     }
     public static TileTypes GetRandomType()
     {
-        int rng = UnityEngine.Random.Range(0,100);
-        if(rng > 0 && rng <60)
+        int rng = UnityEngine.Random.Range(0,101);
+        if(rng >= 0 && rng <60)
             return TileTypes.grass; // 60%
-        if(rng >= 60 && rng <90)
-            return TileTypes.wall; // 30%
+        if(rng >= 60 && rng <70)
+            return TileTypes.wall; // 10%
+        if(rng >= 70 && rng <90)
+            return TileTypes.bomb; // 20%
         if(rng >= 90 && rng <95)
             return TileTypes.treasure; // 5%
         if(rng >= 95)
@@ -85,10 +87,19 @@ public class GridManager : MonoBehaviour
   }
     public static void AddNewCellIntoGridField(Vector2Int positionToFill)
     {
+        foreach(var pool in destroyedTilesPool.Where(t=>t.Trash.Count>0))
+        {
+            pool.Trash.ForEach(t=>{Destroy(t.gameObject);});
+            pool.Trash.Clear();
+        }
+
         CellGridTable[positionToFill] = destroyedTilesPool.First();
         destroyedTilesPool.Remove(destroyedTilesPool.First());
         CellGridTable[positionToFill].SetCell(positionToFill,false);
+        CellGridTable[positionToFill].DamagedTimes = 0;
         CellGridTable[positionToFill].AssignType(GetRandomType());
+
+        
     }
     public static void SendToGraveyard(Vector2Int cellPosition)
     {
