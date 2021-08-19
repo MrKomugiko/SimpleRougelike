@@ -12,7 +12,7 @@ public class CellScript : MonoBehaviour
     [SerializeField] public SpriteRenderer _cellImage;
     [SerializeField] TextMeshProUGUI _cellCoordinates_TMP;
     [SerializeField] RectTransform _recTransform;
-    [SerializeField]public Button _button;
+    [SerializeField] public Button _button;
     [SerializeField] private TileTypes _type;
 
     [SerializeField] private int damagedTimes = 0;
@@ -20,64 +20,75 @@ public class CellScript : MonoBehaviour
     public List<GameObject> Trash = new List<GameObject>();
 
     private ISpecialTile _specialTile;
+    [SerializeField] private bool isWalkable = true;
 
-    public TileTypes Type 
-    { 
-        get => _type; 
-        set {
-            _type = value; 
-            if(value == TileTypes.wall)
+    private void OnDrawGizmos() {
+        if(isWalkable == false)
+        {
+            Gizmos.color = Color.black;
+            Gizmos.DrawCube(transform.position+new Vector3(.33f,.33f,.33f),new Vector3(.5f,.5f,.5f));   
+        }   
+    }
+    public TileTypes Type
+    {
+        get => _type;
+        set
+        {
+             IsWalkable = true;
+            _type = value;
+            if (value == TileTypes.wall)
             {
                 // TODO: przeniesc ta funkcionalnosc do Ispecialtilesa
                 // blokada ruchu 
                 _button.onClick.RemoveAllListeners();
-                _button.onClick.AddListener(()=>print("to jest sciana"));
+                _button.onClick.AddListener(() => print("to jest sciana"));
+                IsWalkable = false;
             }
-            if(value == TileTypes.treasure)
+            if (value == TileTypes.treasure)
             {
                 // TODO: przeniesc ta funkcionalnosc do Ispecialtilesa
                 // dodawanie golda 
-                _button.onClick.AddListener(()=>GameManager.instance.AddGold(value: 10));
+                _button.onClick.AddListener(() => GameManager.instance.AddGold(value: 10));
             }
         }
     }
 
-    public ISpecialTile SpecialTile 
+    public ISpecialTile SpecialTile
     {
-        get => _specialTile; 
-        set 
+        get => _specialTile;
+        set
         {
-            if(value == SpecialTile)
+            if (value == SpecialTile)
                 return;
-            _specialTile = value; 
-            if(value == null)
+            _specialTile = value;
+            if (value == null)
                 return;
 
             AssignType(value.Type);
             this.gameObject.name = value.Name;
 
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(()=>SpecialTile.MakeAction());
+            _button.onClick.AddListener(() => SpecialTile.MakeAction());
 
-            Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e=>e.name == value.Icon_Url).First() ,this.transform));
+            Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == value.Icon_Url).First(), this.transform));
         }
     }
 
-    public Vector2Int CurrentPosition 
-    { 
-        get => _currentPosition; 
-        set 
-        { 
-            var direction = _currentPosition-value;
+    public Vector2Int CurrentPosition
+    {
+        get => _currentPosition;
+        set
+        {
+            var direction = _currentPosition - value;
             var oldPosition = _currentPosition;
-            _currentPosition = value; 
+            _currentPosition = value;
 
-            if(_specialTile != null)
+            if (_specialTile != null)
             {
-               // print("gettype = "+ _specialTile.GetType());    
-                if(_specialTile.IsReadyToUse)
+                // print("gettype = "+ _specialTile.GetType());    
+                if (_specialTile.IsReadyToUse)
                 {
-                    if(_specialTile is IFragile) 
+                    if (_specialTile is IFragile)
                     {
                         {
                             (_specialTile as IFragile).DetonateOnMove(_currentPosition, direction);
@@ -88,54 +99,65 @@ public class CellScript : MonoBehaviour
         }
     }
 
-    public int DamagedTimes { 
-        get => damagedTimes; 
-    set {
-        damagedTimes = value;
-        if(_specialTile != null)
+    public int DamagedTimes
+    {
+        get => damagedTimes;
+        set
+        {
+            damagedTimes = value;
+            if (_specialTile != null)
             {
-                if(_specialTile.Active)
+                if (_specialTile.Active)
                 {
                     print("special tile został zaatakowany / zniszczony ? oberał = wykonaj jego akcje");
                     _specialTile.MakeAction();
                 }
             }
+        }
+    }
+
+    public bool IsWalkable
+    { 
+        get => isWalkable;
+        internal set 
+        {
+            isWalkable = value;
         } 
     }
 
-    public void SetCell(Vector2Int _position, bool runAnimation = true) {
-        
+    public void SetCell(Vector2Int _position, bool runAnimation = true)
+    {
         CurrentPosition = _position;
         _cellCoordinates_TMP.SetText(_position.ToString());
-        
-        if(runAnimation == true)
-            StartCoroutine(SlideAnimation(_recTransform.localPosition, new Vector2(CurrentPosition.x * _recTransform.rect.size.x, CurrentPosition.y * _recTransform.rect.size.y) ));
-        else
-            StartCoroutine(FadeInAnimation(new Vector2(CurrentPosition.x * _recTransform.rect.size.x, CurrentPosition.y * _recTransform.rect.size.y) ));
 
-        
-        if(SpecialTile == null)
+        if (runAnimation == true)
+            StartCoroutine(SlideAnimation(_recTransform.localPosition, new Vector2(CurrentPosition.x * _recTransform.rect.size.x, CurrentPosition.y * _recTransform.rect.size.y)));
+        else
+            StartCoroutine(FadeInAnimation(new Vector2(CurrentPosition.x * _recTransform.rect.size.x, CurrentPosition.y * _recTransform.rect.size.y)));
+
+
+        if (SpecialTile == null)
         {
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(()=>
+            _button.onClick.AddListener(() =>
             {
                 MoveTo();
             }
             );
         }
-            
+
     }
 
     private IEnumerator FadeInAnimation(Vector2 position)
     {
-       // print("rozpoczęcie animacji xd");
+        // print("rozpoczęcie animacji xd");
         this._cellImage.transform.localScale = Vector3.zero;
         this._recTransform.localPosition = position;
-        for(int i = 1; i <=10; i++)
+        for (int i = 1; i <= 10; i++)
         {
-            float progress = i/10.0f;
+            float progress = i / 10.0f;
             yield return new WaitForFixedUpdate();
-            this._cellImage.transform.localScale = Vector3.Lerp(Vector3.zero,new Vector3(150,150,1),progress);
+            this._cellImage.transform.localScale = Vector3.Lerp(Vector3.zero, new Vector3(150, 150, 1), progress);
         }
 
         // print("koneic animacji");
@@ -145,28 +167,30 @@ public class CellScript : MonoBehaviour
     public void MoveTo()
     {
         print("click: move to");
-        if(GameManager.instance.WybuchWTrakcieWykonywania == true) {
+        if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+        {
             print("poczekaj aż zakończą się wybuchy ;d");
             return;
         }
 
         GameManager.instance.AddTurn();
-        GridManager.CascadeMoveTo(GameManager.Player, this.CurrentPosition);
+        GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
     }
+
     internal void AddEffectImage(string imageUrl)
     {
         // Instantiate(GameManager.instance.specialEffectList.Where(e=>e.name == this._specialTile.Effect).First() ,this._recTransform);
-        Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e=>e.name == imageUrl).First(), this._recTransform));
+        Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == imageUrl).First(), this._recTransform));
     }
 
     private IEnumerator SlideAnimation(Vector3 startingPosition, Vector3 endPosition)
     {
         // print("rozpoczęcie animacji xd");
-        for(int i = 1; i <=8; i++)
+        for (int i = 1; i <= 8; i++)
         {
-            float progress = i/8.0f;
+            float progress = i / 8.0f;
             yield return new WaitForFixedUpdate();
-            this._recTransform.localPosition = Vector3.Lerp(startingPosition,endPosition,progress);
+            this._recTransform.localPosition = Vector3.Lerp(startingPosition, endPosition, progress);
         }
 
         // print("koneic animacji");
@@ -174,53 +198,57 @@ public class CellScript : MonoBehaviour
     }
     public void AssignType(TileTypes _type)
     {
-            this.Type = _type;
-            if(Type == TileTypes.player) {
-            
-            };
-            this.gameObject.name = this.Type.ToString();
+        this.Type = _type;
+        if (Type == TileTypes.player)
+        {
 
-            switch(Type)
-            {
-                case TileTypes.player:
-                    this._cellImage.color = Color.green;
-                    break;
+        };
+        this.gameObject.name = this.Type.ToString();
 
-                case TileTypes.wall:
-                    Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s=>s.name == "wall").First(),this._recTransform));
-                    break;  
+        switch (Type)
+        {
+            case TileTypes.player:
+                this._cellImage.color = Color.green;
+                break;
 
-                case TileTypes.monster:
-                    Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s=>s.name == "monster").First(),this._recTransform));
-                    break;
+            case TileTypes.wall:
+                Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s => s.name == "wall").First(), this._recTransform));
+                break;
 
-                case TileTypes.treasure:
-                    if(SpecialTile == null){
-                        this.SpecialTile = new Treasure_Cell(
-                            parent: this,
-                            name: "Złote monety",
-                            icon_Url: "treasure",
-                            goldValue: 10
-                        );
-                    }
-                    break;  
+            case TileTypes.monster:
+                Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s => s.name == "monster").First(), this._recTransform));
 
-                case TileTypes.bomb:
-                    if(SpecialTile == null){
-                        this.SpecialTile = new Bomb_Cellcs(
-                            parent: this, 
-                            name: "Mina przeciwpiechotna",
-                            effect_Url: "bomb_explosion_image",
-                            icon_Url: "bomb_icon"
-                        );
-                    }
-                    break; 
+                break;
 
-                default:
-                    this._cellImage.sprite = GameManager.instance.SpritesList.Where(s=>s.name == "basic").First();
-                    break;
+            case TileTypes.treasure:
+                if (SpecialTile == null)
+                {
+                    this.SpecialTile = new Treasure_Cell(
+                        parent: this,
+                        name: "Złote monety",
+                        icon_Url: "treasure",
+                        goldValue: 10
+                    );
+                }
+                break;
+
+            case TileTypes.bomb:
+                if (SpecialTile == null)
+                {
+                    this.SpecialTile = new Bomb_Cellcs(
+                        parent: this,
+                        name: "Mina przeciwpiechotna",
+                        effect_Url: "bomb_explosion_image",
+                        icon_Url: "bomb_icon"
+                    );
+                }
+                break;
+
+            default:
+                this._cellImage.sprite = GameManager.instance.SpritesList.Where(s => s.name == "basic").First();
+                break;
         }
 
-      
+
     }
 }

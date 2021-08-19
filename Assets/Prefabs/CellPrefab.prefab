@@ -54,12 +54,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61003b014f6e7d4e8961b6269114909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentPosition: {x: 0, y: 0}
   _cellImage: {fileID: 2246343208861746737}
   _cellCoordinates_TMP: {fileID: 1007029228940393246}
   _recTransform: {fileID: 2745940764255640305}
   _button: {fileID: 9166997105114444478}
   _type: 0
+  damagedTimes: 0
   Trash: []
+  isWalkable: 1
 --- !u!114 &9166997105114444478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,12 +232,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -1265610725, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+  m_Sprite: {fileID: -536297595, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 150, y: 150}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 1
   m_WasSpriteAssigned: 1
