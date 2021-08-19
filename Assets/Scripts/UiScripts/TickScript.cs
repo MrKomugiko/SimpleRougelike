@@ -26,26 +26,18 @@ public class TickScript : MonoBehaviour
     }
     public void AddTick(int value = 0)
     {
-        // try
-        // {
-            for(var i = 0; i<value; i++)
+        for(var i = 0; i<value; i++)
+        {
+            CurrentTickValue++;
+            if(ticks.Count < CurrentTickValue)
             {
-                CurrentTickValue++;
-                if(ticks.Count < CurrentTickValue)
-                {
-                    Destroy(parent.Trash
-                            .Where(t=>t.name=="Canvas_ActivationProgressBar(Clone)")
-                            .First());
-                    return;    
-                } 
+                Destroy(parent.Trash
+                        .Where(t=>t.name=="Canvas_ActivationProgressBar(Clone)")
+                        .First());
+                return;    
+            } 
 
-                ticks[CurrentTickValue-1].color = Color.red;
-            }
-        // }
-        // catch (System.Exception ex)
-        // {
-            
-        //    Debug.LogError("cos nie tak z samodestukcją timerka ;d"+ex.Message);
-        // }
+            ticks[CurrentTickValue-1].color = Color.red;
+        }
     }
 }

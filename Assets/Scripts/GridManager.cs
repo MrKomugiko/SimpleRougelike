@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,11 @@ public class GridManager : MonoBehaviour
 
     public static List<CellScript> destroyedTilesPool = new List<CellScript>();
     public static Dictionary<Vector2Int,CellScript> CellGridTable = new Dictionary<Vector2Int, CellScript>();
+    public static GridManager instance;
 
-
+    private void Awake() {
+        instance = this;
+    }
     void Start()
     {   
         for(int x = 0; x<_gridSize.x; x++)
@@ -26,15 +30,16 @@ public class GridManager : MonoBehaviour
             }   
         }
     }
+    
     public static TileTypes GetRandomType()
     {
         int rng = UnityEngine.Random.Range(0,101);
-        if(rng >= 0 && rng <60)
-            return TileTypes.grass; // 60%
-        if(rng >= 60 && rng <70)
-            return TileTypes.wall; // 10%
-        if(rng >= 70 && rng <90)
-            return TileTypes.bomb; // 20%
+        if(rng >= 0 && rng <65)
+            return TileTypes.grass; // 65%
+        if(rng >= 65 && rng <85)
+            return TileTypes.wall; // 20%
+        if(rng >= 85 && rng <90)
+            return TileTypes.bomb; // 5%
         if(rng >= 90 && rng <95)
             return TileTypes.treasure; // 5%
         if(rng >= 95)
@@ -43,7 +48,7 @@ public class GridManager : MonoBehaviour
         return TileTypes.undefined;
 
     }
-    public void FillGaps()
+    public static void FillGaps()
     {
       if(destroyedTilesPool.Count() == 0) return;
       var globalFillDirection = new Vector2Int(0,-1); // (Z gory do dołu)
@@ -97,9 +102,7 @@ public class GridManager : MonoBehaviour
         destroyedTilesPool.Remove(destroyedTilesPool.First());
         CellGridTable[positionToFill].SetCell(positionToFill,false);
         CellGridTable[positionToFill].DamagedTimes = 0;
-        CellGridTable[positionToFill].AssignType(GetRandomType());
-
-        
+        CellGridTable[positionToFill].AssignType(GetRandomType());      
     }
     public static void SendToGraveyard(Vector2Int cellPosition)
     {
@@ -140,6 +143,15 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    
+    public static void SwapTiles(CellScript movedCell, Vector2Int newPosition)
+    {
+        var oldPosition = movedCell.CurrentPosition;
 
+        var temp = CellGridTable[newPosition];
+        CellGridTable[newPosition] = CellGridTable[oldPosition];
+        CellGridTable[oldPosition] = temp;
+
+        CellGridTable[newPosition].SetCell(newPosition);
+        CellGridTable[oldPosition].SetCell(oldPosition);
+    }
 }

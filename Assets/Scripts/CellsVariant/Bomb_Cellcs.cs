@@ -39,7 +39,9 @@ public class Bomb_Cellcs : ISpecialTile, IFragile
         ParentCell.Trash.Add(ticker);      
         this.TickCounter = ticker.GetComponentInChildren<TickScript>();
         this.TickCounter.parent = ParentCell;
-        Debug.Log(ticker.name);
+//        Debug.Log(ticker.name);
+
+        parent.IsWalkable = false;
     }
     public List<CellScript> CellsToDestroy = new List<CellScript>();
     public void MakeAction()
