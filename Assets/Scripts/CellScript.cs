@@ -28,6 +28,14 @@ public class CellScript : MonoBehaviour
             Gizmos.color = Color.black;
             Gizmos.DrawCube(transform.position+new Vector3(.33f,.33f,.33f),new Vector3(.5f,.5f,.5f));   
         }   
+        if(_specialTile != null)
+        {
+            if(SpecialTile is Bomb_Cell )
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawCube(transform.position+new Vector3(.33f,.33f,.33f),new Vector3(.25f,.25f,.25f));   
+            }
+        }  
     }
     public TileTypes Type
     {
@@ -173,8 +181,41 @@ public class CellScript : MonoBehaviour
             return;
         }
 
-        GameManager.instance.AddTurn();
-        GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
+        if(TaskManager.TaskManagerIsOn == false)
+        {
+            GameManager.instance.AddTurn();
+            GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
+        }
+        else
+        {
+            AddActionToQUEUE();
+        }
+
+    }
+
+    private void AddActionToQUEUE()
+    {
+        var position = this.CurrentPosition;
+        TaskManager.AddToActionQueue(
+            $"Add turn and Move player to:[{position.x};{position.y}]",
+            () =>
+            {
+                if (GridManager.CellGridTable[position].isWalkable == false)
+                    return false;
+
+                if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+                {
+                    print("poczekaj aż zakończą się wybuchy ;d");
+                    return false;
+                }
+                else
+                {
+                    GameManager.instance.AddTurn();
+                    GridManager.CascadeMoveTo(GameManager.Player_CELL, position);
+                    return true;
+                }
+            }
+        );
     }
 
     internal void AddEffectImage(string imageUrl)
@@ -235,7 +276,7 @@ public class CellScript : MonoBehaviour
             case TileTypes.bomb:
                 if (SpecialTile == null)
                 {
-                    this.SpecialTile = new Bomb_Cellcs(
+                    this.SpecialTile = new Bomb_Cell(
                         parent: this,
                         name: "Mina przeciwpiechotna",
                         effect_Url: "bomb_explosion_image",
