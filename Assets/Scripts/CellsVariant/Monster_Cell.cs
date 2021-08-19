@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Bomb_Cellcs : ISpecialTile, IFragile
+public class Monster_Cell : ISpecialTile
 {
     public TileTypes Type { get; private set; } 
     public string Name { get; set; }
@@ -22,7 +22,7 @@ public class Bomb_Cellcs : ISpecialTile, IFragile
     internal TickScript TickCounter {get;set;}
     
 
-    public Bomb_Cellcs(CellScript parent, string name, string effect_Url, string icon_Url )
+    public Monster_Cell(CellScript parent, string name, string effect_Url, string icon_Url )
     {
         _spawnTurnNumber = GameManager.instance.CurrentTurnNumber;
 
@@ -35,13 +35,7 @@ public class Bomb_Cellcs : ISpecialTile, IFragile
 
         // Debug.Log("pomyslnie utworzono Bombę, dla pola skojarzonego z pozycją "+ ParentCell.CurrentPosition);  
 
-        var ticker = GameManager.instance.InstantiateTicker(this);
-        ParentCell.Trash.Add(ticker);      
-        this.TickCounter = ticker.GetComponentInChildren<TickScript>();
-        this.TickCounter.parent = ParentCell;
-//        Debug.Log(ticker.name);
-
-        parent.IsWalkable = false;
+        parent.IsWalkable = true;
     }
     public List<CellScript> CellsToDestroy = new List<CellScript>();
     public void MakeAction()
@@ -100,13 +94,5 @@ public class Bomb_Cellcs : ISpecialTile, IFragile
 
         if (GridManager.CellGridTable.ContainsKey(nextPosition + Vector2Int.right) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+ Vector2Int.right]))
             CellsToDestroy.Add(GridManager.CellGridTable[nextPosition + Vector2Int.right]);
-    }
-
-    void IFragile.DetonateOnMove(Vector2Int nextPosition, Vector2Int direction)
-    {
-        // TODO: need to be executed after before explosion ends make chain
-       Debug.Log("DETONATD ON MOVE");
-       MakeAction(nextPosition, direction);
-       // TODO: mark as next to explode ater before
     }
 }

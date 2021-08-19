@@ -69,14 +69,14 @@ public class GameManager : MonoBehaviour
         print($"spawn bomby na losową pozycje: {randomPosition}.");
 
         GridManager.CellGridTable[randomPosition].SpecialTile =
-         new Bomb_Cellcs(
+         new Bomb_Cell(
              GridManager.CellGridTable[randomPosition],
              name: "Mina przeciwpiechotna",
              effect_Url: "bomb_explosion_image",
              icon_Url: "bomb_icon"
          );
     }
-    public GameObject InstantiateTicker(Bomb_Cellcs bomb_Cellcs)
+    public GameObject InstantiateTicker(Bomb_Cell bomb_Cellcs)
     {
         return Instantiate(TickCounterPrefab, bomb_Cellcs.ParentCell.transform);
     }
@@ -180,12 +180,12 @@ public class GameManager : MonoBehaviour
     }
     private static void IncrementTickCounterOnBombCells(CellScript tile)
     {
-        if (tile.SpecialTile is Bomb_Cellcs)
+        if (tile.SpecialTile is Bomb_Cell)
         {
-            if ((tile.SpecialTile as Bomb_Cellcs).TickCounter != null)
+            if ((tile.SpecialTile as Bomb_Cell).TickCounter != null)
             {
                 print("tick");
-                (tile.SpecialTile as Bomb_Cellcs).TickCounter.AddTick(1);
+                (tile.SpecialTile as Bomb_Cell).TickCounter.AddTick(1);
             }
         }
     }
