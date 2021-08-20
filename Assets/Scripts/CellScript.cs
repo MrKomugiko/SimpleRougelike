@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CellScript : MonoBehaviour
+public class CellScript : MonoBehaviour, ITaskable
 {
     [SerializeField] private Vector2Int _currentPosition;
     [SerializeField] public SpriteRenderer _cellImage;
@@ -193,7 +193,7 @@ public class CellScript : MonoBehaviour
 
     }
 
-    private void AddActionToQUEUE()
+    public void AddActionToQUEUE()
     {
         var position = this.CurrentPosition;
         TaskManager.AddToActionQueue(
@@ -201,18 +201,23 @@ public class CellScript : MonoBehaviour
             () =>
             {
                 if (GridManager.CellGridTable[position].isWalkable == false)
-                    return false;
+                    return (false, "wskazane pole jest nieosiągalne z powodu znacznika IsWalkable = false");
 
                 if (GameManager.instance.WybuchWTrakcieWykonywania == true)
                 {
                     print("poczekaj aż zakończą się wybuchy ;d");
-                    return false;
+                    return (false, "oczekiwanie na zakończenie animacji wybuchów");
                 }
                 else
                 {
+                    if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)position) > 1.1f)
+                    {
+                        return (false, "Wskazane pole znajduje się poza zasięgiem ruchu 1 pola");  
+                    }
+
                     GameManager.instance.AddTurn();
                     GridManager.CascadeMoveTo(GameManager.Player_CELL, position);
-                    return true;
+                    return (true, "succes");
                 }
             }
         );

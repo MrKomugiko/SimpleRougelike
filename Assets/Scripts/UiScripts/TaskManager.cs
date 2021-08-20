@@ -15,7 +15,7 @@ public class TaskManager : MonoBehaviour
     public static TaskManager instance;
     
     public static Queue<GameObject> myQueue_Debug = new Queue<GameObject>();
-    public static Queue<Func<bool>> myQueue_Actions = new Queue<Func<bool>>();
+    public static Queue<Func<(bool status, string message)>> myQueue_Actions = new Queue<Func<(bool status, string message)>>();
 
     public static GameObject _task_Debug = null;
 
@@ -37,17 +37,20 @@ public class TaskManager : MonoBehaviour
     }
     [ContextMenu("ClearTaskList")]  public void OnClick_ClearTaskList()
     {
-        foreach(var task in myQueue_Actions)
+        foreach(var task in myQueue_Debug)
         {
-            var debug = myQueue_Debug.Dequeue();
-            Destroy(debug);
+            if(task!=null)
+                Destroy(task);
         }
         myQueue_Actions.Clear();
+        myQueue_Debug.Clear();
     }
     private IEnumerator RunActionsFromList()
     {
-        foreach(var action in myQueue_Actions)
-        {   
+        while(myQueue_Actions.Count>0)
+        {  
+            var _ACTION = myQueue_Actions.Dequeue();
+
             int i = 0;
             bool isCancelled = false;
             yield return new WaitUntil(()=>
@@ -58,12 +61,13 @@ public class TaskManager : MonoBehaviour
                     isCancelled = true;
                     return true;
                 }
-                return action();
+                
+                return _ACTION().status;
             });
             if(isCancelled)
             {
                 ResultTMP.color = Color.red;
-                ResultTMP.SetText("<b>Result: [FAILED] </b> Nie można wykonać akcji, przerwanie wykonywania zadań");
+                ResultTMP.SetText($"<b>Result: [FAILED] </b> {_ACTION().message}");
                 foreach(var Qdebug in myQueue_Debug)
                 {
                     var QdebugTMP = Qdebug.GetComponent<TextMeshProUGUI>();
@@ -72,18 +76,18 @@ public class TaskManager : MonoBehaviour
                 }
                 yield break;
             }
-            var debug = myQueue_Debug.Dequeue();
-            Destroy(debug);
-            
+            var _debug = myQueue_Debug.Dequeue();
+            Destroy(_debug);
+            print("queue :" + TaskManager.myQueue_Actions.Count);
             yield return new WaitForSeconds(TIME_DELAY_BEETWEN_ACTIONS);
         }
     }
 
-    public static void AddToActionQueue(string desctiption, Func<bool> action)
+    public static void AddToActionQueue(string desctiption, Func<(bool status, string message)> action)
     {
         _task_Debug = Instantiate(TaskManager.instance.QueueObjectPrefab,TaskManager.instance.TaskListContainer.transform);
         _task_Debug.GetComponent<TextMeshProUGUI>().SetText(desctiption);
-
+        
         myQueue_Debug.Enqueue(_task_Debug);
         myQueue_Actions.Enqueue(action);
     }

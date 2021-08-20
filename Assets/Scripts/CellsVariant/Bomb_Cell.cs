@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Bomb_Cell : ISpecialTile, IFragile
+public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
 {
     public TileTypes Type { get; private set; } 
     public string Name { get; set; }
@@ -119,13 +119,13 @@ public class Bomb_Cell : ISpecialTile, IFragile
        // TODO: mark as next to explode ater before
     }
 
-    private void AddActionToQUEUE()
+    public void AddActionToQUEUE()
     {
         TaskManager.AddToActionQueue(
             $"Manual detonate Bomb",
             () =>
             {
-                if(Active == false) return false;
+                if(Active == false) return (false,"bomba jest juz nieaktywna");
 
                 Active = false;
                 Debug.Log("EXPLODE !");
@@ -143,7 +143,7 @@ public class Bomb_Cell : ISpecialTile, IFragile
                 
                 GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
 
-                return true;
+                return (true,"succes");
             }
         );
     }

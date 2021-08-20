@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        NodeGrid.UpdateMapObstacleData();
+     //   NodeGrid.UpdateMapObstacleData();
     }
     public void AddTurn()
     {
@@ -170,12 +170,13 @@ public class GameManager : MonoBehaviour
             );
         cellsToDestroy.ForEach(cell => DamagedCells.Remove(cell));
 
+        
         WybuchWTrakcieWykonywania = false;
-        print("DamagesCells = " + DamagedCells.Count);
         if (DamagedCells.Count == 0)
         {
             GridManager.FillGaps();
         }
+        
         yield return null;
     }
     private static void IncrementTickCounterOnBombCells(CellScript tile)
