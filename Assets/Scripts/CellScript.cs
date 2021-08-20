@@ -247,7 +247,8 @@ public class CellScript : MonoBehaviour, ITaskable
         this.Type = _type;
         if (Type == TileTypes.player)
         {
-
+            //TODO: NIE PAMIETAM CO TU MIALO BYC XDD
+            Debug.Log("emmmmmmmmmmmmmmmmmmmmmmm ?");
         };
         this.gameObject.name = this.Type.ToString();
 
@@ -262,7 +263,15 @@ public class CellScript : MonoBehaviour, ITaskable
                 break;
 
             case TileTypes.monster:
-                Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s => s.name == "monster").First(), this._recTransform));
+                if (SpecialTile == null)
+                {
+                    this.SpecialTile = new Monster_Cell(
+                        parent: this,
+                        name: "Monster_X",
+                        icon_Url: "monster",
+                        effect_Url: "monster_bones_image"
+                      );
+                }
 
                 break;
 

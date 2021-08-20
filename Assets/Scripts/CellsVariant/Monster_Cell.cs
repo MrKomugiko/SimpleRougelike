@@ -1,98 +1,49 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class Monster_Cell : ISpecialTile
 {
-    public TileTypes Type { get; private set; } 
+    #region core
     public string Name { get; set; }
+    public TileTypes Type { get; private set; } = TileTypes.monster;
+    public string Effect_Url { get; set; }
+    public string Icon_Url { get; set; }
+    public CellScript ParentCell { get; set; }
+    #endregion
+    #region Monster-specific
+    internal Pathfinding _pathfinder;
+    #endregion
+    #region optional
+    public bool Active { get; set; } = true;
+    public bool IsReadyToUse => true;
 
-    public CellScript ParentCell {get; private set;}
-    public string Effect_Url {get;set;}
-    public string Icon_Url {get;set;}
-
-    public bool Active {get;set;} = true;
-
-    public bool IsReadyToUse => ((GameManager.instance.CurrentTurnNumber-_spawnTurnNumber) > _turnsRequiredToActivate);
-
-
-    private int _turnsRequiredToActivate = 5;
-    private int _spawnTurnNumber;
-
-    internal TickScript TickCounter {get;set;}
-    
-
-    public Monster_Cell(CellScript parent, string name, string effect_Url, string icon_Url )
+    #endregion
+    public Monster_Cell(CellScript parent,string name,string icon_Url, string effect_Url,  Pathfinding pathfinder = null)
     {
-        _spawnTurnNumber = GameManager.instance.CurrentTurnNumber;
+        Name = name;
+        Effect_Url = effect_Url;
+        Icon_Url = icon_Url;
+        Active = true;
+        Type = TileTypes.monster;
+        _pathfinder = pathfinder;
 
-        this.ParentCell = parent;
-        this.Type = TileTypes.bomb;
-        this.Name = name;
-
-        this.Effect_Url = effect_Url;
-        this.Icon_Url = icon_Url;
-
-        // Debug.Log("pomyslnie utworzono Bombę, dla pola skojarzonego z pozycją "+ ParentCell.CurrentPosition);  
-
-        parent.IsWalkable = true;
+        Debug.Log("monster created");
+        ParentCell = parent;
     }
-    public List<CellScript> CellsToDestroy = new List<CellScript>();
     public void MakeAction()
-    {        
-        if(Active == false) return;
-            Active = false;
-        Debug.Log("EXPLODE !");
-        
-       AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
-
-        foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
-        {   
-            Debug.Log(cell.CurrentPosition);    
-            Debug.Log(Effect_Url);
-
-            cell.AddEffectImage(imageUrl: Effect_Url);
-            GridManager.CellGridTable[cell.CurrentPosition].DamagedTimes ++;
-        }
-        
-        GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
-    }
-
-    public void MakeAction(Vector2Int _position, Vector2Int _fromDirection)
     {
-        if(Active == false) return;
-            Active = false;
-        Debug.Log("EXPLODE !");
-
-        AddCellsToDestroyList(_position, _fromDirection);
-
-        foreach (var cell in CellsToDestroy.Where(cell=> cell != null))
+        // if null => load pathfindingScript
+        if(_pathfinder == null)
         {
-         //   Debug.Log(cell.CurrentPosition);
-        //    Debug.Log(Effect_Url);
-
-            cell.AddEffectImage(imageUrl: Effect_Url);
-            GridManager.CellGridTable[cell.CurrentPosition].DamagedTimes ++;
+            Debug.Log("proba załadowania pathfindera z obiektu monster");
+            ParentCell.Trash.Where(t=>t.name == (Icon_Url+"(Clone)")).FirstOrDefault().TryGetComponent<Pathfinding>(out _pathfinder);
+            if(_pathfinder == null)
+            {
+                Debug.LogError("nieudane ładowanie pathfindera");
+                return;
+            }
         }
-
-        GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
-    }
-
-    private void AddCellsToDestroyList(Vector2Int nextPosition, Vector2Int direction)
-    {
-        if (GridManager.CellGridTable.ContainsKey(nextPosition+2*direction) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+2*direction]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition+2*direction]);
-
-        if (GridManager.CellGridTable.ContainsKey(nextPosition + Vector2Int.up) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+ Vector2Int.up]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition + Vector2Int.up]);
-
-        if (GridManager.CellGridTable.ContainsKey(nextPosition + Vector2Int.down) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+ Vector2Int.down]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition + Vector2Int.down]);
-
-        if (GridManager.CellGridTable.ContainsKey(nextPosition + Vector2Int.left) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+ Vector2Int.left]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition + Vector2Int.left]);
-
-        if (GridManager.CellGridTable.ContainsKey(nextPosition + Vector2Int.right) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+ Vector2Int.right]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition + Vector2Int.right]);
+        // Moving toward player
+        Debug.LogWarning("Monster wykonuje akcje");
     }
 }

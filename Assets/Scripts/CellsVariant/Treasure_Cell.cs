@@ -31,6 +31,7 @@ public class Treasure_Cell : ISpecialTile
     public void MakeAction()
     {
         Debug.Log($"zbierasz {GoldValue} monet");
+        GameManager.instance.AddGold(GoldValue);
         ParentCell.MoveTo();
     }
 
