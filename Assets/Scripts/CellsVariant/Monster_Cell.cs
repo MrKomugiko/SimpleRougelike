@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class Monster_Cell : ISpecialTile
+public class Monster_Cell : ISpecialTile, ITaskable
 {
     #region core
     public string Name { get; set; }
@@ -30,8 +30,9 @@ public class Monster_Cell : ISpecialTile
         Debug.Log("monster created");
         ParentCell = parent;
     }
-    public void MakeAction()
+    public void OnClick_MakeAction()
     {
+       
         // if null => load pathfindingScript
         if(_pathfinder == null)
         {
@@ -42,8 +43,52 @@ public class Monster_Cell : ISpecialTile
                 Debug.LogError("nieudane ładowanie pathfindera");
                 return;
             }
+            _pathfinder._cellData = ParentCell;
+        }      
+       
+       if(TaskManager.TaskManagerIsOn == false)
+        {
+            // Moving toward player
+         
+            Move(GameManager.Player_CELL);
+            Debug.LogWarning("player click on monster -> start interaction with monster");
         }
-        // Moving toward player
-        Debug.LogWarning("Monster wykonuje akcje");
+        else
+        {
+            AddActionToQUEUE();
+        }
+    }
+
+    public void Attack(CellScript _target)
+    {
+        Debug.Log($"Monster zaatakował {_target.name}");
+    }
+    
+    public void Move(CellScript _targetCell)
+    {
+        NodeGrid.UpdateMapObstacleData();
+        Debug.Log($"Monster wykonuje krok w celu komórki {_targetCell.name}");
+        _pathfinder.FindPath(_targetCell);
+        GridManager.SwapTiles(ParentCell,_pathfinder.FinalPath[0].Coordination);
+    }
+
+    public void AddActionToQUEUE()
+    {
+        var position = ParentCell.CurrentPosition;
+        TaskManager.AddToActionQueue(
+            $"Attack Monster on position:[{position.x};{position.y}]",
+            () =>
+            {
+                if (GridManager.CellGridTable[position].SpecialTile != null)
+                {
+                    if(GridManager.CellGridTable[position].SpecialTile is Monster_Cell)
+                    {
+                        return (true, "succes");
+                    }
+                }    
+                
+                return (false, "we wskazanym miejscu nie znajduje sie monster którego można zaatakować");
+            }
+        );
     }
 }

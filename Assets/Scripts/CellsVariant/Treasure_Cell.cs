@@ -28,7 +28,7 @@ public class Treasure_Cell : ISpecialTile
 
         Debug.Log("pomyslnie utworzono pole typu treasure");
     }
-    public void MakeAction()
+    public void OnClick_MakeAction()
     {
         Debug.Log($"zbierasz {GoldValue} monet");
         GameManager.instance.AddGold(GoldValue);

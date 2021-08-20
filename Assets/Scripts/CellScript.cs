@@ -76,7 +76,7 @@ public class CellScript : MonoBehaviour, ITaskable
             this.gameObject.name = value.Name;
 
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(() => SpecialTile.MakeAction());
+            _button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
 
             Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == value.Icon_Url).First(), this.transform));
         }
@@ -118,7 +118,7 @@ public class CellScript : MonoBehaviour, ITaskable
                 if (_specialTile.Active)
                 {
                     print("special tile został zaatakowany / zniszczony ? oberał = wykonaj jego akcje");
-                    _specialTile.MakeAction();
+                    _specialTile.OnClick_MakeAction();
                 }
             }
         }
@@ -200,14 +200,17 @@ public class CellScript : MonoBehaviour, ITaskable
             $"Add turn and Move player to:[{position.x};{position.y}]",
             () =>
             {
+                if(GridManager.CellGridTable[position].SpecialTile !=null)
+                    if(GridManager.CellGridTable[position].SpecialTile is Monster_Cell)
+                        return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam monsterek");
+                    else if(GridManager.CellGridTable[position].SpecialTile is Bomb_Cell)
+                        return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam bomba");
+
                 if (GridManager.CellGridTable[position].isWalkable == false)
                     return (false, "wskazane pole jest nieosiągalne z powodu znacznika IsWalkable = false");
 
                 if (GameManager.instance.WybuchWTrakcieWykonywania == true)
-                {
-                    print("poczekaj aż zakończą się wybuchy ;d");
                     return (false, "oczekiwanie na zakończenie animacji wybuchów");
-                }
                 else
                 {
                     if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)position) > 1.1f)

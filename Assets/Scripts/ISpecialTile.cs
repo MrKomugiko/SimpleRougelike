@@ -9,6 +9,6 @@ public interface ISpecialTile
     CellScript ParentCell { get; }
     bool Active { get; set; }
     bool IsReadyToUse { get; }
-    void MakeAction();
+    void OnClick_MakeAction();
 
 }

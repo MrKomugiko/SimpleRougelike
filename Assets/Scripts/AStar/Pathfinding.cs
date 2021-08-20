@@ -6,19 +6,17 @@ public class Pathfinding : MonoBehaviour
     public Vector2Int StartPosition;
     public Vector2Int TargetPosition;
     public List<Node> FinalPath = new List<Node>();
-    CellScript _cellData;
+    internal CellScript _cellData;
     Heap<Node> _open;
     HashSet<Node> _closed = new HashSet<Node>();
 
-
-    private void Start() {
-        _cellData = GetComponentInParent<CellScript>();
-        InvokeRepeating("FindPath",0,.5f);
-    }
-    [ContextMenu("FindPath")] public void FindPath()
+    [ContextMenu("FindPath")] public void FindPath(CellScript _targetCell = null)
     {
+        if(_targetCell == null)
+            _targetCell = GameManager.Player_CELL; // default: celem jest gracz
+            
         StartPosition = _cellData.CurrentPosition;;
-        TargetPosition = GameManager.Player_CELL.CurrentPosition;
+        TargetPosition = _targetCell.CurrentPosition;
 
         _open = new Heap<Node>(NodeGrid.MapSize);
         _closed.Clear();
@@ -93,7 +91,6 @@ public class Pathfinding : MonoBehaviour
         //print(output);
         return output;
     }
-
     private void OnDrawGizmos(){
         
         if(FinalPath.Count == 0) return;

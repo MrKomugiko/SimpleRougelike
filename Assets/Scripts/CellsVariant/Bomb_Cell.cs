@@ -44,7 +44,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
         parent.IsWalkable = false;
     }
     public List<CellScript> CellsToDestroy = new List<CellScript>();
-    public void MakeAction()
+    public void OnClick_MakeAction()
     {        
         if(TaskManager.TaskManagerIsOn == false)
         {
