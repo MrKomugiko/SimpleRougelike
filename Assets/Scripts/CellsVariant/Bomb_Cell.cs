@@ -60,7 +60,10 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
                 Debug.Log(Effect_Url);
 
                 cell.AddEffectImage(imageUrl: Effect_Url);
-                GridManager.CellGridTable[cell.CurrentPosition].DamagedTimes ++;
+                if(GridManager.CellGridTable[cell.CurrentPosition].SpecialTile is IEnemy)
+                {
+                   (GridManager.CellGridTable[cell.CurrentPosition].SpecialTile as IEnemy).TakeDamage(1, "Bomb Explosion");
+                } 
             }
             
             GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
@@ -87,7 +90,10 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
         //    Debug.Log(Effect_Url);
 
             cell.AddEffectImage(imageUrl: Effect_Url);
-            GridManager.CellGridTable[cell.CurrentPosition].DamagedTimes ++;
+            if(GridManager.CellGridTable[cell.CurrentPosition].SpecialTile is IEnemy) 
+            {
+                (GridManager.CellGridTable[cell.CurrentPosition].SpecialTile as IEnemy).TakeDamage(1,"Bomb explosion");
+            }
         }
 
         GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
@@ -138,7 +144,10 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
                     Debug.Log(Effect_Url);
 
                     cell.AddEffectImage(imageUrl: Effect_Url);
-                    GridManager.CellGridTable[cell.CurrentPosition].DamagedTimes ++;
+                    if(GridManager.CellGridTable[cell.CurrentPosition].SpecialTile is IEnemy) 
+                    {
+                        (GridManager.CellGridTable[cell.CurrentPosition].SpecialTile as IEnemy).TakeDamage(1,"Bomb explosion");
+                    }
                 }
                 
                 GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);

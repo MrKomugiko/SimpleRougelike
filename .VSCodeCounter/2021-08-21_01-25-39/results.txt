@@ -1,0 +1,93 @@
+Date : 2021-08-21 01:25:39
+Directory : d:\Programowanie\Unity\SimpleRougelike
+Total : 54 files,  19052 codes, 163 comments, 1515 blanks, all 20730 lines
+
+Languages
++-----------+------------+------------+------------+------------+------------+
+| language  | files      | code       | comment    | blank      | total      |
++-----------+------------+------------+------------+------------+------------+
+| Log       |         16 |     13,891 |          0 |        630 |     14,521 |
+| ShaderLab |         13 |      2,015 |         61 |        557 |      2,633 |
+| C#        |         17 |      1,351 |         74 |        236 |      1,661 |
+| XML       |          1 |        810 |          7 |          1 |        818 |
+| JSON      |          3 |        662 |          0 |          4 |        666 |
+| HLSL      |          4 |        323 |         21 |         87 |        431 |
++-----------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                              | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                 |         54 |     19,052 |        163 |      1,515 |     20,730 |
+| Assets                                                                                            |         35 |      3,844 |        156 |        882 |      4,882 |
+| Assets\Scripts                                                                                    |         17 |      1,351 |         74 |        236 |      1,661 |
+| Assets\Scripts\AStar                                                                              |          4 |        276 |         10 |         56 |        342 |
+| Assets\Scripts\CellsVariant                                                                       |          4 |        224 |          8 |         60 |        292 |
+| Assets\Scripts\UiScripts                                                                          |          4 |        239 |          4 |         30 |        273 |
+| Assets\TextMesh Pro                                                                               |         18 |      2,493 |         82 |        646 |      3,221 |
+| Assets\TextMesh Pro\Shaders                                                                       |         17 |      2,338 |         82 |        644 |      3,064 |
+| Assets\TextMesh Pro\Sprites                                                                       |          1 |        155 |          0 |          2 |        157 |
+| Logs                                                                                              |         16 |     13,891 |          0 |        630 |     14,521 |
+| Packages                                                                                          |          2 |        507 |          0 |          2 |        509 |
++---------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------+-----------+------------+------------+------------+------------+
+| filename                                                                                          | language  | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------+-----------+------------+------------+------------+------------+
+| d:\Programowanie\Unity\SimpleRougelike\Assembly-CSharp.csproj                                     | XML       |        810 |          7 |          1 |        818 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\Heap.cs                               | C#        |         85 |          0 |         19 |        104 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\Node.cs                               | C#        |         37 |          0 |          4 |         41 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\NodeGrid.cs                           | C#        |         65 |          2 |         12 |         79 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\Pathfinding.cs                        | C#        |         89 |          8 |         21 |        118 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellScript.cs                               | C#        |        262 |         11 |         40 |        313 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Bomb_Cell.cs                   | C#        |        106 |          6 |         39 |        151 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\IFragile.cs                    | C#        |          5 |          0 |          1 |          6 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Monster_Cell.cs                | C#        |         82 |          2 |         11 |         95 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Treasure_Cell.cs               | C#        |         31 |          0 |          9 |         40 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\GameManager.cs                              | C#        |        186 |         31 |         26 |        243 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\GridManager.cs                              | C#        |        142 |         10 |         21 |        173 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\ISpecialTile.cs                             | C#        |         12 |          0 |          2 |         14 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\TileTypes.cs                                | C#        |         10 |          0 |          1 |         11 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\AnimateWindowScript.cs            | C#        |        103 |          4 |         13 |        120 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ITaskable.cs                      | C#        |          5 |          0 |          2 |          7 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\TaskManager.cs                    | C#        |         90 |          0 |         12 |        102 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\TickScript.cs                     | C#        |         41 |          0 |          3 |         44 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader | ShaderLab |        109 |          2 |         33 |        144 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader       | ShaderLab |        112 |          3 |         31 |        146 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader              | ShaderLab |        109 |          2 |         33 |        144 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader         | ShaderLab |        243 |          4 |         71 |        318 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader             | ShaderLab |        241 |          4 |         66 |        311 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader  | ShaderLab |        188 |         10 |         50 |        248 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader  | ShaderLab |        183 |          8 |         50 |        241 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader      | ShaderLab |         82 |          4 |         21 |        107 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader          | ShaderLab |        183 |          8 |         50 |        241 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader  | ShaderLab |        103 |          8 |         28 |        139 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader         | ShaderLab |        122 |          4 |         33 |        159 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF.shader                 | ShaderLab |        243 |          4 |         71 |        318 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Sprite.shader              | ShaderLab |         97 |          0 |         20 |        117 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro.cginc                    | HLSL      |         63 |          2 |         20 |         85 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc             | HLSL      |        122 |          2 |         34 |        158 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc         | HLSL      |         62 |         10 |         14 |         86 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc            | HLSL      |         76 |          7 |         19 |        102 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Sprites\EmojiOne.json                  | JSON      |        155 |          0 |          2 |        157 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker0-prev.log                           | Log       |      8,682 |          0 |        385 |      9,067 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker0.log                                | Log       |         66 |          0 |          2 |         68 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker1-prev.log                           | Log       |         66 |          0 |          2 |         68 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker1.log                                | Log       |        103 |          0 |          2 |        105 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker2-prev.log                           | Log       |        770 |          0 |         32 |        802 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker2.log                                | Log       |      4,138 |          0 |        185 |      4,323 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\Packages-Update.log                                   | Log       |         48 |          0 |          4 |         52 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-AssetImportWorker0.log                 | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe0.log           | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe1.log           | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe2.log           | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe3.log           | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe4.log           | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe5.log           | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe6.log           | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe7.log           | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Packages\manifest.json                                     | JSON      |         51 |          0 |          1 |         52 |
+| d:\Programowanie\Unity\SimpleRougelike\Packages\packages-lock.json                                | JSON      |        456 |          0 |          1 |        457 |
+| Total                                                                                             |           |     19,052 |        163 |      1,515 |     20,730 |
++---------------------------------------------------------------------------------------------------+-----------+------------+------------+------------+------------+

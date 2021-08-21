@@ -26,7 +26,7 @@ public class Treasure_Cell : ISpecialTile
 
         this.GoldValue = goldValue;
 
-        Debug.Log("pomyslnie utworzono pole typu treasure");
+        Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);;
     }
     public void OnClick_MakeAction()
     {

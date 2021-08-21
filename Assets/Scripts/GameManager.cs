@@ -153,29 +153,58 @@ public class GameManager : MonoBehaviour
         WybuchWTrakcieWykonywania = true;
         yield return new WaitForSeconds(time);
 
-        foreach (var cell in cellsToDestroy.Where(c => c != null).ToList())
+        var tempList = cellsToDestroy.Where(c => c != null).ToList();
+        foreach (var cell in tempList)
         {
-            if (cell.Type == TileTypes.player) continue;
+            if (cell.Type == TileTypes.player) 
+            {
+                print("gracz oberawał");
+                cellsToDestroy.Remove(cell);
+                DamagedCells.Remove(cell);
+                continue; //TODO: wyodrębnoć klase player, dodać/zmienic IEnemy na coś uniwersalnego ? IEntity ? zawierac bedzie hp, exp , funkcja ataku obranonu nvm
+            }
+
+            if(cell.SpecialTile is IEnemy) 
+            {
+                var enemy =  (cell.SpecialTile as IEnemy);
+                print("enemy oberwał");
+                if(enemy.IsAlive)
+                {
+                    print("still alive");
+                    cellsToDestroy.Remove(cell);
+                    DamagedCells.Remove(cell);
+                    continue;
+                }
+                else
+                {
+                     print("monster died and should leave his bones on this cell");
+                    //TODO: POZMIANA STWORKA NA ZWŁOKI/drop, do tego jakas infomacja ze zmarło mu sie xd
+                    enemy.ChangeToTreasureObject(corpse_Url: "monster_bones", lootID: enemy.lootID);
+                    cellsToDestroy.Remove(cell);
+                    DamagedCells.Remove(cell);
+                    continue;
+                }
+                
+
+            }
 
             GridManager.SendToGraveyard(cell.CurrentPosition);
-            cell.SpecialTile = null;
+          
         }
-
+        
         cellsToDestroy.Where(c => c != null).ToList().ForEach(cell => cell.Trash.ForEach(trash => Destroy(trash.gameObject)));
         cellsToDestroy.Where(c => c != null).ToList().ForEach(cell =>
-        {
-            cell.SpecialTile = null;
-            cell.Trash.Clear();
-        }
+                {
+                    cell.SpecialTile = null;
+                    cell.Trash.Clear();
+                }
             );
         cellsToDestroy.ForEach(cell => DamagedCells.Remove(cell));
 
         
         WybuchWTrakcieWykonywania = false;
-        if (DamagedCells.Count == 0)
-        {
-            GridManager.FillGaps();
-        }
+     
+        GridManager.FillGaps();
         
         yield return null;
     }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6537263959021617900}
   - component: {fileID: 583805816258417757}
+  - component: {fileID: -2008081223616651072}
   m_Layer: 0
   m_Name: bomb_explosion_image
   m_TagString: Untagged
@@ -89,3 +90,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-2008081223616651072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533482603691778679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370cbfc17c95ef945bbd1122fae976a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

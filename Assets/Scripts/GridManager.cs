@@ -101,7 +101,6 @@ public class GridManager : MonoBehaviour
         CellGridTable[positionToFill] = destroyedTilesPool.First();
         destroyedTilesPool.Remove(destroyedTilesPool.First());
         CellGridTable[positionToFill].SetCell(positionToFill,false);
-        CellGridTable[positionToFill].DamagedTimes = 0;
         CellGridTable[positionToFill].AssignType(GetRandomType());      
     }
     public static void SendToGraveyard(Vector2Int cellPosition)
@@ -143,8 +142,23 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    public static void SwapTiles(CellScript movedCell, Vector2Int newPosition)
+    public static void TrySwapTiles(CellScript movedCell, Vector2Int newPosition)
     {
+        // sprawdz czy pozycja z któą sie chcesz zamienic jest specialnym / fragile i czy jest aktualnie aktywnym
+        if(CellGridTable[newPosition].SpecialTile != null)
+        {
+            Debug.LogWarning("proba swapniecia miejsc ze specialnym tilesem");
+            if(CellGridTable[newPosition].SpecialTile.IsReadyToUse){
+                Debug.LogWarning("ten tiles jest gotowy do uzycia");
+                if(CellGridTable[newPosition].SpecialTile is IFragile)
+                {
+                    Debug.LogWarning("ten tiles jest delikatny i wybuchnie przy ruchu, = nie zamieniaj miejsc, poprostu go zdetonuj");
+                    (CellGridTable[newPosition].SpecialTile as IFragile).DetonateOnMove(newPosition,Vector2Int.zero);
+                    return;
+                }
+            }
+        }
+
         var oldPosition = movedCell.CurrentPosition;
 
         var temp = CellGridTable[newPosition];
