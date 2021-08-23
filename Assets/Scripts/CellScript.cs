@@ -15,13 +15,12 @@ public class CellScript : MonoBehaviour, ITaskable
     [SerializeField] public Button _button;
     [SerializeField] private TileTypes _type;
 
-    [SerializeField] private int damagedTimes = 0;
-
     public List<GameObject> Trash = new List<GameObject>();
 
     private ISpecialTile _specialTile;
     [SerializeField] private bool isWalkable = true;
 
+[SerializeField] private string CurrentAssignedSpecialTileScript;
     private void OnDrawGizmos() {
         if(isWalkable == false)
         {
@@ -48,22 +47,8 @@ public class CellScript : MonoBehaviour, ITaskable
         get => _type;
         set
         {
-             IsWalkable = true;
+            // IsWalkable = true;
             _type = value;
-            if (value == TileTypes.wall)
-            {
-                // TODO: przeniesc ta funkcionalnosc do Ispecialtilesa
-                // blokada ruchu 
-                _button.onClick.RemoveAllListeners();
-                _button.onClick.AddListener(() => print("to jest sciana"));
-                IsWalkable = false;
-            }
-            if (value == TileTypes.treasure)
-            {
-                // TODO: przeniesc ta funkcionalnosc do Ispecialtilesa
-                // dodawanie golda 
-                _button.onClick.AddListener(() => GameManager.instance.AddGold(value: 10));
-            }
         }
     }
 
@@ -72,16 +57,15 @@ public class CellScript : MonoBehaviour, ITaskable
         get => _specialTile;
         set
         {
-           
-
             if (value == SpecialTile)
                 return;
             _specialTile = value;
             if (value == null)
+            {
+                Trash.ForEach(t=>Destroy(t));
+                Trash.Clear();
                 return;
-
-            Trash.ForEach(t=>Destroy(t));
-            Trash.Clear();
+            }
 
             this.gameObject.name = value.Name;
             AssignType(value.Type, value);
@@ -89,7 +73,8 @@ public class CellScript : MonoBehaviour, ITaskable
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
             Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == value.Icon_Url).First(), this.transform));
-
+            this.gameObject.name = SpecialTile.Name;
+            CurrentAssignedSpecialTileScript = SpecialTile.GetType().ToString();
         }
     }
 
@@ -99,42 +84,24 @@ public class CellScript : MonoBehaviour, ITaskable
         set
         {
             var direction = _currentPosition - value;
-            var oldPosition = _currentPosition;
+           var oldPosition = _currentPosition;
             _currentPosition = value;
 
             if (_specialTile != null)
             {
                 // print("gettype = "+ _specialTile.GetType());    
-                if (_specialTile.IsReadyToUse)
+                if (_specialTile is IFragile)
                 {
-                    if (_specialTile is IFragile)
+                    if ((_specialTile as IFragile).IsReadyToUse)
                     {
                         {
-                            (_specialTile as IFragile).DetonateOnMove(_currentPosition, direction);
+                            (_specialTile as IFragile).ActionOnMove(_currentPosition,direction);
                         }
                     }
                 }
             }
         }
     }
-
-    // public int DamagedTimes
-    // {
-    //     get => damagedTimes;
-    //     set
-    //     {
-    //         damagedTimes = value;
-    //         if (_specialTile != null)
-    //         {
-    //             if (_specialTile.Active)
-    //             {
-    //                 print("special tile został zaatakowany / zniszczony ? oberał = wykonaj jego akcje");
-    //                 _specialTile.OnClick_MakeAction();
-    //             }
-    //         }
-    //     }
-    // }
-
     public bool IsWalkable
     { 
         get => isWalkable;
@@ -146,11 +113,15 @@ public class CellScript : MonoBehaviour, ITaskable
 
     public void SetCell(Vector2Int _position, bool runAnimation = true)
     {
+        
         CurrentPosition = _position;
-        _cellCoordinates_TMP.SetText(_position.ToString());
+       // _cellCoordinates_TMP.SetText(_position.ToString());
 
         if (runAnimation == true)
+        {
+            GameManager.CurrentMovingTiles.Add(this);
             StartCoroutine(SlideAnimation(_recTransform.localPosition, new Vector2(CurrentPosition.x * _recTransform.rect.size.x, CurrentPosition.y * _recTransform.rect.size.y)));
+        }
         else
             StartCoroutine(FadeInAnimation(new Vector2(CurrentPosition.x * _recTransform.rect.size.x, CurrentPosition.y * _recTransform.rect.size.y)));
 
@@ -194,8 +165,8 @@ public class CellScript : MonoBehaviour, ITaskable
 
         if(TaskManager.TaskManagerIsOn == false)
         {
-            GameManager.instance.AddTurn();
             GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
+            GameManager.instance.AddTurn();
         }
         else
         {
@@ -245,6 +216,7 @@ public class CellScript : MonoBehaviour, ITaskable
 
     private IEnumerator SlideAnimation(Vector3 startingPosition, Vector3 endPosition)
     {
+
         // print("rozpoczęcie animacji xd");
         for (int i = 1; i <= 8; i++)
         {
@@ -252,76 +224,67 @@ public class CellScript : MonoBehaviour, ITaskable
             yield return new WaitForFixedUpdate();
             this._recTransform.localPosition = Vector3.Lerp(startingPosition, endPosition, progress);
         }
-
+        GameManager.CurrentMovingTiles.Remove(this);
         // print("koneic animacji");
         yield return null;
     }
     public void AssignType(TileTypes _type, ISpecialTile _specialTile = null)
     {
-
-       // Trash.ForEach(t=>Destroy(t));
-
         this.Type = _type;
-        if (Type == TileTypes.player)
-        {
-           this._cellImage.color = Color.green;
-           return;
-        };
         this.gameObject.name = this.Type.ToString();
 
-        switch (Type)
+        if (Type == TileTypes.player)
         {
-            case TileTypes.wall:
-                Trash.Add(Instantiate(GameManager.instance.ExtrasPrefabList.Where(s => s.name == "wall").First(), this._recTransform));
-                break;
+            this._cellImage.color = Color.green;
 
-            case TileTypes.monster:
-                if (_specialTile == null)
-                {
+            return;
+        };
+        
+        if (_specialTile == null) {
+            switch (Type)
+            {
+                case TileTypes.wall:
+                    this.SpecialTile = new Obstacle_Cell(
+                        parent: this,
+                        name: "Sciana",
+                        icon_Url: "wall"
+                      );
+                      return;
+
+                case TileTypes.monster:
                     this.SpecialTile = new Monster_Cell(
                         parent: this,
                         name: "Monster_X",
-                        icon_Url: "monster",
-                        effect_Url: "monster_bones_image"
-                      );
-                      
-                }
-                else
-                    this.SpecialTile = _specialTile;
+                        icon_Url: "monster"
+                        );
+                    (this.SpecialTile as Monster_Cell).ConfigurePathfinderComponent();
+                    return;
 
-                break;
-
-            case TileTypes.treasure:
-                if (_specialTile == null)
-                {
+                case TileTypes.treasure:
                     this.SpecialTile = new Treasure_Cell(
                         parent: this,
                         name: "Złote monety",
                         icon_Url: "treasure",
                         goldValue: 10
                     );
-                } else
-                    this.SpecialTile = _specialTile;
-                break;
+                    return;
 
-            case TileTypes.bomb:
-                if (SpecialTile == null)
-                {
+                case TileTypes.bomb:
                     this.SpecialTile = new Bomb_Cell(
                         parent: this,
                         name: "Mina przeciwpiechotna",
                         effect_Url: "bomb_explosion_image",
-                        icon_Url: "bomb_icon"
+                        icon_Url: "bomb_icon",
+                        turnsRequiredToActivate: 5
                     );
-                } else
-                    this.SpecialTile = _specialTile;
-                break;
+                    return;
 
             default:
                 this._cellImage.sprite = GameManager.instance.SpritesList.Where(s => s.name == "basic").First();
                 break;
+            };
         }
-
-
+        else
+            this.SpecialTile = _specialTile;
     }
 }

@@ -22,7 +22,7 @@ public class Pathfinding : MonoBehaviour
         _closed.Clear();
         Node start_Node = NodeGrid.MAPDATA[this.StartPosition.x, this.StartPosition.y];
         Node finish_Node = NodeGrid.MAPDATA[this.TargetPosition.x, this.TargetPosition.y];
-        print(start_Node.Coordination + " ===> " + finish_Node.Coordination);
+       // print(start_Node.Coordination + " ===> " + finish_Node.Coordination);
 
         _open.Add(start_Node);
 

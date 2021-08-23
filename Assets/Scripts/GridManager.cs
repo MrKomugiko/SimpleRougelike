@@ -25,7 +25,11 @@ public class GridManager : MonoBehaviour
             {
                 var newCell = Instantiate(_cellPrefab,this.transform,false).GetComponent<CellScript>();
                 newCell.SetCell(new Vector2Int(x,y), false);
-                newCell.AssignType(GetRandomType());
+                if(newCell.CurrentPosition == GameManager.instance.StartingPlayerPosition) 
+                    newCell.AssignType(TileTypes.player);
+                else
+                    newCell.AssignType(GetRandomType());
+                    
                 CellGridTable.Add(new Vector2Int(x,y),newCell);
             }   
         }
@@ -144,16 +148,26 @@ public class GridManager : MonoBehaviour
     }
     public static void TrySwapTiles(CellScript movedCell, Vector2Int newPosition)
     {
-        // sprawdz czy pozycja z któą sie chcesz zamienic jest specialnym / fragile i czy jest aktualnie aktywnym
+       // sprawdz czy pozycja z któą sie chcesz zamienic jest specialnym / fragile i czy jest aktualnie aktywnym
+        if(newPosition == GameManager.Player_CELL.CurrentPosition)
+        {
+           Debug.LogWarning("monster nie moze zamienic sie miejscami z graczem");
+            return;
+        }
         if(CellGridTable[newPosition].SpecialTile != null)
         {
+            if(CellGridTable[newPosition].SpecialTile is Monster_Cell){
+                Debug.LogWarning("nie zamieniaj sie miejscem z innym monsterkiem");
+                return;
+            }
+            
             Debug.LogWarning("proba swapniecia miejsc ze specialnym tilesem");
-            if(CellGridTable[newPosition].SpecialTile.IsReadyToUse){
-                Debug.LogWarning("ten tiles jest gotowy do uzycia");
-                if(CellGridTable[newPosition].SpecialTile is IFragile)
-                {
-                    Debug.LogWarning("ten tiles jest delikatny i wybuchnie przy ruchu, = nie zamieniaj miejsc, poprostu go zdetonuj");
-                    (CellGridTable[newPosition].SpecialTile as IFragile).DetonateOnMove(newPosition,Vector2Int.zero);
+
+            if(CellGridTable[newPosition].SpecialTile is IFragile)
+            {
+                if((CellGridTable[newPosition].SpecialTile as IUsable).IsReadyToUse){
+                   // Debug.LogWarning("ten tiles jest delikatny i wybuchnie przy ruchu, = nie zamieniaj miejsc, poprostu go zdetonuj");
+                    (CellGridTable[newPosition].SpecialTile as IFragile).Use();
                     return;
                 }
             }

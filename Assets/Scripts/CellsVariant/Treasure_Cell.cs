@@ -3,25 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Treasure_Cell : ISpecialTile
+public class Treasure_Cell : ISpecialTile, IValuable
 {
+
+    #region core
     public CellScript ParentCell { get; private set; }
     public TileTypes Type { get; private set; } 
     public string Name { get; set; }
-    public string Effect_Url { get; set; }
     public string Icon_Url { get; set; }
 
+    #endregion
+
+    #region Treasure-specific
     public int GoldValue { get; set; }
-    public bool Active { get; set ; } = false;
+    #endregion
 
-    public bool IsReadyToUse => true;
 
-    public Treasure_Cell(CellScript parent, string name, string icon_Url, int goldValue, string effect_Url = "")
+    public Treasure_Cell(CellScript parent, string name, string icon_Url, int goldValue)
     {
         this.ParentCell = parent;
         this.Name = name;
         this.Type = TileTypes.treasure;
-        this.Effect_Url = effect_Url;
         this.Icon_Url = icon_Url;
 
         this.GoldValue = goldValue;
@@ -30,10 +32,14 @@ public class Treasure_Cell : ISpecialTile
     }
     public void OnClick_MakeAction()
     {
-        Debug.Log($"zbierasz {GoldValue} monet");
-        GameManager.instance.AddGold(GoldValue);
         ParentCell.MoveTo();
+        Pick();
     }
 
+    public void Pick()
+    {
+        Debug.Log($"zbierasz {GoldValue} monet");
+        GameManager.instance.AddGold(GoldValue);
+    }
 
 }

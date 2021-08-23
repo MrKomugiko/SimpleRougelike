@@ -7,16 +7,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI TurnCounter_TMP;
-    [SerializeField] private TextMeshProUGUI GoldCounter_TMP;
-    [SerializeField] private TextMeshProUGUI ExperienceCounter_TMP;
-    [SerializeField] private Vector2Int StartingPlayerPosition;
-    [SerializeField] private GridManager _gridManager;
+    [SerializeField] public TextMeshProUGUI TurnCounter_TMP;
+    [SerializeField] public TextMeshProUGUI GoldCounter_TMP;
+    [SerializeField] public TextMeshProUGUI ExperienceCounter_TMP;
+    [SerializeField] public TextMeshProUGUI HealthCounter_TMP;
+
+
+    [SerializeField] public Vector2Int StartingPlayerPosition;
     [SerializeField] private GameObject TickCounterPrefab;
+    [SerializeField] public GameObject SelectionBorderPrefab;
+
 
     public List<GameObject> specialEffectList = new List<GameObject>();
-    public List<Sprite> SpritesList = new List<Sprite>();
-    public List<GameObject> ExtrasPrefabList = new List<GameObject>();
 
     public static CellScript Player_CELL;
     public static List<CellScript> DamagedCells = new List<CellScript>();
@@ -42,42 +44,47 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() {
-     //   NodeGrid.UpdateMapObstacleData();
-    }
+    
+    public static List<CellScript> CurrentMovingTiles = new List<CellScript>();
+
+    public List<Sprite> SpritesList;
+
     public void AddTurn()
     {
         _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
         TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
         print("dodanie tury");
+
+        List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
+        tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
+
+        foreach (var creature in tempCurrentCreatureList)
+        {
+
+            //TODO: dodać checka czy aktualnie odbywa sie jakiś ruch ( wprzeciwnym wypadku może sie minąć z graczem i podmienic tilesy zostawiajac pustą dziure xd)
+            if(creature.TryMove(GameManager.Player_CELL))
+                continue;
+
+            if(creature.TryAttack(GameManager.Player_CELL))
+            {
+                 (creature as ISelectable).ShowBorder();
+                continue;            
+            }
+        }
     }
     public void AddGold(int value)
     {
         int currentTurnnumber = Int32.Parse(GoldCounter_TMP.text);
         GoldCounter_TMP.SetText((currentTurnnumber += value).ToString());
     }
+
     public void Exit()
     {
         Application.Quit();
     }
-    public void SpawnBomb()
-    {
-        int x = UnityEngine.Random.Range(0, _gridManager._gridSize.x);
-        int y = UnityEngine.Random.Range(0, _gridManager._gridSize.y);
-
-        Vector2Int randomPosition = new Vector2Int(x, y);
-        print($"spawn bomby na losową pozycje: {randomPosition}.");
-
-        GridManager.CellGridTable[randomPosition].SpecialTile =
-         new Bomb_Cell(
-             GridManager.CellGridTable[randomPosition],
-             name: "Mina przeciwpiechotna",
-             effect_Url: "bomb_explosion_image",
-             icon_Url: "bomb_icon"
-         );
-    }
     public GameObject InstantiateTicker(Bomb_Cell bomb_Cellcs)
     {
+        print("Instantiate ticker");
         return Instantiate(TickCounterPrefab, bomb_Cellcs.ParentCell.transform);
     }
     public void Countdown_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
@@ -101,49 +108,16 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-
         Init_PlacePlayerOnGrid();
     }
-    // private void MoveAllMonstersToPlayerDirection()
-    // {
-    //   //  Grid.PopulateGridData();
-    //     var temp = GridManager.CellGridTable.Where(cell => cell.Value.Type == TileTypes.monster).ToList();
-    //     int liczbaMonsterkow = temp.Count;
 
-    //         foreach (var monster in temp)
-    //         {
-    //             // 1 wygeneruj dla potwora ścieżke do pozycji gracza
-    //             Pathfinding pathfinder;
-    //             if (monster.Value.TryGetComponent<Pathfinding>(out pathfinder))
-    //             {
-    //                 monster.Value.gameObject.AddComponent<Pathfinding>();
-    //             }
-    //             pathfinder = monster.Value.GetComponentInChildren<Pathfinding>();
-
-    //            // pathfinder.end_pos = Player_CELL.CurrentPosition;
-    //             //pathfinder.FindPath();
-
-    //             //GridManager.CascadeMoveTo(monster.Value,(pathfinder.FinalPath[0].Coordination));
-    //             if (!(pathfinder.FinalPath.Count > 0)) continue;
-
-    //             // if (GridManager.CellGridTable[pathfinder.FinalPath[0].Coordination].Type != TileTypes.monster)
-    //             // {
-    //                 if (GridManager.CellGridTable[pathfinder.FinalPath[0].Coordination].Type == TileTypes.player)
-    //                 {
-    //                     print("PLAYER WAS HITTED BY MONSTER");
-    //                     continue;
-    //                 }
-    //                 GridManager.SwapTiles(movedCell: monster.Value, newPosition: pathfinder.FinalPath[0].Coordination);
-    //             // }
-    //         }
-        
-    // }
     private void Init_PlacePlayerOnGrid()
     {
         Player_CELL = GridManager.CellGridTable[StartingPlayerPosition];
         Player_CELL.Trash.ForEach(t => Destroy(t.gameObject));
         Player_CELL.Trash.Clear();
         Player_CELL.AssignType(TileTypes.player);
+        Player_CELL.IsWalkable = true;
     }
     private IEnumerator routine_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
     {
@@ -164,13 +138,13 @@ public class GameManager : MonoBehaviour
                 continue; //TODO: wyodrębnoć klase player, dodać/zmienic IEnemy na coś uniwersalnego ? IEntity ? zawierac bedzie hp, exp , funkcja ataku obranonu nvm
             }
 
-            if(cell.SpecialTile is IEnemy) 
+            if(cell.SpecialTile is ICreature) 
             {
-                var enemy =  (cell.SpecialTile as IEnemy);
-                print("enemy oberwał");
+                var enemy =  (cell.SpecialTile as ICreature);
+           //     print("enemy oberwał");
                 if(enemy.IsAlive)
                 {
-                    print("still alive");
+              //      print("still alive");
                     cellsToDestroy.Remove(cell);
                     DamagedCells.Remove(cell);
                     continue;
@@ -179,7 +153,6 @@ public class GameManager : MonoBehaviour
                 {
                      print("monster died and should leave his bones on this cell");
                     //TODO: POZMIANA STWORKA NA ZWŁOKI/drop, do tego jakas infomacja ze zmarło mu sie xd
-                    enemy.ChangeToTreasureObject(corpse_Url: "monster_bones", lootID: enemy.lootID);
                     cellsToDestroy.Remove(cell);
                     DamagedCells.Remove(cell);
                     continue;
@@ -221,7 +194,7 @@ public class GameManager : MonoBehaviour
     }
     private static void ActivateSpecialTileIfIsReady(CellScript tile)
     {
-        if (tile.SpecialTile.IsReadyToUse == true)
+        if ((tile.SpecialTile as IUsable).IsReadyToUse == true)
         {
             tile.Trash.ForEach(trash =>
             {

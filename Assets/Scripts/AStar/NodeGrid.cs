@@ -28,7 +28,7 @@ public class NodeGrid : MonoBehaviour
 
     public static void UpdateMapObstacleData()
     {
-        print("odświeżono nodeGrid'a o aktualną pozycje ścian na mapie");
+       // print("odświeżono nodeGrid'a o aktualną pozycje ścian na mapie");
         // set all to true
         foreach(var node in MAPDATA)
         {
