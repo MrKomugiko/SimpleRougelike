@@ -6,7 +6,7 @@ public interface ISelectable
 
     bool IsHighlighted {get;set;}
 
-    void ShowOnNotificationIfInRange();
+    // void ShowOnNotificationIfInRange();
 
 
 }

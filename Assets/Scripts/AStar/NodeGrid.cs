@@ -19,10 +19,10 @@ public class NodeGrid : MonoBehaviour
         {
             for (int y = 0; y < GridSize.y; y++)
             {
-                MAPDATA[x,y] = new Node(x,y,_isWalkable: true);                
+               MAPDATA[x,y] = new Node(x,y,_isWalkable: true);                
             }
         }
-        print("liczba dostępnych nodów w MAPDATA =  "+MAPDATA.Length);
+      //  print("liczba dostępnych nodów w MAPDATA =  "+MAPDATA.Length);
 
     }
 

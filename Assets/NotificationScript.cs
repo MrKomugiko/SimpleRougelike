@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class NotificationScript : MonoBehaviour
 {
-    public CellScript RelatedCell = null;
+    public CellScript BaseCell = null;
 
    [SerializeField] Image IconHolderImage;
    [SerializeField] Image IconImage;
@@ -20,13 +20,15 @@ public class NotificationScript : MonoBehaviour
    [SerializeField] TextMeshProUGUI Deffence;
    [SerializeField] TextMeshProUGUI SpecialAttack;
 
-    public void RefreshData(CellScript relatedCellData)
+    public void RefreshData()
     {   
-        CreatureName.SetText($"[{relatedCellData.Type}] {relatedCellData.name} [Level ?W.I.P? ]"); 
-        
-        if(relatedCellData.SpecialTile is ICreature){  
-            IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == RelatedCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
-            var creature = relatedCellData.SpecialTile as ICreature;
+     
+        if(BaseCell.SpecialTile is ICreature){  
+            
+            IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
+            CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name} [Level ? ]"); 
+
+            var creature = BaseCell.SpecialTile as ICreature;
             HP.SetText($"HP: {creature.HealthPoints}/{creature.MaxHealthPoints}");
             Speed.SetText($"Speed: {creature.TurnsRequiredToMakeAction} turns");
             Deffence.SetText($"Deffence: ?W.I.P?");
@@ -35,9 +37,11 @@ public class NotificationScript : MonoBehaviour
             return;
         }
         
-        if(relatedCellData.SpecialTile is IValuable){
-            IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == RelatedCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
-            var valuable = relatedCellData.SpecialTile as IValuable;
+        if(BaseCell.SpecialTile is IValuable){
+            IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
+            CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name} [Level ? ]"); 
+
+            var valuable = BaseCell.SpecialTile as IValuable;
             HP.SetText("");
             Speed.SetText("GOLD VALUE : "+valuable.GoldValue);
             Deffence.SetText("");
@@ -45,14 +49,16 @@ public class NotificationScript : MonoBehaviour
             SpecialAttack.SetText("");
             return;
         }
-        
-        try
-        {
-            Destroy(this.transform.parent.gameObject);
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError("juz usuniety");
-        }
+    }
+
+    public bool IsInRange(CellScript cell)
+    {   
+        if(BaseCell.SpecialTile == null) return false;
+
+        float distance = Vector2Int.Distance(cell.CurrentPosition, BaseCell.SpecialTile.ParentCell.CurrentPosition);
+        if(distance < 1.5f)
+            return true;
+        else
+            return false;
     }
 }

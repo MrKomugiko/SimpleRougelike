@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
@@ -32,23 +33,23 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 
         Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);
 
-        NotificationManger.SelectableOnMap.Add(this as ISelectable);
+        NotificationManger.CreateNewNotificationElement(this);
     }
     public void OnClick_MakeAction()
     {
         ParentCell.MoveTo();
         Pick();
     }
-    public void ShowOnNotificationIfInRange()
-    {
-        if(GameManager.Player_CELL == null) return;
-        // jezeli w zasięggu (wokoł celu) 
-        if(Vector2Int.Distance(ParentCell.CurrentPosition, GameManager.Player_CELL.CurrentPosition) < 1.5f)
-          {
-                NotificationManger.AddNotification(ParentCell);
-                NotificationManger.RefreshSelectableList(this);
-          }  
-    }
+    // public void ShowOnNotificationIfInRange()
+    // {
+    //     if(GameManager.Player_CELL == null) return;
+    //     // jezeli w zasięggu (wokoł celu) 
+    //     if(Vector2Int.Distance(ParentCell.CurrentPosition, GameManager.Player_CELL.CurrentPosition) < 1.5f)
+    //       {
+    //             NotificationManger.CreateNewNotificationElement(this);
+    //             NotificationManger.RefreshSelectableList(this);
+    //       }  
+    // }
     public void Pick()
     {
         Debug.Log($"zbierasz {GoldValue} monet");

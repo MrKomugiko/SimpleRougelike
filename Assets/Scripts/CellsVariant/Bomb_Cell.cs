@@ -37,7 +37,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
         this.Icon_Url = icon_Url;
         this.TurnsRequiredToActivate = turnsRequiredToActivate;
 
-        Debug.Log("pomyslnie utworzono Bombę, dla pola skojarzonego z pozycją "+ ParentCell.CurrentPosition);  
+        //Debug.Log("pomyslnie utworzono Bombę, dla pola skojarzonego z pozycją "+ ParentCell.CurrentPosition);  
 
         var ticker = GameManager.instance.InstantiateTicker(this);
         ParentCell.Trash.Add(ticker);      

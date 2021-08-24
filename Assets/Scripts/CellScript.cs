@@ -57,8 +57,6 @@ public class CellScript : MonoBehaviour, ITaskable
         get => _specialTile;
         set
         {
-            if (value == SpecialTile)
-                return;
             _specialTile = value;
             if (value == null)
             {
@@ -68,7 +66,10 @@ public class CellScript : MonoBehaviour, ITaskable
             }
 
             this.gameObject.name = value.Name;
-            AssignType(value.Type, value);
+            if (value != SpecialTile)
+            {
+                AssignType(value.Type, value);
+            }
 
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());

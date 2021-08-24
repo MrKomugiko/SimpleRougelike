@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 
 public class NotificationManger : MonoBehaviour
 {
-    static NotificationManger instance;
+    public static NotificationManger instance;
     private void Awake() {
         instance = this;
     }
@@ -20,24 +21,27 @@ public class NotificationManger : MonoBehaviour
     [SerializeField] public List<NotificationScript> NotificationList = new List<NotificationScript>();
 
 
-    public static void AddNotification(CellScript cellRelated)
+    public static void CreateNewNotificationElement(ISelectable cellRelated)
     {
-        if(NotificationManger.instance.NotificationList.Where(c=>c.RelatedCell == cellRelated).Any())
+        if(NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell ==  (cellRelated as ISpecialTile).ParentCell)).Any())
+        {
+            print("znajduje sie duplikat");
             return; // nie dodawaj tego samego
+        }
 
         GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
         NotificationScript notification = notificationObject.GetComponentInChildren<NotificationScript>();
         NotificationManger.instance.NotificationList.Add(notification);
         notificationObject.name = "Notification"+NotificationManger.instance.NotificationList.Count;
-        notification.RelatedCell = cellRelated;
+        notification.BaseCell = (cellRelated as ISpecialTile).ParentCell;
+        print("dodanie basecell do notification script:"+ (cellRelated as ISpecialTile).Icon_Url);
         notificationObject.GetComponent<Button>().onClick.AddListener(()=>HighlightElement(notification));
     }
-
-    public static void HighlightElement(NotificationScript notification)
+    private static void HighlightElement(NotificationScript notification)
     {
-        if(notification.RelatedCell.SpecialTile is ISelectable == false) return;
+        if(notification.BaseCell.SpecialTile is ISelectable == false) return;
 
-        ISelectable selectableCell = (notification.RelatedCell.SpecialTile as ISelectable);
+        ISelectable selectableCell = (notification.BaseCell.SpecialTile as ISelectable);
         if(notification.SelectBorder.GetComponent<Image>().enabled)
         {
             notification.SelectBorder.GetComponent<Image>().enabled = false;
@@ -52,33 +56,38 @@ public class NotificationManger : MonoBehaviour
            ShowBorder(selectableCell,Color.green);
         }
     }
-    private void RefreshNotifications() {
-        
+    private void RefreshNotifications() {   
         NotificationList.RemoveAll(n=>n==null);
-        var temp = NotificationList;
-        foreach(var notification in temp)
+        int count = NotificationList.Count;
+        for (int i = 0; i < count; i++)
         {
-            if(notification.RelatedCell != null)
+            NotificationScript notification = NotificationList[i];
+            notification.RefreshData();     
+
+            // check if is in range
+            if(notification.IsInRange(GameManager.Player_CELL))
+                notification.transform.parent.gameObject.SetActive(true);         
+            else
+                notification.transform.parent.gameObject.SetActive(false);
+
+             // check if deleted
+            if(notification.BaseCell.SpecialTile == null)
             {
-                notification.RefreshData(notification.RelatedCell);
-               // (notification.RelatedCell.SpecialTile as ISelectable).ShowOnNotificationIfInRange();
+                Debug.LogWarning("usuwanie elementu notification");
+                Destroy(notification.transform.parent.gameObject);
+                NotificationList[i] = null;
             }
         }
-          
-        foreach(var cell in SelectableOnMap)
-        {
-            cell.ShowOnNotificationIfInRange();
-        }
     }
 
-    static public HashSet<ISelectable> SelectableOnMap = new HashSet<ISelectable>();
-    static public void RefreshSelectableList(ISelectable cell)
-    {
-        if(SelectableOnMap.Contains(cell)) return;
+    // static public HashSet<ISelectable> SelectableOnMap = new HashSet<ISelectable>();
+    // static public void RefreshSelectableList(ISelectable cell)
+    // {
+    //     if(SelectableOnMap.Contains(cell)) return;
 
-        SelectableOnMap.Add(cell);
-        print("dodanie elementu do listy, lista zawiera"+SelectableOnMap.Count);
-    }
+    //     SelectableOnMap.Add(cell);
+    //     print("dodanie elementu do listy, lista zawiera"+SelectableOnMap.Count);
+    // }
 
     public static void ShowBorder(ISelectable cell, Color32 color)
     {
@@ -87,7 +96,7 @@ public class NotificationManger : MonoBehaviour
             cell.Border = GameObject.Instantiate(GameManager.instance.SelectionBorderPrefab, (cell as ISpecialTile).ParentCell.transform);
         }
         cell.Border.GetComponent<Image>().color = color;  
-        NotificationManger.AddNotification((cell as ISpecialTile).ParentCell);
+       // NotificationManger.CreateNewNotificationElement((cell as ISpecialTile));
     
     }
     public static void HideBorder(ISelectable cell, float timeDelay)
@@ -109,6 +118,11 @@ public class NotificationManger : MonoBehaviour
             yield return new WaitForSeconds(time);
             cell.Border.GetComponent<Image>().color = Color.green;    
         }
+    }
+
+    internal static void RemoveFromNotification(ISpecialTile cell)
+    {
+        
     }
 }
 

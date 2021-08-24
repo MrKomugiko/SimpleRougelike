@@ -47,9 +47,6 @@ public class Monster_Cell : ICreature, ITaskable
     
     #endregion
 
-    //TODO: dodac to do kontruktora potem
-
-   
    public int TurnsElapsedCounter {
     get {return _turnsElapsedCounter;} 
     set
@@ -77,18 +74,19 @@ public class Monster_Cell : ICreature, ITaskable
         _pathfinder = pathfinder;
 
 
-        Debug.Log("monster created");
+       // Debug.Log("monster created");
         ParentCell = parent;
         MaxHealthPoints = maxHealthPoints;
         TurnsRequiredToMakeAction = 2;
         TurnsRequiredToMakeAction = speed;
+
+        NotificationManger.CreateNewNotificationElement(this);
     }
     public void ConfigurePathfinderComponent()
     {
-
         if (_pathfinder == null)
         {
-            Debug.Log("proba załadowania pathfindera z obiektu monster");
+          //  Debug.Log("proba załadowania pathfindera z obiektu monster");
             ParentCell.Trash.Where(t => t.name == (Icon_Url + "(Clone)")).FirstOrDefault().TryGetComponent<Pathfinding>(out _pathfinder);
             if (_pathfinder == null)
             {
@@ -181,7 +179,6 @@ public class Monster_Cell : ICreature, ITaskable
     }
     public void ChangeIntoTreasureObject(string corpse_Url, object lootID)
     {
-
         ParentCell.SpecialTile = new Treasure_Cell(ParentCell, "zwłoki slime'a", corpse_Url, 50);
         //1. remove Trash
         //2. change type to Treasure
@@ -214,13 +211,17 @@ public class Monster_Cell : ICreature, ITaskable
     // decision if selection should be destroyed or back color to green again
     public GameObject Border {get; set;}
 
-    public void ShowOnNotificationIfInRange()
-    {
-        // jezeli w zasięggu (wokoł celu) 
-        if(Vector2Int.Distance(ParentCell.CurrentPosition, GameManager.Player_CELL.CurrentPosition) < 1.5f)
-        {
-            NotificationManger.AddNotification(ParentCell);
-            NotificationManger.RefreshSelectableList(this);
-        }
-    }
+    // public void ShowOnNotificationIfInRange()
+    // {
+    //     // jezeli w zasięggu (wokoł celu) 
+    //     if(Vector2Int.Distance(ParentCell.CurrentPosition, GameManager.Player_CELL.CurrentPosition) < 1.5f)
+    //     {
+    //         NotificationManger.CreateNewNotificationElement(this);
+    //         NotificationManger.RefreshSelectableList(this);
+    //     }else
+    //     {
+    //         NotificationManger.RemoveFromNotification(this);
+            
+    //     }
+    // }
 }
