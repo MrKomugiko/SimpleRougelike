@@ -115,6 +115,7 @@ public class GridManager : MonoBehaviour
         destroyedTilesPool.Add(CellGridTable[cellPosition]);
         
         CellGridTable[cellPosition].SetCell(new Vector2Int(-1, -1),false);
+        CellGridTable[cellPosition].SpecialTile = null;
         CellGridTable[cellPosition] = null;
     }
     public static void CascadeMoveTo(CellScript movedCell, Vector2Int positionToMove)

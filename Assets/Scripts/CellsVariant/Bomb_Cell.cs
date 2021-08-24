@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
+public class Bomb_Cell : ISpecialTile, IFragile, ITaskable, ISelectable
 {
     #region core
     public CellScript ParentCell {get; private set;}
@@ -18,7 +18,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
     public bool IsReadyToUse => ((GameManager.instance.CurrentTurnNumber-_spawnTurnNumber) > TurnsRequiredToActivate);
     public int TurnsRequiredToActivate {get; private set;}
     private int _spawnTurnNumber;
-    internal TickScript TickCounter {get;set;}    
+    public TickScript TickCounter {get;set;}
+    public GameObject Border { get; set; }
+    public bool IsHighlighted { get; set; }
+    public int DAMAGE {get; private set;} = 1;
+
     public List<CellScript> CellsToDestroy = new List<CellScript>();
     #endregion
 
@@ -45,6 +49,8 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
         this.TickCounter.parent = ParentCell;
 //
         parent.IsWalkable = true;
+
+        NotificationManger.CreateNewNotificationElement(this);
     }
     public void OnClick_MakeAction()
     {        
@@ -62,7 +68,9 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
           if(Active == false) return;
                 Active = false;
             Debug.Log("EXPLODE !");
-            
+
+           
+
             AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
 
             foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
@@ -73,13 +81,15 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
                 cell.AddEffectImage(imageUrl: Effect_Url);
                 if(GridManager.CellGridTable[cell.CurrentPosition].SpecialTile is ICreature)
                 {
-                   (GridManager.CellGridTable[cell.CurrentPosition].SpecialTile as ICreature).TakeDamage(1, "Bomb Explosion");
+                   (GridManager.CellGridTable[cell.CurrentPosition].SpecialTile as ICreature).TakeDamage(DAMAGE, "Bomb Explosion");
                 } 
                 if(cell.SpecialTile is Bomb_Cell)
                 {
                    (cell.SpecialTile as IUsable).Use();
                 } 
             }
+            
+            RemoveBorder();
             
             GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
     }
@@ -102,33 +112,43 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
     }
     public void ActionOnMove(Vector2Int nextPosition, Vector2Int direction)
     {
-        // TODO: need to be executed after before explosion ends make chain
-       Debug.Log("DETONATD ON MOVE");
-        if(Active == false) return;
-                Active = false;
-            Debug.Log("EXPLODE !");
-            
-            AddCellsToDestroyList(nextPosition, direction);
+        IsHighlighted = false;
+        if (Active == false) return;
+        Active = false;
+        Debug.Log("EXPLODE !");
+        Debug.Log("DETONATD ON MOVE");
 
-            foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
-            {   
-                Debug.Log(cell.CurrentPosition);    
-                Debug.Log(Effect_Url);
+        RemoveBorder();
 
-                cell.AddEffectImage(imageUrl: Effect_Url);
-                if(cell.SpecialTile is ICreature)
-                {
-                   (cell.SpecialTile as ICreature).TakeDamage(1, "Bomb Explosion");
-                } 
-                if(cell.SpecialTile is Bomb_Cell)
-                {
-                   (cell.SpecialTile as IUsable).Use();
-                } 
+        foreach (var cell in CellsToDestroy.Where(cell => cell != null))
+        {
+            Debug.Log(cell.CurrentPosition);
+            Debug.Log(Effect_Url);
+
+            cell.AddEffectImage(imageUrl: Effect_Url);
+            if (cell.SpecialTile is ICreature)
+            {
+                (cell.SpecialTile as ICreature).TakeDamage(1, "Bomb Explosion");
             }
-            
-            GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
-       // TODO: mark as next to explode ater before
+            if (cell.SpecialTile is Bomb_Cell)
+            {
+                (cell.SpecialTile as IUsable).Use();
+            }
+        }
+
+        GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
+        // TODO: mark as next to explode ater before
     }
+
+    private void RemoveBorder()
+    {
+        IsHighlighted = false;
+        if (Border != null)
+        {
+            GameObject.Destroy(Border.gameObject);
+        }
+    }
+
     public void AddActionToQUEUE()
     {
         TaskManager.AddToActionQueue(
@@ -160,4 +180,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable
             }
         );
     }
+    
+
 }

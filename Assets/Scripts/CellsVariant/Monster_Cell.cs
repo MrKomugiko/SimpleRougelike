@@ -79,6 +79,7 @@ public class Monster_Cell : ICreature, ITaskable
         MaxHealthPoints = maxHealthPoints;
         TurnsRequiredToMakeAction = 2;
         TurnsRequiredToMakeAction = speed;
+        ParentCell.IsWalkable = true;
 
         NotificationManger.CreateNewNotificationElement(this);
     }
@@ -152,7 +153,6 @@ public class Monster_Cell : ICreature, ITaskable
     }
     public void AddActionToQUEUE()
     {
-
         var position = ParentCell.CurrentPosition;
         TaskManager.AddToActionQueue(
             $"Attack Monster on position:[{position.x};{position.y}]",
@@ -172,17 +172,16 @@ public class Monster_Cell : ICreature, ITaskable
                         return (true, "succes");
                     }
                 }
-
                 return (false, "we wskazanym miejscu nie znajduje sie monster którego można zaatakować");
             }
         );
     }
     public void ChangeIntoTreasureObject(string corpse_Url, object lootID)
     {
+        ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
+        ParentCell.Trash.Clear();
+
         ParentCell.SpecialTile = new Treasure_Cell(ParentCell, "zwłoki slime'a", corpse_Url, 50);
-        //1. remove Trash
-        //2. change type to Treasure
-        //3. set monstercorpse as treasure icon
         //4. assign LootID related reward to this object
         if (Border != null)
         {
@@ -190,8 +189,6 @@ public class Monster_Cell : ICreature, ITaskable
             GameObject.Destroy(Border, .5f);
             Border = null;
         }
-
-        Debug.LogWarning("monster nie żyje, zmienia sie w wartościowy sosik kości ;d");
     }
     
 
@@ -208,20 +205,5 @@ public class Monster_Cell : ICreature, ITaskable
 
 
     public bool IsHighlighted {get;set;} = false;
-    // decision if selection should be destroyed or back color to green again
     public GameObject Border {get; set;}
-
-    // public void ShowOnNotificationIfInRange()
-    // {
-    //     // jezeli w zasięggu (wokoł celu) 
-    //     if(Vector2Int.Distance(ParentCell.CurrentPosition, GameManager.Player_CELL.CurrentPosition) < 1.5f)
-    //     {
-    //         NotificationManger.CreateNewNotificationElement(this);
-    //         NotificationManger.RefreshSelectableList(this);
-    //     }else
-    //     {
-    //         NotificationManger.RemoveFromNotification(this);
-            
-    //     }
-    // }
 }

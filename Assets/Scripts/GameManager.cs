@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var creature in tempCurrentCreatureList)
         {
-                creature.TurnsElapsedCounter ++;
+            creature.TurnsElapsedCounter ++;
 
             //TODO: dodać checka czy aktualnie odbywa sie jakiś ruch ( wprzeciwnym wypadku może sie minąć z graczem i podmienic tilesy zostawiajac pustą dziure xd)
             if(creature.TryMove(GameManager.Player_CELL))
@@ -79,7 +79,6 @@ public class GameManager : MonoBehaviour
         int currentTurnnumber = Int32.Parse(GoldCounter_TMP.text);
         GoldCounter_TMP.SetText((currentTurnnumber += value).ToString());
     }
-
     public void Exit()
     {
         Application.Quit();
@@ -112,7 +111,6 @@ public class GameManager : MonoBehaviour
     {
         Init_PlacePlayerOnGrid();
     }
-
     private void Init_PlacePlayerOnGrid()
     {
         Player_CELL = GridManager.CellGridTable[StartingPlayerPosition];

@@ -65,7 +65,7 @@ public class NotificationManger : MonoBehaviour
             notification.RefreshData();     
 
             // check if is in range
-            if(notification.IsInRange(GameManager.Player_CELL))
+            if(notification.IsVisibleOnNotificationList(GameManager.Player_CELL))
                 notification.transform.parent.gameObject.SetActive(true);         
             else
                 notification.transform.parent.gameObject.SetActive(false);
@@ -101,6 +101,7 @@ public class NotificationManger : MonoBehaviour
     }
     public static void HideBorder(ISelectable cell, float timeDelay)
     {
+        if(cell == null) return;
         if (cell.Border == null) return;
 
         if(cell.IsHighlighted == true)
@@ -120,9 +121,5 @@ public class NotificationManger : MonoBehaviour
         }
     }
 
-    internal static void RemoveFromNotification(ISpecialTile cell)
-    {
-        
-    }
 }
 

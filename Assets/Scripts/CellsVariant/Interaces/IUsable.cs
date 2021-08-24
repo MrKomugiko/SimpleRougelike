@@ -1,4 +1,4 @@
-internal interface IUsable
+public interface IUsable
 {
     string Effect_Url {get;set;}
     bool Active { get; set; }

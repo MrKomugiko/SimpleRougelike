@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,8 @@ public class NotificationScript : MonoBehaviour
     public void RefreshData()
     {   
      
-        if(BaseCell.SpecialTile is ICreature){  
-            
+        if(BaseCell.SpecialTile is ICreature)
+        {  
             IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
             CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name} [Level ? ]"); 
 
@@ -37,7 +38,8 @@ public class NotificationScript : MonoBehaviour
             return;
         }
         
-        if(BaseCell.SpecialTile is IValuable){
+        if(BaseCell.SpecialTile is IValuable)
+        {
             IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
             CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name} [Level ? ]"); 
 
@@ -49,13 +51,30 @@ public class NotificationScript : MonoBehaviour
             SpecialAttack.SetText("");
             return;
         }
+
+        if(BaseCell.SpecialTile is Bomb_Cell)
+        {
+            IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
+            CreatureName.SetText($"[{BaseCell.SpecialTile.Type}] {BaseCell.SpecialTile.Name}"); 
+
+            var bomb = BaseCell.SpecialTile as Bomb_Cell;
+            HP.SetText($"Turns to activate : {Math.Min(bomb.TickCounter.CurrentTickValue,bomb.TickCounter.TickMaxValue)}/{bomb.TickCounter.TickMaxValue}");
+            Speed.SetText($"AoE damage : {bomb.DAMAGE} DMG");
+            Deffence.SetText("Is activated : "+bomb.IsReadyToUse);
+            Type.SetText("Type: Explosive");
+            SpecialAttack.SetText("Destroy empty fields");
+            return;
+        }
     }
 
-    public bool IsInRange(CellScript cell)
+    public bool IsVisibleOnNotificationList(CellScript playerCell)
     {   
+        // ZOSTAW NA PODGLĄDZIE JEŻELI USTAWIONY JEST SZNACZNIK SLEDZENIA IsHighlighted
         if(BaseCell.SpecialTile == null) return false;
+        if((BaseCell.SpecialTile is ISelectable) == false) return false;
+        if((BaseCell.SpecialTile as ISelectable).IsHighlighted) return true;
 
-        float distance = Vector2Int.Distance(cell.CurrentPosition, BaseCell.SpecialTile.ParentCell.CurrentPosition);
+        float distance = Vector2Int.Distance(playerCell.CurrentPosition, BaseCell.SpecialTile.ParentCell.CurrentPosition);
         if(distance < 1.5f)
             return true;
         else

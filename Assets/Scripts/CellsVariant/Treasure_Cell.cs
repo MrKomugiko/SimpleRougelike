@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
@@ -28,7 +24,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.Name = name;
         this.Type = TileTypes.treasure;
         this.Icon_Url = icon_Url;
-
         this.GoldValue = goldValue;
 
         Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);
@@ -40,16 +35,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         ParentCell.MoveTo();
         Pick();
     }
-    // public void ShowOnNotificationIfInRange()
-    // {
-    //     if(GameManager.Player_CELL == null) return;
-    //     // jezeli w zasięggu (wokoł celu) 
-    //     if(Vector2Int.Distance(ParentCell.CurrentPosition, GameManager.Player_CELL.CurrentPosition) < 1.5f)
-    //       {
-    //             NotificationManger.CreateNewNotificationElement(this);
-    //             NotificationManger.RefreshSelectableList(this);
-    //       }  
-    // }
+
     public void Pick()
     {
         Debug.Log($"zbierasz {GoldValue} monet");

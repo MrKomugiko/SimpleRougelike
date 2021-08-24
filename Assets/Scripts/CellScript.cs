@@ -47,11 +47,16 @@ public class CellScript : MonoBehaviour, ITaskable
         get => _type;
         set
         {
-            // IsWalkable = true;
+            if(value == TileTypes.grass || value == TileTypes.player)
+            {
+                isWalkable = true;
+            }
             _type = value;
+
+            this.gameObject.name = this._type.ToString();
+
         }
     }
-
     public ISpecialTile SpecialTile
     {
         get => _specialTile;
@@ -62,6 +67,7 @@ public class CellScript : MonoBehaviour, ITaskable
             {
                 Trash.ForEach(t=>Destroy(t));
                 Trash.Clear();
+                 CurrentAssignedSpecialTileScript = "_EMPTY_";
                 return;
             }
 
@@ -70,12 +76,13 @@ public class CellScript : MonoBehaviour, ITaskable
             {
                 AssignType(value.Type, value);
             }
-
+            
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
             Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == value.Icon_Url).First(), this.transform));
             this.gameObject.name = SpecialTile.Name;
             CurrentAssignedSpecialTileScript = SpecialTile.GetType().ToString();
+
         }
     }
 
@@ -106,11 +113,11 @@ public class CellScript : MonoBehaviour, ITaskable
     public bool IsWalkable
     { 
         get => isWalkable;
-        internal set 
+        set 
         {
             isWalkable = value;
         } 
-    }
+    } 
 
     public void SetCell(Vector2Int _position, bool runAnimation = true)
     {
@@ -239,9 +246,8 @@ public class CellScript : MonoBehaviour, ITaskable
     }
     public void AssignType(TileTypes _type, ISpecialTile _specialTile = null)
     {
-        this.Type = _type;
-        this.gameObject.name = this.Type.ToString();
 
+        this.Type = _type;
         if (Type == TileTypes.player)
         {
             this._cellImage.color = Color.green;
