@@ -14,7 +14,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable, ISelectable
 
     #region Bomb-specific
     public string Effect_Url {get;set;}
-    public bool Active {get;set;} = true;
     public bool IsReadyToUse => ((GameManager.instance.CurrentTurnNumber-_spawnTurnNumber) > TurnsRequiredToActivate);
     public int TurnsRequiredToActivate {get; private set;}
     private int _spawnTurnNumber;
@@ -54,29 +53,37 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable, ISelectable
     }
     public void OnClick_MakeAction()
     {        
-        if(TaskManager.TaskManagerIsOn == false)
-        {
-            Use();
-        }
-        else
-        {
-            AddActionToQUEUE();
-        }
+        // if(TaskManager.TaskManagerIsOn == false)
+        // {
+            if(IsReadyToUse == false) return;
+            {
+                Use();
+            }
+        // }
+        // else
+        // {
+            // AddActionToQUEUE();
+        // }
     }
+    public bool IsUsed = false;
     public void Use()
     {
-          if(Active == false) return;
-                Active = false;
-            Debug.Log("EXPLODE !");
+            if(IsUsed == true) 
+            {
+                Debug.Log("Already used");
+                return;
+            }
+            IsUsed = true;
 
-           
+            Debug.Log("EXPLODEEEEEEEEEEEEEEE !");
+          
 
             AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
 
             foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
             {   
-                Debug.Log(cell.CurrentPosition);    
-                Debug.Log(Effect_Url);
+               // Debug.Log(cell.CurrentPosition);    
+               // Debug.Log(Effect_Url);
 
                 cell.AddEffectImage(imageUrl: Effect_Url);
                 if(GridManager.CellGridTable[cell.CurrentPosition].SpecialTile is ICreature)
@@ -112,18 +119,15 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable, ISelectable
     }
     public void ActionOnMove(Vector2Int nextPosition, Vector2Int direction)
     {
-        IsHighlighted = false;
-        if (Active == false) return;
-        Active = false;
-        Debug.Log("EXPLODE !");
-        Debug.Log("DETONATD ON MOVE");
+        if(IsUsed) return;
+        IsUsed = true;
 
-        RemoveBorder();
+        AddCellsToDestroyList(nextPosition, direction);
 
         foreach (var cell in CellsToDestroy.Where(cell => cell != null))
         {
-            Debug.Log(cell.CurrentPosition);
-            Debug.Log(Effect_Url);
+//            Debug.Log(cell.CurrentPosition);
+  //          Debug.Log(Effect_Url);
 
             cell.AddEffectImage(imageUrl: Effect_Url);
             if (cell.SpecialTile is ICreature)
@@ -136,6 +140,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable, ISelectable
             }
         }
 
+RemoveBorder();
         GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
         // TODO: mark as next to explode ater before
     }
@@ -155,9 +160,10 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable, ISelectable
             $"Manual detonate Bomb",
             () =>
             {
-                if(Active == false) return (false,"bomba jest juz nieaktywna");
-
-                Active = false;
+                if(IsUsed)  return (false,"bomba jest juz nieaktywna");
+                if(IsReadyToUse == false) return (false,"bomba nie jest jeszcze gotowa nieaktywna");
+                IsUsed = true; 
+                IsHighlighted = false;
                 Debug.Log("EXPLODE !");
                 
                 AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);

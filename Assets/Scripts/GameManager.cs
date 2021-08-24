@@ -218,34 +218,34 @@ public class GameManager : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
-    [ContextMenu("Start simulation")]
-    public void StartSimulation()
-    {
-        StartCoroutine(SimulateGameplay());
-    }
-    private IEnumerator SimulateGameplay()
-    {
+    // [ContextMenu("Start simulation")]
+    // public void StartSimulation()
+    // {
+    //     StartCoroutine(SimulateGameplay());
+    // }
+    // private IEnumerator SimulateGameplay()
+    // {
 
-        for (; ; )
-        {
-            if (GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player).Count() > 0)
-            {
-                foreach (var tile in GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player))
-                {
-                    print($"click [{tile.Value.CurrentPosition}]");
-                    tile.Value._button.onClick.Invoke();
-                    break;
-                }
-                yield return new WaitForSeconds(.5f);
-            }
-            else
-            {
-                print("no more avaiable moves");
-                break;
-            }
-        }
+    //     for (; ; )
+    //     {
+    //         if (GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player).Count() > 0)
+    //         {
+    //             foreach (var tile in GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player))
+    //             {
+    //                 print($"click [{tile.Value.CurrentPosition}]");
+    //                 tile.Value._button.onClick.Invoke();
+    //                 break;
+    //             }
+    //             yield return new WaitForSeconds(.5f);
+    //         }
+    //         else
+    //         {
+    //             print("no more avaiable moves");
+    //             break;
+    //         }
+    //     }
 
-        yield return null;
+    //     yield return null;
 
-    }
+    // }
 }

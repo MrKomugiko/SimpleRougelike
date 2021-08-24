@@ -15,6 +15,8 @@ public class CellScript : MonoBehaviour, ITaskable
     [SerializeField] public Button _button;
     [SerializeField] private TileTypes _type;
 
+    public List<String> DEBUG_BUTTON_ATTACHED_METHODS;
+    
     public List<GameObject> Trash = new List<GameObject>();
 
     private ISpecialTile _specialTile;
@@ -52,9 +54,6 @@ public class CellScript : MonoBehaviour, ITaskable
                 isWalkable = true;
             }
             _type = value;
-
-            this.gameObject.name = this._type.ToString();
-
         }
     }
     public ISpecialTile SpecialTile
@@ -77,11 +76,15 @@ public class CellScript : MonoBehaviour, ITaskable
                 AssignType(value.Type, value);
             }
             
+            DEBUG_BUTTON_ATTACHED_METHODS.Clear();
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
+
+            DEBUG_BUTTON_ATTACHED_METHODS.Add($"{value.GetType().ToString()}.OnClick_MakeAction");
+            _button.onClick.AddListener(() => value.OnClick_MakeAction());
+
             Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == value.Icon_Url).First(), this.transform));
-            this.gameObject.name = SpecialTile.Name;
-            CurrentAssignedSpecialTileScript = SpecialTile.GetType().ToString();
+            this.gameObject.name = value.Name;
+            CurrentAssignedSpecialTileScript = value.GetType().ToString();
 
         }
     }
@@ -102,9 +105,13 @@ public class CellScript : MonoBehaviour, ITaskable
                 {
                     if ((_specialTile as IFragile).IsReadyToUse)
                     {
-                        {
-                            (_specialTile as IFragile).ActionOnMove(_currentPosition,direction);
-                        }
+                        
+                            if((_specialTile as IFragile).IsReadyToUse)
+                            {
+                                print("boomb move");
+                                (_specialTile as IFragile).ActionOnMove(_currentPosition,direction);
+                            }
+                        
                     }
                 }
             }
@@ -136,22 +143,23 @@ public class CellScript : MonoBehaviour, ITaskable
 
         if (SpecialTile == null)
         {
+            DEBUG_BUTTON_ATTACHED_METHODS.Clear();
             _button.onClick.RemoveAllListeners();
+            DEBUG_BUTTON_ATTACHED_METHODS.Add("CellScript.MoveTo()");
             _button.onClick.AddListener(() =>
             {
                 MoveTo();
             }
             );
         }
-    //     else
-    //     {
-    //         if(SpecialTile is ISelectable)
-    //         {
-    //             Debug.LogWarning("SET CELL");
-    //             NotificationManger.RefreshNotification(SpecialTile as ISelectable);
-    //         }
-    // }   
-
+        if (SpecialTile != null)
+        {
+           SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Clear();
+            SpecialTile.ParentCell._button.onClick.RemoveAllListeners();
+            
+            SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Add($"{SpecialTile.GetType().ToString()}.OnClick_MakeAction()");
+            SpecialTile.ParentCell._button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
+        }
     }
 
     private IEnumerator FadeInAnimation(Vector2 position)
