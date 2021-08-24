@@ -135,6 +135,14 @@ public class CellScript : MonoBehaviour, ITaskable
             }
             );
         }
+    //     else
+    //     {
+    //         if(SpecialTile is ISelectable)
+    //         {
+    //             Debug.LogWarning("SET CELL");
+    //             NotificationManger.RefreshNotification(SpecialTile as ISelectable);
+    //         }
+    // }   
 
     }
 
@@ -255,7 +263,9 @@ public class CellScript : MonoBehaviour, ITaskable
                     this.SpecialTile = new Monster_Cell(
                         parent: this,
                         name: "Monster_X",
-                        icon_Url: "monster"
+                        icon_Url: "monster",
+                        maxHealthPoints: 2,
+                        speed: 2
                         );
                     (this.SpecialTile as Monster_Cell).ConfigurePathfinderComponent();
                     return;

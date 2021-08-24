@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var creature in tempCurrentCreatureList)
         {
+                creature.TurnsElapsedCounter ++;
 
             //TODO: dodać checka czy aktualnie odbywa sie jakiś ruch ( wprzeciwnym wypadku może sie minąć z graczem i podmienic tilesy zostawiajac pustą dziure xd)
             if(creature.TryMove(GameManager.Player_CELL))
@@ -67,8 +68,9 @@ public class GameManager : MonoBehaviour
 
             if(creature.TryAttack(GameManager.Player_CELL))
             {
-                 (creature as ISelectable).ShowBorder();
-                continue;            
+                NotificationManger.ShowBorder(creature,Color.red);
+                NotificationManger.HideBorder(creature,.3f);
+                continue;   
             }
         }
     }
@@ -212,6 +214,12 @@ public class GameManager : MonoBehaviour
             });
         }
     }
+
+    internal void ExecuteCoroutine(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
+    }
+
     [ContextMenu("Start simulation")]
     public void StartSimulation()
     {

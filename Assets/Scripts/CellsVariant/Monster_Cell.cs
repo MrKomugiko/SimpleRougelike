@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,11 @@ public class Monster_Cell : ICreature, ITaskable
     #region Monster-specific
     internal Pathfinding _pathfinder;
     public int ExperiencePoints { get; set; } = 10;
+    public int MaxHealthPoints {get; private set;}
+ 
+    private int _healthPoints = 2;
+    private int _turnsElapsedCounter;
+
     public int HealthPoints 
     { 
         get => _healthPoints; 
@@ -36,15 +42,34 @@ public class Monster_Cell : ICreature, ITaskable
             }
         }
     }
-
-    //TODO: dodac to do kontruktora potem
+    public int TurnsRequiredToMakeAction {get; private set;}
     public int lootID { get; private set; } = 1;
+    
     #endregion
 
+    //TODO: dodac to do kontruktora potem
+
+   
+   public int TurnsElapsedCounter {
+    get {return _turnsElapsedCounter;} 
+    set
+    {   
+        _turnsElapsedCounter = value;
+        if(value > TurnsRequiredToMakeAction)
+        {
+            // reset licznika
+            _turnsElapsedCounter = 0;
+            ISReadyToMakeAction = true;
+        }
+        ISReadyToMakeAction = false;
+    }
+   }
 
 
+    private bool ISReadyToMakeAction = false;
 
-    public Monster_Cell(CellScript parent, string name, string icon_Url, Pathfinding pathfinder = null)
+
+    public Monster_Cell(CellScript parent, string name, string icon_Url, int maxHealthPoints, int speed, Pathfinding pathfinder = null)
     {
         Name = name;
         Icon_Url = icon_Url;
@@ -54,8 +79,9 @@ public class Monster_Cell : ICreature, ITaskable
 
         Debug.Log("monster created");
         ParentCell = parent;
-
-
+        MaxHealthPoints = maxHealthPoints;
+        TurnsRequiredToMakeAction = 2;
+        TurnsRequiredToMakeAction = speed;
     }
     public void ConfigurePathfinderComponent()
     {
@@ -88,8 +114,6 @@ public class Monster_Cell : ICreature, ITaskable
         TakeDamage(1, "Attacked by player");
         GameManager.instance.AddTurn();
     }
-    GameObject border;
-    private int _healthPoints = 2;
 
     public void TakeDamage(int damage, string source)
     {
@@ -163,29 +187,40 @@ public class Monster_Cell : ICreature, ITaskable
         //2. change type to Treasure
         //3. set monstercorpse as treasure icon
         //4. assign LootID related reward to this object
-        if (border != null)
+        if (Border != null)
         {
-            border.GetComponent<Image>().color = Color.yellow;
-            GameObject.Destroy(border, .5f);
-            border = null;
+            Border.GetComponent<Image>().color = Color.yellow;
+            GameObject.Destroy(Border, .5f);
+            Border = null;
         }
 
         Debug.LogWarning("monster nie żyje, zmienia sie w wartościowy sosik kości ;d");
     }
-    public void ShowBorder()
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public bool IsHighlighted {get;set;} = false;
+    // decision if selection should be destroyed or back color to green again
+    public GameObject Border {get; set;}
+
+    public void ShowOnNotificationIfInRange()
     {
-        if (border != null) return;
-
-        border = GameObject.Instantiate(GameManager.instance.SelectionBorderPrefab, ParentCell.transform);
-        border.GetComponent<Image>().color = Color.red;
-        GameObject.Destroy(border, 0.5f);
-    }
-
-    public void HideBorder()
-    {
-        if (border == null) return;
-
-        border.GetComponent<Image>().color = Color.green;
-        GameObject.Destroy(border, 0.5f);
+        // jezeli w zasięggu (wokoł celu) 
+        if(Vector2Int.Distance(ParentCell.CurrentPosition, GameManager.Player_CELL.CurrentPosition) < 1.5f)
+        {
+            NotificationManger.AddNotification(ParentCell);
+            NotificationManger.RefreshSelectableList(this);
+        }
     }
 }

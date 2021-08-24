@@ -1,6 +1,12 @@
-internal interface ISelectable
+using UnityEngine;
+
+public interface ISelectable
 {
-    void ShowBorder();
-    void HideBorder();
+    GameObject Border {get;set;}
+
+    bool IsHighlighted {get;set;}
+
+    void ShowOnNotificationIfInRange();
+
 
 }
