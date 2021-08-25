@@ -108,7 +108,7 @@ public class CellScript : MonoBehaviour, ITaskable
                         
                             if((_specialTile as IFragile).IsReadyToUse)
                             {
-                                print("boomb move");
+                              //  print("boomb move");
                                 (_specialTile as IFragile).ActionOnMove(_currentPosition,direction);
                             }
                         
@@ -180,22 +180,28 @@ public class CellScript : MonoBehaviour, ITaskable
 
     public void MoveTo()
     {
-        print("click: move to");
-        if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+        if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)CurrentPosition) < 1.1f)
         {
-            print("poczekaj aż zakończą się wybuchy ;d");
-            return;
+            // print("click: move to");
+            if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+            {
+                // print("poczekaj aż zakończą się wybuchy ;d");
+                return;
+            }
+
+            GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
+            GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
         }
 
-        if(TaskManager.TaskManagerIsOn == false)
-        {
-            GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
-            GameManager.instance.AddTurn();
-        }
-        else
-        {
-            AddActionToQUEUE();
-        }
+        // if(TaskManager.TaskManagerIsOn == false)
+        // {
+        //     GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
+        //     GameManager.instance.AddTurn();
+        // }
+        // else
+        // {
+        //     AddActionToQUEUE();
+        // }
 
     }
 
@@ -224,7 +230,7 @@ public class CellScript : MonoBehaviour, ITaskable
                         return (false, "Wskazane pole znajduje się poza zasięgiem ruchu 1 pola");  
                     }
 
-                    GameManager.instance.AddTurn();
+                     GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
                     GridManager.CascadeMoveTo(GameManager.Player_CELL, position);
                     return (true, "succes");
                 }
@@ -277,7 +283,7 @@ public class CellScript : MonoBehaviour, ITaskable
                 case TileTypes.monster:
                     this.SpecialTile = new Monster_Cell(
                         parent: this,
-                        name: "Monster_X",
+                        name: "Monster",
                         icon_Url: "monster",
                         maxHealthPoints: 2,
                         speed: 2

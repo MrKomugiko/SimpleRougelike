@@ -26,21 +26,26 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.Icon_Url = icon_Url;
         this.GoldValue = goldValue;
 
-        Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);
+        //Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);
 
         NotificationManger.CreateNewNotificationElement(this);
     }
     public void OnClick_MakeAction()
     {
-        ParentCell.MoveTo();
+        ParentCell.MoveTo();    //TODO: hmm
+
         Pick();
     }
 
     public void Pick()
     {
-        Debug.Log($"zbierasz {GoldValue} monet");
-        GameManager.instance.AddGold(GoldValue);
-        ParentCell.SpecialTile = null;
+       if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
+       {
+            GameManager.instance.AddGold(GoldValue);
+            ParentCell.SpecialTile = null;
+       }
+       else
+        Debug.LogWarning("za daleko");
     }
 
 }

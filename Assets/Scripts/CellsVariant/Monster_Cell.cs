@@ -17,8 +17,9 @@ public class Monster_Cell : ICreature, ITaskable
     internal Pathfinding _pathfinder;
     public int ExperiencePoints { get; set; } = 10;
     public int MaxHealthPoints {get; private set;}
- 
-    private int _healthPoints = 2;
+    
+    public int Damage {get; private set;}
+    private int _healthPoints;
     private int _turnsElapsedCounter;
 
     public int HealthPoints 
@@ -52,36 +53,39 @@ public class Monster_Cell : ICreature, ITaskable
     set
     {   
         _turnsElapsedCounter = value;
-        if(value > TurnsRequiredToMakeAction)
+        if(value >= TurnsRequiredToMakeAction)
         {
             // reset licznika
             _turnsElapsedCounter = 0;
             ISReadyToMakeAction = true;
+            return;
         }
         ISReadyToMakeAction = false;
     }
    }
 
 
-    private bool ISReadyToMakeAction = false;
+    public bool ISReadyToMakeAction {get; private set;} = false;
 
 
-    public Monster_Cell(CellScript parent, string name, string icon_Url, int maxHealthPoints, int speed, Pathfinding pathfinder = null)
+    public Monster_Cell(CellScript parent, string name, string icon_Url, int maxHealthPoints, int speed, Pathfinding pathfinder = null, int damage = 1)
     {
         Name = name;
         Icon_Url = icon_Url;
         Type = TileTypes.monster;
         _pathfinder = pathfinder;
+        Damage = damage;
 
-
-       // Debug.Log("monster created");
+        Debug.Log("monster created");
         ParentCell = parent;
         MaxHealthPoints = maxHealthPoints;
-        TurnsRequiredToMakeAction = 2;
+        HealthPoints = maxHealthPoints;
+
         TurnsRequiredToMakeAction = speed;
         ParentCell.IsWalkable = true;
 
         NotificationManger.CreateNewNotificationElement(this);
+        Damage = damage;
     }
     public void ConfigurePathfinderComponent()
     {
@@ -91,7 +95,7 @@ public class Monster_Cell : ICreature, ITaskable
             ParentCell.Trash.Where(t => t.name == (Icon_Url + "(Clone)")).FirstOrDefault().TryGetComponent<Pathfinding>(out _pathfinder);
             if (_pathfinder == null)
             {
-                Debug.LogError("nieudane ładowanie pathfindera");
+                //Debug.LogError("nieudane ładowanie pathfindera");
                 return;
             }
             _pathfinder._cellData = ParentCell;
@@ -102,16 +106,16 @@ public class Monster_Cell : ICreature, ITaskable
     }
     public void OnClick_MakeAction()
     {
-
         if (TaskManager.TaskManagerIsOn == true)
         {
             AddActionToQUEUE();
             return;
         }
 
-        Debug.LogWarning("player click on monster -> start interaction with monster");
-        TakeDamage(1, "Attacked by player");
-        GameManager.instance.AddTurn();
+        //Debug.LogWarning("player click on monster -> start interaction with monster");
+        TakeDamage(Damage, "Attacked by player");
+        // delay !
+        GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
     }
 
     public void TakeDamage(int damage, string source)
@@ -122,6 +126,8 @@ public class Monster_Cell : ICreature, ITaskable
             Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");
         else
             Debug.Log("monster died and left bones");
+
+      NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
     }
     public bool TryAttack(CellScript _target)
     {
@@ -130,11 +136,13 @@ public class Monster_Cell : ICreature, ITaskable
             return false;
         }
 
-        Debug.Log($"Monster zaatakował {_target.name}");
+        //Debug.Log($"Monster zaatakował {_target.name}");
         //TODO: rozpisać to , aktualnie na sztywno -10hp
         int currentHP = Int32.Parse((GameManager.instance.HealthCounter_TMP.text.Replace("%", "")));
         currentHP -= 10;
         GameManager.instance.HealthCounter_TMP.SetText(currentHP + " %");
+
+      NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Attack);
         return true;
 
     }
@@ -144,7 +152,7 @@ public class Monster_Cell : ICreature, ITaskable
         _pathfinder.FindPath(_targetCell);
         if (_pathfinder.FinalPath.Count > 1)
         {
-            Debug.Log($"Monster wykonuje krok w strone celu [ komórki {_targetCell.name} ]");
+            //Debug.Log($"Monster wykonuje krok w strone celu [ komórki {_targetCell.name} ]");
             GridManager.TrySwapTiles(ParentCell, _pathfinder.FinalPath[0].Coordination);
             return true;
         }
@@ -168,7 +176,7 @@ public class Monster_Cell : ICreature, ITaskable
                     if (GridManager.CellGridTable[position].SpecialTile is Monster_Cell)
                     {
                         // TODO: zró coś po kliknięciu na monsterka
-                        Debug.Log("click on monster");
+                        //Debug.Log("click on monster");
                         return (true, "succes");
                     }
                 }
@@ -189,6 +197,8 @@ public class Monster_Cell : ICreature, ITaskable
             GameObject.Destroy(Border, .5f);
             Border = null;
         }
+
+        NotificationManger.TriggerActionNotification(ParentCell.SpecialTile as ISelectable,NotificationManger.AlertCategory.Loot);
     }
     
 

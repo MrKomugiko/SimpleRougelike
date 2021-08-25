@@ -152,17 +152,17 @@ public class GridManager : MonoBehaviour
        // sprawdz czy pozycja z któą sie chcesz zamienic jest specialnym / fragile i czy jest aktualnie aktywnym
         if(newPosition == GameManager.Player_CELL.CurrentPosition)
         {
-           Debug.LogWarning("monster nie moze zamienic sie miejscami z graczem");
+           //Debug.LogWarning("monster nie moze zamienic sie miejscami z graczem");
             return;
         }
         if(CellGridTable[newPosition].SpecialTile != null)
         {
             if(CellGridTable[newPosition].SpecialTile is Monster_Cell){
-                Debug.LogWarning("nie zamieniaj sie miejscem z innym monsterkiem");
+                //Debug.LogWarning("nie zamieniaj sie miejscem z innym monsterkiem");
                 return;
             }
             
-            Debug.LogWarning("proba swapniecia miejsc ze specialnym tilesem");
+            //Debug.LogWarning("proba swapniecia miejsc ze specialnym tilesem");
 
             if(CellGridTable[newPosition].SpecialTile is IFragile)
             {

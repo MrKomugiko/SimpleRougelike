@@ -65,17 +65,17 @@ public class Bomb_Cell : ISpecialTile, IFragile, ITaskable, ISelectable
             // AddActionToQUEUE();
         // }
     }
-    public bool IsUsed = false;
+    public bool IsUsed {get; private set;} = false;
     public void Use()
     {
             if(IsUsed == true) 
             {
-                Debug.Log("Already used");
+                //Debug.Log("Already used");
                 return;
             }
             IsUsed = true;
 
-            Debug.Log("EXPLODEEEEEEEEEEEEEEE !");
+            //Debug.Log("EXPLODEEEEEEEEEEEEEEE !");
           
 
             AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
@@ -170,8 +170,8 @@ RemoveBorder();
 
                 foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
                 {   
-                    Debug.Log(cell.CurrentPosition);    
-                    Debug.Log(Effect_Url);
+                    //Debug.Log(cell.CurrentPosition);    
+                    //Debug.Log(Effect_Url);
 
                     cell.AddEffectImage(imageUrl: Effect_Url);
                     if(GridManager.CellGridTable[cell.CurrentPosition].SpecialTile is ICreature) 

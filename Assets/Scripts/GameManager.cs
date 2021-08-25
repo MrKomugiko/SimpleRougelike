@@ -49,11 +49,12 @@ public class GameManager : MonoBehaviour
 
     public List<Sprite> SpritesList;
 
-    public void AddTurn()
+    public IEnumerator AddTurn()
     {
+        yield return new WaitForSeconds(.5f);
         _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
         TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
-        print("dodanie tury");
+        //print("dodanie tury");
 
         List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
         tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
@@ -61,18 +62,18 @@ public class GameManager : MonoBehaviour
         foreach (var creature in tempCurrentCreatureList)
         {
             creature.TurnsElapsedCounter ++;
+            if(creature.ISReadyToMakeAction == false) continue;
 
-            //TODO: dodać checka czy aktualnie odbywa sie jakiś ruch ( wprzeciwnym wypadku może sie minąć z graczem i podmienic tilesy zostawiajac pustą dziure xd)
             if(creature.TryMove(GameManager.Player_CELL))
                 continue;
 
             if(creature.TryAttack(GameManager.Player_CELL))
             {
-                NotificationManger.ShowBorder(creature,Color.red);
-                NotificationManger.HideBorder(creature,.3f);
                 continue;   
             }
         }
+
+        yield return null;
     }
     public void AddGold(int value)
     {
@@ -85,7 +86,7 @@ public class GameManager : MonoBehaviour
     }
     public GameObject InstantiateTicker(Bomb_Cell bomb_Cellcs)
     {
-        print("Instantiate ticker");
+        // print("Instantiate ticker");
         return Instantiate(TickCounterPrefab, bomb_Cellcs.ParentCell.transform);
     }
     public void Countdown_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
@@ -187,7 +188,7 @@ public class GameManager : MonoBehaviour
         {
             if ((tile.SpecialTile as Bomb_Cell).TickCounter != null)
             {
-                print("tick");
+               // print("tick");
                 (tile.SpecialTile as Bomb_Cell).TickCounter.AddTick(1);
             }
         }

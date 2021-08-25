@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class NotificationScript : MonoBehaviour
 {
+    [SerializeField] public GameObject PossibleActions;
     public CellScript BaseCell = null;
 
    [SerializeField] Image IconHolderImage;
@@ -23,7 +24,6 @@ public class NotificationScript : MonoBehaviour
 
     public void RefreshData()
     {   
-     
         if(BaseCell.SpecialTile is ICreature)
         {  
             IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
@@ -66,7 +66,6 @@ public class NotificationScript : MonoBehaviour
             return;
         }
     }
-
     public bool IsVisibleOnNotificationList(CellScript playerCell)
     {   
         // ZOSTAW NA PODGLĄDZIE JEŻELI USTAWIONY JEST SZNACZNIK SLEDZENIA IsHighlighted
@@ -80,4 +79,6 @@ public class NotificationScript : MonoBehaviour
         else
             return false;
     }
+
+    
 }
