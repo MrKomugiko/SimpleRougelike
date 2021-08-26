@@ -46,10 +46,10 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     }
     public void OnClick_MakeAction()
     {
+        ParentCell.MoveTo();    //TODO: hmm
+        
         bool succes;
         Pick(out succes);
-        ParentCell.MoveTo();    //TODO: hmm
-
     }
 
     public void Pick(out bool status)
@@ -64,7 +64,8 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             GameManager.instance.AddGold(GoldValue);
             
             ParentCell.SpecialTile = null;
-            GridManager.CellGridTable[ParentCell.CurrentPosition].SetCell(ParentCell.CurrentPosition);
+            var currentPosition = ParentCell.CurrentPosition;
+            GridManager.CellGridTable[ParentCell.CurrentPosition].SetCell(currentPosition);
             status = true;
        }
        else
