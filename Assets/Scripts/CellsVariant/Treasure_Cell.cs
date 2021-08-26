@@ -18,7 +18,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public GameObject Border { get; set; }
     public bool IsHighlighted { get; set; }
 
-    public List<(Action action, string description)> AvaiableActions { get; private set;} = new List<(Action action, string description)>();
+    public List<(Action action, string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon)>();
     #endregion
 
 
@@ -31,7 +31,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.GoldValue = goldValue;
 
         //Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);
-        AvaiableActions.Add((()=>Pick(),"Collect Only"));
+        AvaiableActions.Add((()=>Pick(),"Collect Only",ActionIcon.Pick));
         NotificationManger.CreateNewNotificationElement(this);
     }
     public void OnClick_MakeAction()

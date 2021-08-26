@@ -87,7 +87,7 @@ public class Monster_Cell : ICreature, ITaskable
 
         Damage = damage;
 
-        AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack"));
+        AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword));
         NotificationManger.CreateNewNotificationElement(this);
     }
     public void ConfigurePathfinderComponent()
@@ -227,5 +227,5 @@ public class Monster_Cell : ICreature, ITaskable
 
 
 
-    public List<(Action action,string description)> AvaiableActions { get; private set;} = new List<(Action action, string description)>();
+    public List<(Action action,string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon)>();
 }

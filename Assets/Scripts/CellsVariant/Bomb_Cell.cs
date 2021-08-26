@@ -27,7 +27,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, ISelectable
     #endregion
 
 
-      public List<(Action action, string description)> AvaiableActions { get; private set;} = new List<(Action action, string description)>();
+      public List<(Action action, string description, ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description, ActionIcon icon)>();
 
     public Bomb_Cell(CellScript parent, string name, string effect_Url, string icon_Url, int turnsRequiredToActivate )
     {
@@ -50,9 +50,9 @@ public class Bomb_Cell : ISpecialTile, IFragile, ISelectable
 //
         parent.IsWalkable = true;
 
-        AvaiableActions.Add((()=>Use(),"Detonate"));
-        AvaiableActions.Add((null,"WIP: Reset Timmer"));
-        AvaiableActions.Add((null,"WIP: Disarm"));
+        AvaiableActions.Add((()=>Use(),"Detonate", ActionIcon.Bomb));
+        AvaiableActions.Add((null,"WIP: Reset Timmer",ActionIcon.Timer));
+        AvaiableActions.Add((null,"WIP: Disarm",ActionIcon.Delete));
 
         NotificationManger.CreateNewNotificationElement(this);
     }

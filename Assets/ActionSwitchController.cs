@@ -58,7 +58,8 @@ public class ActionSwitchController : MonoBehaviour
             {
                 button.gameObject.SetActive(true);
                 button.ConfigureIconButtonClick(
-                    action:()=>OnClick_SelectActionIcon(button)
+                    action:()=>OnClick_SelectActionIcon(button),
+                    cell.AvaiableActions[i].icon
                 );
                 button.ConfigureDescriptionButtonClick(
                     action: cell.AvaiableActions[i].action,

@@ -9,7 +9,7 @@ public interface ISpecialTile
     string Name {get;set;}
     string Icon_Url {get;set;}
 
-    List<(Action action,string description)> AvaiableActions {get;}
+    List<(Action action,string description, ActionIcon icon)> AvaiableActions {get;}
 
     void OnClick_MakeAction();
 

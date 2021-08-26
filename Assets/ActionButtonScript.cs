@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActionButtonScript : MonoBehaviour
+public partial class ActionButtonScript : MonoBehaviour
 {
+
+    public List<Sprite> IconSpriteList;
     [SerializeField] public GameObject SelectionBorder_Object;
     [SerializeField] public Image ButtonIcon_IMG;
     [SerializeField] private GameObject DescriptionContainer_Object;
@@ -54,13 +58,12 @@ public class ActionButtonScript : MonoBehaviour
         SelectionBorder_Object.SetActive(false);
         DescriptionContainer_Object.SetActive(false);
     }
-    public void ConfigureIconButtonClick(Action action)
+    public void ConfigureIconButtonClick(Action action,  ActionIcon icon)
     {
         myMainIconAction = action;
         Icon_Button.onClick.AddListener(()=>action());;
+        ButtonIcon_IMG.sprite = IconSpriteList.First(n=>n.name == "ICON_"+icon.ToString());
     }
-
-    
     public void ConfigureDescriptionButtonClick(Action action, string description)
     { 
         this.gameObject.name = "ACTION_"+description;
