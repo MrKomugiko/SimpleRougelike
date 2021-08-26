@@ -19,11 +19,6 @@ public class TickScript : MonoBehaviour
     {
         tickHodler.SetActive(false);
     }
-    [ContextMenu("Add Tick")]
-    public void AddTickTest()
-    {
-        AddTick(1);
-    }
     public void AddTick(int value = 0)
     {
         for(var i = 0; i<value; i++)

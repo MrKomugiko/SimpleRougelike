@@ -154,11 +154,23 @@ public class CellScript : MonoBehaviour, ITaskable
         }
         if (SpecialTile != null)
         {
-           SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Clear();
+            if(SpecialTile.ParentCell == null) 
+            {
+                Debug.LogWarning("cell ze specialtilesem ale bez parenta");
+                return;
+            }
+            SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Clear();
             SpecialTile.ParentCell._button.onClick.RemoveAllListeners();
             
-            SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Add($"{SpecialTile.GetType().ToString()}.OnClick_MakeAction()");
-            SpecialTile.ParentCell._button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
+            if (SpecialTile != null)
+            {
+                SpecialTile.ParentCell._button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
+                SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Add($"{SpecialTile.GetType().ToString()}.OnClick_MakeAction()");
+            }
+            else
+            {
+                Debug.LogWarning("pominięcie sprawdzania Specialtile==null, następnie w srodku warunku dowołuje sie do specialtile.parent ? ");
+            }
         }
     }
 

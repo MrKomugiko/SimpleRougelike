@@ -27,7 +27,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, ISelectable
     #endregion
 
 
-      public List<(Action action, string description, ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description, ActionIcon icon)>();
+    public List<(Action action, string description, ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description, ActionIcon icon)>();
 
     public Bomb_Cell(CellScript parent, string name, string effect_Url, string icon_Url, int turnsRequiredToActivate )
     {

@@ -31,18 +31,30 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.GoldValue = goldValue;
 
         //Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);
-        AvaiableActions.Add((()=>Pick(),"Collect Only",ActionIcon.Pick));
+        // TODO: jakos bym to musial wynieść z klasy treasure do obsługi wątków dla powiadomień
+        AvaiableActions.Add((
+            ()=>{
+            bool result;
+            Pick(out result);
+            if(result == false)
+                {
+                    NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Cannot pick, item is too far.");
+                }
+            }
+            ,"Collect Only",ActionIcon.Pick));
         NotificationManger.CreateNewNotificationElement(this);
     }
     public void OnClick_MakeAction()
     {
-        Pick();
+        bool succes;
+        Pick(out succes);
         ParentCell.MoveTo();    //TODO: hmm
 
     }
 
-    public void Pick()
+    public void Pick(out bool status)
     {
+
        if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
        {    
            if(Border != null)
@@ -50,11 +62,14 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     
             Debug.Log("pick");
             GameManager.instance.AddGold(GoldValue);
+            
             ParentCell.SpecialTile = null;
+            GridManager.CellGridTable[ParentCell.CurrentPosition].SetCell(ParentCell.CurrentPosition);
+            status = true;
        }
        else
        {
-
+        status = false;
         Debug.LogWarning("za daleko"+Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition));
        }
     }

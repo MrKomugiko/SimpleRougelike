@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator AddTurn()
     {
-        yield return new WaitForSeconds(.5f);
         _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
         TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
         //print("dodanie tury");
@@ -80,13 +79,13 @@ public class GameManager : MonoBehaviour
 
              NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Waiting for turn.");
         }
-
+        yield return new WaitForSeconds(.5f);
         yield return null;
     }
     public void AddGold(int value)
     {
-        int currentTurnnumber = Int32.Parse(GoldCounter_TMP.text);
-        GoldCounter_TMP.SetText((currentTurnnumber += value).ToString());
+        int currentGoldValue = Int32.Parse(GoldCounter_TMP.text);
+        GoldCounter_TMP.SetText((currentGoldValue + value).ToString());
         NotificationManger.AddValueTo_Gold_Notification(value);
     }
     public void Exit()
