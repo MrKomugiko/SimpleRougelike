@@ -37,8 +37,11 @@ public class GameManager : MonoBehaviour
                 IncrementTickCounterOnBombCells(tile);
 
                 if (tile.SpecialTile is IFragile == false) continue;
-
-                ActivateSpecialTileIfIsReady(tile);
+                if ((tile.SpecialTile as IFragile).IsReadyToUse) 
+                {
+                    ActivateSpecialTileIfIsReady(tile);
+                    continue;
+                }
             }
 
         }
@@ -65,12 +68,17 @@ public class GameManager : MonoBehaviour
             if(creature.ISReadyToMakeAction == false) continue;
 
             if(creature.TryMove(GameManager.Player_CELL))
+            {
+                NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Moved.");
                 continue;
+            }
 
             if(creature.TryAttack(GameManager.Player_CELL))
             {
                 continue;   
             }
+
+             NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Waiting for turn.");
         }
 
         yield return null;
@@ -79,6 +87,7 @@ public class GameManager : MonoBehaviour
     {
         int currentTurnnumber = Int32.Parse(GoldCounter_TMP.text);
         GoldCounter_TMP.SetText((currentTurnnumber += value).ToString());
+        NotificationManger.AddValueTo_Gold_Notification(value);
     }
     public void Exit()
     {
@@ -175,7 +184,6 @@ public class GameManager : MonoBehaviour
             );
         cellsToDestroy.ForEach(cell => DamagedCells.Remove(cell));
 
-        
         WybuchWTrakcieWykonywania = false;
      
         GridManager.FillGaps();
@@ -188,7 +196,6 @@ public class GameManager : MonoBehaviour
         {
             if ((tile.SpecialTile as Bomb_Cell).TickCounter != null)
             {
-               // print("tick");
                 (tile.SpecialTile as Bomb_Cell).TickCounter.AddTick(1);
             }
         }

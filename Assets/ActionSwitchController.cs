@@ -44,35 +44,38 @@ public class ActionSwitchController : MonoBehaviour
         }
     }
     
-    private void Configure(ISpecialTile cell)
+    public void Configure(ISpecialTile cell)
     {
-        switch(cell.Type)
+        Debug.LogWarning("CONFIGURATION ACTION BUTTONS");
+        int i =0;
+        ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
+        actionButtonsList.CopyTo(temp);
+
+        foreach(var button in temp)
         {
-            case TileTypes.monster:
-                print("monster , "+cell.GetType());
-                foreach(var button in actionButtonsList)
-                {
-                    button.ConfigureIconButtonClick(()=>
-                        {
-                            OnClick_SelectActionIcon(button);
-                            print("OnClick_SelectActionIcon");
-                        });
-                    button.ConfigureDescriptionButtonClick(()=>
-                        {
-                            ConfigureActionButton(button, cell);
-                        });
-                    
-                }
-            break;
+            if(cell.AvaiableActions == null) continue;
+            if(i<cell.AvaiableActions.Count)
+            {
+                button.gameObject.SetActive(true);
+                button.ConfigureIconButtonClick(
+                    action:()=>OnClick_SelectActionIcon(button)
+                );
+                button.ConfigureDescriptionButtonClick(
+                    action: cell.AvaiableActions[i].action,
+                    description: cell.AvaiableActions[i].description
+                );
 
-            case TileTypes.treasure:
-                print("treasure , "+cell.GetType());
-            break;
+              //  Debug.Log("nr:"+i+" ["+cell.AvaiableActions[i].description+"]");
+            }
+            else
+            {
+                actionButtonsList.Remove(button);
+                Destroy(button.gameObject);
+               // Debug.Log("nr:"+i+" brak przypisanej akcji , przycisk wyłączony");
+            }
+            i++;
+        }                   
 
-            case TileTypes.bomb:
-                print("bomb  , "+cell.GetType());
-            break;
-        }
     }
     private IEnumerator AnimateSelection(ActionButtonScript selectedButton)
     {
@@ -81,7 +84,7 @@ public class ActionSwitchController : MonoBehaviour
         float colorIncrementvalue = 1f/(float)ColorDimmingSteps;
         var endColor = new Color32(255,255,255,90);
         float currentIncrement = 0;
-        actionButtonsList.First(s=>s == selectedButton).SelectionBorder_Object.SetActive(true);
+        actionButtonsList.Where(s=>s==selectedButton).FirstOrDefault().SelectionBorder_Object.SetActive(true);
         while(true)
         {
             if(currentIncrement >1)
@@ -148,8 +151,5 @@ public class ActionSwitchController : MonoBehaviour
         }
         AnimationIsRunning = false;
     }
-    private void ConfigureActionButton(ActionButtonScript button, ISpecialTile cell)
-    {
-        print("WYKONANAIE DEDYKOWANEJ TEJ ZAKLADCE AKCJI ");    
-    }
+
 }

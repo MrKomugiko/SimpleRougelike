@@ -14,7 +14,7 @@ public class Obstacle_Cell : ISpecialTile
     #endregion
    
     #region Obstacle-specific
-        
+        public List<(Action action, string description)> AvaiableActions { get; private set;} = new List<(Action action, string description)>();
     #endregion
    
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -84,8 +85,10 @@ public class Monster_Cell : ICreature, ITaskable
         TurnsRequiredToMakeAction = speed;
         ParentCell.IsWalkable = true;
 
-        NotificationManger.CreateNewNotificationElement(this);
         Damage = damage;
+
+        AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack"));
+        NotificationManger.CreateNewNotificationElement(this);
     }
     public void ConfigurePathfinderComponent()
     {
@@ -114,6 +117,7 @@ public class Monster_Cell : ICreature, ITaskable
 
         //Debug.LogWarning("player click on monster -> start interaction with monster");
         TakeDamage(Damage, "Attacked by player");
+        NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
         GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
     }
@@ -127,7 +131,7 @@ public class Monster_Cell : ICreature, ITaskable
         else
             Debug.Log("monster died and left bones");
 
-      NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
+      
     }
     public bool TryAttack(CellScript _target)
     {
@@ -142,7 +146,7 @@ public class Monster_Cell : ICreature, ITaskable
         currentHP -= 10;
         GameManager.instance.HealthCounter_TMP.SetText(currentHP + " %");
 
-      NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Attack);
+        NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Attack);
         return true;
 
     }
@@ -189,6 +193,8 @@ public class Monster_Cell : ICreature, ITaskable
         ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
         ParentCell.Trash.Clear();
 
+        
+        ParentCell.Type = TileTypes.treasure;
         ParentCell.SpecialTile = new Treasure_Cell(ParentCell, "zwłoki slime'a", corpse_Url, 50);
         //4. assign LootID related reward to this object
         if (Border != null)
@@ -216,4 +222,10 @@ public class Monster_Cell : ICreature, ITaskable
 
     public bool IsHighlighted {get;set;} = false;
     public GameObject Border {get; set;}
+
+
+
+
+
+    public List<(Action action,string description)> AvaiableActions { get; private set;} = new List<(Action action, string description)>();
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
@@ -15,6 +17,8 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public int GoldValue { get; set; }
     public GameObject Border { get; set; }
     public bool IsHighlighted { get; set; }
+
+    public List<(Action action, string description)> AvaiableActions { get; private set;} = new List<(Action action, string description)>();
     #endregion
 
 
@@ -27,25 +31,32 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.GoldValue = goldValue;
 
         //Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);
-
+        AvaiableActions.Add((()=>Pick(),"Collect Only"));
         NotificationManger.CreateNewNotificationElement(this);
     }
     public void OnClick_MakeAction()
     {
+        Pick();
         ParentCell.MoveTo();    //TODO: hmm
 
-        Pick();
     }
 
     public void Pick()
     {
        if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
-       {
+       {    
+           if(Border != null)
+                GameObject.Destroy(Border.gameObject);
+    
+            Debug.Log("pick");
             GameManager.instance.AddGold(GoldValue);
             ParentCell.SpecialTile = null;
        }
        else
-        Debug.LogWarning("za daleko");
+       {
+
+        Debug.LogWarning("za daleko"+Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition));
+       }
     }
 
 }

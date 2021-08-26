@@ -364,7 +364,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7295675519580765288
 RectTransform:
   m_ObjectHideFlags: 0
@@ -464,13 +464,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectionBorder_Object: {fileID: 409169745032679672}
+  ButtonIcon_IMG: {fileID: 5935178070296971259}
   DescriptionContainer_Object: {fileID: 7432836684132476408}
-  Border_Object: {fileID: 409169745032679672}
   Description_TMP: {fileID: 3177990840955966578}
   Icon_Button: {fileID: 6553410644347458816}
   Description_Button: {fileID: 9067206048710701611}
-  ButtonIcon_IMG: {fileID: 5935178070296971259}
-  iSSELECTED: 0
+  controller: {fileID: 0}
+  _iSSELECTED: 0
 --- !u!1 &7432836684132476408
 GameObject:
   m_ObjectHideFlags: 0

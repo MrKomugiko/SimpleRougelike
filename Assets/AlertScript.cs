@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,7 +10,6 @@ public class AlertScript : MonoBehaviour
         get => _color; 
         set 
         {
-            print("color changed");
              _color = value; 
              Background.color = new Color32((byte)(value.r/3),(byte)(value.g/3),(byte)(value.b/3),175);
              Border.color = value;
@@ -24,7 +21,6 @@ public class AlertScript : MonoBehaviour
         get => textValue; 
         set 
         {   
-            print("changed from "+textValue +" to "+value);
             textValue = value; 
             text.SetText(value);
         }
@@ -38,10 +34,10 @@ public class AlertScript : MonoBehaviour
 
    [SerializeField]  private string textValue = "0";
 
-   private void Start() {
-       GameObject.Find("EventSystem").GetComponent<EventSystem>().enabled = false;
-   }
-    private void OnDestroy() {
-       GameObject.Find("EventSystem").GetComponent<EventSystem>().enabled = true;
-    }
+//    private void Start() {
+//        GameObject.Find("EventSystem").GetComponent<EventSystem>().enabled = false;
+//    }
+//     private void OnDestroy() {
+//        GameObject.Find("EventSystem").GetComponent<EventSystem>().enabled = true;
+//     }
 }

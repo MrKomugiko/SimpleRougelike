@@ -45,7 +45,6 @@ public class ActionButtonScript : MonoBehaviour
     public void ShowDescription()
     {   
         ISSELECTED = true;
-        Description_TMP.SetText("ATTACK");
         SelectionBorder_Object.SetActive(true);
         DescriptionContainer_Object.SetActive(true);
     }
@@ -55,16 +54,21 @@ public class ActionButtonScript : MonoBehaviour
         SelectionBorder_Object.SetActive(false);
         DescriptionContainer_Object.SetActive(false);
     }
-    public void ConfigureIconButtonClick(Action onClick)
+    public void ConfigureIconButtonClick(Action action)
     {
-        myMainIconAction = onClick;
-        Icon_Button.onClick.AddListener(()=>onClick());;
+        myMainIconAction = action;
+        Icon_Button.onClick.AddListener(()=>action());;
     }
-    public void ConfigureDescriptionButtonClick(Action onClick)
+
+    
+    public void ConfigureDescriptionButtonClick(Action action, string description)
     { 
+        this.gameObject.name = "ACTION_"+description;
+        Description_TMP.SetText(description);
         Description_Button.onClick.AddListener(()=>
         {
-            onClick();
+            print("wykonuje akcje");
+            action();
             CloseAndRemoveHighlightBorder();
         });
     }
