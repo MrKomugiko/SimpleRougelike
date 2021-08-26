@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class AutoDestroyScript : MonoBehaviour
 {
+    public float Time = 0.5f;
     void Start()
     {
-        Destroy(this.gameObject,.5f);
+        Destroy(this.gameObject,Time);
     }
 }

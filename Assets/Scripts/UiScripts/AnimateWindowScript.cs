@@ -62,14 +62,14 @@ public class AnimateWindowScript : MonoBehaviour
     {
         if(CurrentOpenedTab == "")
         {
-            print("zadna zakladka nie była widoczna, otwieramy okno");
-            print("otwarta zakładka "+tabName);
+           // print("zadna zakladka nie była widoczna, otwieramy okno");
+           // print("otwarta zakładka "+tabName);
             MoveWindow();
             LoadTabData(tabName);
         }
         else if(CurrentOpenedTab == tabName)
         {
-            print("ponowne wybranie tej samej zakładki = zamknięcie okna");
+           // print("ponowne wybranie tej samej zakładki = zamknięcie okna");
             foreach(var tab in tabList)
             {
                 tab.interactable = true;
@@ -83,7 +83,7 @@ public class AnimateWindowScript : MonoBehaviour
         }
         else
         {
-            print("przełączono zakładkę na "+tabName);
+           // print("przełączono zakładkę na "+tabName);
             LoadTabData(tabName);
         }
 

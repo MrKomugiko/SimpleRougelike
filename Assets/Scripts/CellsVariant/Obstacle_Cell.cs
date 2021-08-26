@@ -14,7 +14,7 @@ public class Obstacle_Cell : ISpecialTile
     #endregion
    
     #region Obstacle-specific
-        
+        public List<(Action action, string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string descriptio,ActionIcon iconn)>();
     #endregion
    
 
@@ -26,7 +26,7 @@ public class Obstacle_Cell : ISpecialTile
         this.Icon_Url = icon_Url;
 
         this.ParentCell.IsWalkable = false;
-        Debug.Log("pomyslnie utworzono pole typu Wall o nazwie"+icon_Url);;
+        //Debug.Log("pomyslnie utworzono pole typu Wall o nazwie"+icon_Url);;
     }
     public void OnClick_MakeAction()
     {

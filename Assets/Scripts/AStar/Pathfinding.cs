@@ -57,7 +57,7 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
-        print("brak trasy");
+        //print("brak trasy");
         FinalPath.Clear();
     }
     private void RetracePath(Node startNode, Node endNode)

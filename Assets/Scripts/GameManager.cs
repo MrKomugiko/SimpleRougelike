@@ -37,8 +37,11 @@ public class GameManager : MonoBehaviour
                 IncrementTickCounterOnBombCells(tile);
 
                 if (tile.SpecialTile is IFragile == false) continue;
-
-                ActivateSpecialTileIfIsReady(tile);
+                if ((tile.SpecialTile as IFragile).IsReadyToUse) 
+                {
+                    ActivateSpecialTileIfIsReady(tile);
+                    continue;
+                }
             }
 
         }
@@ -49,42 +52,49 @@ public class GameManager : MonoBehaviour
 
     public List<Sprite> SpritesList;
 
-    public void AddTurn()
+    public IEnumerator AddTurn()
     {
         _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
         TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
-        print("dodanie tury");
+        //print("dodanie tury");
 
         List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
         tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
 
         foreach (var creature in tempCurrentCreatureList)
         {
+            creature.TurnsElapsedCounter ++;
+            if(creature.ISReadyToMakeAction == false) continue;
 
-            //TODO: dodać checka czy aktualnie odbywa sie jakiś ruch ( wprzeciwnym wypadku może sie minąć z graczem i podmienic tilesy zostawiajac pustą dziure xd)
             if(creature.TryMove(GameManager.Player_CELL))
+            {
+                NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Moved.");
                 continue;
+            }
 
             if(creature.TryAttack(GameManager.Player_CELL))
             {
-                 (creature as ISelectable).ShowBorder();
-                continue;            
+                continue;   
             }
+
+             NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Waiting for turn.");
         }
+        yield return new WaitForSeconds(.5f);
+        yield return null;
     }
     public void AddGold(int value)
     {
-        int currentTurnnumber = Int32.Parse(GoldCounter_TMP.text);
-        GoldCounter_TMP.SetText((currentTurnnumber += value).ToString());
+        int currentGoldValue = Int32.Parse(GoldCounter_TMP.text);
+        GoldCounter_TMP.SetText((currentGoldValue + value).ToString());
+        NotificationManger.AddValueTo_Gold_Notification(value);
     }
-
     public void Exit()
     {
         Application.Quit();
     }
     public GameObject InstantiateTicker(Bomb_Cell bomb_Cellcs)
     {
-        print("Instantiate ticker");
+        // print("Instantiate ticker");
         return Instantiate(TickCounterPrefab, bomb_Cellcs.ParentCell.transform);
     }
     public void Countdown_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
@@ -110,7 +120,6 @@ public class GameManager : MonoBehaviour
     {
         Init_PlacePlayerOnGrid();
     }
-
     private void Init_PlacePlayerOnGrid()
     {
         Player_CELL = GridManager.CellGridTable[StartingPlayerPosition];
@@ -174,7 +183,6 @@ public class GameManager : MonoBehaviour
             );
         cellsToDestroy.ForEach(cell => DamagedCells.Remove(cell));
 
-        
         WybuchWTrakcieWykonywania = false;
      
         GridManager.FillGaps();
@@ -187,7 +195,6 @@ public class GameManager : MonoBehaviour
         {
             if ((tile.SpecialTile as Bomb_Cell).TickCounter != null)
             {
-                print("tick");
                 (tile.SpecialTile as Bomb_Cell).TickCounter.AddTick(1);
             }
         }
@@ -212,34 +219,40 @@ public class GameManager : MonoBehaviour
             });
         }
     }
-    [ContextMenu("Start simulation")]
-    public void StartSimulation()
+
+    internal void ExecuteCoroutine(IEnumerator coroutine)
     {
-        StartCoroutine(SimulateGameplay());
+        StartCoroutine(coroutine);
     }
-    private IEnumerator SimulateGameplay()
-    {
 
-        for (; ; )
-        {
-            if (GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player).Count() > 0)
-            {
-                foreach (var tile in GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player))
-                {
-                    print($"click [{tile.Value.CurrentPosition}]");
-                    tile.Value._button.onClick.Invoke();
-                    break;
-                }
-                yield return new WaitForSeconds(.5f);
-            }
-            else
-            {
-                print("no more avaiable moves");
-                break;
-            }
-        }
+    // [ContextMenu("Start simulation")]
+    // public void StartSimulation()
+    // {
+    //     StartCoroutine(SimulateGameplay());
+    // }
+    // private IEnumerator SimulateGameplay()
+    // {
 
-        yield return null;
+    //     for (; ; )
+    //     {
+    //         if (GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player).Count() > 0)
+    //         {
+    //             foreach (var tile in GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player))
+    //             {
+    //                 print($"click [{tile.Value.CurrentPosition}]");
+    //                 tile.Value._button.onClick.Invoke();
+    //                 break;
+    //             }
+    //             yield return new WaitForSeconds(.5f);
+    //         }
+    //         else
+    //         {
+    //             print("no more avaiable moves");
+    //             break;
+    //         }
+    //     }
 
-    }
+    //     yield return null;
+
+    // }
 }

@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Treasure_Cell : ISpecialTile, IValuable
+public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 {
 
     #region core
@@ -16,6 +15,10 @@ public class Treasure_Cell : ISpecialTile, IValuable
 
     #region Treasure-specific
     public int GoldValue { get; set; }
+    public GameObject Border { get; set; }
+    public bool IsHighlighted { get; set; }
+
+    public List<(Action action, string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon)>();
     #endregion
 
 
@@ -25,21 +28,50 @@ public class Treasure_Cell : ISpecialTile, IValuable
         this.Name = name;
         this.Type = TileTypes.treasure;
         this.Icon_Url = icon_Url;
-
         this.GoldValue = goldValue;
 
-        Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);;
+        //Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);
+        // TODO: jakos bym to musial wynieść z klasy treasure do obsługi wątków dla powiadomień
+        AvaiableActions.Add((
+            ()=>{
+            bool result;
+            Pick(out result);
+            if(result == false)
+                {
+                    NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Cannot pick, item is too far.");
+                }
+            }
+            ,"Collect Only",ActionIcon.Pick));
+        NotificationManger.CreateNewNotificationElement(this);
     }
     public void OnClick_MakeAction()
     {
-        ParentCell.MoveTo();
-        Pick();
+        bool succes;
+        Pick(out succes);
+        ParentCell.MoveTo();    //TODO: hmm
+
     }
 
-    public void Pick()
+    public void Pick(out bool status)
     {
-        Debug.Log($"zbierasz {GoldValue} monet");
-        GameManager.instance.AddGold(GoldValue);
+
+       if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
+       {    
+           if(Border != null)
+                GameObject.Destroy(Border.gameObject);
+    
+            Debug.Log("pick");
+            GameManager.instance.AddGold(GoldValue);
+            
+            ParentCell.SpecialTile = null;
+            GridManager.CellGridTable[ParentCell.CurrentPosition].SetCell(ParentCell.CurrentPosition);
+            status = true;
+       }
+       else
+       {
+        status = false;
+        Debug.LogWarning("za daleko"+Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition));
+       }
     }
 
 }

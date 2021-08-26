@@ -15,6 +15,8 @@ public class CellScript : MonoBehaviour, ITaskable
     [SerializeField] public Button _button;
     [SerializeField] private TileTypes _type;
 
+    public List<String> DEBUG_BUTTON_ATTACHED_METHODS;
+    
     public List<GameObject> Trash = new List<GameObject>();
 
     private ISpecialTile _specialTile;
@@ -47,34 +49,43 @@ public class CellScript : MonoBehaviour, ITaskable
         get => _type;
         set
         {
-            // IsWalkable = true;
+            if(value == TileTypes.grass || value == TileTypes.player)
+            {
+                isWalkable = true;
+            }
             _type = value;
         }
     }
-
     public ISpecialTile SpecialTile
     {
         get => _specialTile;
         set
         {
-            if (value == SpecialTile)
-                return;
             _specialTile = value;
             if (value == null)
             {
                 Trash.ForEach(t=>Destroy(t));
                 Trash.Clear();
+                 CurrentAssignedSpecialTileScript = "_EMPTY_";
                 return;
             }
 
             this.gameObject.name = value.Name;
-            AssignType(value.Type, value);
-
+            if (value != SpecialTile)
+            {
+                AssignType(value.Type, value);
+            }
+            
+            DEBUG_BUTTON_ATTACHED_METHODS.Clear();
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
+
+            DEBUG_BUTTON_ATTACHED_METHODS.Add($"{value.GetType().ToString()}.OnClick_MakeAction");
+            _button.onClick.AddListener(() => value.OnClick_MakeAction());
+
             Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == value.Icon_Url).First(), this.transform));
-            this.gameObject.name = SpecialTile.Name;
-            CurrentAssignedSpecialTileScript = SpecialTile.GetType().ToString();
+            this.gameObject.name = value.Name;
+            CurrentAssignedSpecialTileScript = value.GetType().ToString();
+
         }
     }
 
@@ -94,9 +105,13 @@ public class CellScript : MonoBehaviour, ITaskable
                 {
                     if ((_specialTile as IFragile).IsReadyToUse)
                     {
-                        {
-                            (_specialTile as IFragile).ActionOnMove(_currentPosition,direction);
-                        }
+                        
+                            if((_specialTile as IFragile).IsReadyToUse)
+                            {
+                              //  print("boomb move");
+                                (_specialTile as IFragile).ActionOnMove(_currentPosition,direction);
+                            }
+                        
                     }
                 }
             }
@@ -105,11 +120,11 @@ public class CellScript : MonoBehaviour, ITaskable
     public bool IsWalkable
     { 
         get => isWalkable;
-        internal set 
+        set 
         {
             isWalkable = value;
         } 
-    }
+    } 
 
     public void SetCell(Vector2Int _position, bool runAnimation = true)
     {
@@ -128,14 +143,35 @@ public class CellScript : MonoBehaviour, ITaskable
 
         if (SpecialTile == null)
         {
+            DEBUG_BUTTON_ATTACHED_METHODS.Clear();
             _button.onClick.RemoveAllListeners();
+            DEBUG_BUTTON_ATTACHED_METHODS.Add("CellScript.MoveTo()");
             _button.onClick.AddListener(() =>
             {
                 MoveTo();
             }
             );
         }
-
+        if (SpecialTile != null)
+        {
+            if(SpecialTile.ParentCell == null) 
+            {
+                Debug.LogWarning("cell ze specialtilesem ale bez parenta");
+                return;
+            }
+            SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Clear();
+            SpecialTile.ParentCell._button.onClick.RemoveAllListeners();
+            
+            if (SpecialTile != null)
+            {
+                SpecialTile.ParentCell._button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
+                SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Add($"{SpecialTile.GetType().ToString()}.OnClick_MakeAction()");
+            }
+            else
+            {
+                Debug.LogWarning("pominięcie sprawdzania Specialtile==null, następnie w srodku warunku dowołuje sie do specialtile.parent ? ");
+            }
+        }
     }
 
     private IEnumerator FadeInAnimation(Vector2 position)
@@ -156,22 +192,28 @@ public class CellScript : MonoBehaviour, ITaskable
 
     public void MoveTo()
     {
-        print("click: move to");
-        if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+        if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)CurrentPosition) < 1.1f)
         {
-            print("poczekaj aż zakończą się wybuchy ;d");
-            return;
+            // print("click: move to");
+            if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+            {
+                // print("poczekaj aż zakończą się wybuchy ;d");
+                return;
+            }
+
+            GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
+            GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
         }
 
-        if(TaskManager.TaskManagerIsOn == false)
-        {
-            GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
-            GameManager.instance.AddTurn();
-        }
-        else
-        {
-            AddActionToQUEUE();
-        }
+        // if(TaskManager.TaskManagerIsOn == false)
+        // {
+        //     GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
+        //     GameManager.instance.AddTurn();
+        // }
+        // else
+        // {
+        //     AddActionToQUEUE();
+        // }
 
     }
 
@@ -200,7 +242,7 @@ public class CellScript : MonoBehaviour, ITaskable
                         return (false, "Wskazane pole znajduje się poza zasięgiem ruchu 1 pola");  
                     }
 
-                    GameManager.instance.AddTurn();
+                     GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
                     GridManager.CascadeMoveTo(GameManager.Player_CELL, position);
                     return (true, "succes");
                 }
@@ -230,9 +272,8 @@ public class CellScript : MonoBehaviour, ITaskable
     }
     public void AssignType(TileTypes _type, ISpecialTile _specialTile = null)
     {
-        this.Type = _type;
-        this.gameObject.name = this.Type.ToString();
 
+        this.Type = _type;
         if (Type == TileTypes.player)
         {
             this._cellImage.color = Color.green;
@@ -254,8 +295,10 @@ public class CellScript : MonoBehaviour, ITaskable
                 case TileTypes.monster:
                     this.SpecialTile = new Monster_Cell(
                         parent: this,
-                        name: "Monster_X",
-                        icon_Url: "monster"
+                        name: "Monster",
+                        icon_Url: "monster",
+                        maxHealthPoints: 2,
+                        speed: 2
                         );
                     (this.SpecialTile as Monster_Cell).ConfigurePathfinderComponent();
                     return;

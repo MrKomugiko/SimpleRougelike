@@ -78,7 +78,7 @@ public class TaskManager : MonoBehaviour
             }
             var _debug = myQueue_Debug.Dequeue();
             Destroy(_debug);
-            print("queue :" + TaskManager.myQueue_Actions.Count);
+           // print("queue :" + TaskManager.myQueue_Actions.Count);
             yield return new WaitForSeconds(TIME_DELAY_BEETWEN_ACTIONS);
         }
     }

@@ -2,5 +2,5 @@ internal interface IValuable
 {
     int GoldValue { get; set; }
 
-    void Pick();
+    void Pick(out bool result);
 }
