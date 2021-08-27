@@ -225,6 +225,13 @@ public class GameManager : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
+    [SerializeField] private List<MonsterData> MonsterVariants = new List<MonsterData>();
+    internal MonsterData GetMonsterData()
+    {
+        var randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
+        return MonsterVariants[randomIndex];
+    }
+
     // [ContextMenu("Start simulation")]
     // public void StartSimulation()
     // {

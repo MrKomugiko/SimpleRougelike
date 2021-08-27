@@ -279,7 +279,6 @@ public partial class NotificationManger : MonoBehaviour
     }
     private static void Configure_Attack_Notification(ISpecialTile Invoker_BaseCell, NotificationScript Invoker_Notification)
     {
-        AlertCategory category = AlertCategory.Attack;
         // Pobranie ataku jaki posiada przeciwnik.
         int damageValue = (Invoker_BaseCell as ICreature).Damage *-1;
 

@@ -46,12 +46,18 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     }
     public void OnClick_MakeAction()
     {
-        ParentCell.MoveTo();    //TODO: hmm
-        
-        bool succes;
-        Pick(out succes);
+        MoveAndPick();       
     }
 
+     public void MoveAndPick()
+    {
+        if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
+        {
+            GameManager.instance.AddGold(GoldValue);
+                GoldValue = 0;
+            ParentCell.MoveTo();
+        }
+    }
     public void Pick(out bool status)
     {
 
@@ -62,6 +68,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     
             Debug.Log("pick");
             GameManager.instance.AddGold(GoldValue);
+                GoldValue = 0;
             
             ParentCell.SpecialTile = null;
             var currentPosition = ParentCell.CurrentPosition;
@@ -74,5 +81,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         Debug.LogWarning("za daleko"+Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition));
        }
     }
+
+
 
 }

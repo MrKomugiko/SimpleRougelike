@@ -26,10 +26,10 @@ public class NotificationScript : MonoBehaviour
     {   
         if(BaseCell.SpecialTile is ICreature)
         {  
-            IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
-            CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name} [Level ? ]"); 
-
             var creature = BaseCell.SpecialTile as ICreature;
+
+            IconImage.sprite = creature.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
+            CreatureName.SetText($"[{BaseCell.Type}] {creature.Name} [Level {creature.Level} ]"); 
             HP.SetText($"HP: {creature.HealthPoints}/{creature.MaxHealthPoints}");
             Speed.SetText($"Speed: {creature.TurnsRequiredToMakeAction} turns");
             Deffence.SetText($"Deffence: ?W.I.P?");
@@ -40,8 +40,9 @@ public class NotificationScript : MonoBehaviour
         
         if(BaseCell.SpecialTile is IValuable)
         {
+            //check if its a dead monster or common valuable
             IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
-            CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name} [Level ? ]"); 
+            CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name}"); 
 
             var valuable = BaseCell.SpecialTile as IValuable;
             HP.SetText("");

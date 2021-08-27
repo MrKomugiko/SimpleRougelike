@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 450394854733418746}
   - component: {fileID: 4644806860219710025}
   - component: {fileID: 3014331572659292797}
-  - component: {fileID: 6886742181538320954}
   m_Layer: 0
-  m_Name: monster
+  m_Name: Goblin_ICON
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +87,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1590662387, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+  m_Sprite: {fileID: 1767182215, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,21 +98,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6886742181538320954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 179587530871585500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 734a8ed2da2824b40accc8b213ce1f00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  start_pos: {x: 0, y: 0}
-  end_pos: {x: 0, y: 0}
-  GRID: {fileID: 0}
-  color:
-    serializedVersion: 2
-    rgba: 0

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5703f592db8692d46a8fcabbb9cd2397, type: 3}
+  m_Name: Goblin
+  m_EditorClassIdentifier: 
+  MonsterName: Goblin
+  Icon_Sprite: {fileID: 179587530871585500, guid: aa44bcf74acf2954da44ced1c91b9e7d, type: 3}
+  Corpse_Sprite: {fileID: 179587530871585500, guid: bd5385c8f699382468835d53b85c3e9f, type: 3}
+  MaxHealthPoints: 5
+  Speed: 3
+  LootID: 2
+  Damage: 2
+  Level: 2
+  ExperiencePoints: 10
+  Type: 6
+  IsWalkable: 1
+  IsPathfinderRequired: 1

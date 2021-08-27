@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class CellScript : MonoBehaviour, ITaskable
 {
     [SerializeField] private Vector2Int _currentPosition;
@@ -19,7 +20,7 @@ public class CellScript : MonoBehaviour, ITaskable
     
     public List<GameObject> Trash = new List<GameObject>();
 
-    private ISpecialTile _specialTile;
+    [SerializeField] private ISpecialTile _specialTile;
     [SerializeField] private bool isWalkable = true;
 
 [SerializeField] private string CurrentAssignedSpecialTileScript;
@@ -82,7 +83,15 @@ public class CellScript : MonoBehaviour, ITaskable
             DEBUG_BUTTON_ATTACHED_METHODS.Add($"{value.GetType().ToString()}.OnClick_MakeAction");
             _button.onClick.AddListener(() => value.OnClick_MakeAction());
 
-            Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == value.Icon_Url).First(), this.transform));
+            try
+            {
+                Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == value.Icon_Url).First(), this.transform));   
+            }
+            catch (System.Exception)
+            {
+    
+               //  throw;
+            }
             this.gameObject.name = value.Name;
             CurrentAssignedSpecialTileScript = value.GetType().ToString();
 
@@ -292,14 +301,8 @@ public class CellScript : MonoBehaviour, ITaskable
                       );
                       return;
 
-                case TileTypes.monster:
-                    this.SpecialTile = new Monster_Cell(
-                        parent: this,
-                        name: "Monster",
-                        icon_Url: "monster",
-                        maxHealthPoints: 2,
-                        speed: 2
-                        );
+                case TileTypes.monster:// TODO LOAD RANDOM MONSTER
+                    this.SpecialTile = new Monster_Cell(parent: this, GameManager.instance.GetMonsterData());
                     (this.SpecialTile as Monster_Cell).ConfigurePathfinderComponent();
                     return;
 
