@@ -226,6 +226,8 @@ public class GameManager : MonoBehaviour
     //--------------------------------------------------------------------------------------------------------------------------------------
     [SerializeField] private List<MonsterData> MonsterVariants = new List<MonsterData>();
     [SerializeField] private List<TreasureData> TreasureVariants = new List<TreasureData>();
+    [SerializeField] private List<BombData> BombVariants = new List<BombData>();
+    [SerializeField] public GameObject WALLSPRITE;
 
     internal MonsterData GetMonsterData(int MonsterID = -1)
     {
@@ -247,5 +249,14 @@ public class GameManager : MonoBehaviour
         else
             return TreasureVariants.Where(m=>m.ID == TreasureID).First();
     }
-
+    internal BombData GetBombData(int BombID = -1)
+    {
+        if(BombID == -1)
+        {
+            var randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
+            return BombVariants[randomIndex];
+        }
+        else
+            return BombVariants.Where(m=>m.ID == BombID).First();
+    }
 }

@@ -9,7 +9,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public CellScript ParentCell { get; private set; }
     public TileTypes Type { get; private set; } 
     public string Name { get; set; }
-    public string Icon_Url { get; set; }
+    [Obsolete("Przesiadka na gameobject sprite'a.")]public string Icon_Url { get; set; }
 
     #endregion
 
@@ -81,5 +81,14 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         status = false;
         Debug.LogWarning("za daleko"+Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition));
        }
+    }
+
+    public void RemoveBorder()
+    {
+        IsHighlighted = false;
+        if (Border != null)
+        {
+            GameObject.Destroy(Border.gameObject);
+        }
     }
 }

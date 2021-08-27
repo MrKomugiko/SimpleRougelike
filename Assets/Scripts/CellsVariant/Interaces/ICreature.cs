@@ -12,7 +12,6 @@ internal interface ICreature : ISpecialTile, ISelectable
     bool ISReadyToMakeAction { get; }
     int Damage { get; }
     GameObject Corpse_Sprite { get; }
-    GameObject Icon_Sprite { get; }
     int Level {get;set;}
 
     void TakeDamage(int value, string source);

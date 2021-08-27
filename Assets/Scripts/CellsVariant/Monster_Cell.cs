@@ -15,7 +15,7 @@ public class Monster_Cell :ICreature, ITaskable
     #region core
     public CellScript ParentCell { get; set; }
     public TileTypes Type { get; private set; } = TileTypes.monster;
-    public GameObject Icon_Sprite { get; private set; }
+    public GameObject Icon_Sprite { get; set; }
     public GameObject Corpse_Sprite { get; private set; }
 
     #endregion
@@ -72,7 +72,6 @@ public class Monster_Cell :ICreature, ITaskable
     public GameObject Border {get; set;}
     public List<(Action action,string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon)>();
     public string Name { get; set; }
-    public string Icon_Url { get; set ; }
 
     public Monster_Cell(CellScript parent, MonsterData _data)
     {
@@ -216,5 +215,14 @@ public class Monster_Cell :ICreature, ITaskable
         }
 
         NotificationManger.TriggerActionNotification(ParentCell.SpecialTile as ISelectable,NotificationManger.AlertCategory.Loot);
+    }
+
+    public void RemoveBorder()
+    {
+        IsHighlighted = false;
+        if (Border != null)
+        {
+            GameObject.Destroy(Border.gameObject);
+        }
     }
 }

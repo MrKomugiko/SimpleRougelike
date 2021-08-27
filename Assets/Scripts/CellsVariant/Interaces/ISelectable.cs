@@ -6,6 +6,7 @@ public interface ISelectable
 
     bool IsHighlighted {get;set;}
 
+    void RemoveBorder();
     // void ShowOnNotificationIfInRange();
 
 

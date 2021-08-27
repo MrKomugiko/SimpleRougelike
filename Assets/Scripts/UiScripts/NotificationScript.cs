@@ -55,12 +55,13 @@ public class NotificationScript : MonoBehaviour
 
         if(BaseCell.SpecialTile is Bomb_Cell)
         {
-            IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
-            CreatureName.SetText($"[{BaseCell.SpecialTile.Type}] {BaseCell.SpecialTile.Name}"); 
-
             var bomb = BaseCell.SpecialTile as Bomb_Cell;
+
+            IconImage.sprite = bomb.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
+            CreatureName.SetText($"[{bomb.Type}] {bomb.Name}"); 
+
             HP.SetText($"Turns to activate : {Math.Min(bomb.TickCounter.CurrentTickValue,bomb.TickCounter.TickMaxValue)}/{bomb.TickCounter.TickMaxValue}");
-            Speed.SetText($"AoE damage : {bomb.DAMAGE} DMG");
+            Speed.SetText($"AoE damage : {bomb.BombDamage} DMG");
             Deffence.SetText("Is activated : "+bomb.IsReadyToUse);
             Type.SetText("Type: Explosive");
             SpecialAttack.SetText("Destroy empty fields");

@@ -5516,6 +5516,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: aed84e02a3a97d645a25a925f1d3284e, type: 2}
   - {fileID: 11400000, guid: b98e0245cebaef54ab058715a8872f56, type: 2}
   - {fileID: 11400000, guid: aca5405dba0f4214a803b5fae3b14b44, type: 2}
+  BombVariants:
+  - {fileID: 11400000, guid: 67684d9b16044314b873c6c8d9fa623e, type: 2}
+  WALLSPRITE: {fileID: 1533482603691778679, guid: 5804502043985d343b2b3773c72385c1, type: 3}
 --- !u!4 &1234049948
 Transform:
   m_ObjectHideFlags: 0

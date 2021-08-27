@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d2e50a33606f3e4385827ac4d415c0e, type: 3}
+  m_Name: RegularBomb
+  m_EditorClassIdentifier: 
+  ID: 0
+  BombName: Regular Bomb
+  Icon_Sprite: {fileID: 179587530871585500, guid: 06dc07cf588f1894aa37964bf5c94525, type: 3}
+  Exploasion_Sprite: {fileID: 1533482603691778679, guid: cd778c959e12edf4cb12aec36890b060, type: 3}
+  Type: 5
+  ExplosionPattern: 0
+  Direction: 0
+  RestrictedByTimer: 1
+  TicksToTurnOn: 5
+  Damage: 1
+  Size: 2
+  IsWalkable: 1
