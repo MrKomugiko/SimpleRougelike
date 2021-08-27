@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class Monster_Cell :ICreature, ITaskable
 {
+    
     private int _healthPoints;
     private int _turnsElapsedCounter;
     public Pathfinding _pathfinder;
@@ -46,7 +47,7 @@ public class Monster_Cell :ICreature, ITaskable
         }
     }
     public int TurnsRequiredToMakeAction {get; private set;}
-    public int lootID { get; private set; } = 1;
+    public int lootID { get; private set; }
     public int Level {get;set;}
     
     #endregion
@@ -75,26 +76,30 @@ public class Monster_Cell :ICreature, ITaskable
 
     public Monster_Cell(CellScript parent, MonsterData _data)
     {
-        this.ParentCell = parent;       
-
-        this.Name =                      _data.MonsterName;
-        this.MaxHealthPoints =           _data.MaxHealthPoints;
-        this.HealthPoints =              _data.MaxHealthPoints;
-        this.TurnsRequiredToMakeAction = _data.Speed;
-        this.Damage =                    _data.Damage;
-        this.Type =                      _data.Type;;
-        this.ParentCell.IsWalkable =     _data.IsWalkable;
-        this.Icon_Sprite =               _data.Icon_Sprite;
-        this.Corpse_Sprite =             _data.Corpse_Sprite; 
-        this.Level =                     _data.Level;
+        this.ParentCell                   =       parent;       
+        this.lootID                       =       _data.LootID;
+        this.Name                         =       _data.MonsterName;
+        this.MaxHealthPoints              =       _data.MaxHealthPoints;
+        this.HealthPoints                 =       _data.MaxHealthPoints;
+        this.TurnsRequiredToMakeAction    =       _data.Speed;
+        this.Damage                       =       _data.Damage;
+        this.Type                         =       _data.Type;;
+        this.ParentCell.IsWalkable        =       _data.IsWalkable;
+        this.Icon_Sprite                  =       _data.Icon_Sprite;
+        this.Corpse_Sprite                =       _data.Corpse_Sprite; 
+        this.Level                        =       _data.Level;
 
         AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword));
         NotificationManger.CreateNewNotificationElement(this);
+       
         var monsterObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
         ParentCell.Trash.Add(monsterObject);
     
         if(_data.IsPathfinderRequired)
+        {
             monsterObject.AddComponent<Pathfinding>();  
+            ConfigurePathfinderComponent();
+        }
     }
     public void ConfigurePathfinderComponent()
     {
@@ -194,14 +199,14 @@ public class Monster_Cell :ICreature, ITaskable
             }
         );
     }
-    public void ChangeIntoTreasureObject(string corpse_Url, object lootID)
+    public void ChangeIntoTreasureObject(string corpse_Url, int lootID)
     {
         ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
         ParentCell.Trash.Clear();
 
         
         ParentCell.Type = TileTypes.treasure;
-        ParentCell.SpecialTile = new Treasure_Cell(ParentCell, "zwłoki slime'a", corpse_Url, 50);
+        ParentCell.SpecialTile = new Treasure_Cell(ParentCell, GameManager.instance.GetTreasureData(lootID));
         //4. assign LootID related reward to this object
         if (Border != null)
         {
@@ -212,21 +217,4 @@ public class Monster_Cell :ICreature, ITaskable
 
         NotificationManger.TriggerActionNotification(ParentCell.SpecialTile as ISelectable,NotificationManger.AlertCategory.Loot);
     }
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
 }

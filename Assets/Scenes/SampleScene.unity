@@ -5507,12 +5507,15 @@ MonoBehaviour:
   - {fileID: 1533482603691778679, guid: ff7f68d62f06b7d448b8c6490c3bea5f, type: 3}
   - {fileID: 1533482603691778679, guid: 5804502043985d343b2b3773c72385c1, type: 3}
   WybuchWTrakcieWykonywania: 0
-  SpritesList:
-  - {fileID: -536297595, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
   MonsterVariants:
   - {fileID: 11400000, guid: 9bcc1287e377edf4088afdad26a4ef58, type: 2}
   - {fileID: 11400000, guid: 0240c0e0a49ef934aa9fbe9bdb4d9c38, type: 2}
   - {fileID: 11400000, guid: a7c883ef51b3c9149929039712131316, type: 2}
+  TreasureVariants:
+  - {fileID: 11400000, guid: f022aad96d087c544b6c0597ee9a454c, type: 2}
+  - {fileID: 11400000, guid: aed84e02a3a97d645a25a925f1d3284e, type: 2}
+  - {fileID: 11400000, guid: b98e0245cebaef54ab058715a8872f56, type: 2}
+  - {fileID: 11400000, guid: aca5405dba0f4214a803b5fae3b14b44, type: 2}
 --- !u!4 &1234049948
 Transform:
   m_ObjectHideFlags: 0
@@ -6418,18 +6421,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 858970804}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: set_interactable
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1406723603
 MonoBehaviour:

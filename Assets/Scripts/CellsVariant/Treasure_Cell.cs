@@ -14,42 +14,43 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     #endregion
 
     #region Treasure-specific
+    public int ID {get;}
     public int GoldValue { get; set; }
     public GameObject Border { get; set; }
     public bool IsHighlighted { get; set; }
+    public GameObject Icon_Sprite {get;set;}
 
     public List<(Action action, string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon)>();
     #endregion
 
 
-    public Treasure_Cell(CellScript parent, string name, string icon_Url, int goldValue)
+    public Treasure_Cell(CellScript parent, TreasureData _data)
     {
-        this.ParentCell = parent;
-        this.Name = name;
-        this.Type = TileTypes.treasure;
-        this.Icon_Url = icon_Url;
-        this.GoldValue = goldValue;
+        this.ParentCell     =       parent;
+        this.ID             =       _data.ID;
+        this.Name           =       _data.TreasureName;
+        this.Type           =       _data.Type;
+        this.Icon_Sprite    =       _data.Icon_Sprite;
+        this.GoldValue      =       _data.Value;
 
-        //Debug.Log("pomyslnie utworzono pole typu treasure o nazwie"+icon_Url);
-        // TODO: jakos bym to musial wynieść z klasy treasure do obsługi wątków dla powiadomień
-        AvaiableActions.Add((
-            ()=>{
+        AvaiableActions.Add((  ()=>{
             bool result;
             Pick(out result);
             if(result == false)
                 {
                     NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Cannot pick, item is too far.");
                 }
-            }
-            ,"Collect Only",ActionIcon.Pick));
+            } ,"Collect Only",ActionIcon.Pick));
         NotificationManger.CreateNewNotificationElement(this);
+    
+        var treasureObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
+        ParentCell.Trash.Add(treasureObject);
     }
     public void OnClick_MakeAction()
     {
         MoveAndPick();       
     }
-
-     public void MoveAndPick()
+    public void MoveAndPick()
     {
         if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
         {
@@ -81,7 +82,4 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         Debug.LogWarning("za daleko"+Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition));
        }
     }
-
-
-
 }

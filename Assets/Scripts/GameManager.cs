@@ -50,8 +50,6 @@ public class GameManager : MonoBehaviour
     
     public static List<CellScript> CurrentMovingTiles = new List<CellScript>();
 
-    public List<Sprite> SpritesList;
-
     public IEnumerator AddTurn()
     {
         _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
@@ -225,41 +223,29 @@ public class GameManager : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
+    //--------------------------------------------------------------------------------------------------------------------------------------
     [SerializeField] private List<MonsterData> MonsterVariants = new List<MonsterData>();
-    internal MonsterData GetMonsterData()
+    [SerializeField] private List<TreasureData> TreasureVariants = new List<TreasureData>();
+
+    internal MonsterData GetMonsterData(int MonsterID = -1)
     {
-        var randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
-        return MonsterVariants[randomIndex];
+        if(MonsterID == -1)
+        {
+            var randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
+            return MonsterVariants[randomIndex];
+        }
+        else
+            return MonsterVariants.Where(m=>m.ID == MonsterID).First();
+    }
+    internal TreasureData GetTreasureData(int TreasureID = -1)
+    {
+        if(TreasureID == -1)
+        {
+            var randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
+            return TreasureVariants[randomIndex];
+        }
+        else
+            return TreasureVariants.Where(m=>m.ID == TreasureID).First();
     }
 
-    // [ContextMenu("Start simulation")]
-    // public void StartSimulation()
-    // {
-    //     StartCoroutine(SimulateGameplay());
-    // }
-    // private IEnumerator SimulateGameplay()
-    // {
-
-    //     for (; ; )
-    //     {
-    //         if (GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player).Count() > 0)
-    //         {
-    //             foreach (var tile in GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player))
-    //             {
-    //                 print($"click [{tile.Value.CurrentPosition}]");
-    //                 tile.Value._button.onClick.Invoke();
-    //                 break;
-    //             }
-    //             yield return new WaitForSeconds(.5f);
-    //         }
-    //         else
-    //         {
-    //             print("no more avaiable moves");
-    //             break;
-    //         }
-    //     }
-
-    //     yield return null;
-
-    // }
 }

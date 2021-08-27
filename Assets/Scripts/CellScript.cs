@@ -301,19 +301,11 @@ public class CellScript : MonoBehaviour, ITaskable
                       );
                       return;
 
-                case TileTypes.monster:// TODO LOAD RANDOM MONSTER
-                    this.SpecialTile = new Monster_Cell(parent: this, GameManager.instance.GetMonsterData());
-                    (this.SpecialTile as Monster_Cell).ConfigurePathfinderComponent();
-                    return;
+                case TileTypes.monster:
+                    this.SpecialTile = new Monster_Cell(parent: this, GameManager.instance.GetMonsterData());       return;
 
                 case TileTypes.treasure:
-                    this.SpecialTile = new Treasure_Cell(
-                        parent: this,
-                        name: "Złote monety",
-                        icon_Url: "treasure",
-                        goldValue: 10
-                    );
-                    return;
+                    this.SpecialTile = new Treasure_Cell(parent: this, GameManager.instance.GetTreasureData(0));    return;
 
                 case TileTypes.bomb:
                     this.SpecialTile = new Bomb_Cell(
@@ -324,10 +316,6 @@ public class CellScript : MonoBehaviour, ITaskable
                         turnsRequiredToActivate: 5
                     );
                     return;
-
-            default:
-                this._cellImage.sprite = GameManager.instance.SpritesList.Where(s => s.name == "basic").First();
-                break;
             };
         }
         else

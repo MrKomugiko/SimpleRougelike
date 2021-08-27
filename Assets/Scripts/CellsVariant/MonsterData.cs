@@ -1,9 +1,9 @@
-using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName="New Monster",menuName="Monster")]
+[CreateAssetMenu(fileName="New Monster",menuName="GameData/Monster")]
 public class MonsterData : ScriptableObject
 {
+    public int ID;
     public string MonsterName; 
     public GameObject Icon_Sprite;
     public GameObject Corpse_Sprite;
@@ -16,4 +16,6 @@ public class MonsterData : ScriptableObject
     public TileTypes Type = TileTypes.monster;
     public bool IsWalkable = true;
     public bool IsPathfinderRequired = true;
+
+    
 }

@@ -16,7 +16,7 @@ internal interface ICreature : ISpecialTile, ISelectable
     int Level {get;set;}
 
     void TakeDamage(int value, string source);
-    void ChangeIntoTreasureObject(string corpse_Url, object lootID);
+    void ChangeIntoTreasureObject(string corpse_Url, int lootID);
     bool TryMove(CellScript target);
     bool TryAttack(CellScript target);
 

@@ -40,11 +40,11 @@ public class NotificationScript : MonoBehaviour
         
         if(BaseCell.SpecialTile is IValuable)
         {
-            //check if its a dead monster or common valuable
-            IconImage.sprite = GameManager.instance.specialEffectList.Where(s => s.name == BaseCell.SpecialTile.Icon_Url).First().GetComponent<SpriteRenderer>().sprite;
+            var valuable = BaseCell.SpecialTile as IValuable;
+
+            IconImage.sprite = valuable.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
             CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name}"); 
 
-            var valuable = BaseCell.SpecialTile as IValuable;
             HP.SetText("");
             Speed.SetText("GOLD VALUE : "+valuable.GoldValue);
             Deffence.SetText("");
