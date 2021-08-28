@@ -19,12 +19,22 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     
     #endregion
     #region USABLE : VATIABLES
+private bool isReady = false;
     public bool IsReadyToUse {
         get 
         {     
             if(RestrictedByTimer)
-            {
-                return (GameManager.instance.CurrentTurnNumber-_spawnTurnNumber) > TurnsRequiredToActivate;
+            {   
+                if(isReady==false)
+                {
+                    if(GameManager.instance.CurrentTurnNumber-_spawnTurnNumber > TurnsRequiredToActivate)
+                    {
+                        isReady = true;   
+                        ParentCell.Trash.First(t=>t.name.Contains(Icon_Sprite.name)).GetComponentInChildren<SpriteRenderer>().color = Color.magenta;
+                        return (GameManager.instance.CurrentTurnNumber-_spawnTurnNumber) > TurnsRequiredToActivate;
+                    }
+                }
+                return false;
             }
             else
             {
