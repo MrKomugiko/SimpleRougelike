@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
                 IncrementTickCounterOnBombCells(tile);
 
                 if (tile.SpecialTile is IFragile) {
-                    if ((tile.SpecialTile as IFragile).IsReadyToUse) 
+                    if ((tile.SpecialTile as IUsable).IsReadyToUse) 
                     {
                         ActivateSpecialTileIfIsReady(tile);
                         continue;
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
 
              NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Waiting for turn.");
         }
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.25f);
         yield return null;
     }
     public void AddGold(int value)
@@ -113,17 +113,17 @@ public class GameManager : MonoBehaviour
         // print("Instantiate ticker");
         return Instantiate(TickCounterPrefab, bomb_Cellcs.ParentCell.transform);
     }
-    public void Countdown_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
-    {
-        foreach (var damagedCell in GameManager.DamagedCells)
-        {
-            if (cellsToDestroy.Contains(damagedCell))
-            {
-                cellsToDestroy.Remove(damagedCell);
-            }
-        }
-        StartCoroutine(routine_SendToGraveyard(time, cellsToDestroy));
-    }
+    // public void Countdown_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
+    // {
+    //     foreach (var damagedCell in GameManager.DamagedCells)
+    //     {
+    //         if (cellsToDestroy.Contains(damagedCell))
+    //         {
+    //             cellsToDestroy.Remove(damagedCell);
+    //         }
+    //     }
+    //     StartCoroutine(routine_SendToGraveyard(time, cellsToDestroy));
+    // }
 
     private void Awake()
     {
@@ -144,9 +144,8 @@ public class GameManager : MonoBehaviour
         Player_CELL.AssignType(TileTypes.player);
         Player_CELL.IsWalkable = true;
     }
-    private IEnumerator routine_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
+    public IEnumerator routine_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
     {
-        // TODO: jakos to uprościc
         DamagedCells.AddRange(cellsToDestroy);
         yield return new WaitWhile(() => WybuchWTrakcieWykonywania);
         WybuchWTrakcieWykonywania = true;
@@ -166,10 +165,8 @@ public class GameManager : MonoBehaviour
             if(cell.SpecialTile is ICreature) 
             {
                 var enemy =  (cell.SpecialTile as ICreature);
-           //     print("enemy oberwał");
                 if(enemy.IsAlive)
                 {
-              //      print("still alive");
                     cellsToDestroy.Remove(cell);
                     DamagedCells.Remove(cell);
                     continue;
@@ -203,6 +200,8 @@ public class GameManager : MonoBehaviour
         
         yield return null;
     }
+
+
     private static void IncrementTickCounterOnBombCells(CellScript tile)
     {
         if (tile.SpecialTile is Bomb_Cell)

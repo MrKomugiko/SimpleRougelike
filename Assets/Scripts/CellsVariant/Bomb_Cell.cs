@@ -19,21 +19,19 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     
     #endregion
     #region USABLE : VATIABLES
-private bool isReady = false;
+    private bool isReady = false;
     public bool IsReadyToUse {
         get 
         {     
             if(RestrictedByTimer)
             {   
-                if(isReady==false)
+                if(GameManager.instance.CurrentTurnNumber-_spawnTurnNumber > TurnsRequiredToActivate)
                 {
-                    if(GameManager.instance.CurrentTurnNumber-_spawnTurnNumber > TurnsRequiredToActivate)
-                    {
-                        isReady = true;   
-                        ParentCell.Trash.First(t=>t.name.Contains(Icon_Sprite.name)).GetComponentInChildren<SpriteRenderer>().color = Color.magenta;
-                        return (GameManager.instance.CurrentTurnNumber-_spawnTurnNumber) > TurnsRequiredToActivate;
-                    }
+                    isReady = true;   
+                    ParentCell.Trash.First(t=>t.name.Contains(Icon_Sprite.name)).GetComponentInChildren<SpriteRenderer>().color = Color.magenta;
+                    return true;
                 }
+                
                 return false;
             }
             else
@@ -43,7 +41,7 @@ private bool isReady = false;
             }
         } 
     }
-    public bool IsUsed {get; private set;} = false;
+    public bool IsUsed {get; set;} = false;
     public GameObject Effect_Sprite {get; private set;}
     #endregion
     #region BOMB-SPECIFIC : VARIABLE
@@ -103,19 +101,17 @@ private bool isReady = false;
     {        
         if(IsReadyToUse == false) return;
         {
-            Use();
+                Use();
         }
     }
     public void Use()
     {
         if(IsImpactAreaHighlihted)
         {   
-            // turn off
             SwitchHighlightImpactArea();
         }
         if(IsUsed == true) 
             return;
-
         IsUsed = true;
 
         AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
@@ -127,17 +123,76 @@ private bool isReady = false;
             {
                 (cell.SpecialTile as ICreature).TakeDamage(BombDamage, "Bomb Explosion");
                 NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
+                GridManager.instance.DamageMap.Add((cell.SpecialTile as ICreature, BombDamage));
+                continue;
             } 
             if(cell.SpecialTile is Bomb_Cell)
             {
-                // (cell.SpecialTile as IUsable).Use(); // TODO: Laskadowe niszczenie sie bomb jest wyłączone dla testow
+                if((cell.SpecialTile as IUsable).IsUsed ==false)
+                {
+                    Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
+                    (cell.SpecialTile as IUsable).Use();
+                    
+                   // (cell.SpecialTile as IUsable).Use();
+                }
             } 
+            GridManager.instance.DestroyedCells.Add(cell);
         }
+        // if (bombCounter == 1)
+        // {
+        //     Debug.LogWarning("START!");
+        //     GridManager.instance.RunExploding();
+        // }
         
+       //////////////////////////// GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
+       // GridManager.instance.DamageMap.ForEach(c=>Debug.LogError("Name:"+c.creature.Name+" / HP:"+c.creature.HealthPoints +" dmage value = "+c.damage.ToString()));
+        Debug.LogWarning("Fields to destroy: "+ GridManager.instance.DestroyedCells.Count);
+        GridManager.instance.ExecuteExplodes();
         RemoveBorder();
-        GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
-        
     }
+
+    public List<CellScript> GetDestroyedCellsFromCascadeContinueExploding()
+    {
+        Debug.LogError("GetDestroyedCellsFromCascadeContinueExploding");
+        List<CellScript> result = new List<CellScript>();
+
+        if(IsImpactAreaHighlihted)
+        {   
+            SwitchHighlightImpactArea();
+        }
+        if(IsUsed == true) 
+            return result;
+        
+        IsUsed = true;
+        AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
+
+        foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
+        {   
+            cell.AddEffectImage(sprite: Effect_Sprite);
+            if(cell.SpecialTile is ICreature)
+            {
+                (cell.SpecialTile as ICreature).TakeDamage(BombDamage, "Bomb Explosion");
+                NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
+                GridManager.instance.DamageMap.Add((cell.SpecialTile as ICreature, BombDamage));
+                continue;
+            } 
+            if(cell.SpecialTile is Bomb_Cell)
+            {
+                if((cell.SpecialTile as IUsable).IsUsed ==false)
+                {
+                    Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
+                    result.AddRange(GetDestroyedCellsFromCascadeContinueExploding());
+                 
+                   // (cell.SpecialTile as IUsable).Use();
+                }
+            } 
+          //  Debug.LogError("result: "+result.Count);
+            result.Add(cell);
+        }
+
+        return result;
+    }
+
     private void AddCellsToDestroyList(Vector2Int nextPosition, Vector2Int direction)
     {
         foreach(var vector in ExplosionVectors)
@@ -149,27 +204,43 @@ private bool isReady = false;
     }
     public void ActionOnMove(Vector2Int nextPosition, Vector2Int direction)
     {
+        if(isReady == false) return;
         if(IsUsed) return;
         IsUsed = true;
+        isReady = false;
 
-        AddCellsToDestroyList(nextPosition, direction);
-
-        foreach (var cell in CellsToDestroy.Where(cell => cell != null))
-        {
-            cell.AddEffectImage(sprite: Effect_Sprite);
-            if (cell.SpecialTile is ICreature)
-            {
-                (cell.SpecialTile as ICreature).TakeDamage(1, "Bomb Explosion");
-                NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.ExplosionDamage);
-            }
-            if (cell.SpecialTile is Bomb_Cell)
-            {
-                (cell.SpecialTile as IUsable).Use();
-            }
-        }
-
-        RemoveBorder();
-        GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
+ /////////////////////////////////////////////////   AddCellsToDestroyList(nextPosition, Vector2Int.zero);
+ /////////////////////////////////////////////////   int bombCounter = 0;
+ /////////////////////////////////////////////////   foreach (var cell in CellsToDestroy.Where(cell => cell != null))
+ /////////////////////////////////////////////////   {
+ /////////////////////////////////////////////////       cell.AddEffectImage(sprite: Effect_Sprite);
+ /////////////////////////////////////////////////       if (cell.SpecialTile is ICreature)
+ /////////////////////////////////////////////////       {
+ /////////////////////////////////////////////////           (cell.SpecialTile as ICreature).TakeDamage(BombDamage, "Bomb Explosion");
+ /////////////////////////////////////////////////           NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.ExplosionDamage);
+ /////////////////////////////////////////////////       }
+ /////////////////////////////////////////////////       if (cell.SpecialTile is Bomb_Cell)
+ /////////////////////////////////////////////////       {
+ /////////////////////////////////////////////////           if((cell.SpecialTile as IUsable).IsUsed)
+ /////////////////////////////////////////////////           {
+ /////////////////////////////////////////////////               bombCounter++;
+ /////////////////////////////////////////////////               (cell.SpecialTile as IUsable).Use();
+ /////////////////////////////////////////////////               GridManager.instance.ListBombsWaitingForDetonate.Add(ParentCell);
+ /////////////////////////////////////////////////                       
+ /////////////////////////////////////////////////               Debug.LogWarning($"OnMove -> DODANO EKSPLOZJE DO KOLEJKI {cell.CurrentPosition} / {cell.name}");
+ /////////////////////////////////////////////////           }
+ /////////////////////////////////////////////////       }
+ /////////////////////////////////////////////////   }
+ /////////////////////////////////////////////////
+ /////////////////////////////////////////////////   Debug.LogError("bomb counters = "+bombCounter);
+ /////////////////////////////////////////////////   // if (bombCounter == 1)
+ /////////////////////////////////////////////////   // {
+ /////////////////////////////////////////////////   //     Debug.LogWarning("START!");
+ /////////////////////////////////////////////////   //     GridManager.instance.RunExploding();
+ /////////////////////////////////////////////////   // }
+ /////////////////////////////////////////////////   RemoveBorder();
+ /////////////////////////////////////////////////
+ /////////////////////////////////////////////////   GridManager.CurrentExplosionQueue.Enqueue(()=>GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy));
     }  
     public void RemoveBorder()
     {
@@ -181,6 +252,7 @@ private bool isReady = false;
     }
 
     private List<GameObject> HighlihtedArea = new List<GameObject>();
+    internal bool GOING_TO_EXPLODE = false;
     public void SwitchHighlightImpactArea()
     {
         if(IsImpactAreaHighlihted == false)

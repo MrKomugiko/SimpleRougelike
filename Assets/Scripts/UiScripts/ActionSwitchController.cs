@@ -47,7 +47,7 @@ public class ActionSwitchController : MonoBehaviour
     public void Configure(ISpecialTile cell)
     {
 
-        Debug.LogWarning("CONFIGURATION ACTION BUTTONS");
+//        Debug.LogWarning("CONFIGURATION ACTION BUTTONS");
         int i =0;
         ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
         actionButtonsList.CopyTo(temp);
