@@ -46,6 +46,7 @@ public class ActionSwitchController : MonoBehaviour
     
     public void Configure(ISpecialTile cell)
     {
+
         Debug.LogWarning("CONFIGURATION ACTION BUTTONS");
         int i =0;
         ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
@@ -63,16 +64,48 @@ public class ActionSwitchController : MonoBehaviour
                 );
                 button.ConfigureDescriptionButtonClick(
                     action: cell.AvaiableActions[i].action,
-                    description: cell.AvaiableActions[i].description
+                    description: cell.AvaiableActions[i].description,
+                    singleAction: cell.AvaiableActions[i].singleAction
                 );
-
-              //  Debug.Log("nr:"+i+" ["+cell.AvaiableActions[i].description+"]");
             }
             else
             {
                 actionButtonsList.Remove(button);
                 Destroy(button.gameObject);
-               // Debug.Log("nr:"+i+" brak przypisanej akcji , przycisk wyłączony");
+            }
+            i++;
+        }                   
+
+    }
+
+     public void Refresh(ISpecialTile cell)
+    {
+
+        Debug.LogWarning("Refresh opened window in ACTION BUTTONS");
+        int i =0;
+        ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
+        actionButtonsList.CopyTo(temp);
+
+        foreach(var button in temp)
+        {
+            if(cell.AvaiableActions == null) continue;
+            if(i<cell.AvaiableActions.Count)
+            {
+              //  button.gameObject.SetActive(true);
+                button.ConfigureIconButtonClick(
+                    action:()=>OnClick_SelectActionIcon(button),
+                    cell.AvaiableActions[i].icon
+                );
+                button.ConfigureDescriptionButtonClick(
+                    action: cell.AvaiableActions[i].action,
+                    description: cell.AvaiableActions[i].description,
+                    singleAction: cell.AvaiableActions[i].singleAction
+                );
+            }
+            else
+            {
+                actionButtonsList.Remove(button);
+                Destroy(button.gameObject);
             }
             i++;
         }                   

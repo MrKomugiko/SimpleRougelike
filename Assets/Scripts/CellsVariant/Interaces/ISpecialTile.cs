@@ -8,6 +8,6 @@ public interface ISpecialTile
     CellScript ParentCell { get; }
     string Name {get;set;}
     GameObject Icon_Sprite {get;set;}
-    List<(Action action,string description, ActionIcon icon)> AvaiableActions {get;}
+    List<(Action action,string description, ActionIcon icon, bool singleAction)> AvaiableActions {get;}
     void OnClick_MakeAction();
 }

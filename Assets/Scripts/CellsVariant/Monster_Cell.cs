@@ -70,7 +70,7 @@ public class Monster_Cell :ICreature, ITaskable
     public bool ISReadyToMakeAction {get; private set;} = false;
     public bool IsHighlighted {get;set;} = false;
     public GameObject Border {get; set;}
-    public List<(Action action,string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon)>();
+    public List<(Action action,string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
     public string Name { get; set; }
 
     public Monster_Cell(CellScript parent, MonsterData _data)
@@ -88,7 +88,7 @@ public class Monster_Cell :ICreature, ITaskable
         this.Corpse_Sprite                =       _data.Corpse_Sprite; 
         this.Level                        =       _data.Level;
 
-        AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword));
+        AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword, true));
         NotificationManger.CreateNewNotificationElement(this);
        
         var monsterObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);

@@ -7,12 +7,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class CellScript : MonoBehaviour, ITaskable
+public class CellScript : MonoBehaviour
 {
     [SerializeField] private Vector2Int _currentPosition;
     [SerializeField] public SpriteRenderer _cellImage;
     [SerializeField] TextMeshProUGUI _cellCoordinates_TMP;
-    [SerializeField] RectTransform _recTransform;
+    [SerializeField] public RectTransform _recTransform;
     [SerializeField] public Button _button;
     [SerializeField] private TileTypes _type;
 
@@ -218,38 +218,38 @@ public class CellScript : MonoBehaviour, ITaskable
 
     }
 
-    public void AddActionToQUEUE()
-    {
-        var position = this.CurrentPosition;
-        TaskManager.AddToActionQueue(
-            $"Add turn and Move player to:[{position.x};{position.y}]",
-            () =>
-            {
-                if(GridManager.CellGridTable[position].SpecialTile !=null)
-                    if(GridManager.CellGridTable[position].SpecialTile is Monster_Cell)
-                        return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam monsterek");
-                    else if(GridManager.CellGridTable[position].SpecialTile is Bomb_Cell)
-                        return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam bomba");
+    // public void AddActionToQUEUE()
+    // {
+    //     var position = this.CurrentPosition;
+    //     TaskManager.AddToActionQueue(
+    //         $"Add turn and Move player to:[{position.x};{position.y}]",
+    //         () =>
+    //         {
+    //             if(GridManager.CellGridTable[position].SpecialTile !=null)
+    //                 if(GridManager.CellGridTable[position].SpecialTile is Monster_Cell)
+    //                     return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam monsterek");
+    //                 else if(GridManager.CellGridTable[position].SpecialTile is Bomb_Cell)
+    //                     return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam bomba");
 
-                if (GridManager.CellGridTable[position].isWalkable == false)
-                    return (false, "wskazane pole jest nieosiągalne z powodu znacznika IsWalkable = false");
+    //             if (GridManager.CellGridTable[position].isWalkable == false)
+    //                 return (false, "wskazane pole jest nieosiągalne z powodu znacznika IsWalkable = false");
 
-                if (GameManager.instance.WybuchWTrakcieWykonywania == true)
-                    return (false, "oczekiwanie na zakończenie animacji wybuchów");
-                else
-                {
-                    if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)position) > 1.1f)
-                    {
-                        return (false, "Wskazane pole znajduje się poza zasięgiem ruchu 1 pola");  
-                    }
+    //             if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+    //                 return (false, "oczekiwanie na zakończenie animacji wybuchów");
+    //             else
+    //             {
+    //                 if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)position) > 1.1f)
+    //                 {
+    //                     return (false, "Wskazane pole znajduje się poza zasięgiem ruchu 1 pola");  
+    //                 }
 
-                     GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
-                    GridManager.CascadeMoveTo(GameManager.Player_CELL, position);
-                    return (true, "succes");
-                }
-            }
-        );
-    }
+    //                  GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+    //                 GridManager.CascadeMoveTo(GameManager.Player_CELL, position);
+    //                 return (true, "succes");
+    //             }
+    //         }
+    //     );
+    // }
 
     internal void AddEffectImage(GameObject sprite)
     {
@@ -299,7 +299,7 @@ public class CellScript : MonoBehaviour, ITaskable
                     this.SpecialTile = new Treasure_Cell(parent: this, GameManager.instance.GetTreasureData(0));    return;
 
                 case TileTypes.bomb:
-                    this.SpecialTile = new Bomb_Cell(parent: this, GameManager.instance.GetBombData(0));             return;
+                    this.SpecialTile = new Bomb_Cell(parent: this, GameManager.instance.GetBombData());             return;
 
             };
         }

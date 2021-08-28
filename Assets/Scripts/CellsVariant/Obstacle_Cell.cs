@@ -17,7 +17,7 @@ public class Obstacle_Cell : ISpecialTile
     #endregion
    
     #region Obstacle-specific
-        public List<(Action action, string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string descriptio,ActionIcon iconn)>();
+        public List<(Action action, string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string descriptio,ActionIcon iconn, bool singleAction)>();
     #endregion
 
 

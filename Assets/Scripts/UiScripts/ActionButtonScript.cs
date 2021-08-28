@@ -60,19 +60,46 @@ public partial class ActionButtonScript : MonoBehaviour
     }
     public void ConfigureIconButtonClick(Action action,  ActionIcon icon)
     {
+        Icon_Button.onClick.RemoveAllListeners();
         myMainIconAction = action;
         Icon_Button.onClick.AddListener(()=>action());;
         ButtonIcon_IMG.sprite = IconSpriteList.First(n=>n.name == "ICON_"+icon.ToString());
     }
-    public void ConfigureDescriptionButtonClick(Action action, string description)
+    public void ConfigureDescriptionButtonClick(Action action, string description, bool singleAction = true)
     { 
+        Description_Button.onClick.RemoveAllListeners();
         this.gameObject.name = "ACTION_"+description;
-        Description_TMP.SetText(description);
+        Debug.LogWarning(description);
         Description_Button.onClick.AddListener(()=>
         {
             print("wykonuje akcje");
             action();
-            CloseAndRemoveHighlightBorder();
+            if(singleAction)
+                CloseAndRemoveHighlightBorder();
+            else
+                ReAssignActionToDescriptionButton(action);
+        });
+        Debug.LogWarning(description);
+        Description_TMP.SetText(description);
+    }
+    private void ReAssignActionToDescriptionButton(Action action)
+    {
+        string text = Description_TMP.text;
+        if(text.Contains("Show"))
+        {
+            text = text.Replace("Show", "Hide");
+        }
+        else if(text.Contains("Hide"))
+        {
+            text = text.Replace("Hide", "Show");
+        }
+        Description_TMP.SetText(text);
+
+        Description_Button.onClick.RemoveAllListeners();
+        Description_Button.onClick.AddListener(()=>
+        {
+            action();
+            ReAssignActionToDescriptionButton(action);
         });
     }
     

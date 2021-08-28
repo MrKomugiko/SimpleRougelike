@@ -118,8 +118,28 @@ public partial class NotificationManger : MonoBehaviour
             cell.Border = GameObject.Instantiate(GameManager.instance.SelectionBorderPrefab, (cell as ISpecialTile).ParentCell.transform);
         }
         cell.Border.GetComponent<Image>().color = color;  
-       // NotificationManger.CreateNewNotificationElement((cell as ISpecialTile));
-    
+    }
+    public static List<GameObject> HighlightAreaWithTemporaryBorders(List<Vector2Int> _area, Color32 _color)
+    {
+        _color = new Color32(_color.r, _color.g, _color.b, 150);
+        List<GameObject> temporaryBorderOverlays = new List<GameObject>();
+        foreach(var cell in _area)
+        {
+            var border = GameObject.Instantiate(GameManager.instance.SelectionBorderPrefab,GridManager.CellGridTable[cell].transform);
+            border.GetComponent<Image>().color = _color;
+            border.GetComponent<Button>().enabled = false;
+            border.transform.localScale = new Vector3(.94f,.94f,.94f);
+            temporaryBorderOverlays.Add(border);
+        }
+        return temporaryBorderOverlays;
+    }
+    public static void RemoveTemporaryBordersObjectsFromArea(List<GameObject> _area)
+    {
+        foreach(var temporaryBorder in _area)
+        {   
+            ActionSwitchController.
+            Destroy(temporaryBorder);
+        }
     }
     public static void HideBorder(ISelectable cell, float timeDelay)
     {
@@ -198,7 +218,6 @@ public partial class NotificationManger : MonoBehaviour
         ShowBorder(Invoker_BaseCell as ISelectable, color);
         HideBorder(Invoker_BaseCell as ISelectable, .5f);
     }
-
     private static void Configure_ExplosionDamage_Notification(ISpecialTile Invoker_BaseCell, NotificationScript Invoker_Notification)
     {
          // Pobranie ataku jaki posiada przeciwnik.

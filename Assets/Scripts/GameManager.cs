@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public static List<CellScript> DamagedCells = new List<CellScript>();
     public static GameManager instance;
 
-    public bool WybuchWTrakcieWykonywania = false;
+    private bool wybuchWTrakcieWykonywania = false;
     private int _currentTurnNumber = 0;
     public int CurrentTurnNumber
     {
@@ -36,18 +36,36 @@ public class GameManager : MonoBehaviour
             {
                 IncrementTickCounterOnBombCells(tile);
 
-                if (tile.SpecialTile is IFragile == false) continue;
-                if ((tile.SpecialTile as IFragile).IsReadyToUse) 
+                if (tile.SpecialTile is IFragile) {
+                    if ((tile.SpecialTile as IFragile).IsReadyToUse) 
+                    {
+                        ActivateSpecialTileIfIsReady(tile);
+                        continue;
+                    }
+                }
+                if(tile.SpecialTile is Bomb_Cell)
                 {
-                    ActivateSpecialTileIfIsReady(tile);
-                    continue;
+                    if((tile.SpecialTile as Bomb_Cell).IsImpactAreaHighlihted)
+                    {
+                        var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell == tile)).FirstOrDefault();
+                        if(existingnotification != null)
+                        {
+                            var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
+                            x.Refresh(tile.SpecialTile);
+                        }
+                        (tile.SpecialTile as Bomb_Cell).SwitchHighlightImpactArea();
+                    }
                 }
             }
-
         }
     }
 
-    
+    public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
+
+        wybuchWTrakcieWykonywania = value; 
+        }
+    }
+
     public static List<CellScript> CurrentMovingTiles = new List<CellScript>();
 
     public IEnumerator AddTurn()
@@ -164,8 +182,6 @@ public class GameManager : MonoBehaviour
                     DamagedCells.Remove(cell);
                     continue;
                 }
-                
-
             }
 
             GridManager.SendToGraveyard(cell.CurrentPosition);
@@ -183,7 +199,7 @@ public class GameManager : MonoBehaviour
 
         WybuchWTrakcieWykonywania = false;
      
-        GridManager.FillGaps();
+       GridManager.FillGaps();
         
         yield return null;
     }
@@ -243,7 +259,7 @@ public class GameManager : MonoBehaviour
     {
         if(TreasureID == -1)
         {
-            var randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
+            var randomIndex = UnityEngine.Random.Range(0,TreasureVariants.Count);
             return TreasureVariants[randomIndex];
         }
         else
@@ -253,7 +269,7 @@ public class GameManager : MonoBehaviour
     {
         if(BombID == -1)
         {
-            var randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
+            var randomIndex = UnityEngine.Random.Range(0,BombVariants.Count);
             return BombVariants[randomIndex];
         }
         else

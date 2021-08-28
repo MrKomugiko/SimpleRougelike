@@ -20,7 +20,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public bool IsHighlighted { get; set; }
     public GameObject Icon_Sprite {get;set;}
 
-    public List<(Action action, string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon)>();
+    public List<(Action action, string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
     #endregion
 
 
@@ -40,7 +40,8 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
                 {
                     NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Cannot pick, item is too far.");
                 }
-            } ,"Collect Only",ActionIcon.Pick));
+            } ,"Collect Only",ActionIcon.Pick,
+            true));
         NotificationManger.CreateNewNotificationElement(this);
     
         var treasureObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
@@ -61,7 +62,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     }
     public void Pick(out bool status)
     {
-
        if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
        {    
            if(Border != null)
