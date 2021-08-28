@@ -17,7 +17,7 @@ public class GridManager : MonoBehaviour
     private void Awake() {
         instance = this;
     }
-    void Start()
+    public void Start()
     {   
         for(int x = 0; x<_gridSize.x; x++)
         {

@@ -223,7 +223,7 @@ public partial class NotificationManger : MonoBehaviour
          // Pobranie ataku jaki posiada przeciwnik.
         if(Invoker_BaseCell is ICreature == false)
         {
-            Debug.LogError($"cos nie tak dla {Invoker_BaseCell.ParentCell.name} ",context:Invoker_BaseCell.ParentCell.gameObject);
+          //  Debug.LogError($"cos nie tak dla {Invoker_BaseCell.ParentCell.name} ",context:Invoker_BaseCell.ParentCell.gameObject);
             return;
         }
         int damageValue = (Invoker_BaseCell as ICreature).Damage * -1;
