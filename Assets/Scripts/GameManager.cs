@@ -60,6 +60,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    internal static void Restart()
+    {
+        // Clear all data
+        
+        foreach (var cell in GridManager.CellGridTable)
+        {
+            Destroy(cell.Value.gameObject);
+        }
+        
+        NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
+        NotificationManger.instance.NotificationList.Clear();
+
+        GameManager.instance.TurnCounter_TMP.SetText("0");
+        GameManager.instance.GoldCounter_TMP.SetText("0");
+        GameManager.instance.HealthCounter_TMP.SetText("0");
+        GameManager.instance.ExperienceCounter_TMP.SetText("0");
+
+        GridManager.destroyedTilesPool.Clear();
+        GridManager.CellGridTable.Clear();
+
+        GridManager.instance.Start();
+        GameManager.instance.Init_PlacePlayerOnGrid();
+    }
+
     public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
 
         wybuchWTrakcieWykonywania = value; 
@@ -103,10 +127,6 @@ public class GameManager : MonoBehaviour
         int currentGoldValue = Int32.Parse(GoldCounter_TMP.text);
         GoldCounter_TMP.SetText((currentGoldValue + value).ToString());
         NotificationManger.AddValueTo_Gold_Notification(value);
-    }
-    public void Exit()
-    {
-        Application.Quit();
     }
     public GameObject InstantiateTicker(Bomb_Cell bomb_Cellcs)
     {
