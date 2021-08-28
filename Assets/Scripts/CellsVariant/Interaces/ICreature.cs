@@ -1,3 +1,5 @@
+using UnityEngine;
+
 internal interface ICreature : ISpecialTile, ISelectable
 {
     int ExperiencePoints {get;set;}
@@ -9,9 +11,11 @@ internal interface ICreature : ISpecialTile, ISelectable
     int TurnsElapsedCounter { get; set; }
     bool ISReadyToMakeAction { get; }
     int Damage { get; }
+    GameObject Corpse_Sprite { get; }
+    int Level {get;set;}
 
     void TakeDamage(int value, string source);
-    void ChangeIntoTreasureObject(string corpse_Url, object lootID);
+    void ChangeIntoTreasureObject(string corpse_Url, int lootID);
     bool TryMove(CellScript target);
     bool TryAttack(CellScript target);
 

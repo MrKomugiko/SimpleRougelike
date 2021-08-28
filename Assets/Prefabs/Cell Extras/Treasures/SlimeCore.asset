@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe80419a82bacfc4eadec25e13c54c35, type: 3}
+  m_Name: SlimeCore
+  m_EditorClassIdentifier: 
+  ID: 1
+  TreasureName: Slime' core
+  Icon_Sprite: {fileID: 179587530871585500, guid: 928158b7cdd87d143b06c7e9ad4654be, type: 3}
+  Value: 20
+  Type: 5
+  IsWalkable: 1

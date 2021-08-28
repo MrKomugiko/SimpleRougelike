@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe80419a82bacfc4eadec25e13c54c35, type: 3}
+  m_Name: SkeletonBones
+  m_EditorClassIdentifier: 
+  ID: 2
+  TreasureName: Skeleton Bones
+  Icon_Sprite: {fileID: 179587530871585500, guid: a2912684cda9b9d468426bcf2005194e, type: 3}
+  Value: 30
+  Type: 5
+  IsWalkable: 1

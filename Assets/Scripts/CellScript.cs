@@ -6,12 +6,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CellScript : MonoBehaviour, ITaskable
+
+public class CellScript : MonoBehaviour
 {
     [SerializeField] private Vector2Int _currentPosition;
     [SerializeField] public SpriteRenderer _cellImage;
     [SerializeField] TextMeshProUGUI _cellCoordinates_TMP;
-    [SerializeField] RectTransform _recTransform;
+    [SerializeField] public RectTransform _recTransform;
     [SerializeField] public Button _button;
     [SerializeField] private TileTypes _type;
 
@@ -19,7 +20,7 @@ public class CellScript : MonoBehaviour, ITaskable
     
     public List<GameObject> Trash = new List<GameObject>();
 
-    private ISpecialTile _specialTile;
+    [SerializeField] private ISpecialTile _specialTile;
     [SerializeField] private bool isWalkable = true;
 
 [SerializeField] private string CurrentAssignedSpecialTileScript;
@@ -82,10 +83,10 @@ public class CellScript : MonoBehaviour, ITaskable
             DEBUG_BUTTON_ATTACHED_METHODS.Add($"{value.GetType().ToString()}.OnClick_MakeAction");
             _button.onClick.AddListener(() => value.OnClick_MakeAction());
 
-            Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == value.Icon_Url).First(), this.transform));
+            //Trash.Add(Instantiate(value.Icon_Sprite, this.transform));   
+
             this.gameObject.name = value.Name;
             CurrentAssignedSpecialTileScript = value.GetType().ToString();
-
         }
     }
 
@@ -217,43 +218,42 @@ public class CellScript : MonoBehaviour, ITaskable
 
     }
 
-    public void AddActionToQUEUE()
+    // public void AddActionToQUEUE()
+    // {
+    //     var position = this.CurrentPosition;
+    //     TaskManager.AddToActionQueue(
+    //         $"Add turn and Move player to:[{position.x};{position.y}]",
+    //         () =>
+    //         {
+    //             if(GridManager.CellGridTable[position].SpecialTile !=null)
+    //                 if(GridManager.CellGridTable[position].SpecialTile is Monster_Cell)
+    //                     return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam monsterek");
+    //                 else if(GridManager.CellGridTable[position].SpecialTile is Bomb_Cell)
+    //                     return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam bomba");
+
+    //             if (GridManager.CellGridTable[position].isWalkable == false)
+    //                 return (false, "wskazane pole jest nieosiągalne z powodu znacznika IsWalkable = false");
+
+    //             if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+    //                 return (false, "oczekiwanie na zakończenie animacji wybuchów");
+    //             else
+    //             {
+    //                 if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)position) > 1.1f)
+    //                 {
+    //                     return (false, "Wskazane pole znajduje się poza zasięgiem ruchu 1 pola");  
+    //                 }
+
+    //                  GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+    //                 GridManager.CascadeMoveTo(GameManager.Player_CELL, position);
+    //                 return (true, "succes");
+    //             }
+    //         }
+    //     );
+    // }
+
+    internal void AddEffectImage(GameObject sprite)
     {
-        var position = this.CurrentPosition;
-        TaskManager.AddToActionQueue(
-            $"Add turn and Move player to:[{position.x};{position.y}]",
-            () =>
-            {
-                if(GridManager.CellGridTable[position].SpecialTile !=null)
-                    if(GridManager.CellGridTable[position].SpecialTile is Monster_Cell)
-                        return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam monsterek");
-                    else if(GridManager.CellGridTable[position].SpecialTile is Bomb_Cell)
-                        return (false, "nie możesz przejśc na wskazaną pozycje, znajduje sie tam bomba");
-
-                if (GridManager.CellGridTable[position].isWalkable == false)
-                    return (false, "wskazane pole jest nieosiągalne z powodu znacznika IsWalkable = false");
-
-                if (GameManager.instance.WybuchWTrakcieWykonywania == true)
-                    return (false, "oczekiwanie na zakończenie animacji wybuchów");
-                else
-                {
-                    if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)position) > 1.1f)
-                    {
-                        return (false, "Wskazane pole znajduje się poza zasięgiem ruchu 1 pola");  
-                    }
-
-                     GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
-                    GridManager.CascadeMoveTo(GameManager.Player_CELL, position);
-                    return (true, "succes");
-                }
-            }
-        );
-    }
-
-    internal void AddEffectImage(string imageUrl)
-    {
-        // Instantiate(GameManager.instance.specialEffectList.Where(e=>e.name == this._specialTile.Effect).First() ,this._recTransform);
-        Trash.Add(Instantiate(GameManager.instance.specialEffectList.Where(e => e.name == imageUrl).First(), this._recTransform));
+        Trash.Add(Instantiate(sprite, this._recTransform));
     }
 
     private IEnumerator SlideAnimation(Vector3 startingPosition, Vector3 endPosition)
@@ -293,38 +293,14 @@ public class CellScript : MonoBehaviour, ITaskable
                       return;
 
                 case TileTypes.monster:
-                    this.SpecialTile = new Monster_Cell(
-                        parent: this,
-                        name: "Monster",
-                        icon_Url: "monster",
-                        maxHealthPoints: 2,
-                        speed: 2
-                        );
-                    (this.SpecialTile as Monster_Cell).ConfigurePathfinderComponent();
-                    return;
+                    this.SpecialTile = new Monster_Cell(parent: this, GameManager.instance.GetMonsterData());       return;
 
                 case TileTypes.treasure:
-                    this.SpecialTile = new Treasure_Cell(
-                        parent: this,
-                        name: "Złote monety",
-                        icon_Url: "treasure",
-                        goldValue: 10
-                    );
-                    return;
+                    this.SpecialTile = new Treasure_Cell(parent: this, GameManager.instance.GetTreasureData(0));    return;
 
                 case TileTypes.bomb:
-                    this.SpecialTile = new Bomb_Cell(
-                        parent: this,
-                        name: "Mina przeciwpiechotna",
-                        effect_Url: "bomb_explosion_image",
-                        icon_Url: "bomb_icon",
-                        turnsRequiredToActivate: 5
-                    );
-                    return;
+                    this.SpecialTile = new Bomb_Cell(parent: this, GameManager.instance.GetBombData());             return;
 
-            default:
-                this._cellImage.sprite = GameManager.instance.SpritesList.Where(s => s.name == "basic").First();
-                break;
             };
         }
         else

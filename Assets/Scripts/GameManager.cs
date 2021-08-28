@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public static List<CellScript> DamagedCells = new List<CellScript>();
     public static GameManager instance;
 
-    public bool WybuchWTrakcieWykonywania = false;
+    private bool wybuchWTrakcieWykonywania = false;
     private int _currentTurnNumber = 0;
     public int CurrentTurnNumber
     {
@@ -36,21 +36,37 @@ public class GameManager : MonoBehaviour
             {
                 IncrementTickCounterOnBombCells(tile);
 
-                if (tile.SpecialTile is IFragile == false) continue;
-                if ((tile.SpecialTile as IFragile).IsReadyToUse) 
+                if (tile.SpecialTile is IFragile) {
+                    if ((tile.SpecialTile as IFragile).IsReadyToUse) 
+                    {
+                        ActivateSpecialTileIfIsReady(tile);
+                        continue;
+                    }
+                }
+                if(tile.SpecialTile is Bomb_Cell)
                 {
-                    ActivateSpecialTileIfIsReady(tile);
-                    continue;
+                    if((tile.SpecialTile as Bomb_Cell).IsImpactAreaHighlihted)
+                    {
+                        var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell == tile)).FirstOrDefault();
+                        if(existingnotification != null)
+                        {
+                            var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
+                            x.Refresh(tile.SpecialTile);
+                        }
+                        (tile.SpecialTile as Bomb_Cell).SwitchHighlightImpactArea();
+                    }
                 }
             }
-
         }
     }
 
-    
-    public static List<CellScript> CurrentMovingTiles = new List<CellScript>();
+    public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
 
-    public List<Sprite> SpritesList;
+        wybuchWTrakcieWykonywania = value; 
+        }
+    }
+
+    public static List<CellScript> CurrentMovingTiles = new List<CellScript>();
 
     public IEnumerator AddTurn()
     {
@@ -166,8 +182,6 @@ public class GameManager : MonoBehaviour
                     DamagedCells.Remove(cell);
                     continue;
                 }
-                
-
             }
 
             GridManager.SendToGraveyard(cell.CurrentPosition);
@@ -185,7 +199,7 @@ public class GameManager : MonoBehaviour
 
         WybuchWTrakcieWykonywania = false;
      
-        GridManager.FillGaps();
+       GridManager.FillGaps();
         
         yield return null;
     }
@@ -225,34 +239,40 @@ public class GameManager : MonoBehaviour
         StartCoroutine(coroutine);
     }
 
-    // [ContextMenu("Start simulation")]
-    // public void StartSimulation()
-    // {
-    //     StartCoroutine(SimulateGameplay());
-    // }
-    // private IEnumerator SimulateGameplay()
-    // {
+    //--------------------------------------------------------------------------------------------------------------------------------------
+    [SerializeField] private List<MonsterData> MonsterVariants = new List<MonsterData>();
+    [SerializeField] private List<TreasureData> TreasureVariants = new List<TreasureData>();
+    [SerializeField] private List<BombData> BombVariants = new List<BombData>();
+    [SerializeField] public GameObject WALLSPRITE;
 
-    //     for (; ; )
-    //     {
-    //         if (GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player).Count() > 0)
-    //         {
-    //             foreach (var tile in GridManager.CellGridTable.Where(cell => cell.Value.Type != TileTypes.wall && cell.Value.Type != TileTypes.player))
-    //             {
-    //                 print($"click [{tile.Value.CurrentPosition}]");
-    //                 tile.Value._button.onClick.Invoke();
-    //                 break;
-    //             }
-    //             yield return new WaitForSeconds(.5f);
-    //         }
-    //         else
-    //         {
-    //             print("no more avaiable moves");
-    //             break;
-    //         }
-    //     }
-
-    //     yield return null;
-
-    // }
+    internal MonsterData GetMonsterData(int MonsterID = -1)
+    {
+        if(MonsterID == -1)
+        {
+            var randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
+            return MonsterVariants[randomIndex];
+        }
+        else
+            return MonsterVariants.Where(m=>m.ID == MonsterID).First();
+    }
+    internal TreasureData GetTreasureData(int TreasureID = -1)
+    {
+        if(TreasureID == -1)
+        {
+            var randomIndex = UnityEngine.Random.Range(0,TreasureVariants.Count);
+            return TreasureVariants[randomIndex];
+        }
+        else
+            return TreasureVariants.Where(m=>m.ID == TreasureID).First();
+    }
+    internal BombData GetBombData(int BombID = -1)
+    {
+        if(BombID == -1)
+        {
+            var randomIndex = UnityEngine.Random.Range(0,BombVariants.Count);
+            return BombVariants[randomIndex];
+        }
+        else
+            return BombVariants.Where(m=>m.ID == BombID).First();
+    }
 }

@@ -5,24 +5,26 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Monster_Cell : ICreature, ITaskable
+public class Monster_Cell :ICreature, ITaskable
 {
+    
+    private int _healthPoints;
+    private int _turnsElapsedCounter;
+    public Pathfinding _pathfinder;
+    
     #region core
     public CellScript ParentCell { get; set; }
     public TileTypes Type { get; private set; } = TileTypes.monster;
-    public string Name { get; set; }
-    public string Icon_Url { get; set; }
+    public GameObject Icon_Sprite { get; set; }
+    public GameObject Corpse_Sprite { get; private set; }
+
     #endregion
 
     #region Monster-specific
-    internal Pathfinding _pathfinder;
     public int ExperiencePoints { get; set; } = 10;
     public int MaxHealthPoints {get; private set;}
-    
     public int Damage {get; private set;}
-    private int _healthPoints;
-    private int _turnsElapsedCounter;
-
+    string Corpse_Url {get;set;} = "monster_bones";
     public int HealthPoints 
     { 
         get => _healthPoints; 
@@ -39,17 +41,18 @@ public class Monster_Cell : ICreature, ITaskable
                 return true;
             else
             {
-                ChangeIntoTreasureObject(corpse_Url: "monster_bones", lootID: lootID);
+                ChangeIntoTreasureObject(corpse_Url:Corpse_Sprite.name, lootID: lootID);
                 return  false;
             }
         }
     }
     public int TurnsRequiredToMakeAction {get; private set;}
-    public int lootID { get; private set; } = 1;
+    public int lootID { get; private set; }
+    public int Level {get;set;}
     
     #endregion
 
-   public int TurnsElapsedCounter {
+    public int TurnsElapsedCounter {
     get {return _turnsElapsedCounter;} 
     set
     {   
@@ -64,38 +67,45 @@ public class Monster_Cell : ICreature, ITaskable
         ISReadyToMakeAction = false;
     }
    }
-
-
     public bool ISReadyToMakeAction {get; private set;} = false;
+    public bool IsHighlighted {get;set;} = false;
+    public GameObject Border {get; set;}
+    public List<(Action action,string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
+    public string Name { get; set; }
 
-
-    public Monster_Cell(CellScript parent, string name, string icon_Url, int maxHealthPoints, int speed, Pathfinding pathfinder = null, int damage = 1)
+    public Monster_Cell(CellScript parent, MonsterData _data)
     {
-        Name = name;
-        Icon_Url = icon_Url;
-        Type = TileTypes.monster;
-        _pathfinder = pathfinder;
-        Damage = damage;
+        this.ParentCell                   =       parent;       
+        this.lootID                       =       _data.LootID;
+        this.Name                         =       _data.MonsterName;
+        this.MaxHealthPoints              =       _data.MaxHealthPoints;
+        this.HealthPoints                 =       _data.MaxHealthPoints;
+        this.TurnsRequiredToMakeAction    =       _data.Speed;
+        this.Damage                       =       _data.Damage;
+        this.Type                         =       _data.Type;;
+        this.ParentCell.IsWalkable        =       _data.IsWalkable;
+        this.Icon_Sprite                  =       _data.Icon_Sprite;
+        this.Corpse_Sprite                =       _data.Corpse_Sprite; 
+        this.Level                        =       _data.Level;
 
-        Debug.Log("monster created");
-        ParentCell = parent;
-        MaxHealthPoints = maxHealthPoints;
-        HealthPoints = maxHealthPoints;
-
-        TurnsRequiredToMakeAction = speed;
-        ParentCell.IsWalkable = true;
-
-        Damage = damage;
-
-        AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword));
+        AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword, true));
         NotificationManger.CreateNewNotificationElement(this);
+       
+        var monsterObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
+        ParentCell.Trash.Add(monsterObject);
+    
+        if(_data.IsPathfinderRequired)
+        {
+            monsterObject.AddComponent<Pathfinding>();  
+            ConfigurePathfinderComponent();
+        }
     }
     public void ConfigurePathfinderComponent()
     {
         if (_pathfinder == null)
         {
           //  Debug.Log("proba załadowania pathfindera z obiektu monster");
-            ParentCell.Trash.Where(t => t.name == (Icon_Url + "(Clone)")).FirstOrDefault().TryGetComponent<Pathfinding>(out _pathfinder);
+            ParentCell.Trash.Where(t => t.name == (Icon_Sprite.name + "(Clone)")).FirstOrDefault().TryGetComponent<Pathfinding>(out _pathfinder);
             if (_pathfinder == null)
             {
                 //Debug.LogError("nieudane ładowanie pathfindera");
@@ -109,6 +119,7 @@ public class Monster_Cell : ICreature, ITaskable
     }
     public void OnClick_MakeAction()
     {
+        int PlayerAttakDamage = 1;
         if (TaskManager.TaskManagerIsOn == true)
         {
             AddActionToQUEUE();
@@ -116,12 +127,11 @@ public class Monster_Cell : ICreature, ITaskable
         }
 
         //Debug.LogWarning("player click on monster -> start interaction with monster");
-        TakeDamage(Damage, "Attacked by player");
+        TakeDamage(PlayerAttakDamage, "Attacked by player");
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
         GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
     }
-
     public void TakeDamage(int damage, string source)
     {
         HealthPoints -= damage;
@@ -188,14 +198,14 @@ public class Monster_Cell : ICreature, ITaskable
             }
         );
     }
-    public void ChangeIntoTreasureObject(string corpse_Url, object lootID)
+    public void ChangeIntoTreasureObject(string corpse_Url, int lootID)
     {
         ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
         ParentCell.Trash.Clear();
 
         
         ParentCell.Type = TileTypes.treasure;
-        ParentCell.SpecialTile = new Treasure_Cell(ParentCell, "zwłoki slime'a", corpse_Url, 50);
+        ParentCell.SpecialTile = new Treasure_Cell(ParentCell, GameManager.instance.GetTreasureData(lootID));
         //4. assign LootID related reward to this object
         if (Border != null)
         {
@@ -206,26 +216,13 @@ public class Monster_Cell : ICreature, ITaskable
 
         NotificationManger.TriggerActionNotification(ParentCell.SpecialTile as ISelectable,NotificationManger.AlertCategory.Loot);
     }
-    
 
-
-
-
-
-
-
-
-
-
-
-
-
-    public bool IsHighlighted {get;set;} = false;
-    public GameObject Border {get; set;}
-
-
-
-
-
-    public List<(Action action,string description,ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon)>();
+    public void RemoveBorder()
+    {
+        IsHighlighted = false;
+        if (Border != null)
+        {
+            GameObject.Destroy(Border.gameObject);
+        }
+    }
 }

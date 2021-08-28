@@ -52,9 +52,29 @@ public class GridManager : MonoBehaviour
         return TileTypes.undefined;
 
     }
-    public static void FillGaps()
+    [ContextMenu("ForceRefillIncorrectAll")]
+    public void ForceRefillIncorrectAll()
     {
+        Debug.LogError("PERFORMED FORCE REPLACE TILES TO CORRECT POSITION");
+        float positionMultipliferX = CellGridTable.First().Value._recTransform.rect.size.x;
+        float positionMultipliferY = CellGridTable.First().Value._recTransform.rect.size.y;
+
+        int i = 0;
+        foreach(var cell in CellGridTable)
+        {   
+            i++;
+            Vector2 correctPosition = new Vector2(cell.Value.CurrentPosition.x * positionMultipliferX, cell.Value.CurrentPosition.y * positionMultipliferY);
+            if((Vector2)cell.Value._recTransform.localPosition != correctPosition)
+            {
+                cell.Value._recTransform.localPosition = correctPosition;
+            }
+        }
+        Debug.LogError(i);
+    }
+    public static void FillGaps()
+    {      
       if(destroyedTilesPool.Count() == 0) return;
+
       var globalFillDirection = new Vector2Int(0,-1); // (Z gory do dołu)
       
       foreach(var tile in GridManager.CellGridTable.OrderByDescending(cell=>cell.Key.y).Where(t=>t.Value == null))

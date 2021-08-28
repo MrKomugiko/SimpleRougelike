@@ -7,10 +7,7 @@ public interface ISpecialTile
     TileTypes Type {get;}
     CellScript ParentCell { get; }
     string Name {get;set;}
-    string Icon_Url {get;set;}
-
-    List<(Action action,string description, ActionIcon icon)> AvaiableActions {get;}
-
+    GameObject Icon_Sprite {get;set;}
+    List<(Action action,string description, ActionIcon icon, bool singleAction)> AvaiableActions {get;}
     void OnClick_MakeAction();
-
 }

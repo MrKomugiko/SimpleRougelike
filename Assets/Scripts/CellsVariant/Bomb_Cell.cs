@@ -3,59 +3,92 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Bomb_Cell : ISpecialTile, IFragile, ISelectable
+public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 {
-    #region core
+
+    #region SELECTABLE : VARIABLES
+        public GameObject Border { get; set; }
+        public bool IsHighlighted { get; set; }
+    #endregion
+    #region SPECIALTILE : VARIABLES
     public CellScript ParentCell {get; private set;}
     public TileTypes Type { get; private set; } 
     public string Name { get; set; }
-    public string Icon_Url {get;set;}
-
+    public GameObject Icon_Sprite {get;set;}
+    public List<(Action action, string description, ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description, ActionIcon icon, bool singleAction)>();
+    
     #endregion
-
-    #region Bomb-specific
-    public string Effect_Url {get;set;}
-    public bool IsReadyToUse => ((GameManager.instance.CurrentTurnNumber-_spawnTurnNumber) > TurnsRequiredToActivate);
-    public int TurnsRequiredToActivate {get; private set;}
+    #region USABLE : VATIABLES
+    public bool IsReadyToUse {
+        get 
+        {     
+            if(RestrictedByTimer)
+            {
+                return (GameManager.instance.CurrentTurnNumber-_spawnTurnNumber) > TurnsRequiredToActivate;
+            }
+            else
+            {
+                /// jezeli nie ma licznika ZAWSZE bedzie gotowa do uzycia
+                return true;
+            }
+        } 
+    }
+    public bool IsUsed {get; private set;} = false;
+    public GameObject Effect_Sprite {get; private set;}
+    #endregion
+    #region BOMB-SPECIFIC : VARIABLE
+    public int TurnsRequiredToActivate;
     private int _spawnTurnNumber;
-    public TickScript TickCounter {get;set;}
-    public GameObject Border { get; set; }
-    public bool IsHighlighted { get; set; }
-    public int DAMAGE {get; private set;} = 1;
-
+    public TickScript TickCounter;
+    public int BombDamage;
+    private ExplosionPatterns ExplosionPattern;
+    private Directions Direction;
+    public int BombID;
+    private bool RestrictedByTimer;
+    private int Size;  
     public List<CellScript> CellsToDestroy = new List<CellScript>();
-    #endregion
-
-
-    public List<(Action action, string description, ActionIcon icon)> AvaiableActions { get; private set;} = new List<(Action action, string description, ActionIcon icon)>();
-
-    public Bomb_Cell(CellScript parent, string name, string effect_Url, string icon_Url, int turnsRequiredToActivate )
+    public List<Vector2Int> ExplosionVectors = new List<Vector2Int>();
+    internal bool IsImpactAreaHighlihted = false;
+    #endregion;
+ 
+    public Bomb_Cell(CellScript parent, BombData _data)
     {
+        this.ParentCell                   =       parent;       
+        this.ParentCell.IsWalkable        =       _data.IsWalkable;
+        this.Type                         =       _data.Type;;
+        this.Name                         =       _data.BombName;
+
+        this.BombID                       =       _data.ID;
+        this.Effect_Sprite                =       _data.Exploasion_Sprite;
+        this.Icon_Sprite                  =       _data.Icon_Sprite;
+        this.RestrictedByTimer            =       _data.RestrictedByTimer;
+        this.TurnsRequiredToActivate      =       _data.TicksToTurnOn;
+        this.BombDamage                   =       _data.Damage;
+        this.ExplosionPattern             =       _data.ExplosionPattern;
+        this.Direction                    =       _data.Direction;
+        this.Size                         =       _data.Size;
+
+        var bombObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
+        ParentCell.Trash.Add(bombObject);
+
+        ExplosionVectors = _data.GetExplosionVectors(this.ExplosionPattern);
+
         _spawnTurnNumber = GameManager.instance.CurrentTurnNumber;
+        if(RestrictedByTimer)
+        {
+            var ticker = GameManager.instance.InstantiateTicker(this);
+            ParentCell.Trash.Add(ticker);      
+            this.TickCounter = ticker.GetComponentInChildren<TickScript>();
+            this.TickCounter.parent = ParentCell;
+        }
 
-        this.ParentCell = parent;
-        this.Type = TileTypes.bomb;
-        this.Name = name;
-
-        this.Effect_Url = effect_Url;
-        this.Icon_Url = icon_Url;
-        this.TurnsRequiredToActivate = turnsRequiredToActivate;
-
-        //Debug.Log("pomyslnie utworzono Bombę, dla pola skojarzonego z pozycją "+ ParentCell.CurrentPosition);  
-
-        var ticker = GameManager.instance.InstantiateTicker(this);
-        ParentCell.Trash.Add(ticker);      
-        this.TickCounter = ticker.GetComponentInChildren<TickScript>();
-        this.TickCounter.parent = ParentCell;
-//
-        parent.IsWalkable = true;
-
-        AvaiableActions.Add((()=>Use(),"Detonate", ActionIcon.Bomb));
-        AvaiableActions.Add((null,"WIP: Reset Timmer",ActionIcon.Timer));
-        AvaiableActions.Add((null,"WIP: Disarm",ActionIcon.Delete));
+        AvaiableActions.Add((()=>Use(),"Detonate", ActionIcon.Bomb, true));
+        AvaiableActions.Add((()=>SwitchHighlightImpactArea(),"Show Inpact Area",ActionIcon.Flag, false));
+        // AvaiableActions.Add((null,"WIP: Disarm",ActionIcon.Delete));
 
         NotificationManger.CreateNewNotificationElement(this);
     }
+    
     public void OnClick_MakeAction()
     {        
         if(IsReadyToUse == false) return;
@@ -63,58 +96,46 @@ public class Bomb_Cell : ISpecialTile, IFragile, ISelectable
             Use();
         }
     }
-    public bool IsUsed {get; private set;} = false;
     public void Use()
     {
-            if(IsUsed == true) 
+        if(IsImpactAreaHighlihted)
+        {   
+            // turn off
+            SwitchHighlightImpactArea();
+        }
+        if(IsUsed == true) 
+            return;
+
+        IsUsed = true;
+
+        AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
+
+        foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
+        {   
+            cell.AddEffectImage(sprite: Effect_Sprite);
+            if(cell.SpecialTile is ICreature)
             {
-                //Debug.Log("Already used");
-                return;
-            }
-            IsUsed = true;
-
-            //Debug.Log("EXPLODEEEEEEEEEEEEEEE !");
-          
-
-            AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
-
-            foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
-            {   
-               // Debug.Log(cell.CurrentPosition);    
-               // Debug.Log(Effect_Url);
-
-                cell.AddEffectImage(imageUrl: Effect_Url);
-                if(cell.SpecialTile is ICreature)
-                {
-                   (cell.SpecialTile as ICreature).TakeDamage(DAMAGE, "Bomb Explosion");
-                   NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
-                } 
-                if(cell.SpecialTile is Bomb_Cell)
-                {
-                   (cell.SpecialTile as IUsable).Use();
-                } 
-            }
-            
-            RemoveBorder();
-            
-            GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
+                (cell.SpecialTile as ICreature).TakeDamage(BombDamage, "Bomb Explosion");
+                NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
+            } 
+            if(cell.SpecialTile is Bomb_Cell)
+            {
+                // (cell.SpecialTile as IUsable).Use(); // TODO: Laskadowe niszczenie sie bomb jest wyłączone dla testow
+            } 
+        }
+        
+        RemoveBorder();
+        GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
+        
     }
     private void AddCellsToDestroyList(Vector2Int nextPosition, Vector2Int direction)
     {
-        if (GridManager.CellGridTable.ContainsKey(nextPosition+2*direction) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+2*direction]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition+2*direction]);
-
-        if (GridManager.CellGridTable.ContainsKey(nextPosition + Vector2Int.up) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+ Vector2Int.up]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition + Vector2Int.up]);
-
-        if (GridManager.CellGridTable.ContainsKey(nextPosition + Vector2Int.down) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+ Vector2Int.down]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition + Vector2Int.down]);
-
-        if (GridManager.CellGridTable.ContainsKey(nextPosition + Vector2Int.left) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+ Vector2Int.left]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition + Vector2Int.left]);
-
-        if (GridManager.CellGridTable.ContainsKey(nextPosition + Vector2Int.right) && !CellsToDestroy.Contains(GridManager.CellGridTable[nextPosition+ Vector2Int.right]))
-            CellsToDestroy.Add(GridManager.CellGridTable[nextPosition + Vector2Int.right]);
+        foreach(var vector in ExplosionVectors)
+        {
+            var position = vector+direction+nextPosition;
+            if (GridManager.CellGridTable.ContainsKey(position) && !CellsToDestroy.Contains(GridManager.CellGridTable[position]))
+                CellsToDestroy.Add(GridManager.CellGridTable[position]);
+        }
     }
     public void ActionOnMove(Vector2Int nextPosition, Vector2Int direction)
     {
@@ -125,7 +146,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, ISelectable
 
         foreach (var cell in CellsToDestroy.Where(cell => cell != null))
         {
-            cell.AddEffectImage(imageUrl: Effect_Url);
+            cell.AddEffectImage(sprite: Effect_Sprite);
             if (cell.SpecialTile is ICreature)
             {
                 (cell.SpecialTile as ICreature).TakeDamage(1, "Bomb Explosion");
@@ -139,9 +160,8 @@ public class Bomb_Cell : ISpecialTile, IFragile, ISelectable
 
         RemoveBorder();
         GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
-    }
-
-    private void RemoveBorder()
+    }  
+    public void RemoveBorder()
     {
         IsHighlighted = false;
         if (Border != null)
@@ -150,38 +170,28 @@ public class Bomb_Cell : ISpecialTile, IFragile, ISelectable
         }
     }
 
-    // public void AddActionToQUEUE()
-    // {
-    //     TaskManager.AddToActionQueue(
-    //         $"Manual detonate Bomb",
-    //         () =>
-    //         {
-    //             if(IsUsed)  return (false,"bomba jest juz nieaktywna");
-    //             if(IsReadyToUse == false) return (false,"bomba nie jest jeszcze gotowa nieaktywna");
-    //             IsUsed = true; 
-    //             IsHighlighted = false;
-    //             Debug.Log("EXPLODE !");
-                
-    //             AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
-
-    //             foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
-    //             {   
-    //                 //Debug.Log(cell.CurrentPosition);    
-    //                 //Debug.Log(Effect_Url);
-
-    //                 cell.AddEffectImage(imageUrl: Effect_Url);
-    //                 if(GridManager.CellGridTable[cell.CurrentPosition].SpecialTile is ICreature) 
-    //                 {
-    //                     (GridManager.CellGridTable[cell.CurrentPosition].SpecialTile as ICreature).TakeDamage(1,"Bomb explosion");
-    //                 }
-    //             }
-                
-    //             GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
-
-    //             return (true,"succes");
-    //         }
-    //     );
-    // }
-    
-
+    private List<GameObject> HighlihtedArea = new List<GameObject>();
+    public void SwitchHighlightImpactArea()
+    {
+        if(IsImpactAreaHighlihted == false)
+        {
+            IsImpactAreaHighlihted = true;
+            List<Vector2Int> ImpactAreaPositions = new List<Vector2Int>();
+            foreach(var vector in ExplosionVectors)
+            {
+                if(GridManager.CellGridTable.ContainsKey(ParentCell.CurrentPosition + vector))
+                {
+                    ImpactAreaPositions.Add(ParentCell.CurrentPosition + vector);
+                }
+            }
+            HighlihtedArea.AddRange(NotificationManger.HighlightAreaWithTemporaryBorders(ImpactAreaPositions, Color.magenta));
+            return;
+        }
+        if(IsImpactAreaHighlihted == true)
+        {
+            NotificationManger.RemoveTemporaryBordersObjectsFromArea(HighlihtedArea);
+            IsImpactAreaHighlihted = false;
+            return;
+        }
+    }
 }
