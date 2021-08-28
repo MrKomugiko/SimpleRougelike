@@ -54,8 +54,8 @@ public partial class NotificationManger : MonoBehaviour
                 // only configure, insteed adding new 
                // existingnotification.GetComponentInChildren<NotificationManger>().NotificationList[0].PossibleActions.GetComponentInChildren<ActionSwitchController>().Configure((cellRelated as ISpecialTile).ParentCell.SpecialTile );
                var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
-               print(x.name);
-               print((cellRelated as ISpecialTile).Name);
+              // print(x.name);
+              // print((cellRelated as ISpecialTile).Name);
                x.Configure((cellRelated as ISpecialTile));
                 return; // nie dodawaj tego samego 
             }
@@ -353,7 +353,7 @@ public partial class NotificationManger : MonoBehaviour
     }
     public static void AddValueTo_Gold_Notification(int goldValue)
     {
-        print("AddValueTo_Gold_Notification");
+        //print("AddValueTo_Gold_Notification");
         AlertScript notificationToModife = null;
         int currentValue = 0;
         AlertScript existingGoldAlert = GameObject.Find("GoldTab").transform.Find("GOLD").GetComponentInChildren<AlertScript>();

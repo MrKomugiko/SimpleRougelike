@@ -69,7 +69,7 @@ public partial class ActionButtonScript : MonoBehaviour
     { 
         Description_Button.onClick.RemoveAllListeners();
         this.gameObject.name = "ACTION_"+description;
-        Debug.LogWarning(description);
+      //  Debug.LogWarning(description);
         Description_Button.onClick.AddListener(()=>
         {
             print("wykonuje akcje");
@@ -79,7 +79,7 @@ public partial class ActionButtonScript : MonoBehaviour
             else
                 ReAssignActionToDescriptionButton(action);
         });
-        Debug.LogWarning(description);
+       // Debug.LogWarning(description);
         Description_TMP.SetText(description);
     }
     private void ReAssignActionToDescriptionButton(Action action)

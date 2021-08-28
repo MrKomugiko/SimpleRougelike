@@ -10,9 +10,16 @@ public class GridManager : MonoBehaviour
     [SerializeField] public Vector2Int _gridSize;
 
 
+    public static Queue<Action> CurrentExplosionQueue = new Queue<Action>();
     public static List<CellScript> destroyedTilesPool = new List<CellScript>();
     public static Dictionary<Vector2Int,CellScript> CellGridTable = new Dictionary<Vector2Int, CellScript>();
     public static GridManager instance;
+
+
+    internal List<(ICreature creature, int damage)> DamageMap = new List<(ICreature creature, int damage)>();
+    internal List<CellScript> DestroyedCells = new List<CellScript>();
+    internal List<CellScript> BombDetonatedByChainReaction = new List<CellScript>();
+
 
     private void Awake() {
         instance = this;
@@ -38,61 +45,62 @@ public class GridManager : MonoBehaviour
     public static TileTypes GetRandomType()
     {
         int rng = UnityEngine.Random.Range(0,101);
-        if(rng >= 0 && rng <65)
-            return TileTypes.grass; // 65%
-        if(rng >= 65 && rng <85)
-            return TileTypes.wall; // 20%
-        if(rng >= 85 && rng <90)
-            return TileTypes.bomb; // 5%
-        if(rng >= 90 && rng <95)
+        if(rng >= 0 && rng <60)
+            return TileTypes.grass; // 55%
+
+        if(rng >= 60 && rng <80)
+            return TileTypes.wall; // 10%
+
+        if(rng >= 80 && rng <90)
+            return TileTypes.bomb; // 10%
+            
+        if(rng >= 90 && rng <99)
             return TileTypes.treasure; // 5%
-        if(rng >= 95)
+
+        if(rng >= 99)
             return TileTypes.monster; // 5%
         
         return TileTypes.undefined;
 
     }
-    [ContextMenu("ForceRefillIncorrectAll")]
-    public void ForceRefillIncorrectAll()
-    {
-        Debug.LogError("PERFORMED FORCE REPLACE TILES TO CORRECT POSITION");
-        float positionMultipliferX = CellGridTable.First().Value._recTransform.rect.size.x;
-        float positionMultipliferY = CellGridTable.First().Value._recTransform.rect.size.y;
+    // [ContextMenu("ForceRefillIncorrectAll")]
+    // public void ForceRefillIncorrectAll()
+    // {
+    //     Debug.LogError("PERFORMED FORCE REPLACE TILES TO CORRECT POSITION");
+    //     float positionMultipliferX = CellGridTable.First().Value._recTransform.rect.size.x;
+    //     float positionMultipliferY = CellGridTable.First().Value._recTransform.rect.size.y;
 
-        int i = 0;
-        foreach(var cell in CellGridTable)
-        {   
-            i++;
-            Vector2 correctPosition = new Vector2(cell.Value.CurrentPosition.x * positionMultipliferX, cell.Value.CurrentPosition.y * positionMultipliferY);
-            if((Vector2)cell.Value._recTransform.localPosition != correctPosition)
-            {
-                cell.Value._recTransform.localPosition = correctPosition;
-            }
-        }
-        Debug.LogError(i);
-    }
+    //     int i = 0;
+    //     foreach(var cell in CellGridTable)
+    //     {   
+    //         i++;
+    //         Vector2 correctPosition = new Vector2(cell.Value.CurrentPosition.x * positionMultipliferX, cell.Value.CurrentPosition.y * positionMultipliferY);
+    //         if((Vector2)cell.Value._recTransform.localPosition != correctPosition)
+    //         {
+    //             cell.Value._recTransform.localPosition = correctPosition;
+    //         }
+    //     }
+    //     Debug.LogError(i);
+    // }
     public static void FillGaps()
     {      
-      if(destroyedTilesPool.Count() == 0) return;
-
+      if(destroyedTilesPool.Count() == 0) 
+      {
+          GridManager.instance.CascadeExploding();
+          return;
+      }
       var globalFillDirection = new Vector2Int(0,-1); // (Z gory do dołu)
       
       foreach(var tile in GridManager.CellGridTable.OrderByDescending(cell=>cell.Key.y).Where(t=>t.Value == null))
       {
-            // 1. sprawdz czy nad tilesem jest cos co mozna ruszyc w doł
-            //  jezeli nie, wstaw tu losowego tilesa i usun wpis z listy
-
-            if(CellGridTable.ContainsKey(tile.Key-globalFillDirection))         
+          if(CellGridTable.ContainsKey(tile.Key-globalFillDirection))         
             {
-              // print("mozna cos zrzuci na dół");
-                // kaskadowe zrzucanie klockow z gory na dol
                 CascadeMoveTo(CellGridTable[tile.Key-globalFillDirection],tile.Key);
                 continue;
             }
             else
             {
                 var positionToFill = tile.Key;
-                // sprawdzam czy pod pustym miejscem jest koljen puste miejsce i jak głeboko zaczyna sie dziura 
                 for (int i = 1; ; i++)
                 {
                     Vector2Int nextPosition = tile.Key + i * globalFillDirection;
@@ -140,11 +148,9 @@ public class GridManager : MonoBehaviour
     }
     public static void CascadeMoveTo(CellScript movedCell, Vector2Int positionToMove)
     {
-        // BLOCK MOVE PLAYER IN PLAYER POSIIOTN 
         if(movedCell.CurrentPosition == positionToMove) return;
         
         Vector2Int moveDirection = positionToMove - movedCell.CurrentPosition;
-        //print("player move in direction :" + moveDirection.ToString());
 
         SendToGraveyard(positionToMove);
 
@@ -153,7 +159,6 @@ public class GridManager : MonoBehaviour
             var newPosition = positionToMove - i * moveDirection;
             var oldPosition = positionToMove - i * moveDirection - moveDirection;;
 
-            // 1# przeniesienie gracza na puste juz miejsce "positionToMove"
             if (CellGridTable.ContainsKey(oldPosition))
             {
                 CellGridTable[newPosition] = CellGridTable[oldPosition];
@@ -167,27 +172,58 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+
+    internal void ExecuteExplodes()
+    {
+        print("execute destroying once");
+        if(DestroyedCells.Count == 0) return;
+        var copy_destroyedCelld = DestroyedCells.ToList();
+        DestroyedCells.Clear();
+        
+        StartCoroutine(GameManager.instance.routine_SendToGraveyard(0.5f,copy_destroyedCelld));
+    }
+
+
+    
+    internal void CascadeExploding()
+    {
+        var copy_BombDetonatedByChainReaction = BombDetonatedByChainReaction.ToList();
+
+        if(copy_BombDetonatedByChainReaction.Count == 0) return;
+
+        BombDetonatedByChainReaction.Clear();
+        var anotherDamagedCells = new List<CellScript>();
+        foreach(var lateBomb in copy_BombDetonatedByChainReaction)
+        {
+            if(lateBomb == null) continue;
+            if(lateBomb.SpecialTile == null || lateBomb.SpecialTile is Bomb_Cell == false) continue;
+            anotherDamagedCells.AddRange((lateBomb.SpecialTile as Bomb_Cell).GetDestroyedCellsFromCascadeContinueExploding());
+        }
+        
+        StartCoroutine(GameManager.instance.routine_SendToGraveyard(.55f,anotherDamagedCells));
+    }
+
+
+
+
+
+
+
+
     public static void TrySwapTiles(CellScript movedCell, Vector2Int newPosition)
     {
-       // sprawdz czy pozycja z któą sie chcesz zamienic jest specialnym / fragile i czy jest aktualnie aktywnym
         if(newPosition == GameManager.Player_CELL.CurrentPosition)
-        {
-           //Debug.LogWarning("monster nie moze zamienic sie miejscami z graczem");
             return;
-        }
+        
         if(CellGridTable[newPosition].SpecialTile != null)
         {
-            if(CellGridTable[newPosition].SpecialTile is Monster_Cell){
-                //Debug.LogWarning("nie zamieniaj sie miejscem z innym monsterkiem");
+            if(CellGridTable[newPosition].SpecialTile is Monster_Cell)
                 return;
-            }
             
-            //Debug.LogWarning("proba swapniecia miejsc ze specialnym tilesem");
-
             if(CellGridTable[newPosition].SpecialTile is IFragile)
             {
-                if((CellGridTable[newPosition].SpecialTile as IUsable).IsReadyToUse){
-                   // Debug.LogWarning("ten tiles jest delikatny i wybuchnie przy ruchu, = nie zamieniaj miejsc, poprostu go zdetonuj");
+                if((CellGridTable[newPosition].SpecialTile as IUsable).IsReadyToUse)
+                {
                     (CellGridTable[newPosition].SpecialTile as IFragile).Use();
                     return;
                 }
