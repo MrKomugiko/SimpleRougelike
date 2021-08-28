@@ -22,5 +22,5 @@ MonoBehaviour:
   RestrictedByTimer: 1
   TicksToTurnOn: 5
   Damage: 10
-  Size: 6
+  Size: 2
   IsWalkable: 1
