@@ -24,6 +24,22 @@ public class NotificationScript : MonoBehaviour
 
     public void RefreshData()
     {   
+        if(BaseCell.SpecialTile is Player_Cell)
+        {  
+            var player = BaseCell.SpecialTile as ILivingThing;
+
+            IconImage.sprite = BaseCell.SpecialTile.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
+            CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name} [Level {player.Level} ]"); 
+            HP.SetText($"HP: {player.HealthPoints}/{player.MaxHealthPoints}");
+            Speed.SetText($" ");
+            Deffence.SetText($" ");
+            Type.SetText($" ");
+            SpecialAttack.SetText($" ");
+
+            this.gameObject.transform.parent.SetSiblingIndex(0);
+            return;
+        }
+
         if(BaseCell.SpecialTile is ICreature)
         {  
             var creature = BaseCell.SpecialTile as ICreature;

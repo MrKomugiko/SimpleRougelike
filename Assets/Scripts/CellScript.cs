@@ -226,16 +226,12 @@ public class CellScript : MonoBehaviour
     public void AssignType(TileTypes _type, ISpecialTile _specialTile = null)
     {
         this.Type = _type;
-        if (Type == TileTypes.player)
-        {
-            this._cellImage.color = Color.green;
-
-            return;
-        };
-        
         if (_specialTile == null) {
             switch (Type)
             {
+                case TileTypes.player:
+                    this.SpecialTile = new Player_Cell(parent: this, GameManager.instance.GetMonsterData(666));       return;
+
                 case TileTypes.wall:
                     this.SpecialTile = new Obstacle_Cell(
                         parent: this,

@@ -11,7 +11,7 @@ public class GridManager : MonoBehaviour
     public static List<CellScript> destroyedTilesPool = new List<CellScript>();
     public static Dictionary<Vector2Int,CellScript> CellGridTable = new Dictionary<Vector2Int, CellScript>();
     public static GridManager instance;
-    internal List<(ICreature creature, int damage)> DamageMap = new List<(ICreature creature, int damage)>();
+    internal List<(ILivingThing creature, int damage)> DamageMap = new List<(ILivingThing creature, int damage)>();
     internal List<CellScript> DestroyedCells = new List<CellScript>();
     internal List<CellScript> BombDetonatedByChainReaction = new List<CellScript>();
 
