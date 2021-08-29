@@ -5523,6 +5523,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9bcc1287e377edf4088afdad26a4ef58, type: 2}
   - {fileID: 11400000, guid: 0240c0e0a49ef934aa9fbe9bdb4d9c38, type: 2}
   - {fileID: 11400000, guid: a7c883ef51b3c9149929039712131316, type: 2}
+  - {fileID: 11400000, guid: 89edece723aa90d4dad63457adb99d0e, type: 2}
   TreasureVariants:
   - {fileID: 11400000, guid: f022aad96d087c544b6c0597ee9a454c, type: 2}
   - {fileID: 11400000, guid: aed84e02a3a97d645a25a925f1d3284e, type: 2}

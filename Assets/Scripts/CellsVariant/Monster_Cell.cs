@@ -46,6 +46,7 @@ public class Monster_Cell :ICreature
             }
         }
     }
+   
     public int TurnsRequiredToMakeAction {get; private set;}
     public int lootID { get; private set; }
     public int Level {get;set;}
@@ -124,9 +125,7 @@ public class Monster_Cell :ICreature
              NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");
              return;
         }
-        int PlayerAttakDamage = 1;
-
-        TakeDamage(PlayerAttakDamage, "Attacked by player");
+        TakeDamage((GameManager.Player_CELL.SpecialTile as Player_Cell).Damage, "Attacked by player");
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
         GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
@@ -148,16 +147,10 @@ public class Monster_Cell :ICreature
         {
             return false;
         }
-
-        //Debug.Log($"Monster zaatakował {_target.name}");
         //TODO: rozpisać to , aktualnie na sztywno -10hp
-        int currentHP = Int32.Parse((GameManager.instance.HealthCounter_TMP.text.Replace("%", "")));
-        currentHP -= 10;
-        GameManager.instance.HealthCounter_TMP.SetText(currentHP + " %");
-
+        (_target.SpecialTile as ILivingThing).TakeDamage(Damage,Name);
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Attack);
         return true;
-
     }
     public bool TryMove(CellScript _targetCell)
     {

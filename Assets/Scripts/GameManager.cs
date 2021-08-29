@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
         var tempList = cellsToDestroy.Where(c => c != null).ToList();
         foreach (var cell in tempList)
         {
-            if (cell.Type == TileTypes.player) 
+            if (cell.SpecialTile is Player_Cell) 
             {
                 print("gracz oberawał");
                 cellsToDestroy.Remove(cell);
@@ -185,9 +185,7 @@ public class GameManager : MonoBehaviour
                     continue;
                 }
             }
-
-            GridManager.SendToGraveyard(cell.CurrentPosition);
-          
+            GridManager.SendToGraveyard(cell.CurrentPosition);  
         }
         
         cellsToDestroy.Where(c => c != null).ToList().ForEach(cell => cell.Trash.ForEach(trash => Destroy(trash.gameObject)));
@@ -253,7 +251,13 @@ public class GameManager : MonoBehaviour
     {
         if(MonsterID == -1)
         {
-            var randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
+            int randomIndex = 0;
+            while(true)
+            {
+                randomIndex = UnityEngine.Random.Range(0,MonsterVariants.Count);
+                if(MonsterVariants[randomIndex].ID != 666)
+                break;
+            }
             return MonsterVariants[randomIndex];
         }
         else

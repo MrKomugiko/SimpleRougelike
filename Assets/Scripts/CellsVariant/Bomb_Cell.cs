@@ -105,11 +105,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
         foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
         {   
             cell.AddEffectImage(sprite: Effect_Sprite);
-            if(cell.SpecialTile is ICreature)
+            if(cell.SpecialTile is ILivingThing)
             {
-                (cell.SpecialTile as ICreature).TakeDamage(BombDamage, "Bomb Explosion");
+                (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion");
                 NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
-                GridManager.instance.DamageMap.Add((cell.SpecialTile as ICreature, BombDamage));
+                GridManager.instance.DamageMap.Add((cell.SpecialTile as ILivingThing, BombDamage));
                 continue;
             } 
             if(cell.SpecialTile is Bomb_Cell)
@@ -144,11 +144,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
         foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
         {   
             cell.AddEffectImage(sprite: Effect_Sprite);
-            if(cell.SpecialTile is ICreature)
+            if(cell.SpecialTile is ILivingThing)
             {
-                (cell.SpecialTile as ICreature).TakeDamage(BombDamage, "Bomb Explosion");
+                (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion");
                 NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
-                GridManager.instance.DamageMap.Add((cell.SpecialTile as ICreature, BombDamage));
+                GridManager.instance.DamageMap.Add((cell.SpecialTile as ILivingThing, BombDamage));
                 continue;
             } 
             if(cell.SpecialTile is Bomb_Cell)
