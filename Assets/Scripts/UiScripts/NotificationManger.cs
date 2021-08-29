@@ -80,34 +80,38 @@ public partial class NotificationManger : MonoBehaviour
     }
     public static void HighlightElementSwitch(NotificationScript notification, bool? state = null)
     {
+        Debug.LogWarning("cos sie zadziało xd");
         ISelectable selectableCell = (notification.BaseCell.SpecialTile as ISelectable);
         if(state == null)
         {
             if(notification.BaseCell.SpecialTile is ISelectable == false) return;
 
             if(notification.SelectBorder.GetComponent<Image>().enabled)
-                turnON(notification);
-            else
                 turnOFF(notification);
+            else
+                turnON(notification);
         }
         else if(state == true)
             turnON(notification);
-        else
+        else if(state == false)
             turnOFF(notification);
 
         void turnON(NotificationScript notification)
         {
-            notification.SelectBorder.GetComponent<Image>().enabled = false;
-            selectableCell.IsHighlighted = false;
+            print("on");
 
-            HideBorder(selectableCell, 0f); // ukrycie natychmiast
+            notification.SelectBorder.GetComponent<Image>().enabled = true;
+            selectableCell.IsHighlighted = true;
+            ShowBorder(selectableCell, Color.green);
         }
 
         void turnOFF(NotificationScript notification)
         {
-            notification.SelectBorder.GetComponent<Image>().enabled = true;
-            selectableCell.IsHighlighted = true;
-            ShowBorder(selectableCell, Color.green);
+            print("off");
+            notification.SelectBorder.GetComponent<Image>().enabled = false;
+            selectableCell.IsHighlighted = false;
+
+            HideBorder(selectableCell, 0f); // ukrycie natychmiast
         }
     }
     public static void ShowBorder(ISelectable cell, Color32 color)

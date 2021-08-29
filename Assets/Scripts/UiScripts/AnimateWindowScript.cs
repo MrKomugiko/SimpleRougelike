@@ -17,7 +17,7 @@ public class AnimateWindowScript : MonoBehaviour
 
     private Coroutine routineInProgress = null;
     
-    private void MoveWindow()
+    public void MoveWindow()
     {
         if(routineInProgress == null)
         {
@@ -28,33 +28,71 @@ public class AnimateWindowScript : MonoBehaviour
             print("trwa juz animacja ruchu okna");
         }
     }
+    public void HideTabWindow()
+    {
+        _transform.anchoredPosition = _position_OFF;
+        CurrentOpenedTab = "";
+        Active = false;
+        _DarkBackground.SetActive(false);
+
+    }
     private IEnumerator SlideAnimation()
     {
-        Vector3 start = Vector3.zero, end=Vector3.zero;
-        if(Active)
+        HideNotificationElementsExceptPlayer(_active);
+
+        var bgImg = _DarkBackground.GetComponent<Image>();
+        Color32 colorstart = new Color32(0, 0, 0, 175);
+        Color32 colorend = Color.clear;
+
+        Vector3 start = Vector3.zero, end = Vector3.zero;
+        if (_active)
         {
+
             start = _position_ON;
             end = _position_OFF;
+
+            colorstart = new Color32(0, 0, 0, 175);
+            colorend = Color.clear;
         }
-        if(! Active)
+        if (!_active)
         {
+            _DarkBackground.SetActive(true);
             start = _position_OFF;
             end = _position_ON;
+
+            colorstart = Color.clear;
+            colorend = new Color32(0, 0, 0, 175);
         }
 
-        float progress = 1f/_slideSpeed;
+        float progress = 1f / _slideSpeed;
         // print(_transform.anchoredPosition+" / start / "+start);
-         for (float i = 0; i < 1.1f; i+=progress)
+        for (float i = 0; i < 1.1f; i += progress)
         {
-           // print(i);
-            _transform.anchoredPosition = Vector3.Lerp(start,end,i);
+            // print(i);
+            _transform.anchoredPosition = Vector3.Lerp(start, end, i);
+            bgImg.color = Color32.Lerp(colorstart, colorend, i);
+
             yield return new WaitForFixedUpdate();
         }
         // print(_transform.anchoredPosition+" / end / "+end);
-    
-        Active =! Active;
+
+        _active = !_active;
+        if (_active == false)
+            _DarkBackground.SetActive(false);
+
         routineInProgress = null;
         yield return null;
+    }
+
+    private void HideNotificationElementsExceptPlayer(bool value)
+    {
+        // and show only first notification => pla
+        // make background bark transparent overlay on , 
+        foreach (var noti in transform.parent.GetComponentInChildren<NotificationManger>().NotificationList)
+        {
+            if (noti.BaseCell.Type != TileTypes.player)
+                noti.gameObject.SetActive(value);
+        }
     }
 
     public string CurrentOpenedTab = "";
@@ -91,6 +129,17 @@ public class AnimateWindowScript : MonoBehaviour
 
     }
     [SerializeField] GameObject Content;
+    [SerializeField] GameObject _DarkBackground;
+    public bool _active { 
+        get => Active; 
+        set 
+        {
+            Active = value; 
+
+            
+        } 
+    }
+
     private void LoadTabData(string tabname)
     {
         foreach(var tab in tabList)

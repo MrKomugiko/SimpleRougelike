@@ -70,9 +70,10 @@ public class GameManager : MonoBehaviour
         NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
         NotificationManger.instance.NotificationList.Clear();
 
-
         GridManager.destroyedTilesPool.Clear();
         GridManager.CellGridTable.Clear();
+
+        GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
 
         GridManager.instance.Start();
         GameManager.instance.Init_PlacePlayerOnGrid();

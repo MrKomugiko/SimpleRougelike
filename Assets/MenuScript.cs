@@ -28,6 +28,10 @@ public class MenuScript : MonoBehaviour
 
     [SerializeField] GameObject MENU;
 
+    private void OnEnable() {
+        // hide all border and selections 
+        NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.HighlightElementSwitch(n,false));
+    }
     private void Start() 
     {
         MENU = this.gameObject;
