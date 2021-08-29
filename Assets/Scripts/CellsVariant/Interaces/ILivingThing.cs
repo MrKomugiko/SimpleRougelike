@@ -10,4 +10,6 @@ public interface ILivingThing
     int MaxHealthPoints { get; }
 
     void TakeDamage(int value, string source);
+    
+    
 }

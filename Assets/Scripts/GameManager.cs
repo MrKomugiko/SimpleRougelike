@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public static CellScript Player_CELL;
     public static List<CellScript> DamagedCells = new List<CellScript>();
     public static GameManager instance;
-
+   [SerializeField] public GameObject GameOverScreen;
     private bool wybuchWTrakcieWykonywania = false;
     private int _currentTurnNumber = 0;
     public int CurrentTurnNumber
@@ -61,11 +61,6 @@ public class GameManager : MonoBehaviour
 
     internal static void Restart()
     {      
-        GameManager.instance.CurrentTurnNumber = 0;
-        GameManager.instance.TurnCounter_TMP.SetText("0");
-        GameManager.instance.GoldCounter_TMP.SetText("0");
-        GameManager.instance.HealthCounter_TMP.SetText("100");
-        GameManager.instance.ExperienceCounter_TMP.SetText("0");
 
         foreach (var cell in GridManager.CellGridTable)
         {
@@ -81,6 +76,12 @@ public class GameManager : MonoBehaviour
 
         GridManager.instance.Start();
         GameManager.instance.Init_PlacePlayerOnGrid();
+
+        GameManager.instance.CurrentTurnNumber = 0;
+        GameManager.instance.TurnCounter_TMP.SetText("0");
+        GameManager.instance.GoldCounter_TMP.SetText("0");
+        GameManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
+        GameManager.instance.ExperienceCounter_TMP.SetText("0");
     }
 
     public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {

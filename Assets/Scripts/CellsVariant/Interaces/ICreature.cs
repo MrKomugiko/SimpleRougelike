@@ -7,7 +7,7 @@ internal interface ICreature : ISpecialTile, ISelectable, ILivingThing
     int TurnsRequiredToMakeAction { get; }
     int TurnsElapsedCounter { get; set; }
     bool ISReadyToMakeAction { get; }
-    void ChangeIntoTreasureObject(string corpse_Url, int lootID);
+    void ChangeIntoTreasureObject(int lootID);
     bool TryAttack(CellScript target);
     bool TryMove(CellScript target);
 }
