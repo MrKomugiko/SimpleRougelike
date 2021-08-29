@@ -80,7 +80,6 @@ public partial class NotificationManger : MonoBehaviour
     }
     public static void HighlightElementSwitch(NotificationScript notification, bool? state = null)
     {
-        print("highlight");
         ISelectable selectableCell = (notification.BaseCell.SpecialTile as ISelectable);
         if(state == null)
         {

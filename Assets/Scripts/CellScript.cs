@@ -15,16 +15,14 @@ public class CellScript : MonoBehaviour
     [SerializeField] public RectTransform _recTransform;
     [SerializeField] public Button _button;
     [SerializeField] private TileTypes _type;
-
     public List<String> DEBUG_BUTTON_ATTACHED_METHODS;
-    
     public List<GameObject> Trash = new List<GameObject>();
-
     [SerializeField] private ISpecialTile _specialTile;
     [SerializeField] private bool isWalkable = true;
 
-[SerializeField] private string CurrentAssignedSpecialTileScript;
-    private void OnDrawGizmos() {
+    [SerializeField] private string CurrentAssignedSpecialTileScript;
+    private void OnDrawGizmos() 
+    {
         if(isWalkable == false)
         {
             Gizmos.color = Color.black;
@@ -83,25 +81,21 @@ public class CellScript : MonoBehaviour
             DEBUG_BUTTON_ATTACHED_METHODS.Add($"{value.GetType().ToString()}.OnClick_MakeAction");
             _button.onClick.AddListener(() => value.OnClick_MakeAction());
 
-            //Trash.Add(Instantiate(value.Icon_Sprite, this.transform));   
-
             this.gameObject.name = value.Name;
             CurrentAssignedSpecialTileScript = value.GetType().ToString();
         }
     }
-
     public Vector2Int CurrentPosition
     {
         get => _currentPosition;
         set
         {
             var direction = _currentPosition - value;
-           var oldPosition = _currentPosition;
+            var oldPosition = _currentPosition;
             _currentPosition = value;
 
             if (_specialTile != null)
             {
-                // print("gettype = "+ _specialTile.GetType());    
                 if (_specialTile is IFragile)
                 {
                     if((_specialTile as Bomb_Cell).IsUsed == false)
@@ -111,15 +105,29 @@ public class CellScript : MonoBehaviour
                             if( GridManager.instance.BombDetonatedByChainReaction.Contains(this) == false)
                             {
                                 GridManager.instance.BombDetonatedByChainReaction.Add(this);
-                                print("BOMBKA CZEKA ZA ZDETONOWANIEM  "+CurrentPosition);
                             }
                         }
                     }
                 }
             }
+            // if(Math.Abs(direction.x)>1 || Math.Abs(direction.y)>1 )
+            // {
+            //     StartCoroutine(
+            //         FadeInAnimation(new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y))
+            //     );     
+            // } 
+            // else
+            // {
+            //     StartCoroutine(
+            //         SlideAnimation( _recTransform.localPosition,  new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y))
+            //     );
+            // }
+            
+            this._recTransform.localPosition =  new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y);
+        
+
         }
     }
-
     public bool IsWalkable
     { 
         get => isWalkable;
@@ -128,21 +136,22 @@ public class CellScript : MonoBehaviour
             isWalkable = value;
         } 
     } 
-
     public void SetCell(Vector2Int _position, bool runAnimation = true)
     {
+        //this._recTransform.localScale = Vector3.zero;
+        //this._recTransform.localPosition =  new Vector2(_position.x * _recTransform.rect.size.x, _position.y * _recTransform.rect.size.y);
         
-       // this._recTransform.localPosition =  new Vector2(_position.x * _recTransform.rect.size.x, _position.y * _recTransform.rect.size.y);
-        CurrentPosition = _position;
-       _cellCoordinates_TMP.SetText(_position.ToString());
+        _cellCoordinates_TMP.SetText(_position.ToString());
 
-        if (runAnimation == true)
-        {
-            GameManager.CurrentMovingTiles.Add(this);
-            StartCoroutine(SlideAnimation(_recTransform.localPosition, new Vector2(_position.x * _recTransform.rect.size.x, _position.y * _recTransform.rect.size.y)));
-        }
-        else
-            StartCoroutine(FadeInAnimation(new Vector2(_position.x * _recTransform.rect.size.x, _position.y * _recTransform.rect.size.y)));
+        CurrentPosition = _position;
+       
+
+        // if (runAnimation == true)
+        // {
+        //     StartCoroutine(SlideAnimation(_recTransform.localPosition, new Vector2(_position.x * _recTransform.rect.size.x, _position.y * _recTransform.rect.size.y)));
+        // }
+        // else
+        //     StartCoroutine(FadeInAnimation(new Vector2(_position.x * _recTransform.rect.size.x, _position.y * _recTransform.rect.size.y)));
 
 
         if (SpecialTile == null)
@@ -177,10 +186,8 @@ public class CellScript : MonoBehaviour
             }
         }
     }
-
     private IEnumerator FadeInAnimation(Vector2 position)
     {
-        // print("rozpoczęcie animacji xd");
         this._cellImage.transform.localScale = Vector3.zero;
         this._recTransform.localPosition = position;
         for (int i = 1; i <= 10; i++)
@@ -189,29 +196,7 @@ public class CellScript : MonoBehaviour
             yield return new WaitForFixedUpdate();
             this._cellImage.transform.localScale = Vector3.Lerp(Vector3.zero, new Vector3(150, 150, 1), progress);
         }
-
-        // print("koneic animacji");
         yield return null;
-    }
-
-    public void MoveTo()
-    {
-        if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)CurrentPosition) < 1.1f)
-        {
-            // print("click: move to");
-            if (GameManager.instance.WybuchWTrakcieWykonywania == true)
-            {
-                // print("poczekaj aż zakończą się wybuchy ;d");
-                return;
-            }
-
-            GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
-            GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
-        }
-    }
-    internal void AddEffectImage(GameObject sprite)
-    {
-        Trash.Add(Instantiate(sprite, this._recTransform));
     }
     private IEnumerator SlideAnimation(Vector3 startingPosition, Vector3 endPosition)
     {
@@ -221,9 +206,22 @@ public class CellScript : MonoBehaviour
             yield return new WaitForFixedUpdate();
             this._recTransform.localPosition = Vector3.Lerp(startingPosition, endPosition, progress);
         }
-        GameManager.CurrentMovingTiles.Remove(this);
-        // print("koneic animacji");
         yield return null;
+    }
+    public void MoveTo()
+    {
+        if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)CurrentPosition) < 1.1f)
+        {
+            if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+                return;
+
+            GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
+            GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+        }
+    }
+    internal void AddEffectImage(GameObject sprite)
+    {
+        Trash.Add(Instantiate(sprite, this._recTransform));
     }
     public void AssignType(TileTypes _type, ISpecialTile _specialTile = null)
     {

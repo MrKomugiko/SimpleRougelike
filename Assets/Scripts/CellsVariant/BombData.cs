@@ -74,7 +74,6 @@ public class BombData : ScriptableObject
         return VectorArea.Distinct<Vector2Int>().ToList();
     }
 }
-
 public enum ExplosionPatterns
 {
     SimpleCross,

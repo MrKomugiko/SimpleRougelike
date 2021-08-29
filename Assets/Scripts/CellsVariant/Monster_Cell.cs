@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Monster_Cell :ICreature, ITaskable
+public class Monster_Cell :ICreature
 {
     
     private int _healthPoints;
@@ -119,14 +119,13 @@ public class Monster_Cell :ICreature, ITaskable
     }
     public void OnClick_MakeAction()
     {
-        int PlayerAttakDamage = 1;
-        if (TaskManager.TaskManagerIsOn == true)
-        {
-            AddActionToQUEUE();
-            return;
+        if(GridManager.DistanceCheck(this) == false) {
+            // out of range
+             NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");
+             return;
         }
+        int PlayerAttakDamage = 1;
 
-        //Debug.LogWarning("player click on monster -> start interaction with monster");
         TakeDamage(PlayerAttakDamage, "Attacked by player");
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
@@ -162,41 +161,18 @@ public class Monster_Cell :ICreature, ITaskable
     }
     public bool TryMove(CellScript _targetCell)
     {
+
         NodeGrid.UpdateMapObstacleData();
         _pathfinder.FindPath(_targetCell);
         if (_pathfinder.FinalPath.Count > 1)
         {
+            Debug.LogError("RUCH STWORKA");
             //Debug.Log($"Monster wykonuje krok w strone celu [ komórki {_targetCell.name} ]");
-            GridManager.TrySwapTiles(ParentCell, _pathfinder.FinalPath[0].Coordination);
+            GridManager.SwapTiles(ParentCell, _pathfinder.FinalPath[0].Coordination);
             return true;
         }
         return false;
 
-    }
-    public void AddActionToQUEUE()
-    {
-        var position = ParentCell.CurrentPosition;
-        TaskManager.AddToActionQueue(
-            $"Attack Monster on position:[{position.x};{position.y}]",
-            () =>
-            {
-                if (Vector2Int.Distance(GameManager.Player_CELL.CurrentPosition, ParentCell.CurrentPosition) > 1.1f)
-                {
-                    return (false, "Monsterek jest poza zasięgiem 1 pola");
-                }
-
-                if (GridManager.CellGridTable[position].SpecialTile != null)
-                {
-                    if (GridManager.CellGridTable[position].SpecialTile is Monster_Cell)
-                    {
-                        // TODO: zró coś po kliknięciu na monsterka
-                        //Debug.Log("click on monster");
-                        return (true, "succes");
-                    }
-                }
-                return (false, "we wskazanym miejscu nie znajduje sie monster którego można zaatakować");
-            }
-        );
     }
     public void ChangeIntoTreasureObject(string corpse_Url, int lootID)
     {

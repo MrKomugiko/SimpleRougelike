@@ -62,25 +62,24 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     }
     public void Pick(out bool status)
     {
-       if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
-       {    
-           if(Border != null)
-                GameObject.Destroy(Border.gameObject);
-    
+        if(GridManager.DistanceCheck(this))
+        {
+            if (Border != null)
+            GameObject.Destroy(Border.gameObject);
+
             Debug.Log("pick");
             GameManager.instance.AddGold(GoldValue);
-                GoldValue = 0;
-            
+            GoldValue = 0;
+
             ParentCell.SpecialTile = null;
             var currentPosition = ParentCell.CurrentPosition;
             GridManager.CellGridTable[ParentCell.CurrentPosition].SetCell(currentPosition);
             status = true;
-       }
-       else
-       {
-        status = false;
-        Debug.LogWarning("za daleko"+Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition));
-       }
+        }
+        else
+        {
+            status = false;
+        }
     }
 
     public void RemoveBorder()

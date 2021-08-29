@@ -6,19 +6,13 @@ using UnityEngine;
 public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 {
 
-    #region SELECTABLE : VARIABLES
-        public GameObject Border { get; set; }
-        public bool IsHighlighted { get; set; }
-    #endregion
-    #region SPECIALTILE : VARIABLES
+    public GameObject Border { get; set; }
+    public bool IsHighlighted { get; set; }
     public CellScript ParentCell {get; private set;}
     public TileTypes Type { get; private set; } 
     public string Name { get; set; }
     public GameObject Icon_Sprite {get;set;}
     public List<(Action action, string description, ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description, ActionIcon icon, bool singleAction)>();
-    
-    #endregion
-    #region USABLE : VATIABLES
     private bool isReady = false;
     public bool IsReadyToUse {
         get 
@@ -43,8 +37,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     }
     public bool IsUsed {get; set;} = false;
     public GameObject Effect_Sprite {get; private set;}
-    #endregion
-    #region BOMB-SPECIFIC : VARIABLE
     public int TurnsRequiredToActivate;
     private int _spawnTurnNumber;
     public TickScript TickCounter;
@@ -57,7 +49,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     public List<CellScript> CellsToDestroy = new List<CellScript>();
     public List<Vector2Int> ExplosionVectors = new List<Vector2Int>();
     internal bool IsImpactAreaHighlihted = false;
-    #endregion;
  
     public Bomb_Cell(CellScript parent, BombData _data)
     {
@@ -100,22 +91,17 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     public void OnClick_MakeAction()
     {        
         if(IsReadyToUse == false) return;
-        {
-                Use();
-        }
+        Use();    
     }
     public void Use()
     {
-        if(IsImpactAreaHighlihted)
-        {   
-            SwitchHighlightImpactArea();
-        }
-        if(IsUsed == true) 
-            return;
+        if(IsImpactAreaHighlihted) SwitchHighlightImpactArea();
+        if(IsReadyToUse == false) return;
+        if(IsUsed == true) return;
+
         IsUsed = true;
-
+        Debug.LogError("WYBUCH BOMBY !");
         AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
-
         foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
         {   
             cell.AddEffectImage(sprite: Effect_Sprite);
@@ -132,21 +118,10 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
                 {
                     Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
                     (cell.SpecialTile as IUsable).Use();
-                    
-                   // (cell.SpecialTile as IUsable).Use();
                 }
             } 
             GridManager.instance.DestroyedCells.Add(cell);
         }
-        // if (bombCounter == 1)
-        // {
-        //     Debug.LogWarning("START!");
-        //     GridManager.instance.RunExploding();
-        // }
-        
-       //////////////////////////// GameManager.instance.Countdown_SendToGraveyard(0.5f, CellsToDestroy);
-       // GridManager.instance.DamageMap.ForEach(c=>Debug.LogError("Name:"+c.creature.Name+" / HP:"+c.creature.HealthPoints +" dmage value = "+c.damage.ToString()));
-        Debug.LogWarning("Fields to destroy: "+ GridManager.instance.DestroyedCells.Count);
         GridManager.instance.ExecuteExplodes();
         RemoveBorder();
     }
@@ -182,17 +157,13 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
                 {
                     Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
                     result.AddRange(GetDestroyedCellsFromCascadeContinueExploding());
-                 
-                   // (cell.SpecialTile as IUsable).Use();
                 }
             } 
-          //  Debug.LogError("result: "+result.Count);
             result.Add(cell);
         }
 
         return result;
     }
-
     private void AddCellsToDestroyList(Vector2Int nextPosition, Vector2Int direction)
     {
         foreach(var vector in ExplosionVectors)
@@ -250,11 +221,10 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             GameObject.Destroy(Border.gameObject);
         }
     }
-
     private List<GameObject> HighlihtedArea = new List<GameObject>();
-    internal bool GOING_TO_EXPLODE = false;
     public void SwitchHighlightImpactArea()
     {
+        Debug.Log($"switch impact area range from {IsImpactAreaHighlihted} to {!IsImpactAreaHighlihted}");
         if(IsImpactAreaHighlihted == false)
         {
             IsImpactAreaHighlihted = true;

@@ -1,25 +1,19 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
     [SerializeField] GameObject _cellPrefab;
     [SerializeField] public Vector2Int _gridSize;
-
-
-    public static Queue<Action> CurrentExplosionQueue = new Queue<Action>();
     public static List<CellScript> destroyedTilesPool = new List<CellScript>();
     public static Dictionary<Vector2Int,CellScript> CellGridTable = new Dictionary<Vector2Int, CellScript>();
     public static GridManager instance;
-
-
     internal List<(ICreature creature, int damage)> DamageMap = new List<(ICreature creature, int damage)>();
     internal List<CellScript> DestroyedCells = new List<CellScript>();
     internal List<CellScript> BombDetonatedByChainReaction = new List<CellScript>();
-
 
     private void Awake() {
         instance = this;
@@ -41,56 +35,29 @@ public class GridManager : MonoBehaviour
             }   
         }
     }
-    
     public static TileTypes GetRandomType()
     {
         int rng = UnityEngine.Random.Range(0,101);
         if(rng >= 0 && rng <60)
             return TileTypes.grass; // 55%
-
         if(rng >= 60 && rng <80)
             return TileTypes.wall; // 10%
-
         if(rng >= 80 && rng <90)
             return TileTypes.bomb; // 10%
-            
         if(rng >= 90 && rng <99)
             return TileTypes.treasure; // 5%
-
         if(rng >= 99)
             return TileTypes.monster; // 5%
-        
         return TileTypes.undefined;
-
     }
-    // [ContextMenu("ForceRefillIncorrectAll")]
-    // public void ForceRefillIncorrectAll()
-    // {
-    //     Debug.LogError("PERFORMED FORCE REPLACE TILES TO CORRECT POSITION");
-    //     float positionMultipliferX = CellGridTable.First().Value._recTransform.rect.size.x;
-    //     float positionMultipliferY = CellGridTable.First().Value._recTransform.rect.size.y;
-
-    //     int i = 0;
-    //     foreach(var cell in CellGridTable)
-    //     {   
-    //         i++;
-    //         Vector2 correctPosition = new Vector2(cell.Value.CurrentPosition.x * positionMultipliferX, cell.Value.CurrentPosition.y * positionMultipliferY);
-    //         if((Vector2)cell.Value._recTransform.localPosition != correctPosition)
-    //         {
-    //             cell.Value._recTransform.localPosition = correctPosition;
-    //         }
-    //     }
-    //     Debug.LogError(i);
-    // }
     public static void FillGaps()
     {      
-      if(destroyedTilesPool.Count() == 0) 
-      {
-          GridManager.instance.CascadeExploding();
-          return;
-      }
+        if(destroyedTilesPool.Count() == 0) 
+        {
+            GridManager.instance.CascadeExploding();         
+            return;
+        }
       var globalFillDirection = new Vector2Int(0,-1); // (Z gory do dołu)
-      
       foreach(var tile in GridManager.CellGridTable.OrderByDescending(cell=>cell.Key.y).Where(t=>t.Value == null))
       {
           if(CellGridTable.ContainsKey(tile.Key-globalFillDirection))         
@@ -114,12 +81,10 @@ public class GridManager : MonoBehaviour
                     }
                     break;
                 }
-
                 AddNewCellIntoGridField(positionToFill);
                 break;
             }
         }
-
       FillGaps();
   }
     public static void AddNewCellIntoGridField(Vector2Int positionToFill)
@@ -129,7 +94,6 @@ public class GridManager : MonoBehaviour
             pool.Trash.ForEach(t=>{Destroy(t.gameObject);});
             pool.Trash.Clear();
         }
-
         CellGridTable[positionToFill] = destroyedTilesPool.First();
         destroyedTilesPool.Remove(destroyedTilesPool.First());
         CellGridTable[positionToFill].SetCell(positionToFill,false);
@@ -139,26 +103,20 @@ public class GridManager : MonoBehaviour
     {
         if(CellGridTable.Where(cell=>cell.Key == cellPosition).FirstOrDefault().Value == null)
             return;
-        // 0# zwolnienei miejsca w ktore gracz przechodzi
         destroyedTilesPool.Add(CellGridTable[cellPosition]);
-        
-        CellGridTable[cellPosition].SetCell(new Vector2Int(-1, -1),false);
+        CellGridTable[cellPosition].SetCell(new Vector2Int(-3, -3),false);
         CellGridTable[cellPosition].SpecialTile = null;
         CellGridTable[cellPosition] = null;
     }
     public static void CascadeMoveTo(CellScript movedCell, Vector2Int positionToMove)
     {
         if(movedCell.CurrentPosition == positionToMove) return;
-        
         Vector2Int moveDirection = positionToMove - movedCell.CurrentPosition;
-
         SendToGraveyard(positionToMove);
-
         for (int i = 0; ; i++)
         {
             var newPosition = positionToMove - i * moveDirection;
             var oldPosition = positionToMove - i * moveDirection - moveDirection;;
-
             if (CellGridTable.ContainsKey(oldPosition))
             {
                 CellGridTable[newPosition] = CellGridTable[oldPosition];
@@ -172,23 +130,16 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-
     internal void ExecuteExplodes()
     {
-        print("execute destroying once");
         if(DestroyedCells.Count == 0) return;
         var copy_destroyedCelld = DestroyedCells.ToList();
         DestroyedCells.Clear();
-        
-        StartCoroutine(GameManager.instance.routine_SendToGraveyard(0.5f,copy_destroyedCelld));
+        StartCoroutine(GameManager.instance.routine_SendToGraveyard(0.4f,copy_destroyedCelld));
     }
-
-
-    
-    internal void CascadeExploding()
+    public void CascadeExploding()
     {
         var copy_BombDetonatedByChainReaction = BombDetonatedByChainReaction.ToList();
-
         if(copy_BombDetonatedByChainReaction.Count == 0) return;
 
         BombDetonatedByChainReaction.Clear();
@@ -199,27 +150,17 @@ public class GridManager : MonoBehaviour
             if(lateBomb.SpecialTile == null || lateBomb.SpecialTile is Bomb_Cell == false) continue;
             anotherDamagedCells.AddRange((lateBomb.SpecialTile as Bomb_Cell).GetDestroyedCellsFromCascadeContinueExploding());
         }
-        
-        StartCoroutine(GameManager.instance.routine_SendToGraveyard(.55f,anotherDamagedCells));
+        if(anotherDamagedCells.Count == 0) return;;
+        StartCoroutine(GameManager.instance.routine_SendToGraveyard(0.4f,anotherDamagedCells));
     }
-
-
-
-
-
-
-
-
-    public static void TrySwapTiles(CellScript movedCell, Vector2Int newPosition)
+    public static void SwapTiles(CellScript movedCell, Vector2Int newPosition)
     {
         if(newPosition == GameManager.Player_CELL.CurrentPosition)
             return;
-        
         if(CellGridTable[newPosition].SpecialTile != null)
         {
             if(CellGridTable[newPosition].SpecialTile is Monster_Cell)
                 return;
-            
             if(CellGridTable[newPosition].SpecialTile is IFragile)
             {
                 if((CellGridTable[newPosition].SpecialTile as IUsable).IsReadyToUse)
@@ -229,14 +170,21 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-
         var oldPosition = movedCell.CurrentPosition;
-
         var temp = CellGridTable[newPosition];
         CellGridTable[newPosition] = CellGridTable[oldPosition];
         CellGridTable[oldPosition] = temp;
 
         CellGridTable[newPosition].SetCell(newPosition);
         CellGridTable[oldPosition].SetCell(oldPosition);
+    }
+
+    public static bool DistanceCheck(ISpecialTile cell)    
+    {
+        if (Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)cell.ParentCell.CurrentPosition) < 1.1f)
+        {
+            return true;
+        }
+        return false;
     }
 }

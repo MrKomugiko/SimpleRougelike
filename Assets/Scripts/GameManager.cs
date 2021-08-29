@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour
                     if ((tile.SpecialTile as IUsable).IsReadyToUse) 
                     {
                         ActivateSpecialTileIfIsReady(tile);
-                        continue;
                     }
                 }
                 if(tile.SpecialTile is Bomb_Cell)
@@ -61,9 +60,13 @@ public class GameManager : MonoBehaviour
     }
 
     internal static void Restart()
-    {
-        // Clear all data
-        
+    {      
+        GameManager.instance.CurrentTurnNumber = 0;
+        GameManager.instance.TurnCounter_TMP.SetText("0");
+        GameManager.instance.GoldCounter_TMP.SetText("0");
+        GameManager.instance.HealthCounter_TMP.SetText("100");
+        GameManager.instance.ExperienceCounter_TMP.SetText("0");
+
         foreach (var cell in GridManager.CellGridTable)
         {
             Destroy(cell.Value.gameObject);
@@ -72,10 +75,6 @@ public class GameManager : MonoBehaviour
         NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
         NotificationManger.instance.NotificationList.Clear();
 
-        GameManager.instance.TurnCounter_TMP.SetText("0");
-        GameManager.instance.GoldCounter_TMP.SetText("0");
-        GameManager.instance.HealthCounter_TMP.SetText("0");
-        GameManager.instance.ExperienceCounter_TMP.SetText("0");
 
         GridManager.destroyedTilesPool.Clear();
         GridManager.CellGridTable.Clear();
@@ -89,8 +88,6 @@ public class GameManager : MonoBehaviour
         wybuchWTrakcieWykonywania = value; 
         }
     }
-
-    public static List<CellScript> CurrentMovingTiles = new List<CellScript>();
 
     public IEnumerator AddTurn()
     {
@@ -130,20 +127,8 @@ public class GameManager : MonoBehaviour
     }
     public GameObject InstantiateTicker(Bomb_Cell bomb_Cellcs)
     {
-        // print("Instantiate ticker");
         return Instantiate(TickCounterPrefab, bomb_Cellcs.ParentCell.transform);
     }
-    // public void Countdown_SendToGraveyard(float time, List<CellScript> cellsToDestroy)
-    // {
-    //     foreach (var damagedCell in GameManager.DamagedCells)
-    //     {
-    //         if (cellsToDestroy.Contains(damagedCell))
-    //         {
-    //             cellsToDestroy.Remove(damagedCell);
-    //         }
-    //     }
-    //     StartCoroutine(routine_SendToGraveyard(time, cellsToDestroy));
-    // }
 
     private void Awake()
     {
