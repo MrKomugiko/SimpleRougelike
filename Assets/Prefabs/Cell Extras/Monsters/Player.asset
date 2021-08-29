@@ -16,7 +16,7 @@ MonoBehaviour:
   MonsterName: Player
   Icon_Sprite: {fileID: 179587530871585500, guid: 4f74e5baf9f75cc4fbc370413d806b39, type: 3}
   Corpse_Sprite: {fileID: 179587530871585500, guid: 36d2abc07fc59704cbf1a0320adac7de, type: 3}
-  MaxHealthPoints: 100
+  MaxHealthPoints: 25
   Speed: -1
   LootID: -1
   Damage: 1

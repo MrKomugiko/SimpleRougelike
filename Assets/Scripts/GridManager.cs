@@ -38,16 +38,22 @@ public class GridManager : MonoBehaviour
     public static TileTypes GetRandomType()
     {
         int rng = UnityEngine.Random.Range(0,101);
-        if(rng >= 0 && rng <60)
+        
+        if(rng >= 0 && rng <75)
             return TileTypes.grass; // 55%
-        if(rng >= 60 && rng <80)
+
+        if(rng >= 75 && rng <85)
             return TileTypes.wall; // 10%
-        if(rng >= 80 && rng <90)
+
+        if(rng >= 85 && rng <90)
             return TileTypes.bomb; // 10%
-        if(rng >= 90 && rng <99)
+
+        if(rng >= 90 && rng <95)
             return TileTypes.treasure; // 5%
-        if(rng >= 99)
+
+        if(rng >= 95)
             return TileTypes.monster; // 5%
+
         return TileTypes.undefined;
     }
     public static void FillGaps()

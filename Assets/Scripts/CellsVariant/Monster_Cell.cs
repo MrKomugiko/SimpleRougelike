@@ -41,7 +41,7 @@ public class Monster_Cell :ICreature
                 return true;
             else
             {
-                ChangeIntoTreasureObject(corpse_Url:Corpse_Sprite.name, lootID: lootID);
+                ChangeIntoTreasureObject(lootID: lootID);
                 return  false;
             }
         }
@@ -167,7 +167,7 @@ public class Monster_Cell :ICreature
         return false;
 
     }
-    public void ChangeIntoTreasureObject(string corpse_Url, int lootID)
+    public void ChangeIntoTreasureObject(int lootID)
     {
         ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
         ParentCell.Trash.Clear();

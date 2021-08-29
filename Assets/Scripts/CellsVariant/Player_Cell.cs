@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
 {
@@ -28,8 +29,9 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             {
                // TODO: Podmiana na kapliczke ;d
                // TODO: otwarcie okna  GAMEOVER
-               Debug.Log("Player is DEAD");
+                Debug.Log("Player is DEAD");
                 HealthPoints = 0;
+                ChangeToPlayerCorpse();
                 return  false;
             }
         }
@@ -89,7 +91,25 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         if(IsAlive)
         {
             Debug.Log($"Player HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");
-            GameManager.instance.HealthCounter_TMP.SetText(HealthPoints.ToString());
         } 
+        GameManager.instance.HealthCounter_TMP.SetText(HealthPoints.ToString());
+    }
+    public void ChangeToPlayerCorpse()
+    {
+        ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
+        ParentCell.Trash.Clear();
+
+        ParentCell.Trash.Add(GameObject.Instantiate(Corpse_Sprite,ParentCell.transform));
+
+        if (Border != null)
+        {
+            Border.GetComponent<Image>().color = Color.yellow;
+            GameObject.Destroy(Border, .5f);
+            Border = null;
+        }
+
+        NotificationManger.TriggerActionNotification(ParentCell.SpecialTile as ISelectable,NotificationManger.AlertCategory.Loot);
+
+        GameManager.instance.GameOverScreen.SetActive(true);
     }
 }
