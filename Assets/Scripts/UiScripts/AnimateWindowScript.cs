@@ -13,6 +13,7 @@ public class AnimateWindowScript : MonoBehaviour
     [SerializeField] Vector3 _position_ON;
     [SerializeField] int _slideSpeed;
     [SerializeField] List<Button> tabList = new List<Button>();
+    [SerializeField] List<GameObject> contentList = new List<GameObject>();
     [SerializeField] private bool Active = false;
 
     private Coroutine routineInProgress = null;
@@ -41,7 +42,7 @@ public class AnimateWindowScript : MonoBehaviour
         HideNotificationElementsExceptPlayer(_active);
 
         var bgImg = _DarkBackground.GetComponent<Image>();
-        Color32 colorstart = new Color32(0, 0, 0, 175);
+        Color32 colorstart = new Color32(0, 0, 0, 200);
         Color32 colorend = Color.clear;
 
         Vector3 start = Vector3.zero, end = Vector3.zero;
@@ -51,7 +52,7 @@ public class AnimateWindowScript : MonoBehaviour
             start = _position_ON;
             end = _position_OFF;
 
-            colorstart = new Color32(0, 0, 0, 175);
+            colorstart = new Color32(0, 0, 0, 200);
             colorend = Color.clear;
         }
         if (!_active)
@@ -61,7 +62,7 @@ public class AnimateWindowScript : MonoBehaviour
             end = _position_ON;
 
             colorstart = Color.clear;
-            colorend = new Color32(0, 0, 0, 175);
+            colorend = new Color32(0, 0, 0, 200);
         }
 
         float progress = 1f / _slideSpeed;
@@ -83,7 +84,6 @@ public class AnimateWindowScript : MonoBehaviour
         routineInProgress = null;
         yield return null;
     }
-
     private void HideNotificationElementsExceptPlayer(bool value)
     {
         // and show only first notification => pla
@@ -145,7 +145,10 @@ public class AnimateWindowScript : MonoBehaviour
         foreach(var tab in tabList)
             ChangeTabButtonState(tab.name, tab.name==tabname?true:false);
         
-        Content.GetComponentInChildren<TextMeshProUGUI>().SetText(tabname);
+        contentList.ForEach(c=>c.SetActive(false));
+        Content = contentList.Where(c=>c.name == "Content_"+tabname).First();
+        Content.SetActive(true);
+
     }
 
     private void ChangeTabButtonState(string tabName, bool isActive)

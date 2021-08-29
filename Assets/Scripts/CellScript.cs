@@ -110,20 +110,20 @@ public class CellScript : MonoBehaviour
                     }
                 }
             }
-            // if(Math.Abs(direction.x)>1 || Math.Abs(direction.y)>1 )
-            // {
-            //     StartCoroutine(
-            //         FadeInAnimation(new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y))
-            //     );     
-            // } 
-            // else
-            // {
-            //     StartCoroutine(
-            //         SlideAnimation( _recTransform.localPosition,  new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y))
-            //     );
-            // }
+            if(Math.Abs(direction.x)>1 || Math.Abs(direction.y)>1 )
+            {
+                StartCoroutine(
+                    FadeInAnimation(new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y))
+                );     
+            } 
+            else
+            {
+                StartCoroutine(
+                    SlideAnimation( _recTransform.localPosition,  new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y))
+                );
+            }
             
-            this._recTransform.localPosition =  new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y);
+            //this._recTransform.localPosition =  new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y);
         
 
         }
@@ -190,9 +190,9 @@ public class CellScript : MonoBehaviour
     {
         this._cellImage.transform.localScale = Vector3.zero;
         this._recTransform.localPosition = position;
-        for (int i = 1; i <= 10; i++)
+        for (int i = 1; i <= 8; i++)
         {
-            float progress = i / 10.0f;
+            float progress = i / 8.0f;
             yield return new WaitForFixedUpdate();
             this._cellImage.transform.localScale = Vector3.Lerp(Vector3.zero, new Vector3(150, 150, 1), progress);
         }

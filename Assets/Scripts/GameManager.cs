@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
 
     internal static void Restart()
     {      
+        GameManager.instance.CurrentTurnNumber = 0;
 
         foreach (var cell in GridManager.CellGridTable)
         {
@@ -78,7 +79,6 @@ public class GameManager : MonoBehaviour
         GridManager.instance.Start();
         GameManager.instance.Init_PlacePlayerOnGrid();
 
-        GameManager.instance.CurrentTurnNumber = 0;
         GameManager.instance.TurnCounter_TMP.SetText("0");
         GameManager.instance.GoldCounter_TMP.SetText("0");
         GameManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());

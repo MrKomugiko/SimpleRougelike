@@ -30,9 +30,16 @@ public class MenuScript : MonoBehaviour
 
     private void OnEnable() {
         // hide all border and selections 
-        NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.HighlightElementSwitch(n,false));
+        try
+        {
+            NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.HighlightElementSwitch(n,false));    
+        }
+        catch (System.Exception)
+        {
+            
+        }
     }
-    private void Start() 
+    private void Awake() 
     {
         MENU = this.gameObject;
         MENU.SetActive(true);
@@ -67,6 +74,7 @@ public class MenuScript : MonoBehaviour
     {
         MENU.SetActive(false);
 
+        GameManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
         Continue_BTN.interactable = true;
         Continue_TMP.color = ButtonON_TextColor;
 

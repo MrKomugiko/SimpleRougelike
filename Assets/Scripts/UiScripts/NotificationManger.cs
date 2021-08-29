@@ -30,16 +30,13 @@ public partial class NotificationManger : MonoBehaviour
             NotificationScript notification = NotificationList[i];
             notification.RefreshData();     
 
-            // check if is in range
             if(notification.IsVisibleOnNotificationList(GameManager.Player_CELL))
                 notification.transform.parent.gameObject.SetActive(true);         
             else
                 notification.transform.parent.gameObject.SetActive(false);
 
-             // check if deleted
             if(notification.BaseCell.SpecialTile == null)
             {
-                //Debug.LogWarning("usuwanie elementu notification");
                 Destroy(notification.transform.parent.gameObject);
                 NotificationList[i] = null;
             }
@@ -51,11 +48,7 @@ public partial class NotificationManger : MonoBehaviour
         var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell ==  (cellRelated as ISpecialTile).ParentCell)).FirstOrDefault();
         if(existingnotification != null)
             {
-                // only configure, insteed adding new 
-               // existingnotification.GetComponentInChildren<NotificationManger>().NotificationList[0].PossibleActions.GetComponentInChildren<ActionSwitchController>().Configure((cellRelated as ISpecialTile).ParentCell.SpecialTile );
                var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
-              // print(x.name);
-              // print((cellRelated as ISpecialTile).Name);
                x.Configure((cellRelated as ISpecialTile));
                 return; // nie dodawaj tego samego 
             }
@@ -80,7 +73,6 @@ public partial class NotificationManger : MonoBehaviour
     }
     public static void HighlightElementSwitch(NotificationScript notification, bool? state = null)
     {
-        Debug.LogWarning("cos sie zadziało xd");
         ISelectable selectableCell = (notification.BaseCell.SpecialTile as ISelectable);
         if(state == null)
         {
@@ -98,8 +90,6 @@ public partial class NotificationManger : MonoBehaviour
 
         void turnON(NotificationScript notification)
         {
-            print("on");
-
             notification.SelectBorder.GetComponent<Image>().enabled = true;
             selectableCell.IsHighlighted = true;
             ShowBorder(selectableCell, Color.green);
@@ -107,7 +97,6 @@ public partial class NotificationManger : MonoBehaviour
 
         void turnOFF(NotificationScript notification)
         {
-            print("off");
             notification.SelectBorder.GetComponent<Image>().enabled = false;
             selectableCell.IsHighlighted = false;
 
