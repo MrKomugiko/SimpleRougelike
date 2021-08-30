@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Chest;
 using static Treasure_Cell;
 
 public class ChestLootScript : MonoBehaviour
 {
-    internal Treasure_Cell Source_TreasureCell;
+    internal IChest Source_IChest;
     [SerializeField] GameObject ItemSlotPrefab;
     [SerializeField] int MaxCapacity;
     [SerializeField] int NumberOfUnlockedSlots;
@@ -55,11 +56,11 @@ public class ChestLootScript : MonoBehaviour
         print("sync");
         List<ItemPack> updatedContent = new List<ItemPack>();
         ItemSlots.ForEach(item=>updatedContent.Add(item.ITEM));
-        Source_TreasureCell.ContentItems = updatedContent;
+        Source_IChest.ContentItems = updatedContent;
     }
-    public void PopulateChestWithItems(Treasure_Cell source, List<ItemPack> items)
+    public void PopulateChestWithItems(IChest source, List<ItemPack> items)
     {
-        Source_TreasureCell = source;
+        Source_IChest = source;
         print("populate chest iwth items");
         int slotIndex = 0;
         foreach(var item in items)
@@ -80,8 +81,8 @@ public class ChestLootScript : MonoBehaviour
         {
             CloseChestWindow();
 
-            Source_TreasureCell.ParentCell.SpecialTile = null;
-            var currentPosition =  Source_TreasureCell.ParentCell.CurrentPosition;
+            Source_IChest.Parent = null;
+            var currentPosition =  Source_IChest.Parent.ParentCell.CurrentPosition;
             GridManager.CellGridTable[currentPosition].SetCell(currentPosition,false);
         }
     }

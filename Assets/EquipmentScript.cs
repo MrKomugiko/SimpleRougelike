@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Chest;
 using static Treasure_Cell;
 
 public class EquipmentScript : MonoBehaviour

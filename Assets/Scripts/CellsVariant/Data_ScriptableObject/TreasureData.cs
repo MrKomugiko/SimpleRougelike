@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static Chest;
 using static Treasure_Cell;
 
 [CreateAssetMenu(fileName="New Treasure",menuName="GameData/Treasure")]

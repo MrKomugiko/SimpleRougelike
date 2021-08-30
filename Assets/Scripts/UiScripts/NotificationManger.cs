@@ -106,6 +106,12 @@ public partial class NotificationManger : MonoBehaviour
      public static void TemporaryHideBordersOnMap(NotificationScript notification, bool hide)
     {
         ISelectable selectableCell = (notification.BaseCell.SpecialTile as ISelectable);
+        if(selectableCell == null)
+        {
+            
+            Debug.LogError("O CO CHODZI ?");
+            return;
+        } 
 
         if(hide == true)
             hideModeTurnON(notification);

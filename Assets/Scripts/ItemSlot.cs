@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static Chest;
 using static Treasure_Cell;
 
 public class ItemSlot : MonoBehaviour
@@ -114,7 +115,7 @@ public class ItemSlot : MonoBehaviour
         chest.SynchronizeItemDataWithParentCell();
     }
     
-    private void Use(ItemPack ITEM)
+    private void Use(Chest.ItemPack ITEM)
     {
         Console.WriteLine("use item"+ ITEM.item.name);
     }
