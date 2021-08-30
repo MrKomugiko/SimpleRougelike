@@ -9,11 +9,11 @@ using static Treasure_Cell;
 
 public class ItemSlot : MonoBehaviour
 {   
-    public ChestLootScript chest;
+    internal ChestLootScript chest;
     public bool PLAYER_BACKPACK = false;
     public int IndexID;
     [SerializeField] private bool _isLocked = false;
-    internal bool IsLocked 
+    [SerializeField]internal bool IsLocked 
     { 
         get => _isLocked;
         set {
@@ -31,7 +31,28 @@ public class ItemSlot : MonoBehaviour
         } 
     }
     public bool IsEmpty => ITEM.count == 0?true:false;
-    public bool IsFull => (ITEM.count == ITEM.item.StackSize || !ITEM.item.IsStackable)?true:false;
+    [SerializeField] bool ISFull;
+    public bool IsFull {
+        get{
+            bool value = false;
+
+            if(ITEM.item == null) 
+            {
+                print("item null");
+                ISFull = value;
+                return false;
+            }
+
+            if(ITEM.count == ITEM.item.StackSize)
+            {
+                print($"count {ITEM.count} == item stacksize {ITEM.item.StackSize} ");
+                value = true;
+            }
+         
+            ISFull = value;
+            return value;
+        }
+    }
     public bool IsSelected { get; internal set; }
     
     [SerializeField] private Button _btn;
@@ -43,7 +64,7 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private GameObject _selectionBorder;
     [SerializeField] public ItemPack ITEM;
     TextMeshProUGUI _counterBox_TMP;
-    public void AddItemToSlot(ItemPack _item)
+    public void AddNewItemToSlot(ItemPack _item)
     {
         ITEM = _item;
         if(IsEmpty) return; 
@@ -71,29 +92,20 @@ public class ItemSlot : MonoBehaviour
             SinglePieceItem.item = ITEM.item;
             SinglePieceItem.count = 1;
 
-        // FIRST: check if you can fit this item in backpack
-        if(PlayerManager.PlayerInstance._mainBackpack.CanFitInPlayerBackpack(SinglePieceItem) == false)
-            return;
-
-        ITEM.count--;
         _counterBox.SetActive(ITEM.count>1?true:false);
-        PlayerManager.PlayerInstance._mainBackpack.AddSingleItemPackToBackpack(SinglePieceItem);
+        (bool result,bool update, int index) slotInBackpack =  PlayerManager.PlayerInstance._mainBackpack.CheckWhereCanYouFitThisItemInBackpack(SinglePieceItem);
         
-        if(IsEmpty)
+        if(slotInBackpack.result == true)
         {
-            // usuwanie obrazka ze slotu
-            _btn.onClick.RemoveAllListeners();
-            _itemIcon.sprite = _emptyBackground.sprite;
-           //ITEm 
-        }
-        else
-        {
-            if(ITEM.count == 1)
+            if(slotInBackpack.update)
             {
-                // ukrycie counterboxa
-                _counterBox.SetActive(false);
+                PlayerManager.PlayerInstance._mainBackpack.ItemSlots[slotInBackpack.index].UpdateItemAmount(1);
             }
-            _counterBox_TMP.SetText(ITEM.count.ToString()); 
+            else
+            {
+                PlayerManager.PlayerInstance._mainBackpack.AddSingleItemPackToBackpack(SinglePieceItem,slotInBackpack.index);
+            }
+            this.UpdateItemAmount(-1);
         }
 
         // UPDATE VALUE IN SOURCE CHEST TO PREVEENT RESPAWN CONTENT ALL OVER AGAIN
@@ -103,5 +115,30 @@ public class ItemSlot : MonoBehaviour
     private void Use(ItemPack ITEM)
     {
         Console.WriteLine("use item"+ ITEM.item.name);
+    }
+
+    public void UpdateItemAmount(int value)
+    {
+        ITEM.count = ITEM.count + value;
+        if(IsEmpty)
+        {
+
+            // usuwanie obrazka ze slotu
+            _btn.onClick.RemoveAllListeners();
+            _itemIcon.sprite = _emptyBackground.sprite;
+
+        }
+
+        if(ITEM.count <= 1)
+        {
+            // ukrycie counterboxa
+            _counterBox.SetActive(false);
+        }
+        if(ITEM.count > 1)
+        {
+            _counterBox.SetActive(true);
+            _counterBox_TMP.SetText(ITEM.count.ToString()); 
+        }
+        
     }
 }

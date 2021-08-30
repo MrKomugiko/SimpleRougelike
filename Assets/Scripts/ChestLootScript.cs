@@ -63,7 +63,7 @@ public class ChestLootScript : MonoBehaviour
         int slotIndex = 0;
         foreach(var item in items)
         {
-            ItemSlots[slotIndex].AddItemToSlot(item);
+            ItemSlots[slotIndex].AddNewItemToSlot(item);
             slotIndex++;
         }
     }
