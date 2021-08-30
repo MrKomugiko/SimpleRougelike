@@ -5,23 +5,17 @@ using UnityEngine;
 public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 {
 
-    #region core
     public CellScript ParentCell { get; private set; }
     public TileTypes Type { get; private set; } 
     public string Name { get; set; }
-    [Obsolete("Przesiadka na gameobject sprite'a.")]public string Icon_Url { get; set; }
-
-    #endregion
-
-    #region Treasure-specific
     public int ID {get;}
     public int GoldValue { get; set; }
+    internal List<ItemPack> ContentItems {get;set;} = new List<ItemPack>();
     public GameObject Border { get; set; }
     public bool IsHighlighted { get; set; }
     public GameObject Icon_Sprite {get;set;}
 
     public List<(Action action, string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
-    #endregion
 
 
     public Treasure_Cell(CellScript parent, TreasureData _data)
@@ -32,6 +26,11 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.Type           =       _data.Type;
         this.Icon_Sprite    =       _data.Icon_Sprite;
         this.GoldValue      =       _data.Value;
+        this.ContentItems   =       _data.ListOfContainingItem;
+        if(_data.ListOfContainingItem.Count > 0)
+        {
+            AvaiableActions.Add((()=>GenerateChestLootWindowPopulatedWithItems(source:this, this.ContentItems),"Open Chest", ActionIcon.OpenChest, true));
+        }
 
         AvaiableActions.Add((  ()=>{
             bool result;
@@ -50,6 +49,23 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public void OnClick_MakeAction()
     {
         MoveAndPick();       
+    }
+    [Serializable]
+    public struct ItemPack
+    {
+        public int count;
+        public ItemData item;
+    }
+    private void GenerateChestLootWindowPopulatedWithItems(Treasure_Cell source, List<ItemPack> items)
+    {
+        // Close map borders if open
+        NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,true));    
+
+        Debug.Log("TU BEDZIE SKRZYNECZKA");
+        var chestWindow = GameManager.instance.ContentLootWindow.GetComponent<ChestLootScript>();
+        chestWindow.gameObject.SetActive(true);
+        chestWindow.PopulateChestWithItems(source,items);
+
     }
     public void MoveAndPick()
     {
@@ -81,7 +97,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             status = false;
         }
     }
-
     public void RemoveBorder()
     {
         IsHighlighted = false;

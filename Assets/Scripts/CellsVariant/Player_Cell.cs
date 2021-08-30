@@ -37,6 +37,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         }
     }
 
+    PlayerManager Player;
     public Player_Cell(CellScript parent,  MonsterData _data/*PlayerData _data*/)
     {
         this.ParentCell                   =       parent;       
@@ -66,6 +67,8 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             monsterObject.AddComponent<Pathfinding>();  
             ConfigurePathfinderComponent();
         }
+
+        Player = new PlayerManager(this);
     }
 
     public Pathfinding _pathfinder;
@@ -119,4 +122,5 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
 
         GameManager.instance.GameOverScreen.SetActive(true);
     }
+
 }

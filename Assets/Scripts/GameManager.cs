@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public static List<CellScript> DamagedCells = new List<CellScript>();
     public static GameManager instance;
    [SerializeField] public GameObject GameOverScreen;
+   [SerializeField] public GameObject ContentLootWindow;
+
     private bool wybuchWTrakcieWykonywania = false;
     private int _currentTurnNumber = 0;
     public int CurrentTurnNumber
@@ -59,9 +61,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField] ChestLootScript _chestLootScript;
+    [SerializeField] EquipmentScript _equipmentScript;
     internal static void Restart()
     {      
         GameManager.instance.CurrentTurnNumber = 0;
+
+        instance._chestLootScript.Clear();
+        instance._equipmentScript.Clear();
 
         foreach (var cell in GridManager.CellGridTable)
         {

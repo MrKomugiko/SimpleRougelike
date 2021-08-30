@@ -103,6 +103,27 @@ public partial class NotificationManger : MonoBehaviour
             HideBorder(selectableCell, 0f); // ukrycie natychmiast
         }
     }
+     public static void TemporaryHideBordersOnMap(NotificationScript notification, bool hide)
+    {
+        ISelectable selectableCell = (notification.BaseCell.SpecialTile as ISelectable);
+      
+        if(hide == true)
+            hideModeTurnON(notification);
+        else if(hide == false)
+            hideModeTurnOFF(notification);
+
+        void hideModeTurnON(NotificationScript notification)
+        {
+            if(selectableCell.Border == null) return;;
+            selectableCell.Border.GetComponent<Image>().enabled = false;
+        }
+
+        void hideModeTurnOFF(NotificationScript notification)
+        {
+            if(selectableCell.Border == null) return;;
+            selectableCell.Border.GetComponent<Image>().enabled = true;
+        }
+    }
     public static void ShowBorder(ISelectable cell, Color32 color)
     {
         if (cell.Border == null) 

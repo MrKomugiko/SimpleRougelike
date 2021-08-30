@@ -244,7 +244,7 @@ public class CellScript : MonoBehaviour
                     this.SpecialTile = new Monster_Cell(parent: this, GameManager.instance.GetMonsterData());       return;
 
                 case TileTypes.treasure:
-                    this.SpecialTile = new Treasure_Cell(parent: this, GameManager.instance.GetTreasureData(0));    return;
+                    this.SpecialTile = new Treasure_Cell(parent: this, GameManager.instance.GetTreasureData(-1));    return;
 
                 case TileTypes.bomb:
                     this.SpecialTile = new Bomb_Cell(parent: this, GameManager.instance.GetBombData());             return;

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe80419a82bacfc4eadec25e13c54c35, type: 3}
+  m_Name: LootChest
+  m_EditorClassIdentifier: 
+  ID: 5
+  TreasureName: Loot Chest
+  Icon_Sprite: {fileID: 179587530871585500, guid: 23cde1ade238c82479e2fc937030fce2, type: 3}
+  Value: 0
+  Type: 5
+  IsWalkable: 1
+  ListOfContainingItem:
+  - count: 3
+    item: {fileID: 11400000, guid: 837573b9e15370b4cb8d507c6f0d5b95, type: 2}
+  - count: 1
+    item: {fileID: 11400000, guid: 8bb819ba61612cd4392e9a697904a0d6, type: 2}

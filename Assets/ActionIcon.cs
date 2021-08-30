@@ -7,5 +7,6 @@
         Timer,
         Delete,
         Info,
-        Empty
+        Empty,
+    OpenChest
 }
