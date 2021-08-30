@@ -70,13 +70,13 @@ public class GameManager : MonoBehaviour
         instance._chestLootScript.Clear();
         instance._equipmentScript.Clear();
 
+        NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
+        NotificationManger.instance.NotificationList.Clear();
+        
         foreach (var cell in GridManager.CellGridTable)
         {
             Destroy(cell.Value.gameObject);
         }
-        
-        NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
-        NotificationManger.instance.NotificationList.Clear();
 
         GridManager.destroyedTilesPool.Clear();
         GridManager.CellGridTable.Clear();

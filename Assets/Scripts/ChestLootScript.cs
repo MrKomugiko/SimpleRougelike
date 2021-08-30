@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,6 +70,19 @@ public class ChestLootScript : MonoBehaviour
     }
     public void CloseChestWindow()
     {
-         NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,false));    
+        this.gameObject.SetActive(false);
+        NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,false));    
+    }
+
+    internal void CloseIFEmpty()
+    {
+        if(ItemSlots.Where(slot=>slot.ITEM.count > 0).Count() == 0)
+        {
+            CloseChestWindow();
+
+            Source_TreasureCell.ParentCell.SpecialTile = null;
+            var currentPosition =  Source_TreasureCell.ParentCell.CurrentPosition;
+            GridManager.CellGridTable[currentPosition].SetCell(currentPosition,false);
+        }
     }
 }

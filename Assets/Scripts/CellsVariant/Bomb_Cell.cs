@@ -108,8 +108,13 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             if(cell.SpecialTile is ILivingThing)
             {
                 (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion");
-                NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
-                GridManager.instance.DamageMap.Add((cell.SpecialTile as ILivingThing, BombDamage));
+                NotificationManger.TriggerActionNotification
+                (
+                    INVOKER:this,
+                    NotificationManger.AlertCategory.ExplosionDamage,
+                    TARGET_BaseCEll: cell.SpecialTile 
+                );
+             //   GridManager.instance.DamageMap.Add((cell.SpecialTile as ILivingThing, BombDamage));
                 continue;
             } 
             if(cell.SpecialTile is Bomb_Cell)
@@ -147,7 +152,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             if(cell.SpecialTile is ILivingThing)
             {
                 (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion");
-                NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
+                NotificationManger.TriggerActionNotification(
+                    INVOKER:this, 
+                    CATEGORY: NotificationManger.AlertCategory.ExplosionDamage,
+                    TARGET_BaseCEll:cell.SpecialTile
+                );
                 GridManager.instance.DamageMap.Add((cell.SpecialTile as ILivingThing, BombDamage));
                 continue;
             } 

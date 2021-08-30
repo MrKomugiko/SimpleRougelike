@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -138,22 +137,10 @@ public class CellScript : MonoBehaviour
     } 
     public void SetCell(Vector2Int _position, bool runAnimation = true)
     {
-        //this._recTransform.localScale = Vector3.zero;
-        //this._recTransform.localPosition =  new Vector2(_position.x * _recTransform.rect.size.x, _position.y * _recTransform.rect.size.y);
-        
         _cellCoordinates_TMP.SetText(_position.ToString());
 
         CurrentPosition = _position;
        
-
-        // if (runAnimation == true)
-        // {
-        //     StartCoroutine(SlideAnimation(_recTransform.localPosition, new Vector2(_position.x * _recTransform.rect.size.x, _position.y * _recTransform.rect.size.y)));
-        // }
-        // else
-        //     StartCoroutine(FadeInAnimation(new Vector2(_position.x * _recTransform.rect.size.x, _position.y * _recTransform.rect.size.y)));
-
-
         if (SpecialTile == null)
         {
             DEBUG_BUTTON_ATTACHED_METHODS.Clear();
@@ -169,9 +156,10 @@ public class CellScript : MonoBehaviour
         {
             if(SpecialTile.ParentCell == null) 
             {
-                Debug.LogWarning("cell ze specialtilesem ale bez parenta");
+                Debug.LogWarning("cell ze specialtilesem ale bez parenta ?");
                 return;
             }
+
             SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Clear();
             SpecialTile.ParentCell._button.onClick.RemoveAllListeners();
             
@@ -179,10 +167,6 @@ public class CellScript : MonoBehaviour
             {
                 SpecialTile.ParentCell._button.onClick.AddListener(() => SpecialTile.OnClick_MakeAction());
                 SpecialTile.ParentCell.DEBUG_BUTTON_ATTACHED_METHODS.Add($"{SpecialTile.GetType().ToString()}.OnClick_MakeAction()");
-            }
-            else
-            {
-                Debug.LogWarning("pominięcie sprawdzania Specialtile==null, następnie w srodku warunku dowołuje sie do specialtile.parent ? ");
             }
         }
     }

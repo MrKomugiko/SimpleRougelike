@@ -107,7 +107,9 @@ public class ItemSlot : MonoBehaviour
             }
             this.UpdateItemAmount(-1);
         }
-
+        
+        // CLOSE CHEST IF LEFT EMPTY
+        chest.CloseIFEmpty();
         // UPDATE VALUE IN SOURCE CHEST TO PREVEENT RESPAWN CONTENT ALL OVER AGAIN
         chest.SynchronizeItemDataWithParentCell();
     }

@@ -8861,6 +8861,54 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -125
       objectReference: {fileID: 0}
+    - target: {fileID: 7336680034721450392, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336680034721450392, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336680034721450392, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 641894386}
+    - target: {fileID: 7336680034721450392, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336680034721450392, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336680034721450392, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336680034721450392, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336680034809941751, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336680034809941751, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336680034809941751, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 641894388}
+    - target: {fileID: 7336680034809941751, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseChestWindow
+      objectReference: {fileID: 0}
+    - target: {fileID: 7336680034809941751, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ChestLootScript, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 7336680035297929974, guid: 95e9b3b653bb9944c94f8ffa6bbd0507, type: 3}
       propertyPath: m_Name
       value: Content_Loot

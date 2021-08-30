@@ -8,6 +8,10 @@ using UnityEngine.UI;
 
 public class AnimateWindowScript : MonoBehaviour
 {
+    public static AnimateWindowScript instance;
+    private void Awake() {
+        instance = this;
+    }
     [SerializeField] RectTransform _transform;
     [SerializeField] Vector3 _position_OFF;
     [SerializeField] Vector3 _position_ON;
@@ -94,7 +98,10 @@ public class AnimateWindowScript : MonoBehaviour
                 noti.gameObject.SetActive(value);
         }
     }
-
+    public void MinimalizeCurrentlyOpenedWindow()
+    {
+        SwitchTab(CurrentOpenedTab);
+    }
     public string CurrentOpenedTab = "";
     public void SwitchTab(string tabName)
     {

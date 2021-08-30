@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
+public class Treasure_Cell : ISpecialTile, IValuable, ISelectable, IChest
 {
 
     public CellScript ParentCell { get; private set; }
@@ -10,14 +10,14 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public string Name { get; set; }
     public int ID {get;}
     public int GoldValue { get; set; }
-    internal List<ItemPack> ContentItems {get;set;} = new List<ItemPack>();
+    public List<ItemPack> ContentItems {get;set;} = new List<ItemPack>();
     public GameObject Border { get; set; }
     public bool IsHighlighted { get; set; }
     public GameObject Icon_Sprite {get;set;}
 
     public List<(Action action, string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
 
-
+   //public IChest chest = null;
     public Treasure_Cell(CellScript parent, TreasureData _data)
     {
         this.ParentCell     =       parent;
@@ -27,8 +27,10 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.Icon_Sprite    =       _data.Icon_Sprite;
         this.GoldValue      =       _data.Value;
         this.ContentItems   =       _data.ListOfContainingItem;
+
         if(_data.ListOfContainingItem.Count > 0)
         {
+           // chest = new Chest();
             AvaiableActions.Add((()=>GenerateChestLootWindowPopulatedWithItems(source:this, this.ContentItems),"Open Chest", ActionIcon.OpenChest, true));
         }
 
@@ -58,6 +60,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     }
     private void GenerateChestLootWindowPopulatedWithItems(Treasure_Cell source, List<ItemPack> items)
     {
+        AnimateWindowScript.instance.SwitchTab("EquipmentTab");
         // Close map borders if open
         NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,true));    
 
