@@ -10,7 +10,7 @@ public partial class NotificationManger : MonoBehaviour
     public static NotificationManger instance;
     [SerializeField] GameObject AlertPrefab;
     [SerializeField] GameObject NotificationPrefab;
-    [SerializeField] int maxSize = 5; // TODO: 
+    //[SerializeField] int maxSize = 5; // TODO: 
     [SerializeField] public List<NotificationScript> NotificationList = new List<NotificationScript>();
     
     

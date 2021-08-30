@@ -6,5 +6,6 @@
         Flag,
         Timer,
         Delete,
-        Info
+        Info,
+        Empty
 }

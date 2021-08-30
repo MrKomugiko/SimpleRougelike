@@ -50,6 +50,12 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         this.Corpse_Sprite                =       _data.Corpse_Sprite; 
         this.Level                        =       _data.Level;
 
+        AvaiableActions.Add((()=>EquipmentScript.AssignItemToActionSlot(slotID:0),"Empty Slot: asign new...",ActionIcon.Empty, false));
+        AvaiableActions.Add((()=>EquipmentScript.AssignItemToActionSlot(slotID:1),"Empty Slot: asign new...",ActionIcon.Empty, false));
+        AvaiableActions.Add((()=>EquipmentScript.AssignItemToActionSlot(slotID:2),"Empty Slot: asign new...",ActionIcon.Empty, false));
+        AvaiableActions.Add((()=>EquipmentScript.AssignItemToActionSlot(slotID:3),"Empty Slot: asign new...",ActionIcon.Empty, false));
+        AvaiableActions.Add((()=>EquipmentScript.AssignItemToActionSlot(slotID:4),"Empty Slot: asign new...",ActionIcon.Empty, false));
+
         NotificationManger.CreateNewNotificationElement(this);
        
         var monsterObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
@@ -61,6 +67,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             ConfigurePathfinderComponent();
         }
     }
+
     public Pathfinding _pathfinder;
     public void ConfigurePathfinderComponent()
     {

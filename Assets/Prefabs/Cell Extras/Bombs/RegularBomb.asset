@@ -21,6 +21,6 @@ MonoBehaviour:
   Direction: 0
   RestrictedByTimer: 1
   TicksToTurnOn: 5
-  Damage: 1
+  Damage: 2
   Size: 1
   IsWalkable: 1

@@ -7,7 +7,7 @@ public class ActionSwitchController : MonoBehaviour
 {
     [SerializeField] public NotificationScript notificationParent;
     [SerializeField]  public List<ActionButtonScript> actionButtonsList = new List<ActionButtonScript>();
-    [SerializeField] int ColorDimmingSteps {get;set;} = 8;
+    [SerializeField] int ColorDimmingSteps {get;set;} = 4;
     private bool AnimationIsRunning = false;
     
     private void Start()
