@@ -17,8 +17,6 @@ public class Chest : IChest
         Action action = ()=>GenerateChestLootWindowPopulatedWithItems(this, ContentItems);
 
         Debug.Log("skrzynka w gotowosci");
-
-        ChestLootWindow.TotalValueText.SetText(TotalValue.ToString());
         
         Parent.AvaiableActions.Add((action, "Open Chest",ActionIcon.OpenChest,true));
     }    
@@ -34,7 +32,7 @@ public class Chest : IChest
         ChestLootWindow.gameObject.SetActive(true);
         ChestLootWindow.PopulateChestWithItems(source,items);
 
-        Debug.Log("Total Value: "+GetChestTotalValue());   
+         ChestLootWindow.TotalValueText.SetText(TotalValue.ToString());
     }
     public void SynchronizeItemDataWithParentCell()
     {
