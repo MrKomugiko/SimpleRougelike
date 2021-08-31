@@ -156,7 +156,7 @@ public class CellScript : MonoBehaviour
         {
             if(SpecialTile.ParentCell == null) 
             {
-                Debug.LogWarning("cell ze specialtilesem ale bez parenta ?");
+              //  Debug.LogWarning("cell ze specialtilesem ale bez parenta ?");
                 return;
             }
 

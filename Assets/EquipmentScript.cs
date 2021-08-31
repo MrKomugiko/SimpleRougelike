@@ -39,7 +39,7 @@ public class EquipmentScript : MonoBehaviour
 
     public bool AddSingleItemPackToBackpack(ItemPack item, int slotIndex)
     {
-        print(" attempt to populate backpack with one item");
+      //  print(" attempt to populate backpack with one item");
     
         if(slotIndex != -1)
             ItemSlots[slotIndex].AddNewItemToSlot(item);
@@ -52,12 +52,12 @@ public class EquipmentScript : MonoBehaviour
 
     public (bool result,bool update, int index) CheckWhereCanYouFitThisItemInBackpack(ItemPack _itemToStack)
     {
-        print("check if is possible to stack "+_itemToStack.item.name);
+       // print("check if is possible to stack "+_itemToStack.item.name);
 
         bool IsThereAny_NonFullAndUnlocked_Slot = ItemSlots.Where(slot=>slot.IsFull == false && slot.IsLocked==false).Any();
         if(IsThereAny_NonFullAndUnlocked_Slot == false) 
         {
-            Debug.LogError("Brak jakiegokolwiek wolnego miejsca");
+          //  Debug.LogError("Brak jakiegokolwiek wolnego miejsca");
             return (false,false, -1);
         }
 
@@ -65,17 +65,17 @@ public class EquipmentScript : MonoBehaviour
         if( _itemToStack.item.IsStackable == false)
         {
 
-            Debug.LogError("item jest niestackowalny");
+         //   Debug.LogError("item jest niestackowalny");
             if(IsThereAny_Empty_Slots == true)
             {
-                Debug.LogError("dodanie itemka do nowego pustego pola");
+            //    Debug.LogError("dodanie itemka do nowego pustego pola");
                 return (true,false, GetNextEmptySlot());
             }
-            Debug.LogError("Brak wolnych slotów = FAIL");
+         //   Debug.LogError("Brak wolnych slotów = FAIL");
             return (false,false, -1);
         } 
         
-        Debug.LogError("Znaleziono indeks do ktorego mozna wcisnac itemek");
+      //  Debug.LogError("Znaleziono indeks do ktorego mozna wcisnac itemek");
         var nonEmptySlots = ItemSlots.Where(slot=>slot.ITEM.item != null).ToList();
         // sprawdzenie czy zostały do dyspozycji jakieś nieprzypisane pola
 
@@ -88,10 +88,10 @@ public class EquipmentScript : MonoBehaviour
 
             if(slot == null)
             {
-                print("nie znaleziono odpowiedniego slotu do wypełnienia stackowalengo itemka, zostanie on przydzielony do nowego slotu");
+              //  print("nie znaleziono odpowiedniego slotu do wypełnienia stackowalengo itemka, zostanie on przydzielony do nowego slotu");
                 if(IsThereAny_Empty_Slots)
                 {
-                    Debug.LogError("dodanie itemka do nowego pustego pola");
+                  //  Debug.LogError("dodanie itemka do nowego pustego pola");
                     return (true,false, GetNextEmptySlot());
                 //  przydziel do jakeigos
                 }
@@ -101,12 +101,12 @@ public class EquipmentScript : MonoBehaviour
                 // nie ma gdzie go przydzielic, koniec
                 }
             }   
-            print("znaleziono slot z itemkiem tego samego typu o indexie"+slot.IndexID);
+        //    print("znaleziono slot z itemkiem tego samego typu o indexie"+slot.IndexID);
             return (true,true,slot.IndexID);   
         }
 
 
-        Debug.LogError("error, pominięto sprawdzanie");
+     //   Debug.LogError("error, pominięto sprawdzanie");
         return (false,false,-1);   
     }
 

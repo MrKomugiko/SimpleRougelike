@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b051467e499de5418356498a3dd7604, type: 3}
-  m_Name: HealthPotion
+  m_Name: 1_MonsterBones
   m_EditorClassIdentifier: 
-  Item_Sprite: {fileID: 973753138, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
-  ItemID: 0
-  Name: HealthPotion
-  Value: 10
-  Description: Flask containing healed holy water. Can Restore Up to 10 hp.
-  Rarity: Common
-  Type: Potion
-  Count: 3
+  Item_Sprite: {fileID: 895366093, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+  ItemID: 1
+  Name: Monster' Bones
+  Value: 1
+  Description: Sield for block and protect xD reduce damage by 25%
+  Rarity: 0
+  Type: 3
+  minCount: 1
+  maxCount: 25
   IsStackable: 1
-  StackSize: 5
-  CanBeAssignToQuickActions: 1
+  StackSize: 25
+  CanBeAssignToQuickActions: 0

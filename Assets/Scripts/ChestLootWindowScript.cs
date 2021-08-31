@@ -53,6 +53,7 @@ public class ChestLootWindowScript : MonoBehaviour
                 slot.MoveSinglePieceTo_Backpack();
             }
         }
+        IfEmptyRemoveEmptyChestFromMap();
     }
 
     public void PopulateChestWithItems(IChest source, List<ItemPack> items)
@@ -64,22 +65,28 @@ public class ChestLootWindowScript : MonoBehaviour
             ItemSlots[slotIndex].AddNewItemToSlot(item);
             slotIndex++;
         }
+        IfEmptyRemoveEmptyChestFromMap();
+        
     }
     public void CloseChestWindow()
     {
+        Debug.Log("Close Empty chest window");
         this.gameObject.SetActive(false);
         NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,false));    
     }
 
-    internal void CloseIFEmpty()
+    public void IfEmptyRemoveEmptyChestFromMap()
     {
-        if(ItemSlots.Where(slot=>slot.ITEM.count > 0).Count() == 0)
+        if (LootChest.TotalValue == 0)
         {
             CloseChestWindow();
+            
+            var currentPosition = LootChest.Parent.ParentCell.CurrentPosition;
 
-            var currentPosition =  LootChest.Parent.ParentCell.CurrentPosition;
-            LootChest.Parent = null;
-            GridManager.CellGridTable[currentPosition].SetCell(currentPosition,false);
+            GridManager.CellGridTable[currentPosition].SpecialTile = null;
+            GridManager.CellGridTable[currentPosition].SetCell(currentPosition, false);
+            GridManager.CellGridTable[currentPosition].AssignType(TileTypes.grass,null);
+            Debug.Log("Remove empty chest from map");
         }
     }
 }

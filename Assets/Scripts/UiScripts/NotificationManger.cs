@@ -64,7 +64,7 @@ public partial class NotificationManger : MonoBehaviour
                 notification.PossibleActions.SetActive(!notification.PossibleActions.activeSelf);
                 if(notification.PossibleActions.activeSelf == true) 
                 {   
-                    print("reset to default, okno possible actions jest nieaktywne");
+                    // print("reset to default, okno possible actions jest nieaktywne");
                     notification.PossibleActions.GetComponent<ActionSwitchController>().ResetToDefault();
                 }
             }
@@ -109,7 +109,7 @@ public partial class NotificationManger : MonoBehaviour
         if(selectableCell == null)
         {
             
-            Debug.LogError("O CO CHODZI ?");
+            // Debug.LogError("O CO CHODZI ?");
             return;
         } 
 

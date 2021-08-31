@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
         {
             if (cell.SpecialTile is Player_Cell) 
             {
-                print("gracz oberawał");
+               // print("gracz oberawał");
                 cellsToDestroy.Remove(cell);
                 DamagedCells.Remove(cell);
                 continue; //TODO: wyodrębnoć klase player, dodać/zmienic IEnemy na coś uniwersalnego ? IEntity ? zawierac bedzie hp, exp , funkcja ataku obranonu nvm
@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                     print("monster died and should leave his bones on this cell");
+                    // print("monster died and should leave his bones on this cell");
                     //TODO: POZMIANA STWORKA NA ZWŁOKI/drop, do tego jakas infomacja ze zmarło mu sie xd
                     cellsToDestroy.Remove(cell);
                     DamagedCells.Remove(cell);

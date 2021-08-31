@@ -18,8 +18,8 @@ MonoBehaviour:
   Value: 0
   Type: 5
   IsWalkable: 1
-  ListOfContainingItem:
-  - count: 3
-    item: {fileID: 11400000, guid: 837573b9e15370b4cb8d507c6f0d5b95, type: 2}
-  - count: 1
-    item: {fileID: 11400000, guid: 8bb819ba61612cd4392e9a697904a0d6, type: 2}
+  PossibleLootItems:
+  - {fileID: 11400000, guid: 542c2a91d36a4ac4383f16d82af2c98e, type: 2}
+  - {fileID: 11400000, guid: 8bb819ba61612cd4392e9a697904a0d6, type: 2}
+  - {fileID: 11400000, guid: b0288f7072a644143bbf18d4c144b3c3, type: 2}
+  - {fileID: 11400000, guid: 837573b9e15370b4cb8d507c6f0d5b95, type: 2}

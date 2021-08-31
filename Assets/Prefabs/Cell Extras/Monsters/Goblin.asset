@@ -16,9 +16,9 @@ MonoBehaviour:
   MonsterName: Goblin
   Icon_Sprite: {fileID: 179587530871585500, guid: aa44bcf74acf2954da44ced1c91b9e7d, type: 3}
   Corpse_Sprite: {fileID: 179587530871585500, guid: bd5385c8f699382468835d53b85c3e9f, type: 3}
-  MaxHealthPoints: 5
+  MaxHealthPoints: 3
   Speed: 3
-  LootID: 3
+  LootData: {fileID: 11400000, guid: b98e0245cebaef54ab058715a8872f56, type: 2}
   Damage: 2
   Level: 2
   ExperiencePoints: 10

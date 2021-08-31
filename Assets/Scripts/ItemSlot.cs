@@ -104,11 +104,11 @@ public class ItemSlot : MonoBehaviour
             }
             this.UpdateItemAmount(-1);
         }
-        
-        // CLOSE CHEST IF LEFT EMPTY
-        chest.CloseIFEmpty();
         // UPDATE VALUE IN SOURCE CHEST TO PREVEENT RESPAWN CONTENT ALL OVER AGAIN
         chest.LootChest.SynchronizeItemDataWithParentCell();
+        
+        // CLOSE CHEST IF LEFT EMPTY
+        chest.IfEmptyRemoveEmptyChestFromMap();
     }
     
     private void Use(Chest.ItemPack ITEM)
