@@ -9,7 +9,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     public GameObject Border { get; set; }
     public bool IsHighlighted { get; set; }
     public CellScript ParentCell {get; private set;}
-    public TileTypes Type { get; private set; } 
+    public TileTypes Type { get; set; } 
     public string Name { get; set; }
     public GameObject Icon_Sprite {get;set;}
     public List<(Action action, string description, ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description, ActionIcon icon, bool singleAction)>();

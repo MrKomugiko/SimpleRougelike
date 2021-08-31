@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
 {
-    public TileTypes Type { get; private set; } = TileTypes.player;
+    public TileTypes Type { get; set; } = TileTypes.player;
     public CellScript ParentCell {get;set;}
     public GameObject Icon_Sprite { get; set; }
     public GameObject Border { get; set; }

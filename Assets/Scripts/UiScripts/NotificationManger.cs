@@ -132,6 +132,7 @@ public partial class NotificationManger : MonoBehaviour
     }
     public static void ShowBorder(ISelectable cell, Color32 color)
     {
+        if(cell == null) return;
         if (cell.Border == null) 
         {
             cell.Border = GameObject.Instantiate(GameManager.instance.SelectionBorderPrefab, (cell as ISpecialTile).ParentCell.transform);

@@ -4,26 +4,21 @@ using UnityEngine;
 
 public class Chest : IChest
 {
-    ChestLootWindowScript ChestLootWindow;
+    public ChestLootWindowScript ChestLootWindow  {get;set;}
     public ISpecialTile Parent {get;set;}
     public List<ItemPack> ContentItems {get;set;} = new List<ItemPack>();
     public int TotalValue =>GetChestTotalValue();   
     public Chest(ISpecialTile source, List<ItemPack> contentItems )
     {
+        Debug.Log("utworzenie chest");
         Parent = source;
         ContentItems = contentItems;
-        if(contentItems.Count > 0)
-        {
-            Action action = ()=>GenerateChestLootWindowPopulatedWithItems(this, ContentItems);
-           // Debug.Log("skrzynka w gotowosci");
-            
-            Parent.AvaiableActions.Add((action, "Open Chest",ActionIcon.OpenChest,true));
-        }  
-        else
-        {
-            Debug.Log("pusty loot -> nie pokazuje sie na mapie");
-        }
-
+        
+        if(ContentItems.Count == 0) return;
+        Action action = ()=>GenerateChestLootWindowPopulatedWithItems(this, ContentItems);
+        // Debug.Log("skrzynka w gotowosci");
+        
+        Parent.AvaiableActions.Add((action, "Open Chest",ActionIcon.OpenChest,true));
     }    
     public void GenerateChestLootWindowPopulatedWithItems(IChest source, List<ItemPack> items)
     {

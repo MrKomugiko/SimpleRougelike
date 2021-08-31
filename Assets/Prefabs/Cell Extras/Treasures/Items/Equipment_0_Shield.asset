@@ -9,17 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b051467e499de5418356498a3dd7604, type: 3}
-  m_Name: 2_Shield
+  m_Script: {fileID: 11500000, guid: c2830f37d3fc36846bc09ef240db0d67, type: 3}
+  m_Name: Equipment_0_Shield
   m_EditorClassIdentifier: 
-  Item_Sprite: {fileID: 984220589, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
-  ItemID: 2
+  Item_Sprite: {fileID: -1399341705, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+  ItemID: 0
   Name: Shield
   Value: 200
-  Description: Sield for block and protect xD reduce damage by 25%
-  Rarity: 0
-  Type: 0
-  minCount: 1
+  Description: Basic round shape shield.
+  Rarity: 1
+  Type: 2
+  minCount: 0
   maxCount: 1
   IsStackable: 0
   StackSize: 1

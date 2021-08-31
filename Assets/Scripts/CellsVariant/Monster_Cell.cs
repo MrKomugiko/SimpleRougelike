@@ -14,7 +14,7 @@ public class Monster_Cell :ICreature
     
     #region core
     public CellScript ParentCell { get; set; }
-    public TileTypes Type { get; private set; } = TileTypes.monster;
+    public TileTypes Type { get; set; } = TileTypes.monster;
     public GameObject Icon_Sprite { get; set; }
     public GameObject Corpse_Sprite { get; private set; }
 
@@ -168,9 +168,9 @@ public class Monster_Cell :ICreature
         ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
         ParentCell.Trash.Clear();
 
-        
         ParentCell.Type = TileTypes.treasure;
         ParentCell.SpecialTile = new Treasure_Cell(ParentCell, _data);
+;       (ParentCell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
         //4. assign LootID related reward to this object
         if (Border != null)
         {

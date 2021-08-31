@@ -6,7 +6,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 {
 
     public CellScript ParentCell { get; private set; }
-    public TileTypes Type { get; private set; } 
+    public TileTypes Type { get; set; } 
     public string Name { get; set; }
     public int ID {get;}
     public int GoldValue { get; set; }
@@ -22,7 +22,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public IChest chest {get;} = null;
     public Treasure_Cell(CellScript parent, TreasureData _data)
     {
-
         this.ParentCell     =       parent;
         this.ID             =       _data.ID;
         this.Name           =       _data.TreasureName;
@@ -30,25 +29,23 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.Icon_Sprite    =       _data.Icon_Sprite;
         this.GoldValue      =       _data.Value;
         this.RandomGeneratedLoot = _data.GetRandomizeLootPacks();
+        chest = new Chest(source:this,RandomGeneratedLoot);
 
-        if(RandomGeneratedLoot.Count > 0)
-        {
-            chest = new Chest(source:this,RandomGeneratedLoot);
+        AvaiableActions.Add((  ()=>{
+            bool result;
+            Pick(out result);
+            if(result == false)
+                {
+                    NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Cannot pick, item is too far.");
+                }
+            } ,"Collect Only",ActionIcon.Pick,
+            true));
+
+        NotificationManger.CreateNewNotificationElement(this);
     
-            AvaiableActions.Add((  ()=>{
-                bool result;
-                Pick(out result);
-                if(result == false)
-                    {
-                        NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Cannot pick, item is too far.");
-                    }
-                } ,"Collect Only",ActionIcon.Pick,
-                true));
-            NotificationManger.CreateNewNotificationElement(this);
-        
-            var treasureObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
-            ParentCell.Trash.Add(treasureObject);
-        }
+        var treasureObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
+        ParentCell.Trash.Add(treasureObject);
+        RemoveFromMapIfChesIsEmpty();
     }
     public void OnClick_MakeAction()
     {
@@ -61,6 +58,24 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         {
             GameManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
             ParentCell.MoveTo();
+        }
+    }
+    public void RemoveFromMapIfChesIsEmpty()
+    {
+        if(chest.ContentItems.Count == 0)
+        {
+            if(GridManager.CellGridTable.ContainsKey(ParentCell.CurrentPosition))
+            {
+                Debug.Log("dont spawn empty chest");
+                if (Border != null)
+                GameObject.Destroy(Border.gameObject);
+
+                ParentCell.SpecialTile = null;
+                var currentPosition = ParentCell.CurrentPosition;
+                GridManager.CellGridTable[ParentCell.CurrentPosition].SetCell(currentPosition);
+                return;
+            }
+            Debug.Log("empty treasure chest - in init");
         }
     }
     public void Pick(out bool status)

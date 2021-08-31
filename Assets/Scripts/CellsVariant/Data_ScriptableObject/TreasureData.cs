@@ -20,22 +20,22 @@ public class TreasureData : ScriptableObject
     {
         List<ItemPack> ListOfContainingItem = new List<ItemPack>();
 
-        Debug.Log("Randomize");
+      //  Debug.Log("Randomize");
         ListOfContainingItem = new List<ItemPack>();
         // 1. random item count
         int itemInChest = Random.Range(0,PossibleLootItems.Count+1);
-        Debug.Log($"itemsInChest = "+itemInChest);
+      //  Debug.Log($"itemsInChest = "+itemInChest);
         // loop in random indexes 
         HashSet<int> randomIndexes = new HashSet<int>();
-        Debug.Log($"start : randomIndexes count = {randomIndexes.Count}");
+       // Debug.Log($"start : randomIndexes count = {randomIndexes.Count}");
 
         for(int i = randomIndexes.Count; i< itemInChest; )
         {
             randomIndexes.Add(Random.Range(0,PossibleLootItems.Count));
             i = randomIndexes.Count;
-            Debug.Log("index: "+randomIndexes.Last());
+       //     Debug.Log("index: "+randomIndexes.Last());
         }
-        Debug.Log($"end : randomIndexes count = {randomIndexes.Count}");
+       // Debug.Log($"end : randomIndexes count = {randomIndexes.Count}");
 
         foreach(var index in randomIndexes)
         {

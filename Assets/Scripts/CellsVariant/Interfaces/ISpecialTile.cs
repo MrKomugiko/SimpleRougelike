@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface ISpecialTile
 {
-    TileTypes Type {get;}
+    TileTypes Type {get;set;}
     CellScript ParentCell { get; }
     string Name {get;set;}
     GameObject Icon_Sprite {get;set;}

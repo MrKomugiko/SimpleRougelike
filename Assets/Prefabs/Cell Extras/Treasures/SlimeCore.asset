@@ -18,3 +18,5 @@ MonoBehaviour:
   Value: 20
   Type: 5
   IsWalkable: 1
+  PossibleLootItems:
+  - {fileID: 0}

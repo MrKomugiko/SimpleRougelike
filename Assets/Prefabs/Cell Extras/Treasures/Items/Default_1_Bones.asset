@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b051467e499de5418356498a3dd7604, type: 3}
-  m_Name: 3_Trash
+  m_Script: {fileID: 11500000, guid: 18bcd0a98873a2f4e88d3f3217f9fd10, type: 3}
+  m_Name: Default_1_Bones
   m_EditorClassIdentifier: 
-  Item_Sprite: {fileID: 1625867013, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
-  ItemID: 3
-  Name: Trash Skull
+  Item_Sprite: {fileID: 895366093, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+  ItemID: 1
+  Name: Bones
   Value: 1
-  Description: Skull
+  Description: Cheap monster bones
   Rarity: 0
-  Type: 3
-  minCount: 1
-  maxCount: 50
+  Type: 0
+  minCount: 0
+  maxCount: 10
   IsStackable: 1
-  StackSize: 100
+  StackSize: 20
   CanBeAssignToQuickActions: 0

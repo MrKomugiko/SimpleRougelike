@@ -1,24 +1,24 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName="New Item",menuName="GameData/Item")]
-public class ItemData : ScriptableObject
+
+public abstract class ItemData : ScriptableObject
 {
     public Sprite Item_Sprite;
-    public int ItemID = 0;
-    public string Name = "Potion";
-    public int Value = 10;
-    public string Description = "Hp recovery potion";
-    public RarityTypes Rarity = RarityTypes.Common;
-    public ItemType Type = ItemType.Consumable;
+    public int ItemID;
+    public string Name;
+    public int Value;
+    public string Description;
+    public RarityTypes Rarity;
+    public ItemType Type;
     //------------------------------
     public int minCount;
     public int maxCount;
     public bool IsStackable = true;
     public int StackSize = 5;
     //------------------------------
-    public bool CanBeAssignToQuickActions = true;
+    
+    public bool CanBeAssignToQuickActions;
 }
-
     public enum RarityTypes
     {
         Common,
@@ -29,6 +29,7 @@ public class ItemData : ScriptableObject
     }
     public enum ItemType
     {
+        Default,
         Consumable,
         Equipment,
         CraftComponent,
