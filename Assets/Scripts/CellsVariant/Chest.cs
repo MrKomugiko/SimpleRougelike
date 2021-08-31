@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class Chest : IChest
 {
+    ChestLootWindowScript ChestLootWindow;
     public ISpecialTile Parent {get;set;}
     public List<ItemPack> ContentItems {get;set;} = new List<ItemPack>();
+    // public List<ItemSlot> Slots {get;set;} = new List<ItemSlot>();
+    public int TotalValue =>GetChestTotalValue();   
+
     public Chest(ISpecialTile source, List<ItemPack> contentItems )
     {
         Parent = source;
         ContentItems = contentItems;
         Action action = ()=>GenerateChestLootWindowPopulatedWithItems(this, ContentItems);
-        (Parent as ISpecialTile).AvaiableActions.Add((action, "Open Chest",ActionIcon.OpenChest,true));
+
+        Debug.Log("skrzynka w gotowosci");
+
+        ChestLootWindow.TotalValueText.SetText(TotalValue.ToString());
+        
+        Parent.AvaiableActions.Add((action, "Open Chest",ActionIcon.OpenChest,true));
     }    
+
     public void GenerateChestLootWindowPopulatedWithItems(IChest source, List<ItemPack> items)
     {
         AnimateWindowScript.instance.SwitchTab("EquipmentTab");
@@ -20,10 +30,31 @@ public class Chest : IChest
         NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,true));    
 
         Debug.Log("TU BEDZIE SKRZYNECZKA");
-        var chestWindow = GameManager.instance.ContentLootWindow.GetComponent<ChestLootScript>();
-        chestWindow.gameObject.SetActive(true);
-        chestWindow.PopulateChestWithItems(source,items);
+        ChestLootWindow = GameManager.instance.ContentLootWindow.GetComponent<ChestLootWindowScript>();
+        ChestLootWindow.gameObject.SetActive(true);
+        ChestLootWindow.PopulateChestWithItems(source,items);
 
+        Debug.Log("Total Value: "+GetChestTotalValue());   
+    }
+    public void SynchronizeItemDataWithParentCell()
+    {
+        Debug.Log("sync");
+        List<ItemPack> updatedContent = new List<ItemPack>();
+        ChestLootWindow.ItemSlots.ForEach(item=>updatedContent.Add(item.ITEM));
+        ContentItems = updatedContent; 
+
+        ChestLootWindow.TotalValueText.SetText(TotalValue.ToString());
+    }
+    
+    public int GetChestTotalValue()
+    {
+        int total = 0;
+        foreach(var item in ContentItems)
+        {
+            if(item.item == null) continue;
+            total += item.count * item.item.Value;
+        }
+        return total;
     }
     [Serializable]
     public struct ItemPack

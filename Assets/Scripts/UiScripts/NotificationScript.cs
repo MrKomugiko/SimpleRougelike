@@ -62,7 +62,11 @@ public class NotificationScript : MonoBehaviour
             CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name}"); 
 
             HP.SetText("");
-            Speed.SetText("GOLD VALUE : "+valuable.GoldValue);
+            if(valuable.chest != null)
+                Speed.SetText("GOLD VALUE : "+valuable.chest.TotalValue);
+            else
+                Speed.SetText("GOLD VALUE : "+valuable.GoldValue);
+                
             Deffence.SetText("");
             Type.SetText("");
             SpecialAttack.SetText("");

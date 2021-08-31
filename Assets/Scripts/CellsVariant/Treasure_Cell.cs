@@ -16,7 +16,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 
     public List<(Action action, string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
 
-    public IChest chest = null;
+    public IChest chest {get;} = null;
     public Treasure_Cell(CellScript parent, TreasureData _data)
     {
         this.ParentCell     =       parent;
@@ -67,8 +67,9 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             GameObject.Destroy(Border.gameObject);
 
             Debug.Log("pick");
+
+            GoldValue = chest==null?GoldValue:chest.TotalValue;
             GameManager.instance.AddGold(GoldValue);
-            GoldValue = 0;
 
             ParentCell.SpecialTile = null;
             var currentPosition = ParentCell.CurrentPosition;

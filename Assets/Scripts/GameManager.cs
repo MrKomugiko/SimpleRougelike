@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField] ChestLootScript _chestLootScript;
+    [SerializeField] ChestLootWindowScript _chestLootScript;
     [SerializeField] EquipmentScript _equipmentScript;
     internal static void Restart()
     {      

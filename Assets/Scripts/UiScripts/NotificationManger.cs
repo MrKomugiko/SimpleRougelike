@@ -183,7 +183,6 @@ public partial class NotificationManger : MonoBehaviour
                 cell.Border.GetComponent<Image>().color = Color.green;    
         }
     }
-   
     public static void TriggerActionNotification(ISelectable INVOKER, AlertCategory CATEGORY,string message = "", ISpecialTile TARGET_BaseCEll = null)
     {
         NotificationScript Invoker_BaseCell_Notification = instance.NotificationList.FirstOrDefault(n=>n.BaseCell.SpecialTile as ISelectable == INVOKER);
@@ -234,7 +233,6 @@ public partial class NotificationManger : MonoBehaviour
                 break;
         }
     }
-
     private static void Configure_Info_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification, string message)
     {
         // Przypisanie odpowiedniego koloru ramce.

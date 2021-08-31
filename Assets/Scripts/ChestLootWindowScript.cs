@@ -2,18 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using static Chest;
 using static Treasure_Cell;
 
-public class ChestLootScript : MonoBehaviour
+public class ChestLootWindowScript : MonoBehaviour
 {
-    internal IChest Source_IChest;
+    public IChest LootChest;
     [SerializeField] GameObject ItemSlotPrefab;
     [SerializeField] int MaxCapacity;
     [SerializeField] int NumberOfUnlockedSlots;
     [SerializeField] GameObject ItemsContainer;
-    [SerializeField] List<ItemSlot> ItemSlots = new List<ItemSlot>();
+    [SerializeField] public TextMeshProUGUI TotalValueText;
+
+    [SerializeField] public List<ItemSlot> ItemSlots = new List<ItemSlot>();
 
     private void Awake() {
 
@@ -51,17 +54,10 @@ public class ChestLootScript : MonoBehaviour
             }
         }
     }
-    public void SynchronizeItemDataWithParentCell()
-    {
-        print("sync");
-        List<ItemPack> updatedContent = new List<ItemPack>();
-        ItemSlots.ForEach(item=>updatedContent.Add(item.ITEM));
-        Source_IChest.ContentItems = updatedContent;
-    }
+
     public void PopulateChestWithItems(IChest source, List<ItemPack> items)
     {
-        Source_IChest = source;
-        print("populate chest iwth items");
+        LootChest = source;
         int slotIndex = 0;
         foreach(var item in items)
         {
@@ -81,8 +77,8 @@ public class ChestLootScript : MonoBehaviour
         {
             CloseChestWindow();
 
-            Source_IChest.Parent = null;
-            var currentPosition =  Source_IChest.Parent.ParentCell.CurrentPosition;
+            var currentPosition =  LootChest.Parent.ParentCell.CurrentPosition;
+            LootChest.Parent = null;
             GridManager.CellGridTable[currentPosition].SetCell(currentPosition,false);
         }
     }

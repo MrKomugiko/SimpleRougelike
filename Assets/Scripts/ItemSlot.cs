@@ -1,16 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static Chest;
-using static Treasure_Cell;
 
 public class ItemSlot : MonoBehaviour
 {   
-    internal ChestLootScript chest;
+    internal ChestLootWindowScript chest;
     public bool PLAYER_BACKPACK = false;
     public int IndexID;
     [SerializeField] private bool _isLocked = false;
@@ -112,7 +108,7 @@ public class ItemSlot : MonoBehaviour
         // CLOSE CHEST IF LEFT EMPTY
         chest.CloseIFEmpty();
         // UPDATE VALUE IN SOURCE CHEST TO PREVEENT RESPAWN CONTENT ALL OVER AGAIN
-        chest.SynchronizeItemDataWithParentCell();
+        chest.LootChest.SynchronizeItemDataWithParentCell();
     }
     
     private void Use(Chest.ItemPack ITEM)
@@ -124,9 +120,7 @@ public class ItemSlot : MonoBehaviour
     {
         ITEM.count = ITEM.count + value;
         if(IsEmpty)
-        {
-
-            // usuwanie obrazka ze slotu
+        {          // usuwanie obrazka ze slotu
             _btn.onClick.RemoveAllListeners();
             _itemIcon.sprite = _emptyBackground.sprite;
 
