@@ -15,9 +15,12 @@ public partial class ActionButtonScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI Description_TMP;
     [SerializeField] private Button Icon_Button;
     [SerializeField] private Button Description_Button;
-    [SerializeField] private ActionSwitchController controller;
+    [SerializeField] public ActionSwitchController controller;
     [SerializeField] private bool _iSSELECTED = false;
+    [SerializeField] private TextMeshProUGUI ItemCounter_TMP;
+
     private Action myMainIconAction = null;
+
     public bool ISSELECTED { 
         get => _iSSELECTED; 
         set 
@@ -25,6 +28,7 @@ public partial class ActionButtonScript : MonoBehaviour
              _iSSELECTED = value; 
             if(value == true)
             {
+                // TODO: tutaj bedzie trzeba wrócić, zeby nie wyczyscilo przycisku przypisanego do itemka
                 Icon_Button.onClick.RemoveAllListeners();
                 Icon_Button.onClick.AddListener(()=>controller.ResetToDefault()); // wróć      
             }
@@ -108,5 +112,14 @@ public partial class ActionButtonScript : MonoBehaviour
         ISSELECTED = false;
         NotificationManger.HighlightElementSwitch(controller.notificationParent);
         controller.notificationParent.PossibleActions.SetActive(false);
+    }
+
+    internal void UpdateItemCounter(string countLeft)
+    {
+        ItemCounter_TMP.SetText(countLeft);
+        if(Int32.Parse(countLeft) <= 1)
+            ItemCounter_TMP.gameObject.SetActive(false);
+        else
+            ItemCounter_TMP.gameObject.SetActive(true);
     }
 }

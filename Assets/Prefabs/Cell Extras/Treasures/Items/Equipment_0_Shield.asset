@@ -23,4 +23,8 @@ MonoBehaviour:
   maxCount: 1
   IsStackable: 0
   StackSize: 1
+  Level: 3
+  Strength: 2
+  Inteligence: 1
+  Dexterity: 5
   CanBeAssignToQuickActions: 0

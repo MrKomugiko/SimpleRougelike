@@ -16,6 +16,13 @@ public abstract class ItemData : ScriptableObject
     public bool IsStackable = true;
     public int StackSize = 5;
     //------------------------------
+
+    [Header("Requirments")]
+    public int Level = 1;
+    public int Strength = 1;
+    public int Inteligence = 1;
+    public int Dexterity = 1;
+
     
     public bool CanBeAssignToQuickActions;
 }

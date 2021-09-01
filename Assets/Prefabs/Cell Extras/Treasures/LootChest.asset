@@ -19,7 +19,9 @@ MonoBehaviour:
   Type: 5
   IsWalkable: 1
   PossibleLootItems:
-  - {fileID: 11400000, guid: 542c2a91d36a4ac4383f16d82af2c98e, type: 2}
-  - {fileID: 11400000, guid: 8bb819ba61612cd4392e9a697904a0d6, type: 2}
-  - {fileID: 11400000, guid: b0288f7072a644143bbf18d4c144b3c3, type: 2}
-  - {fileID: 11400000, guid: 837573b9e15370b4cb8d507c6f0d5b95, type: 2}
+  - {fileID: 11400000, guid: 5f8ce3ecfcf2d514790e7b9cf665885d, type: 2}
+  - {fileID: 11400000, guid: f58baac47246f234b96fa090de803624, type: 2}
+  - {fileID: 11400000, guid: 9e57d90ac3761e548a7faaaa388913c3, type: 2}
+  - {fileID: 11400000, guid: c1173f5254ae3b148947bcd312a41b86, type: 2}
+  - {fileID: 11400000, guid: 91e61f1b72c6584419b1ecb30fda388e, type: 2}
+  - {fileID: 11400000, guid: ee2e6c13da44a664faca92aabdaadb45, type: 2}

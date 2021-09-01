@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 {
@@ -246,7 +247,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
                 }
             }
             HighlihtedArea.AddRange(NotificationManger.HighlightAreaWithTemporaryBorders(ImpactAreaPositions, Color.magenta));
+
+            GameObject.Find("ExitButton").GetComponent<Button>().onClick.RemoveAllListeners();
+            GameObject.Find("ExitButton").GetComponent<Button>().onClick.AddListener(()=>NotificationManger.RemoveTemporaryBordersObjectsFromArea(HighlihtedArea));
             return;
+   
         }
         if(IsImpactAreaHighlihted == true)
         {

@@ -62,6 +62,7 @@ public class ChestLootWindowScript : MonoBehaviour
         int slotIndex = 0;
         foreach(var item in items)
         {
+            if(item.count == 0) continue;
             ItemSlots[slotIndex].AddNewItemToSlot(item);
             slotIndex++;
         }

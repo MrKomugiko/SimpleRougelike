@@ -35,14 +35,14 @@ public class ItemSlot : MonoBehaviour
 
             if(ITEM.item == null) 
             {
-                print("item null");
+               // print("item null");
                 ISFull = value;
                 return false;
             }
 
             if(ITEM.count == ITEM.item.StackSize)
             {
-                print($"count {ITEM.count} == item stacksize {ITEM.item.StackSize} ");
+              //  print($"count {ITEM.count} == item stacksize {ITEM.item.StackSize} ");
                 value = true;
             }
          
@@ -50,16 +50,16 @@ public class ItemSlot : MonoBehaviour
             return value;
         }
     }
-    public bool IsSelected { get; internal set; }
     
-    [SerializeField] private Button _btn;
+    [SerializeField] public Button _btn;
     [SerializeField] private Image _itemIcon;
 
     [SerializeField] private Image _emptyBackground;
     [SerializeField] private Image _lockedBackground;
     [SerializeField] private GameObject _counterBox;
-    [SerializeField] private GameObject _selectionBorder;
+    [SerializeField] public GameObject _selectionBorder;
     [SerializeField] public ItemPack ITEM;
+    public bool IsSelected => _selectionBorder.activeSelf;
     TextMeshProUGUI _counterBox_TMP;
     public void AddNewItemToSlot(ItemPack _item)
     {
@@ -79,8 +79,24 @@ public class ItemSlot : MonoBehaviour
         
         if(PLAYER_BACKPACK)
         {
-            _btn.onClick.AddListener(()=>Use(ITEM));   
+            _btn.onClick.AddListener(()=>ShowDetailsWindow());   
         }
+    }
+
+    internal void EnableSelectionButton(bool enableValue)
+    {
+        print("przełączenie borderka na itemslocie");
+        _selectionBorder.SetActive(enableValue);
+    }
+
+    private void ShowDetailsWindow()
+    {
+        PlayerManager.PlayerInstance._mainBackpack.ItemDetailsWindow
+            .GetComponent<ItemDetailsWindow>()
+            .SelfConfigure(ITEM.item, this);
+
+        PlayerManager.PlayerInstance._mainBackpack.ItemDetailsWindow.SetActive(true);
+
     }
     public void MoveSinglePieceTo_Backpack()
     {
@@ -110,19 +126,21 @@ public class ItemSlot : MonoBehaviour
         // CLOSE CHEST IF LEFT EMPTY
         chest.IfEmptyRemoveEmptyChestFromMap();
     }
-    
-    private void Use(Chest.ItemPack ITEM)
-    {
-        Console.WriteLine("use item"+ ITEM.item.name);
-    }
 
     public void UpdateItemAmount(int value)
     {
         ITEM.count = ITEM.count + value;
         if(IsEmpty)
-        {          // usuwanie obrazka ze slotu
+        {         
+             // usuwanie obrazka ze slotu
             _btn.onClick.RemoveAllListeners();
             _itemIcon.sprite = _emptyBackground.sprite;
+            print("itemek jest pusty");
+            if(IsInQuickSlot)
+            {
+                print("item jest podpięty pod quickslot, zostanie od niego usunięty");
+                RemoveFromQuickSlot();
+            }
 
         }
 
@@ -134,8 +152,49 @@ public class ItemSlot : MonoBehaviour
         if(ITEM.count > 1)
         {
             _counterBox.SetActive(true);
-            _counterBox_TMP.SetText(ITEM.count.ToString()); 
+            string countLeft = ITEM.count.ToString();
+            _counterBox_TMP.SetText(countLeft); 
+            if(IsInQuickSlot)
+            {
+                AssignedQuickslot.UpdateItemCounter(countLeft);
+            }
         }
         
     }
+
+    public bool IsInQuickSlot = false;
+    public void AssignToQuickSlot(ActionButtonScript ActionButton)
+    {
+        AssignedQuickslot = ActionButton;
+        print("Assign to Quick Slot");
+        IsInQuickSlot = true;
+        ActionButton.ButtonIcon_IMG.sprite = ITEM.item.Item_Sprite;
+        
+        ActionButton.ConfigureDescriptionButtonClick(()=>(this.ITEM.item as IConsumable).Use(IndexID),$"{ITEM.item.Name}",false);
+
+        // przywróć eq do stanu przed wyboru tego itemka do slotu
+        PlayerManager.PlayerInstance._mainBackpack.QuitFromQuickbarSelectionMode();
+    }
+    public ActionButtonScript AssignedQuickslot = null;
+    public void RemoveFromQuickSlot()
+    {
+        print("Remove from Quick Slot");
+        
+        // przywróć przycisk quickslotu do stanu pierwotnego-pustego
+             AssignedQuickslot.ConfigureIconButtonClick(
+                    action:()=>AssignedQuickslot.controller.OnClick_SelectActionIcon(AssignedQuickslot),
+                    ActionIcon.Empty
+        );
+
+     AssignedQuickslot.ConfigureDescriptionButtonClick(
+                    action: GameManager.Player_CELL.SpecialTile.AvaiableActions[IndexID].action,
+                    description:GameManager.Player_CELL.SpecialTile.AvaiableActions[IndexID].description,
+                    singleAction: GameManager.Player_CELL.SpecialTile.AvaiableActions[IndexID].singleAction
+                );
+        PlayerManager.PlayerInstance._mainBackpack.QuitFromQuickbarSelectionMode();
+
+        IsInQuickSlot = false;
+        AssignedQuickslot = null;
+    }
 }
+

@@ -4,7 +4,7 @@ using UnityEngine;
 public class PotionItem : ItemData, IConsumable
 {
     public int HealthRegenerationValue;
-    public int MinLevelRequirment;
+
     public void Awake() 
     {
         Type = ItemType.Consumable;
@@ -17,14 +17,18 @@ public class PotionItem : ItemData, IConsumable
         throw new System.NotImplementedException();
     }
 
-    public void Use()
+    public bool Use(int slotID)
     {
        (GameManager.Player_CELL.SpecialTile as ILivingThing).TakeDamage(-HealthRegenerationValue, Name);
+       NotificationManger.AddValueTo_Health_Notification(HealthRegenerationValue);
+       PlayerManager.PlayerInstance._mainBackpack.ItemSlots[slotID].UpdateItemAmount(-1);
+
+       return true; 
     }
 }
 
 public interface IConsumable
 {
-    void Use();
+    bool Use(int slotID);
     void AddToQuickBar(int slotIndex);
 }

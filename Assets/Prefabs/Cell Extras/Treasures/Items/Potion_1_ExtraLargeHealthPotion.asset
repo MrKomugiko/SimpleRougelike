@@ -23,6 +23,10 @@ MonoBehaviour:
   maxCount: 1
   IsStackable: 0
   StackSize: 1
+  Level: 2
+  Strength: 1
+  Inteligence: 3
+  Dexterity: 1
   CanBeAssignToQuickActions: 1
   HealthRegenerationValue: 100
   MinLevelRequirment: 1

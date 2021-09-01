@@ -27,6 +27,7 @@ public partial class NotificationManger : MonoBehaviour
         int count = NotificationList.Count;
         for (int i = 0; i < count; i++)
         {
+
             NotificationScript notification = NotificationList[i];
             notification.RefreshData();     
 
@@ -157,10 +158,10 @@ public partial class NotificationManger : MonoBehaviour
     {
         foreach(var temporaryBorder in _area)
         {   
-            ActionSwitchController.
-            Destroy(temporaryBorder);
+            ActionSwitchController.Destroy(temporaryBorder);
         }
     }
+
     public static void HideBorder(ISelectable cell, float timeDelay)
     {
         if(cell == null) return;
@@ -378,7 +379,10 @@ public partial class NotificationManger : MonoBehaviour
         notificationToModife.TextValue = currentValue.ToString();
         notificationToModife.text.text = notificationToModife.TextValue;
         if (currentValue > 0)
+        {
+            notificationToModife.text.text = "+"+notificationToModife.TextValue;
             notificationToModife.Color = Color.green;
+        }
     }
     public static void AddValueTo_Gold_Notification(int goldValue)
     {

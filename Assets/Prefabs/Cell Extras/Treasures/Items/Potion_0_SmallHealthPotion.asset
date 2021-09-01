@@ -22,7 +22,7 @@ MonoBehaviour:
   minCount: 0
   maxCount: 5
   IsStackable: 1
-  StackSize: 1
-  CanBeAssignToQuickActions: 0
+  StackSize: 5
+  CanBeAssignToQuickActions: 1
   HealthRegenerationValue: 5
   MinLevelRequirment: 2

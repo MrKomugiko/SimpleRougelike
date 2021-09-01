@@ -16,11 +16,15 @@ MonoBehaviour:
   ItemID: 1
   Name: Dagger
   Value: 200
-  Description: Rusted dagger.
-  Rarity: 1
-  Type: 2
+  Description: Rusted dagger. Best tool for cutting pizza slices.
+  Rarity: 0
+  Type: 0
   minCount: 0
   maxCount: 1
   IsStackable: 0
   StackSize: 1
+  Level: 1
+  Strength: 2
+  Inteligence: 1
+  Dexterity: 2
   CanBeAssignToQuickActions: 0
