@@ -28,7 +28,12 @@ public class ItemDetailsWindow : MonoBehaviour
     List<GameObject> ButtonsList = new List<GameObject>();
 
     
-
+    private void OnEnable() {
+          NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,hide:true));    
+    }
+    private void OnDisable() {
+          NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,hide:false));    
+    }
     public void SelfConfigure(ItemData _data, ItemSlot slot)
     {
         if(DATA == _data) return;

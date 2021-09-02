@@ -10,7 +10,6 @@ public partial class NotificationManger : MonoBehaviour
     public static NotificationManger instance;
     [SerializeField] GameObject AlertPrefab;
     [SerializeField] GameObject NotificationPrefab;
-    //[SerializeField] int maxSize = 5; // TODO: 
     [SerializeField] public List<NotificationScript> NotificationList = new List<NotificationScript>();
     
 
@@ -47,7 +46,7 @@ public partial class NotificationManger : MonoBehaviour
     
      public static void CreatePlayerNotificationElement(ISelectable cellRelated)
     {
-        Debug.LogError("Ony once at player start/new game");
+         print("CreatePlayerNotificationElement");
 
         GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
         notificationObject.gameObject.name = "PlayerNotifications";
@@ -76,13 +75,16 @@ public partial class NotificationManger : MonoBehaviour
     public static void CreateNewNotificationElement(ISelectable cellRelated)
     {
         var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell ==  (cellRelated as ISpecialTile).ParentCell)).FirstOrDefault();
+        int oldHierarhyPosition = existingnotification.transform.parent.GetSiblingIndex();
         if(existingnotification != null)
             {
-               var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
-               x.Configure((cellRelated as ISpecialTile));
-                return; // nie dodawaj tego samego 
+                Destroy(existingnotification.gameObject.transform.parent.gameObject);
+            //    var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
+            //    x.Configure((cellRelated as ISpecialTile));
+            //     return; // nie dodawaj tego samego 
             }
         GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
+        notificationObject.transform.parent.SetSiblingIndex(oldHierarhyPosition);
         notificationObject.transform.SetAsLastSibling();
         NotificationScript notification = notificationObject.GetComponentInChildren<NotificationScript>();
         NotificationManger.instance.NotificationList.Add(notification);
@@ -134,7 +136,7 @@ public partial class NotificationManger : MonoBehaviour
             HideBorder(selectableCell, 0f); // ukrycie natychmiast
         }
     }
-     public static void TemporaryHideBordersOnMap(NotificationScript notification, bool hide)
+    public static void TemporaryHideBordersOnMap(NotificationScript notification, bool hide)
     {
         ISelectable selectableCell = (notification.BaseCell.SpecialTile as ISelectable);
         if(selectableCell == null)

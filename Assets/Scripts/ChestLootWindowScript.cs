@@ -37,6 +37,7 @@ public class ChestLootWindowScript : MonoBehaviour
             itemSlot.IsLocked = i < NumberOfUnlockedSlots?false:true;
         }
     }
+
     public void Clear()
     {
         ItemSlots.ForEach(s=>Destroy(s.gameObject));

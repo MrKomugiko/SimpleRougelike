@@ -43,26 +43,19 @@ public class EquipmentScript : MonoBehaviour
 
     public static void AssignItemToActionSlot(int quickslotID)
     {
-
+        print("AssignItemToActionSlot");
         if(AssignationItemToQuickSlotIsActive) 
         {    
-            Debug.Log("AssignItemToActionSlot: jest juz włączony tryb assignation to quickbar, wiec zostanie wyłączony i zakończony.");
-            PlayerManager.instance._actionController.actionButtonsList[quickslotID].Description_TMP.SetText("Tap to <b>Add Item</b> ");
+            PlayerManager.instance._actionController.actionButtonsList[quickslotID].Description_TMP.SetText("Tap to Add Item");
             EquipmentScript.QuitFromQuickbarSelectionMode();
             return;
         }
-        PlayerManager.instance._actionController.actionButtonsList[quickslotID].Description_TMP.SetText("Tap to <b>Cancel</b> ");
+        PlayerManager.instance._actionController.actionButtonsList[quickslotID].Description_TMP.SetText("Tap to Cancel");
         AssignationItemToQuickSlotIsActive = true;
         CurrentSelectedActionButton = quickslotID;
 
-        print("Start assigning item to "+quickslotID+ "quickslot position");
-        // OPEN inventory if closed
         if(AnimateWindowScript.instance.CurrentOpenedTab != "EquipmentTab")  
             AnimateWindowScript.instance.SwitchTab("EquipmentTab");
-
-        // Podświetlić wszystkie przedmiory dowolnego typu z opcją assignable = true
-        print("podświetlanie / wyłączenie przyciskó innych elementow");
-        // zapisanie wyłączonych przycisków
 
         foreach(var itemSlot in PlayerManager.instance._mainBackpack.ItemSlots)
         {
@@ -70,45 +63,27 @@ public class EquipmentScript : MonoBehaviour
 
             if(itemSlot.ITEM.item.CanBeAssignToQuickActions == false || itemSlot.IsInQuickSlot)
             {
-                turnOffButtonsList.Add(itemSlot._btn);
-                
+                turnOffButtonsList.Add(itemSlot._btn);  
                 if( itemSlot.ITEM.count == 0 ) continue;
-
                 itemSlot._btn.interactable = false;
             }
             else
             {
                 selectedItemsForQuickslot.Add(itemSlot);
-                itemSlot.EnableSelectionButton(true);
+                itemSlot._selectionBorder.SetActive(true);
                 itemSlot._selectionBorder.GetComponent<Button>().onClick.AddListener(()=>itemSlot.AssignToQuickSlot(quickslotID));
-                var test = PlayerManager.instance._actionController;
-
-                Debug.LogError(PlayerManager.instance._actionController.actionButtonsList.Count +"count PlayerManager.instance.PlayerQuicsSlotList");
-                try {
-                    Debug.LogError($"podpięto button: {PlayerManager.instance._actionController.actionButtonsList[quickslotID].name}");
-                } catch (Exception ex) {
-                    Debug.Log("error"+ex.Message);
-                }
             }
         }
-        
     }
-    
     public static void QuitFromQuickbarSelectionMode()
     {
-        print("Quit from selecting quickslot item ");
+        print("QuitFromQuickbarSelectionMode");
         
         if(AssignationItemToQuickSlotIsActive == true)
         {
             if(PlayerManager.instance._actionController.actionButtonsList[(int)CurrentSelectedActionButton].Description_TMP.text.Contains("Cancel"))
             {
                 PlayerManager.instance._actionController.actionButtonsList[(int)CurrentSelectedActionButton].Description_TMP.SetText("Tap to Add Item");
-                print("select był włączony, wychodzimy z niego 'wstecz', zostawimy po sobie 'tap to add item.'");
-            }
-            else
-            {
-                print("przedmiot został juz wybrnay, wychodzimy bez zmiany nazwy, albo nazwa była poprawna wychodząć");
-
             }
         }
 
@@ -120,7 +95,7 @@ public class EquipmentScript : MonoBehaviour
 
         foreach(var slot in selectedItemsForQuickslot)
         {
-            slot.EnableSelectionButton(false);
+            slot._selectionBorder.SetActive(false);
             slot._selectionBorder.GetComponent<Button>().onClick.RemoveAllListeners();
         }
 
@@ -129,20 +104,27 @@ public class EquipmentScript : MonoBehaviour
         CurrentSelectedActionButton = null;
     }
 
+
+
     public bool AddSingleItemPackToBackpack(ItemPack item, int slotIndex)
     {
+        print("AddSingleItemPackToBackpack");
+        int avaiableSpace = ItemSlots.Count - ItemSlots.Where(s=>s.IsLocked).Count();
+        if(avaiableSpace-1 < slotIndex) 
+        {
+            print("avaiableSpace-1 < slotindex => "+(avaiableSpace-1)+" < "+ slotIndex);
+            Debug.LogWarning("Not enought space");
+            return false;
+        }
         if(slotIndex != -1)
             ItemSlots[slotIndex].AddNewItemToSlot(item);
         else
             ItemSlots[slotIndex].UpdateItemAmount(1);
-
         return true;
     }
-
-
     public (bool result,bool update, int index) CheckWhereCanYouFitThisItemInBackpack(ItemPack _itemToStack)
     {
-
+        
         bool IsThereAny_NonFullAndUnlocked_Slot = ItemSlots.Where(slot=>slot.IsFull == false && slot.IsLocked==false).Any();
         if(IsThereAny_NonFullAndUnlocked_Slot == false) 
         {
@@ -182,7 +164,6 @@ public class EquipmentScript : MonoBehaviour
 
         return (false,false,-1);   
     }
-
     public int GetNextEmptySlot()
     {
         var emptySlot = ItemSlots.FirstOrDefault(s=>s.IsEmpty && !s.IsLocked);

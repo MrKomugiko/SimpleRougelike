@@ -85,11 +85,7 @@ public class ItemSlot : MonoBehaviour
         }
     }
 
-    internal void EnableSelectionButton(bool enableValue)
-    {
-        print("przełączenie borderka na itemslocie");
-        _selectionBorder.SetActive(enableValue);
-    }
+
 
     private void ShowDetailsWindow()
     {
@@ -115,12 +111,15 @@ public class ItemSlot : MonoBehaviour
             if(slotInBackpack.update)
             {
                 PlayerManager.instance._mainBackpack.ItemSlots[slotInBackpack.index].UpdateItemAmount(1);
+                this.UpdateItemAmount(-1);
             }
             else
             {
-                PlayerManager.instance._mainBackpack.AddSingleItemPackToBackpack(SinglePieceItem,slotInBackpack.index);
+                if(PlayerManager.instance._mainBackpack.AddSingleItemPackToBackpack(SinglePieceItem,slotInBackpack.index) == true)
+                {
+                   this.UpdateItemAmount(-1);
+                }
             }
-            this.UpdateItemAmount(-1);
         }
         // UPDATE VALUE IN SOURCE CHEST TO PREVEENT RESPAWN CONTENT ALL OVER AGAIN
         chest.LootChest.SynchronizeItemDataWithParentCell();

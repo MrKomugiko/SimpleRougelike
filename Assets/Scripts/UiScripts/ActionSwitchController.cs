@@ -30,13 +30,6 @@ public class ActionSwitchController : MonoBehaviour
         AnimationIsRunning = true;
         StartCoroutine(AnimateSelection(selectedButton));
     }
-    public void OnClick_DeselectActionIcon(ActionButtonScript selectedButton)
-    {
-        if(AnimationIsRunning) return;
-   
-        AnimationIsRunning = true;
-        StartCoroutine(AnimateDeselection(selectedButton));
-    }
     public void OnClick_ExecuteDescriptionActionAndClose(ActionButtonScript selectedButton)
     {
         if(AnimationIsRunning) return;
@@ -95,8 +88,7 @@ public class ActionSwitchController : MonoBehaviour
                 button.ConfigureDescriptionButtonClick(
                     action: cell.AvaiableActions[i].action,
                     description: cell.AvaiableActions[i].description,
-                    singleAction: cell.AvaiableActions[i].singleAction,
-                    "standard"
+                    singleAction: cell.AvaiableActions[i].singleAction
                 );
             }
             else
