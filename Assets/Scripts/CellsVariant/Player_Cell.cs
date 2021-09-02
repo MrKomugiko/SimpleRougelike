@@ -61,13 +61,11 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         this.Corpse_Sprite = _data.Corpse_Sprite;
         this.Level = _data.Level;
 
-        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(slotID: 0), "Empty Slot: asign new...", ActionIcon.Empty, false));
-        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(slotID: 1), "Empty Slot: asign new...", ActionIcon.Empty, false));
-        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(slotID: 2), "Empty Slot: asign new...", ActionIcon.Empty, false));
-        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(slotID: 3), "Empty Slot: asign new...", ActionIcon.Empty, false));
-        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(slotID: 4), "Empty Slot: asign new...", ActionIcon.Empty, false));
-
-        NotificationManger.CreateNewNotificationElement(this);
+        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 0), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
+        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 1), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
+        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 2), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
+        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 3), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
+        AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 4), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
 
         var monsterObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
         ParentCell.Trash.Add(monsterObject);

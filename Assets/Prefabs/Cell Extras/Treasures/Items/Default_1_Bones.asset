@@ -19,8 +19,12 @@ MonoBehaviour:
   Description: Cheap monster bones
   Rarity: 0
   Type: 0
-  minCount: 0
+  minCount: 1
   maxCount: 10
   IsStackable: 1
   StackSize: 20
+  Level: 1
+  Strength: 1
+  Inteligence: 1
+  Dexterity: 1
   CanBeAssignToQuickActions: 0

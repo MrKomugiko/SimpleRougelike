@@ -52,7 +52,8 @@ public class GameManager : MonoBehaviour
                         if(existingnotification != null)
                         {
                             var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
-                            x.Refresh(tile.SpecialTile);
+                            if(tile.SpecialTile is Player_Cell == false)
+                                x.Refresh(tile.SpecialTile);
                         }
                         (tile.SpecialTile as Bomb_Cell).SwitchHighlightImpactArea();
                     }

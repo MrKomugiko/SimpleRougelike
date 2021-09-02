@@ -620,6 +620,7 @@ MonoBehaviour:
   Description_Button: {fileID: 9067206048710701611}
   controller: {fileID: 0}
   _iSSELECTED: 0
+  ItemCounter_TMP: {fileID: 8066999274254296281}
 --- !u!1 &7432836684132476408
 GameObject:
   m_ObjectHideFlags: 0

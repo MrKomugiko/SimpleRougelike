@@ -32,7 +32,7 @@ public class ChestLootWindowScript : MonoBehaviour
             {
                 itemSlot = ItemSlots[i];
             }
-            itemSlot.IndexID = i;
+            itemSlot.itemSlotID = i;
             itemSlot.chest = this;
             itemSlot.IsLocked = i < NumberOfUnlockedSlots?false:true;
         }
@@ -84,6 +84,9 @@ public class ChestLootWindowScript : MonoBehaviour
             
             var currentPosition = LootChest.Parent.ParentCell.CurrentPosition;
 
+            if(GridManager.CellGridTable[currentPosition].SpecialTile is ISelectable)
+                (GridManager.CellGridTable[currentPosition].SpecialTile as ISelectable).RemoveBorder();
+                
             GridManager.CellGridTable[currentPosition].SpecialTile = null;
             GridManager.CellGridTable[currentPosition].SetCell(currentPosition, false);
             GridManager.CellGridTable[currentPosition].AssignType(TileTypes.grass,null);

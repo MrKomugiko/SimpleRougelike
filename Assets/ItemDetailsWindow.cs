@@ -53,7 +53,7 @@ public class ItemDetailsWindow : MonoBehaviour
 
         var stat = Instantiate(BasicStat_Prefab,StatsSection.transform);
             stat.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Value:");
-            stat.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(DATA.Value.ToString()+"g");
+            stat.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(DATA.Value.ToString()+" Gold");
             stat.transform.SetAsLastSibling();
         StatList.Add(stat);
 
@@ -62,7 +62,7 @@ public class ItemDetailsWindow : MonoBehaviour
         {
             var button = Instantiate(Button_Prefab, ButtonSection.transform);
                 button.GetComponent<Button>().onClick.RemoveAllListeners();
-                button.GetComponent<Button>().onClick.AddListener(()=>(DATA as IConsumable).Use(ParentSlot.IndexID));
+                button.GetComponent<Button>().onClick.AddListener(()=>(DATA as IConsumable).Use(ParentSlot.itemSlotID));
             ButtonsList.Add(button);
         }
 

@@ -12,7 +12,7 @@ public partial class ActionButtonScript : MonoBehaviour
     [SerializeField] public GameObject SelectionBorder_Object;
     [SerializeField] public Image ButtonIcon_IMG;
     [SerializeField] private GameObject DescriptionContainer_Object;
-    [SerializeField] private TextMeshProUGUI Description_TMP;
+    [SerializeField] public TextMeshProUGUI Description_TMP;
     [SerializeField] private Button Icon_Button;
     [SerializeField] private Button Description_Button;
     [SerializeField] public ActionSwitchController controller;
@@ -31,6 +31,22 @@ public partial class ActionButtonScript : MonoBehaviour
                 // TODO: tutaj bedzie trzeba wrócić, zeby nie wyczyscilo przycisku przypisanego do itemka
                 Icon_Button.onClick.RemoveAllListeners();
                 Icon_Button.onClick.AddListener(()=>controller.ResetToDefault()); // wróć      
+                Icon_Button.onClick.AddListener(
+                    ()=> {
+                        if(EquipmentScript.AssignationItemToQuickSlotIsActive)
+                        {
+                            // Debug.Log("QuickAction is selected, after press it again , and when assignation item tmode is active, its turn off");
+
+                            // Debug.LogWarning(Description_TMP.text+" == Tap to Add Item = "+Description_TMP.text.Contains("Tap to Add Item"));
+                            // if(Description_TMP.text.Contains("Tap to Add Item"))
+                            // {
+                            //     Description_TMP.SetText("Tap to Cancel");
+                            // }
+                            
+                            EquipmentScript.QuitFromQuickbarSelectionMode();
+                        }
+                    } 
+                ); // wróć      
             }
             else 
             {   
@@ -69,8 +85,9 @@ public partial class ActionButtonScript : MonoBehaviour
         Icon_Button.onClick.AddListener(()=>action());;
         ButtonIcon_IMG.sprite = IconSpriteList.First(n=>n.name == "ICON_"+icon.ToString());
     }
-    public void ConfigureDescriptionButtonClick(Action action, string description, bool singleAction = true)
+    public void ConfigureDescriptionButtonClick(Action action, string description, bool singleAction = true, string actionNameString = "")
     { 
+        print("przypisanie "+actionNameString);
         Description_Button.onClick.RemoveAllListeners();
         this.gameObject.name = "ACTION_"+description;
       //  Debug.LogWarning(description);
@@ -81,13 +98,15 @@ public partial class ActionButtonScript : MonoBehaviour
             if(singleAction)
                 CloseAndRemoveHighlightBorder();
             else
-                ReAssignActionToDescriptionButton(action);
+                ReAssignActionToDescriptionButton(action, actionNameString);
         });
        // Debug.LogWarning(description);
         Description_TMP.SetText(description);
-    }
-    private void ReAssignActionToDescriptionButton(Action action)
+
+     }
+    private void ReAssignActionToDescriptionButton(Action action, string actionNameString)
     {
+        print("ReAssignActionToDescriptionButton, wykonanie: "+actionNameString);
         string text = Description_TMP.text;
         if(text.Contains("Show"))
         {
@@ -99,16 +118,23 @@ public partial class ActionButtonScript : MonoBehaviour
         }
         Description_TMP.SetText(text);
 
+        if(Description_TMP.text.Contains("Empty Slot."))
+        {
+            Description_TMP.SetText("select new item");
+            action();
+            return;
+        }
         Description_Button.onClick.RemoveAllListeners();
         Description_Button.onClick.AddListener(()=>
         {
             action();
-            ReAssignActionToDescriptionButton(action);
+            ReAssignActionToDescriptionButton(action, "repeat");
         });
     }
     
     private void CloseAndRemoveHighlightBorder()
     {
+      //  print("CloseAndRemoveHighlightBorder");
         ISSELECTED = false;
         NotificationManger.HighlightElementSwitch(controller.notificationParent);
         controller.notificationParent.PossibleActions.SetActive(false);
@@ -116,10 +142,11 @@ public partial class ActionButtonScript : MonoBehaviour
 
     internal void UpdateItemCounter(string countLeft)
     {
+        //print("update item counter");
         ItemCounter_TMP.SetText(countLeft);
-        if(Int32.Parse(countLeft) <= 1)
-            ItemCounter_TMP.gameObject.SetActive(false);
-        else
+        if(Int32.Parse(countLeft) >1)
             ItemCounter_TMP.gameObject.SetActive(true);
+        else
+            ItemCounter_TMP.gameObject.SetActive(false);
     }
 }

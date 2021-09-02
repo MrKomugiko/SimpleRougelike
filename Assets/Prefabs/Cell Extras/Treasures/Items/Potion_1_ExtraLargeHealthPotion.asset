@@ -17,10 +17,10 @@ MonoBehaviour:
   Name: XXL HP Potion
   Value: 250
   Description: Extra large health potion, restore 100 hp
-  Rarity: 2
+  Rarity: 0
   Type: 1
-  minCount: 0
-  maxCount: 1
+  minCount: 1
+  maxCount: 2
   IsStackable: 0
   StackSize: 1
   Level: 2
@@ -29,4 +29,3 @@ MonoBehaviour:
   Dexterity: 1
   CanBeAssignToQuickActions: 1
   HealthRegenerationValue: 100
-  MinLevelRequirment: 1

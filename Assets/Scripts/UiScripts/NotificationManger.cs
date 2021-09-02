@@ -13,6 +13,7 @@ public partial class NotificationManger : MonoBehaviour
     //[SerializeField] int maxSize = 5; // TODO: 
     [SerializeField] public List<NotificationScript> NotificationList = new List<NotificationScript>();
     
+
     
     private void Awake() 
     {
@@ -27,8 +28,8 @@ public partial class NotificationManger : MonoBehaviour
         int count = NotificationList.Count;
         for (int i = 0; i < count; i++)
         {
-
             NotificationScript notification = NotificationList[i];
+
             notification.RefreshData();     
 
             if(notification.IsVisibleOnNotificationList(GameManager.Player_CELL))
@@ -44,6 +45,34 @@ public partial class NotificationManger : MonoBehaviour
         }
     }
     
+     public static void CreatePlayerNotificationElement(ISelectable cellRelated)
+    {
+        Debug.LogError("Ony once at player start/new game");
+
+        GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
+        notificationObject.gameObject.name = "PlayerNotifications";
+        notificationObject.transform.SetAsFirstSibling();
+
+        NotificationScript notification = notificationObject.GetComponentInChildren<NotificationScript>();
+        NotificationManger.instance.NotificationList.Add(notification);
+        notification.BaseCell = PlayerManager.instance._playerCell.ParentCell;
+
+        notificationObject.GetComponent<Button>().onClick.AddListener(()=>
+            {
+                HighlightElementSwitch(notification);
+                notification.PossibleActions.SetActive(!notification.PossibleActions.activeSelf);
+                if(notification.PossibleActions.activeSelf == true) 
+                {   
+                   PlayerManager.instance._actionController = notification.PossibleActions.GetComponent<ActionSwitchController>();
+                   PlayerManager.instance._actionController.ResetToDefault();
+                }
+            }
+        );
+        PlayerManager.instance._notificationScript = notification;
+
+        var existingnotification = NotificationManger.instance.NotificationList.Where(n=>n == notification).First();
+        notification.PossibleActions.GetComponent<ActionSwitchController>().ConfigurePlayerButtons((cellRelated as ISpecialTile), "default");
+    }
     public static void CreateNewNotificationElement(ISelectable cellRelated)
     {
         var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell ==  (cellRelated as ISpecialTile).ParentCell)).FirstOrDefault();
@@ -54,6 +83,7 @@ public partial class NotificationManger : MonoBehaviour
                 return; // nie dodawaj tego samego 
             }
         GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
+        notificationObject.transform.SetAsLastSibling();
         NotificationScript notification = notificationObject.GetComponentInChildren<NotificationScript>();
         NotificationManger.instance.NotificationList.Add(notification);
         notificationObject.name = "Notification"+NotificationManger.instance.NotificationList.Count;

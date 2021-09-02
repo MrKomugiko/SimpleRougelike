@@ -17,11 +17,13 @@ public class PotionItem : ItemData, IConsumable
         throw new System.NotImplementedException();
     }
 
-    public bool Use(int slotID)
+    public bool Use(int itemSlotID)
     {
+        if(PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].ITEM.count <= 0) return false;
        (GameManager.Player_CELL.SpecialTile as ILivingThing).TakeDamage(-HealthRegenerationValue, Name);
        NotificationManger.AddValueTo_Health_Notification(HealthRegenerationValue);
-       PlayerManager.PlayerInstance._mainBackpack.ItemSlots[slotID].UpdateItemAmount(-1);
+       
+       PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].UpdateItemAmount(-1);
 
        return true; 
     }

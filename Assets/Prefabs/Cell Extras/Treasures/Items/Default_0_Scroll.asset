@@ -19,7 +19,7 @@ MonoBehaviour:
   Description: Useless scroll
   Rarity: 0
   Type: 0
-  minCount: 0
+  minCount: 1
   maxCount: 10
   IsStackable: 1
   StackSize: 10
