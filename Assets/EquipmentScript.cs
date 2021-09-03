@@ -9,6 +9,8 @@ using static Treasure_Cell;
 
 public class EquipmentScript : MonoBehaviour
 {
+    public string StorageName;
+    [SerializeField] public bool PLAYER_EQUIPMENTSLOT= false;
     [SerializeField] GameObject ItemSlotPrefab;
     [SerializeField] int MaxCapacity;
     [SerializeField] int NumberOfUnlockedSlots;
@@ -18,13 +20,26 @@ public class EquipmentScript : MonoBehaviour
 
     private void Start() {
 
+        if(PLAYER_EQUIPMENTSLOT)
+        {   
+            StorageName = "Player";
+            
+            ItemSlots.ForEach(slot=>slot.ParentStorage = this);
+            ItemSlots.ForEach(slot=>slot.PLAYER_BACKPACK = true);
+
+           return;
+        } 
+            
+
         for(int i = 0; i< MaxCapacity; i++)
         {
+            StorageName = "Backpack";
             ItemSlot itemSlot = Instantiate(ItemSlotPrefab, ItemsContainer.transform).GetComponent<ItemSlot>();
             ItemSlots.Add(itemSlot);
             itemSlot.PLAYER_BACKPACK = true;
             itemSlot.itemSlotID = i;
             itemSlot.IsLocked = i < NumberOfUnlockedSlots?false:true;
+            itemSlot.ParentStorage = this;
         }
     }
 
@@ -121,6 +136,24 @@ public class EquipmentScript : MonoBehaviour
         else
             ItemSlots[slotIndex].UpdateItemAmount(1);
         return true;
+    }
+    
+ 
+    public bool EquipItemFromSlot(ItemSlot fromSlot, EquipmentScript toEquipment)
+    {
+        print("zakłądanie itemka typu "+fromSlot.ITEM.item.Type);
+        int? firstAvaiableSlot = toEquipment.ItemSlots.Where(s=>s.ITEM.count == 0).FirstOrDefault().itemSlotID;
+        print("firstAvaiableslot"+(int)firstAvaiableSlot);
+        if(firstAvaiableSlot != null)
+        {
+            ItemPack ItemCopy = fromSlot.ITEM;
+            ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
+
+            toEquipment.ItemSlots[0].AddNewItemToSlot(ItemCopy);
+
+            return true;
+        }
+        return false;
     }
     public (bool result,bool update, int index) CheckWhereCanYouFitThisItemInBackpack(ItemPack _itemToStack)
     {

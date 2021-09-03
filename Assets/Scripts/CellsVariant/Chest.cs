@@ -58,5 +58,11 @@ public class Chest : IChest
     {
         public int count;
         public ItemData item;
+
+        public ItemPack(int count, ItemData item)
+        {
+            this.count = count;
+            this.item = item;
+        }
     }
 }

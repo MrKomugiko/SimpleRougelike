@@ -56,7 +56,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     {
         if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
         {
-            GameManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
+            PlayerManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
             ParentCell.MoveTo();
         }
     }
@@ -87,7 +87,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 
             Debug.Log("pick");
 
-            GameManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
+            PlayerManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
 
             ParentCell.SpecialTile = null;
             var currentPosition = ParentCell.CurrentPosition;

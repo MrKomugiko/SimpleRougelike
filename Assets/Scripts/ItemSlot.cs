@@ -5,6 +5,8 @@ using static Chest;
 
 public class ItemSlot : MonoBehaviour
 {   
+    public ITEMTYPES ItemContentRestricion = ITEMTYPES.none;
+    public EquipmentScript ParentStorage;
     internal ChestLootWindowScript chest;
     public bool PLAYER_BACKPACK = false;
     public int itemSlotID;
@@ -184,6 +186,19 @@ public class ItemSlot : MonoBehaviour
 
         IsInQuickSlot = false;
         AssignedToQuickSlot = null;
+    }
+
+    public enum ITEMTYPES
+    {
+        none,
+        Armor,
+        Shoulders,
+        PrimaryWeapon,
+        SecondaryWeapon,
+        Shoes,
+        Gloves,
+        Helmet,
+        Belt,
     }
 }
 

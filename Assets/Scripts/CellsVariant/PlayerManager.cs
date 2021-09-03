@@ -1,23 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
-public class PlayerManager
+public class PlayerManager: MonoBehaviour
 {
-    
-    static public int Level = 1;
-    static public int Strength = 1;
-    static public int Inteligence = 1;
-    static public int Dexterity = 1;
+
+    public TextMeshProUGUI GoldCounter_TMP;
+    public TextMeshProUGUI ExperienceCounter_TMP;
+    public TextMeshProUGUI HealthCounter_TMP;
+    public int Level = 1;
+    public int Gold = 0;
+    public int Experience = 0;
+    public int Strength = 1;
+    public int Inteligence = 1;
+    public int Dexterity = 1;
     public Player_Cell _playerCell;
     public EquipmentScript _mainBackpack;
+    public EquipmentScript _EquipedItems;
     public static PlayerManager instance;
-    internal NotificationScript _notificationScript;
-
+    public NotificationScript _notificationScript;
     public ActionSwitchController _actionController;
 
-    public PlayerManager(Player_Cell parentCell)
+    public void SetPlayerManager(Player_Cell parentCell)
     {
         _playerCell = parentCell;
         _mainBackpack = GameObject.Find("Content_EquipmentTab").GetComponent<EquipmentScript>();
@@ -43,28 +49,13 @@ public class PlayerManager
         EquipmentScript.AssignationItemToQuickSlotIsActive = false;
         EquipmentScript.CurrentSelectedActionButton = null;
     }
-    public void Reset_QuickSlotToDefault(ActionButtonScript btn)
-    {
-        int quickslotID = _actionController.actionButtonsList.IndexOf(btn);
-        Action defaultAction = () => 
-        {
-            EquipmentScript.AssignItemToActionSlot(quickslotID);
-        };
-        _actionController.actionButtonsList[quickslotID].ButtonIcon_IMG.sprite = _actionController.actionButtonsList[quickslotID].IconSpriteList
-            .First(n=>n.name == "ICON_"+ActionIcon.Empty.ToString());
-            
-        _actionController.actionButtonsList[quickslotID].ConfigureDescriptionButtonClick(
-                    action: ()=>defaultAction(),
-                    description: "Empty Slot.",
-                    singleAction: false,
-                    actionNameString: "reset to default"
-                );
-        EquipmentScript.AssignationItemToQuickSlotIsActive = false;
-        EquipmentScript.CurrentSelectedActionButton = null;
-    }
-    public void QuickSlot_CustomActionForButton(int SlotID)
-    {
-        Debug.LogWarning("Button 0 method");
-    }
     
+
+    public void AddGold(int value)
+    {
+        int oldGoldvalue = Int32.Parse(GoldCounter_TMP.text);
+        Gold = oldGoldvalue + value;
+        GoldCounter_TMP.SetText(Gold.ToString());
+        NotificationManger.AddValueTo_Gold_Notification(value);
+    }
 }

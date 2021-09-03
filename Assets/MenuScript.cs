@@ -74,7 +74,7 @@ public class MenuScript : MonoBehaviour
     {
         MENU.SetActive(false);
 
-        GameManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
+        PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
         Continue_BTN.interactable = true;
         Continue_TMP.color = ButtonON_TextColor;
 

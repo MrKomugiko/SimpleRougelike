@@ -52,7 +52,6 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         }
     }
 
-    PlayerManager Player;
     public Player_Cell(CellScript parent, MonsterData _data/*PlayerData _data*/)
     {
         this.ParentCell = parent;
@@ -81,7 +80,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             ConfigurePathfinderComponent();
         }
 
-        Player = new PlayerManager(this);
+        GameObject.Find("PlayerManager").GetComponent<PlayerManager>().SetPlayerManager(this);
     }
 
     public Pathfinding _pathfinder;
@@ -117,7 +116,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         {
             Debug.Log($"Player HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");
         }
-        GameManager.instance.HealthCounter_TMP.SetText(HealthPoints.ToString());
+        PlayerManager.instance.HealthCounter_TMP.SetText(HealthPoints.ToString());
     }
     public void ChangeToPlayerCorpse()
     {

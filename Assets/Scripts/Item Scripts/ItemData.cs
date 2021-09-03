@@ -26,13 +26,13 @@ public abstract class ItemData : ScriptableObject
     
     public bool CanBeAssignToQuickActions;
 
-    public void Sell(int itemSlotID)
+    public void Sell(ItemSlot from)
     {
-        if(PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].ITEM.count <= 0) 
+        if(from.ITEM.count <= 0) 
             return;
 
-        GameManager.instance.AddGold(Value);
-        PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].UpdateItemAmount(-1);
+        PlayerManager.instance.AddGold(Value);
+        from.UpdateItemAmount(-1);
     }
 }
     public enum RarityTypes

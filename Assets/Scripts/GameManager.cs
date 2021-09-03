@@ -7,26 +7,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] public TextMeshProUGUI TurnCounter_TMP;
-    [SerializeField] public TextMeshProUGUI GoldCounter_TMP;
-    [SerializeField] public TextMeshProUGUI ExperienceCounter_TMP;
-    [SerializeField] public TextMeshProUGUI HealthCounter_TMP;
-
-
+    [SerializeField] public TextMeshProUGUI TurnCounter_TMP;    
     [SerializeField] public Vector2Int StartingPlayerPosition;
     [SerializeField] private GameObject TickCounterPrefab;
     [SerializeField] public GameObject SelectionBorderPrefab;
-
-
-    public List<GameObject> specialEffectList = new List<GameObject>();
-
     public static CellScript Player_CELL;
     public static List<CellScript> DamagedCells = new List<CellScript>();
     public static GameManager instance;
    [SerializeField] public GameObject GameOverScreen;
    [SerializeField] public GameObject ContentLootWindow;
 
-    private bool wybuchWTrakcieWykonywania = false;
+    [SerializeField] private bool wybuchWTrakcieWykonywania = false;
     private int _currentTurnNumber = 0;
     public int CurrentTurnNumber
     {
@@ -61,44 +52,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    [SerializeField] ChestLootWindowScript _chestLootScript;
-    [SerializeField] EquipmentScript _equipmentScript;
-    internal static void Restart()
-    {      
-        GameManager.instance.CurrentTurnNumber = 0;
-
-        instance._chestLootScript.Clear();
-        instance._equipmentScript.Clear();
-
-        NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
-        NotificationManger.instance.NotificationList.Clear();
-        
-        foreach (var cell in GridManager.CellGridTable)
-        {
-            Destroy(cell.Value.gameObject);
-        }
-
-        GridManager.destroyedTilesPool.Clear();
-        GridManager.CellGridTable.Clear();
-
-        GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
-
-        GridManager.instance.Start();
-        GameManager.instance.Init_PlacePlayerOnGrid();
-
-        GameManager.instance.TurnCounter_TMP.SetText("0");
-        GameManager.instance.GoldCounter_TMP.SetText("0");
-        GameManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
-        GameManager.instance.ExperienceCounter_TMP.SetText("0");
-    }
-
-    public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
-
-        wybuchWTrakcieWykonywania = value; 
-        }
-    }
-
     public IEnumerator AddTurn()
     {
         _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
@@ -129,12 +82,44 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(.25f);
         yield return null;
     }
-    public void AddGold(int value)
-    {
-        int currentGoldValue = Int32.Parse(GoldCounter_TMP.text);
-        GoldCounter_TMP.SetText((currentGoldValue + value).ToString());
-        NotificationManger.AddValueTo_Gold_Notification(value);
+    [SerializeField] ChestLootWindowScript _chestLootScript;
+    [SerializeField] EquipmentScript _equipmentScript;
+    internal static void Restart()
+    {      
+        GameManager.instance.CurrentTurnNumber = 0;
+
+        instance._chestLootScript.Clear();
+        instance._equipmentScript.Clear();
+
+        NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
+        NotificationManger.instance.NotificationList.Clear();
+        
+        foreach (var cell in GridManager.CellGridTable)
+        {
+            Destroy(cell.Value.gameObject);
+        }
+
+        GridManager.destroyedTilesPool.Clear();
+        GridManager.CellGridTable.Clear();
+
+        GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
+
+        GridManager.instance.Start();
+        GameManager.instance.Init_PlacePlayerOnGrid();
+
+        GameManager.instance.TurnCounter_TMP.SetText("0");
+        PlayerManager.instance.GoldCounter_TMP.SetText("0");
+        PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
+        PlayerManager.instance.ExperienceCounter_TMP.SetText("0");
     }
+
+    public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
+
+        wybuchWTrakcieWykonywania = value; 
+        }
+    }
+
+
     public GameObject InstantiateTicker(Bomb_Cell bomb_Cellcs)
     {
         return Instantiate(TickCounterPrefab, bomb_Cellcs.ParentCell.transform);
