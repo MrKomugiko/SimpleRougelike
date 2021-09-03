@@ -8,7 +8,7 @@ public class Obstacle_Cell : ISpecialTile
 
     #region core
     public CellScript ParentCell { get; private set; }
-    public TileTypes Type { get; private set; } = TileTypes.wall;
+    public TileTypes Type { get; set; } = TileTypes.wall;
     public string Name { get; set; }
     
     public GameObject Icon_Sprite { get; set; }

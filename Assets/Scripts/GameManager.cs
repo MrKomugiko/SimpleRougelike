@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public static List<CellScript> DamagedCells = new List<CellScript>();
     public static GameManager instance;
    [SerializeField] public GameObject GameOverScreen;
+   [SerializeField] public GameObject ContentLootWindow;
+
     private bool wybuchWTrakcieWykonywania = false;
     private int _currentTurnNumber = 0;
     public int CurrentTurnNumber
@@ -50,7 +52,8 @@ public class GameManager : MonoBehaviour
                         if(existingnotification != null)
                         {
                             var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
-                            x.Refresh(tile.SpecialTile);
+                            if(tile.SpecialTile is Player_Cell == false)
+                                x.Refresh(tile.SpecialTile);
                         }
                         (tile.SpecialTile as Bomb_Cell).SwitchHighlightImpactArea();
                     }
@@ -59,17 +62,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField] ChestLootWindowScript _chestLootScript;
+    [SerializeField] EquipmentScript _equipmentScript;
     internal static void Restart()
     {      
         GameManager.instance.CurrentTurnNumber = 0;
 
+        instance._chestLootScript.Clear();
+        instance._equipmentScript.Clear();
+
+        NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
+        NotificationManger.instance.NotificationList.Clear();
+        
         foreach (var cell in GridManager.CellGridTable)
         {
             Destroy(cell.Value.gameObject);
         }
-        
-        NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
-        NotificationManger.instance.NotificationList.Clear();
 
         GridManager.destroyedTilesPool.Clear();
         GridManager.CellGridTable.Clear();
@@ -163,7 +171,7 @@ public class GameManager : MonoBehaviour
         {
             if (cell.SpecialTile is Player_Cell) 
             {
-                print("gracz oberawał");
+               // print("gracz oberawał");
                 cellsToDestroy.Remove(cell);
                 DamagedCells.Remove(cell);
                 continue; //TODO: wyodrębnoć klase player, dodać/zmienic IEnemy na coś uniwersalnego ? IEntity ? zawierac bedzie hp, exp , funkcja ataku obranonu nvm
@@ -180,7 +188,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                     print("monster died and should leave his bones on this cell");
+                    // print("monster died and should leave his bones on this cell");
                     //TODO: POZMIANA STWORKA NA ZWŁOKI/drop, do tego jakas infomacja ze zmarło mu sie xd
                     cellsToDestroy.Remove(cell);
                     DamagedCells.Remove(cell);

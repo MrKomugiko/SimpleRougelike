@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 685bfd14427387142811d97cff20f0f1, type: 3}
+  m_Name: Potion_0_SmallHealthPotion
+  m_EditorClassIdentifier: 
+  Item_Sprite: {fileID: -1798277116, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+  ItemID: 0
+  Name: Small HP Potion
+  Value: 20
+  Description: Small Hp Restore 5 of your hp.
+  Rarity: 0
+  Type: 1
+  minCount: 1
+  maxCount: 5
+  IsStackable: 1
+  StackSize: 5
+  Level: 1
+  Strength: 1
+  Inteligence: 1
+  Dexterity: 1
+  CanBeAssignToQuickActions: 1
+  HealthRegenerationValue: 5

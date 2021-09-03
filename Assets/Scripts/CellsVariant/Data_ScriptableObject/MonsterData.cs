@@ -9,7 +9,7 @@ public class MonsterData : ScriptableObject
     public GameObject Corpse_Sprite;
     public int MaxHealthPoints; 
     public int Speed;
-    public int LootID;
+    public TreasureData LootData;
     public int Damage;
     public int Level;
     public int ExperiencePoints;

@@ -14,7 +14,7 @@ public class Monster_Cell :ICreature
     
     #region core
     public CellScript ParentCell { get; set; }
-    public TileTypes Type { get; private set; } = TileTypes.monster;
+    public TileTypes Type { get; set; } = TileTypes.monster;
     public GameObject Icon_Sprite { get; set; }
     public GameObject Corpse_Sprite { get; private set; }
 
@@ -31,6 +31,9 @@ public class Monster_Cell :ICreature
         set 
         {
             _healthPoints = value;
+            
+            if(value>MaxHealthPoints)
+                _healthPoints = MaxHealthPoints;
         }
     }
     public bool IsAlive
@@ -41,14 +44,14 @@ public class Monster_Cell :ICreature
                 return true;
             else
             {
-                ChangeIntoTreasureObject(lootID: lootID);
+                ChangeIntoTreasureObject(_data: lootID);
                 return  false;
             }
         }
     }
    
     public int TurnsRequiredToMakeAction {get; private set;}
-    public int lootID { get; private set; }
+    public TreasureData lootID { get; private set; }
     public int Level {get;set;}
     
     #endregion
@@ -77,7 +80,7 @@ public class Monster_Cell :ICreature
     public Monster_Cell(CellScript parent, MonsterData _data)
     {
         this.ParentCell                   =       parent;       
-        this.lootID                       =       _data.LootID;
+        this.lootID                       =       _data.LootData;
         this.Name                         =       _data.MonsterName;
         this.MaxHealthPoints              =       _data.MaxHealthPoints;
         this.HealthPoints                 =       _data.MaxHealthPoints;
@@ -135,11 +138,7 @@ public class Monster_Cell :ICreature
         HealthPoints -= damage;
      
         if(IsAlive)
-            Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");
-        else
-            Debug.Log("monster died and left bones");
-
-      
+            Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");    
     }
     public bool TryAttack(CellScript _target)
     {
@@ -167,14 +166,14 @@ public class Monster_Cell :ICreature
         return false;
 
     }
-    public void ChangeIntoTreasureObject(int lootID)
+    public void ChangeIntoTreasureObject(TreasureData _data)
     {
         ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
         ParentCell.Trash.Clear();
 
-        
         ParentCell.Type = TileTypes.treasure;
-        ParentCell.SpecialTile = new Treasure_Cell(ParentCell, GameManager.instance.GetTreasureData(lootID));
+        ParentCell.SpecialTile = new Treasure_Cell(ParentCell, _data);
+;       (ParentCell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
         //4. assign LootID related reward to this object
         if (Border != null)
         {

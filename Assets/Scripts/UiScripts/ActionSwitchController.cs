@@ -7,7 +7,7 @@ public class ActionSwitchController : MonoBehaviour
 {
     [SerializeField] public NotificationScript notificationParent;
     [SerializeField]  public List<ActionButtonScript> actionButtonsList = new List<ActionButtonScript>();
-    [SerializeField] int ColorDimmingSteps {get;set;} = 8;
+    [SerializeField] int ColorDimmingSteps {get;set;} = 4;
     private bool AnimationIsRunning = false;
     
     private void Start()
@@ -18,14 +18,17 @@ public class ActionSwitchController : MonoBehaviour
     public void OnClick_SelectActionIcon(ActionButtonScript selectedButton)
     {
         if(AnimationIsRunning) return;
+        if(notificationParent.BaseCell.SpecialTile is Player_Cell)
+        {
+            if(EquipmentScript.AssignationItemToQuickSlotIsActive)
+            {
+                Debug.Log("quit from AssignationItemToQuickSlotIsActive mode");
+                EquipmentScript.QuitFromQuickbarSelectionMode();
+            }
+
+        }
         AnimationIsRunning = true;
         StartCoroutine(AnimateSelection(selectedButton));
-    }
-    public void OnClick_DeselectActionIcon(ActionButtonScript selectedButton)
-    {
-        if(AnimationIsRunning) return;
-        AnimationIsRunning = true;
-        StartCoroutine(AnimateDeselection(selectedButton));
     }
     public void OnClick_ExecuteDescriptionActionAndClose(ActionButtonScript selectedButton)
     {
@@ -44,10 +47,30 @@ public class ActionSwitchController : MonoBehaviour
         }
     }
     
+    public void ConfigurePlayerButtons(ISpecialTile cell,string actionNameString="")
+    {
+        int i =0;
+        foreach(var button in actionButtonsList)
+        {
+            if(i<cell.AvaiableActions.Count)
+            {
+                button.gameObject.SetActive(true);
+                button.ConfigureIconButtonClick(
+                    action:()=>OnClick_SelectActionIcon(button),
+                    cell.AvaiableActions[i].icon
+                );
+                button.ConfigureDescriptionButtonClick(
+                    action: cell.AvaiableActions[i].action,
+                    description: cell.AvaiableActions[i].description,
+                    singleAction: cell.AvaiableActions[i].singleAction,
+                    actionNameString: actionNameString);
+            }
+            print(button.name);
+            i++;
+        }            
+    }       
     public void Configure(ISpecialTile cell)
     {
-
-//        Debug.LogWarning("CONFIGURATION ACTION BUTTONS");
         int i =0;
         ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
         actionButtonsList.CopyTo(temp);
@@ -78,8 +101,9 @@ public class ActionSwitchController : MonoBehaviour
 
     }
 
-     public void Refresh(ISpecialTile cell)
+    public void Refresh(ISpecialTile cell)
     {
+        if(cell is Player_Cell) return;
 
         Debug.LogWarning("Refresh opened window in ACTION BUTTONS");
         int i =0;
@@ -104,6 +128,7 @@ public class ActionSwitchController : MonoBehaviour
             }
             else
             {
+
                 actionButtonsList.Remove(button);
                 Destroy(button.gameObject);
             }

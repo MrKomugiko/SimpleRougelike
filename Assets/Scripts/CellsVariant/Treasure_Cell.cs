@@ -5,25 +5,21 @@ using UnityEngine;
 public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 {
 
-    #region core
     public CellScript ParentCell { get; private set; }
-    public TileTypes Type { get; private set; } 
+    public TileTypes Type { get; set; } 
     public string Name { get; set; }
-    [Obsolete("Przesiadka na gameobject sprite'a.")]public string Icon_Url { get; set; }
-
-    #endregion
-
-    #region Treasure-specific
     public int ID {get;}
     public int GoldValue { get; set; }
+
+
     public GameObject Border { get; set; }
     public bool IsHighlighted { get; set; }
     public GameObject Icon_Sprite {get;set;}
 
     public List<(Action action, string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
-    #endregion
 
-
+    private List<Chest.ItemPack> RandomGeneratedLoot = new List<Chest.ItemPack>();
+    public IChest chest {get;} = null;
     public Treasure_Cell(CellScript parent, TreasureData _data)
     {
         this.ParentCell     =       parent;
@@ -32,6 +28,8 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.Type           =       _data.Type;
         this.Icon_Sprite    =       _data.Icon_Sprite;
         this.GoldValue      =       _data.Value;
+        this.RandomGeneratedLoot = _data.GetRandomizeLootPacks();
+        chest = new Chest(source:this,RandomGeneratedLoot);
 
         AvaiableActions.Add((  ()=>{
             bool result;
@@ -42,22 +40,42 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
                 }
             } ,"Collect Only",ActionIcon.Pick,
             true));
+
         NotificationManger.CreateNewNotificationElement(this);
     
         var treasureObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
         ParentCell.Trash.Add(treasureObject);
+        RemoveFromMapIfChesIsEmpty();
     }
     public void OnClick_MakeAction()
     {
         MoveAndPick();       
     }
+
     public void MoveAndPick()
     {
         if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
         {
-            GameManager.instance.AddGold(GoldValue);
-                GoldValue = 0;
+            GameManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
             ParentCell.MoveTo();
+        }
+    }
+    public void RemoveFromMapIfChesIsEmpty()
+    {
+        if(chest.ContentItems.Count == 0)
+        {
+            if(GridManager.CellGridTable.ContainsKey(ParentCell.CurrentPosition))
+            {
+                Debug.Log("dont spawn empty chest");
+                if (Border != null)
+                GameObject.Destroy(Border.gameObject);
+
+                ParentCell.SpecialTile = null;
+                var currentPosition = ParentCell.CurrentPosition;
+                GridManager.CellGridTable[ParentCell.CurrentPosition].SetCell(currentPosition);
+                return;
+            }
+            Debug.Log("empty treasure chest - in init");
         }
     }
     public void Pick(out bool status)
@@ -68,8 +86,8 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             GameObject.Destroy(Border.gameObject);
 
             Debug.Log("pick");
-            GameManager.instance.AddGold(GoldValue);
-            GoldValue = 0;
+
+            GameManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
 
             ParentCell.SpecialTile = null;
             var currentPosition = ParentCell.CurrentPosition;
@@ -81,7 +99,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             status = false;
         }
     }
-
     public void RemoveBorder()
     {
         IsHighlighted = false;

@@ -34,6 +34,16 @@ public class GridManager : MonoBehaviour
                 CellGridTable.Add(new Vector2Int(x,y),newCell);
             }   
         }
+
+        // wyczysc mape z pustych skrzynek
+        foreach(var cell in CellGridTable.Values)
+        {
+            if(cell.SpecialTile is Treasure_Cell)
+            {
+                (cell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
+            }
+        }
+        NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
     }
     public static TileTypes GetRandomType()
     {

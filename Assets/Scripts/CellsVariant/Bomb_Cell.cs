@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 {
@@ -9,7 +10,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     public GameObject Border { get; set; }
     public bool IsHighlighted { get; set; }
     public CellScript ParentCell {get; private set;}
-    public TileTypes Type { get; private set; } 
+    public TileTypes Type { get; set; } 
     public string Name { get; set; }
     public GameObject Icon_Sprite {get;set;}
     public List<(Action action, string description, ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description, ActionIcon icon, bool singleAction)>();
@@ -108,8 +109,13 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             if(cell.SpecialTile is ILivingThing)
             {
                 (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion");
-                NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
-                GridManager.instance.DamageMap.Add((cell.SpecialTile as ILivingThing, BombDamage));
+                NotificationManger.TriggerActionNotification
+                (
+                    INVOKER:this,
+                    NotificationManger.AlertCategory.ExplosionDamage,
+                    TARGET_BaseCEll: cell.SpecialTile 
+                );
+             //   GridManager.instance.DamageMap.Add((cell.SpecialTile as ILivingThing, BombDamage));
                 continue;
             } 
             if(cell.SpecialTile is Bomb_Cell)
@@ -147,7 +153,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             if(cell.SpecialTile is ILivingThing)
             {
                 (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion");
-                NotificationManger.TriggerActionNotification(cell.SpecialTile as ISelectable, NotificationManger.AlertCategory.ExplosionDamage);
+                NotificationManger.TriggerActionNotification(
+                    INVOKER:this, 
+                    CATEGORY: NotificationManger.AlertCategory.ExplosionDamage,
+                    TARGET_BaseCEll:cell.SpecialTile
+                );
                 GridManager.instance.DamageMap.Add((cell.SpecialTile as ILivingThing, BombDamage));
                 continue;
             } 
@@ -237,7 +247,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
                 }
             }
             HighlihtedArea.AddRange(NotificationManger.HighlightAreaWithTemporaryBorders(ImpactAreaPositions, Color.magenta));
+
+            GameObject.Find("ExitButton").GetComponent<Button>().onClick.RemoveAllListeners();
+            GameObject.Find("ExitButton").GetComponent<Button>().onClick.AddListener(()=>NotificationManger.RemoveTemporaryBordersObjectsFromArea(HighlihtedArea));
             return;
+   
         }
         if(IsImpactAreaHighlihted == true)
         {

@@ -18,7 +18,7 @@ MonoBehaviour:
   Corpse_Sprite: {fileID: 179587530871585500, guid: a2912684cda9b9d468426bcf2005194e, type: 3}
   MaxHealthPoints: 2
   Speed: 1
-  LootID: 2
+  LootData: {fileID: 11400000, guid: b98e0245cebaef54ab058715a8872f56, type: 2}
   Damage: 2
   Level: 1
   ExperiencePoints: 10
