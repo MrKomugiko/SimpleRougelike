@@ -63,13 +63,38 @@ public class ItemDetailsWindow : MonoBehaviour
         StatList.Add(stat);
 
         // spawn przycisków
+        GameObject button;
         if(DATA is IConsumable)
         {
-            var button = Instantiate(Button_Prefab, ButtonSection.transform);
+            button = Instantiate(Button_Prefab, ButtonSection.transform);
                 button.GetComponent<Button>().onClick.RemoveAllListeners();
-                button.GetComponent<Button>().onClick.AddListener(()=>(DATA as IConsumable).Use(ParentSlot.itemSlotID));
+                button.GetComponent<Button>().onClick.AddListener(
+                    ()=>
+                        {
+                            (DATA as IConsumable).Use(ParentSlot.itemSlotID);
+                            CheckButtons_ItemCount();
+                        }
+                    );
+                button.GetComponentInChildren<TextMeshProUGUI>().SetText("Consume");
+                button.name = "ConsumeButton";
+                
             ButtonsList.Add(button);
         }
+
+        button = Instantiate(Button_Prefab, ButtonSection.transform);
+            button.GetComponent<Button>().onClick.RemoveAllListeners();
+               button.GetComponent<Button>().onClick.AddListener(
+                    ()=>
+                        {
+                            DATA.Sell(ParentSlot.itemSlotID);
+                            CheckButtons_ItemCount();
+                        }
+                    );
+
+            button.GetComponentInChildren<TextMeshProUGUI>().SetText("Sell [1x]");
+            button.name = "SellButton";
+            
+        ButtonsList.Add(button);
 
         // konfiguracja wymagań
         string level = DATA.Level <= PlayerManager.Level?$"<color={RequirmentGood_colorHex}>{DATA.Level}</color>":$"<color={RequirmentFail_colorHex}>{DATA.Level}</color>";
@@ -80,6 +105,18 @@ public class ItemDetailsWindow : MonoBehaviour
         string requirmentsString = $"Lvl:{level}  Str:{Strength}  Int:{Inteligence}  Dex:{Dexterity}";
         Requirments_TMP.SetText(requirmentsString);
 
+    }
+
+    public void CheckButtons_ItemCount()
+    {
+        foreach(var btn in ButtonsList)
+        {
+            if(PlayerManager.instance._mainBackpack.ItemSlots[ParentSlot.itemSlotID].ITEM.count == 0)
+            {
+                btn.GetComponent<Button>().interactable = false;
+                btn.GetComponentInChildren<TextMeshProUGUI>().alpha = .75f;
+            }
+        }
     }
 
     public void ResetToDefault()

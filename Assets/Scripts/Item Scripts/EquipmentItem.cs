@@ -8,7 +8,7 @@ public class EquipmentItem : ItemData
         Type = ItemType.Default;
         Rarity = RarityTypes.Common;
         CanBeAssignToQuickActions = false;
-
     }
+
 }
 

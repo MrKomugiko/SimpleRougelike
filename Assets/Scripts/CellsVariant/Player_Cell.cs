@@ -16,15 +16,20 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     public string Name { get; set; }
     public int HealthPoints 
     { 
-        get => healthPoints; 
+        get => _healthPoints; 
         set
         {
-            if(value > MaxHealthPoints) healthPoints = MaxHealthPoints;
-            if(value < 0) healthPoints = 0;
+            var HP = value;
 
-            healthPoints = value; 
-             }
+            if(value > MaxHealthPoints) 
+                HP = MaxHealthPoints;
+
+            if(value < 0) 
+                HP = 0;
+
+            _healthPoints = HP;
         }
+    }
     public int Level { get; set; }
     public int MaxHealthPoints { get; private set; }
     public int Damage { get; private set; }
@@ -80,7 +85,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     }
 
     public Pathfinding _pathfinder;
-    private int healthPoints;
+    private int _healthPoints;
 
     public void ConfigurePathfinderComponent()
     {

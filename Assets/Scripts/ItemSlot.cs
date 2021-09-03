@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,7 +27,6 @@ public class ItemSlot : MonoBehaviour
         } 
     }
     public bool IsEmpty => ITEM.count == 0?true:false;
-
     [SerializeField] bool ISFull;
     public bool IsFull {
         get{
@@ -55,7 +52,6 @@ public class ItemSlot : MonoBehaviour
     
     [SerializeField] public Button _btn;
     [SerializeField] private Image _itemIcon;
-
     [SerializeField] private Image _emptyBackground;
     [SerializeField] private Image _lockedBackground;
     [SerializeField] private GameObject _counterBox;
@@ -84,9 +80,6 @@ public class ItemSlot : MonoBehaviour
             _btn.onClick.AddListener(()=>ShowDetailsWindow());   
         }
     }
-
-
-
     private void ShowDetailsWindow()
     {
         PlayerManager.instance._mainBackpack.ItemDetailsWindow
@@ -127,7 +120,6 @@ public class ItemSlot : MonoBehaviour
         // CLOSE CHEST IF LEFT EMPTY
         chest.IfEmptyRemoveEmptyChestFromMap();
     }
-
     public void UpdateItemAmount(int value)
     {
         ITEM.count = ITEM.count + value;
@@ -165,7 +157,6 @@ public class ItemSlot : MonoBehaviour
         }
         
     }
-
     public bool IsInQuickSlot = false;
     public int? AssignedToQuickSlot = null;
     public void AssignToQuickSlot(int quickSlotID)
@@ -176,11 +167,10 @@ public class ItemSlot : MonoBehaviour
 
         PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ButtonIcon_IMG.sprite = ITEM.item.Item_Sprite;
         
-        PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ConfigureDescriptionButtonClick(()=>(this.ITEM.item as IConsumable).Use(itemSlotID),$"{ITEM.item.Name}",false,($"Assign to Quick Slot nr{AssignedToQuickSlot}"));
+        PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ConfigureDescriptionButtonClick(()=>(this.ITEM.item as IConsumable).Use(itemSlotID),$"{ITEM.item.Name}",false);
         // przywróć eq do stanu przed wyboru tego itemka do slotu
         EquipmentScript.QuitFromQuickbarSelectionMode();
     }
-
     public void RemoveFromQuickSlot(int quickSlotID)
     {
         print("Remove from Quick Slot");
@@ -192,21 +182,8 @@ public class ItemSlot : MonoBehaviour
 
         PlayerManager.instance.Reset_QuickSlotToDefault(quickSlotID);
 
-    //     // przywróć przycisk quickslotu do stanu pierwotnego-pustego
-    // PlayerManager.instance.PlayerQuicsSlotList[(int)AssignedToQuickSlot].ConfigureIconButtonClick(
-    //                 action:()=>AssignedQuickslot.controller.OnClick_SelectActionIcon(AssignedQuickslot),
-    //                 ActionIcon.Empty
-    //     );
-
-    //  AssignedQuickslot.ConfigureDescriptionButtonClick(
-    //                 action: GameManager.Player_CELL.SpecialTile.AvaiableActions[QuickslotIndexID].action,
-    //                 description:GameManager.Player_CELL.SpecialTile.AvaiableActions[QuickslotIndexID].description,
-    //                 singleAction: GameManager.Player_CELL.SpecialTile.AvaiableActions[QuickslotIndexID].singleAction
-    //             );
-
         IsInQuickSlot = false;
         AssignedToQuickSlot = null;
-      //  EquipmentScript.QuitFromQuickbarSelectionMode();
     }
 }
 

@@ -75,9 +75,10 @@ public partial class NotificationManger : MonoBehaviour
     public static void CreateNewNotificationElement(ISelectable cellRelated)
     {
         var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell ==  (cellRelated as ISpecialTile).ParentCell)).FirstOrDefault();
-        int oldHierarhyPosition = existingnotification.transform.parent.GetSiblingIndex();
+        int oldHierarhyPosition = 1;
         if(existingnotification != null)
             {
+                oldHierarhyPosition = existingnotification.transform.parent.GetSiblingIndex();
                 Destroy(existingnotification.gameObject.transform.parent.gameObject);
             //    var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
             //    x.Configure((cellRelated as ISpecialTile));

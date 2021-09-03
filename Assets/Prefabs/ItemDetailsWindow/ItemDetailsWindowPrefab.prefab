@@ -65,7 +65,6 @@ MonoBehaviour:
   RequirmentFail_colorHex: '#FF0000'
   RequirmentGood_colorHex: '#E3F48E'
   Requirments_TMP: {fileID: 4214137605382873531}
-  StatList: []
   ButtonSection: {fileID: 6414410079769842800}
   Button_Prefab: {fileID: 326786659772439637, guid: 4764ff302b20a144da86ef89185ffd06, type: 3}
 --- !u!1 &2467642609756850566

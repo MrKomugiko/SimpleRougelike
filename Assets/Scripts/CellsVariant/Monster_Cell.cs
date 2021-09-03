@@ -31,6 +31,9 @@ public class Monster_Cell :ICreature
         set 
         {
             _healthPoints = value;
+            
+            if(value>MaxHealthPoints)
+                _healthPoints = MaxHealthPoints;
         }
     }
     public bool IsAlive
