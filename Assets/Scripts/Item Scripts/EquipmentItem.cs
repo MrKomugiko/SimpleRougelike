@@ -8,11 +8,12 @@ public class EquipmentItem : ItemData
     public Sprite FrontSprite;
     public Sprite BackSprite;
     public Sprite LeftSprite;
-    public Sprite RightSprite;
+    public Sprite RightSprite;   
+    
     public void Awake() 
     {
-        Type = ItemType.Default;
-        Rarity = RarityTypes.Common;
+        ItemCoreSettings.Type = ItemType.Default;
+        ItemCoreSettings.Rarity = RarityTypes.Common;
         CanBeAssignToQuickActions = false;
     }
 
@@ -24,6 +25,10 @@ public class EquipmentItem : ItemData
         
         return output;
     }
+
+    //------------------------------
+
+
 
 }
     public enum EquipmentType

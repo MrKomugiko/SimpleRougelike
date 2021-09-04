@@ -31,7 +31,7 @@ public class PlayerEquipmentVisualSwitchScript : MonoBehaviour
         if (PlayerManager.instance._EquipedItems.ItemSlots.Where(slot => slot.ItemContentRestricion == EquipmentType.Helmet).First().ITEM.item != null)
         {
             Helmet = (PlayerManager.instance._EquipedItems.ItemSlots.Where(slot => slot.ItemContentRestricion == EquipmentType.Helmet).First().ITEM.item as EquipmentItem);
-            HelmetName = Helmet.Name;
+            HelmetName = Helmet.ItemCoreSettings.Name;
         }
         else
             HelmetName = null;
@@ -39,7 +39,7 @@ public class PlayerEquipmentVisualSwitchScript : MonoBehaviour
         if (PlayerManager.instance._EquipedItems.ItemSlots.Where(slot => slot.ItemContentRestricion == EquipmentType.Armor).First().ITEM.item != null)
         {
             Armor = (PlayerManager.instance._EquipedItems.ItemSlots.Where(slot => slot.ItemContentRestricion == EquipmentType.Armor).First().ITEM.item as EquipmentItem);
-            ArmorName = Armor.Name;
+            ArmorName = Armor.ItemCoreSettings.Name;
         }
         else
             ArmorName = null;

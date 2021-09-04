@@ -1,14 +1,14 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName="New Potion Item",menuName="GameData/Item/Potion")]
-public class PotionItem : ItemData, IConsumable
+public class PotionItem : ItemData, IConsumable 
 {
     public int HealthRegenerationValue;
 
     public void Awake() 
     {
-        Type = ItemType.Consumable;
-        Rarity = RarityTypes.Common;
+        ItemCoreSettings.Type = ItemType.Consumable;
+        ItemCoreSettings.Rarity = RarityTypes.Common;
         CanBeAssignToQuickActions = true;
         
     }
@@ -17,7 +17,7 @@ public class PotionItem : ItemData, IConsumable
     {
         if(PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].ITEM.count <= 0) return false;
 
-        (GameManager.Player_CELL.SpecialTile as ILivingThing).TakeDamage(-HealthRegenerationValue, Name);
+        (GameManager.Player_CELL.SpecialTile as ILivingThing).TakeDamage(-HealthRegenerationValue, ItemCoreSettings.Name);
         NotificationManger.AddValueTo_Health_Notification(HealthRegenerationValue);
         PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].UpdateItemAmount(-1);
 

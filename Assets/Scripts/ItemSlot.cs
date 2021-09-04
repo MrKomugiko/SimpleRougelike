@@ -41,9 +41,9 @@ public class ItemSlot : MonoBehaviour
                 return false;
             }
 
-            if(ITEM.count == ITEM.item.StackSize)
+            if(ITEM.count == ITEM.item.StackSettings.StackSize)
             {
-              //  print($"count {ITEM.count} == item stacksize {ITEM.item.StackSize} ");
+              //  print($"count {ITEM.count} == item stacksize {ITEM.item.ItemCoreSettings.StackSize} ");
                 value = true;
             }
          
@@ -58,8 +58,46 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] private Image _lockedBackground;
     [SerializeField] private GameObject _counterBox;
     [SerializeField] public GameObject _selectionBorder;
-    [SerializeField] public ItemPack ITEM;
+    [SerializeField] private ItemPack iTEM;
+    [SerializeField] private Image rarityBackgroundColor;
     public bool IsSelected => _selectionBorder.activeSelf;
+
+    public ItemPack ITEM 
+    { 
+        get => iTEM; 
+        set
+        {
+             iTEM = value; 
+             if(value.item != null)
+             {
+                switch(value.item.ItemCoreSettings.Rarity)
+                {
+                    case RarityTypes.Common:
+                        rarityBackgroundColor.color = new Color32(192,191,191,155);break;
+                    case RarityTypes.Rare:
+                        rarityBackgroundColor.color = new Color32(36,159,75,155);break;
+                    case RarityTypes.Epic:
+                        rarityBackgroundColor.color = new Color32(35,90,165,155);break;
+                    case RarityTypes.Legend:
+                        rarityBackgroundColor.color = new Color32(192,177,39,155);break;
+                    case RarityTypes.Ancient:
+                        rarityBackgroundColor.color = new Color32(192,34,175,155); break;
+                }
+             }
+             else
+             {
+                 if(rarityBackgroundColor != null)
+                     rarityBackgroundColor.color = new Color32(81,126,56,255);
+             }
+        }
+    }
+    public void ChangeItemCount(int value)
+    {
+        var _item = ITEM;
+        _item.count+=value;
+        ITEM = _item;
+    }
+    
     TextMeshProUGUI _counterBox_TMP;
     public void AddNewItemToSlot(ItemPack _item)
     {
@@ -70,7 +108,7 @@ public class ItemSlot : MonoBehaviour
         _counterBox_TMP = _counterBox.GetComponentInChildren<TextMeshProUGUI>();
         _counterBox_TMP.SetText(_item.count.ToString());    
 
-        _itemIcon.sprite = _item.item.Item_Sprite;   
+        _itemIcon.sprite = _item.item.ItemCoreSettings.Item_Sprite;   
          _btn.onClick.RemoveAllListeners();
         if(PLAYER_BACKPACK == false)
         {
@@ -124,7 +162,12 @@ public class ItemSlot : MonoBehaviour
     }
     public void UpdateItemAmount(int value)
     {
-        ITEM.count = ITEM.count + value;
+        ChangeItemCount(value);
+        if(IsInQuickSlot)
+        {
+            PlayerManager.instance._actionController.actionButtonsList[(int)AssignedToQuickSlot].UpdateItemCounter(ITEM.count.ToString());
+        }
+
         if(IsEmpty)
         {         
              // usuwanie obrazka ze slotu
@@ -138,8 +181,8 @@ public class ItemSlot : MonoBehaviour
                 RemoveFromQuickSlot((int)AssignedToQuickSlot);
                 return;
             }
-            Debug.Log("usunięcie itemku:"+ITEM.item.Name);
-            ITEM.item = null;
+            Debug.Log("usunięcie itemku:"+ITEM.item.ItemCoreSettings.Name);
+            ITEM = new ItemPack(0,null);
         }
 
         if(ITEM.count <= 1)
@@ -152,10 +195,7 @@ public class ItemSlot : MonoBehaviour
             _counterBox.SetActive(true);
             string countLeft = ITEM.count.ToString();
             _counterBox_TMP.SetText(countLeft); 
-            if(IsInQuickSlot)
-            {
-                PlayerManager.instance._actionController.actionButtonsList[(int)AssignedToQuickSlot].UpdateItemCounter(countLeft);
-            }
+     
         }
         
     }
@@ -167,9 +207,10 @@ public class ItemSlot : MonoBehaviour
         IsInQuickSlot = true;
         print("Assign to Quick Slot nr."+AssignedToQuickSlot);
 
-        PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ButtonIcon_IMG.sprite = ITEM.item.Item_Sprite;
+        PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ButtonIcon_IMG.sprite = ITEM.item.ItemCoreSettings.Item_Sprite;
         
-        PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ConfigureDescriptionButtonClick(()=>(this.ITEM.item as IConsumable).Use(itemSlotID),$"{ITEM.item.Name}",false);
+        PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ConfigureDescriptionButtonClick(()=>(this.ITEM.item as IConsumable).Use(itemSlotID),$"{ITEM.item.ItemCoreSettings.Name}",false);
+        PlayerManager.instance._actionController.actionButtonsList[quickSlotID].UpdateItemCounter(ITEM.count.ToString());
         // przywróć eq do stanu przed wyboru tego itemka do slotu
         EquipmentScript.QuitFromQuickbarSelectionMode();
     }

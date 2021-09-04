@@ -12,19 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18bcd0a98873a2f4e88d3f3217f9fd10, type: 3}
   m_Name: Default_1_Bones
   m_EditorClassIdentifier: 
-  Item_Sprite: {fileID: 895366093, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
-  ItemID: 1
-  Name: Bones
-  Value: 1
-  Description: Cheap monster bones
-  Rarity: 0
-  Type: 0
-  minCount: 1
-  maxCount: 10
-  IsStackable: 1
-  StackSize: 20
-  Level: 1
-  Strength: 1
-  Inteligence: 1
-  Dexterity: 1
+  ItemCoreSettings:
+    Item_Sprite: {fileID: 895366093, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+    ItemID: 1
+    Name: Bones
+    GoldValue: 5
+    Description: Bones, nothing special.
+    Rarity: 0
+    Type: 0
+  DropSettings:
+    minCount: 1
+    maxCount: 20
+  StackSettings:
+    IsStackable: 1
+    StackSize: 200
+  RequirmentsSettings:
+    Level: 0
+    Strength: 0
+    Inteligence: 0
+    Dexterity: 0
   CanBeAssignToQuickActions: 0

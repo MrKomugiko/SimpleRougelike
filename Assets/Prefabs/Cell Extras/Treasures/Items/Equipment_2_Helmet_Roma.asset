@@ -12,21 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2830f37d3fc36846bc09ef240db0d67, type: 3}
   m_Name: Equipment_2_Helmet_Roma
   m_EditorClassIdentifier: 
-  Item_Sprite: {fileID: -110020959, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}
-  ItemID: 2
-  Name: Roma Helmet
-  Value: 2000
-  Description: Great helmet, signed by Brutus.
-  Rarity: 0
-  Type: 0
-  minCount: 1
-  maxCount: 1
-  IsStackable: 0
-  StackSize: 1
-  Level: 2
-  Strength: 1
-  Inteligence: 10
-  Dexterity: 1
+  ItemCoreSettings:
+    Item_Sprite: {fileID: -110020959, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}
+    ItemID: 2
+    Name: Roma Helmet
+    GoldValue: 3000
+    Description: Secondhand helmet worn by Brutus yerars ago.
+    Rarity: 2
+    Type: 2
+  DropSettings:
+    minCount: 1
+    maxCount: 1
+  StackSettings:
+    IsStackable: 0
+    StackSize: 5
+  RequirmentsSettings:
+    Level: 3
+    Strength: 4
+    Inteligence: 1
+    Dexterity: 2
   CanBeAssignToQuickActions: 0
   eqType: 6
   FrontSprite: {fileID: 438496360, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}

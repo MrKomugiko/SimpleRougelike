@@ -111,8 +111,8 @@ public class AnimateWindowScript : MonoBehaviour
     {
         if(CurrentOpenedTab == "")
         {
-            if(CurrentOpenedTab == "CharacterTab") 
-                GameObject.Find("Content_CharacterTab").SetActive(true);
+            if(tabName == "CharacterTab") 
+                CharacterEquipmentWindow.SetActive(true);
            // print("zadna zakladka nie była widoczna, otwieramy okno");
            // print("otwarta zakładka "+tabName);
             MoveWindow();
@@ -120,8 +120,8 @@ public class AnimateWindowScript : MonoBehaviour
         }
         else if(CurrentOpenedTab == tabName)
         {
-                 if(CurrentOpenedTab == "CharacterTab") 
-            GameObject.Find("Content_CharacterTab").SetActive(false);
+            if(CurrentOpenedTab == "CharacterTab") 
+              CharacterEquipmentWindow.SetActive(false);
            // print("ponowne wybranie tej samej zakładki = zamknięcie okna");
             foreach(var tab in tabList)
             {
@@ -138,8 +138,8 @@ public class AnimateWindowScript : MonoBehaviour
         else
         {
            // print("przełączono zakładkę na "+tabName);
-            if(CurrentOpenedTab == "CharacterTab") 
-            GameObject.Find("Content_CharacterTab").SetActive(false);
+            if(tabName == "CharacterTab") 
+              CharacterEquipmentWindow.SetActive(true);
             LoadTabData(tabName);
         }
 

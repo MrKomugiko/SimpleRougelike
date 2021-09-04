@@ -5,8 +5,8 @@ public class DefaultItem : ItemData
 {
     public void Awake() 
     {
-        Type = ItemType.Default;
-        Rarity = RarityTypes.Common;
+        ItemCoreSettings.Type = ItemType.Default;
+        ItemCoreSettings.Rarity = RarityTypes.Common;
         CanBeAssignToQuickActions = false;
 
     }

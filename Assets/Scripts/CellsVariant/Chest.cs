@@ -48,7 +48,7 @@ public class Chest : IChest
         foreach(var item in ContentItems)
         {
             if(item.item == null) continue;
-            total += item.count * item.item.Value;
+            total += item.count * item.item.ItemCoreSettings.GoldValue;
         }
         return total;
     }

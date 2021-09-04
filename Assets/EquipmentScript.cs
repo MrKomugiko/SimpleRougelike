@@ -52,7 +52,7 @@ public class EquipmentScript : MonoBehaviour
     public void Reset_WipeOutDataAndImages()
     {
         ItemSlots.ForEach(s=>s._itemIcon.sprite = s._emptyBackground.sprite);
-        ItemSlots.ForEach(s=>{s.ITEM.item = null; s.ITEM.count = 0;});
+        ItemSlots.ForEach(s=>new ItemPack(0,null));
     }
 
     private static List<Button> turnOffButtonsList = new List<Button>();
@@ -191,12 +191,12 @@ public class EquipmentScript : MonoBehaviour
                 this.ItemSlots[this.GetNextEmptySlot()].AddNewItemToSlot(currentEquipedItemCopy);
                 // END succes stary item zdjęty spowrotem , nowy zalozony
             }
-            if(ItemCopy.item.Name == "Roma Helmet")
+            if(ItemCopy.item.ItemCoreSettings.Name == "Roma Helmet")
             {
                 PlayerManager.instance.HelmetIMG.enabled = true;
             }
 
-            if(ItemCopy.item.Name == "Roma Armor")
+            if(ItemCopy.item.ItemCoreSettings.Name == "Roma Armor")
             {
               PlayerManager.instance.ArmorIMG.enabled = true;
             }
@@ -213,10 +213,10 @@ public class EquipmentScript : MonoBehaviour
             this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
             toEquipment.ItemSlots[toEquipment.GetNextEmptySlot()].AddNewItemToSlot(ItemCopy);
             
-            if(ItemCopy.item.Name == "Roma Helmet")
+            if(ItemCopy.item.ItemCoreSettings.Name == "Roma Helmet")
               PlayerManager.instance.HelmetIMG.enabled = false;
 
-            if(ItemCopy.item.Name == "Roma Armor")
+            if(ItemCopy.item.ItemCoreSettings.Name == "Roma Armor")
               PlayerManager.instance.ArmorIMG.enabled = false;
             PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
             return true; // END succes item z eq gracza zdjęty do plecaka
@@ -236,7 +236,7 @@ public class EquipmentScript : MonoBehaviour
         }
 
         bool IsThereAny_Empty_Slots = ItemSlots.Where(slot=>slot.IsEmpty == true).Any();
-        if( _itemToStack.item.IsStackable == false)
+        if( _itemToStack.item.StackSettings.IsStackable == false)
         {
 
             if(IsThereAny_Empty_Slots == true)
@@ -251,7 +251,7 @@ public class EquipmentScript : MonoBehaviour
         ItemSlot slot = null;
         if(nonEmptySlots.Count <= ItemSlots.Count)
         {
-           slot = nonEmptySlots.Where(s=>s.ITEM.item.ItemID == _itemToStack.item.ItemID && s.ITEM.item.Name == _itemToStack.item.Name)
+           slot = nonEmptySlots.Where(s=>s.ITEM.item.ItemCoreSettings.ItemID == _itemToStack.item.ItemCoreSettings.ItemID && s.ITEM.item.ItemCoreSettings.Name == _itemToStack.item.ItemCoreSettings.Name)
                         .Where(s=>s.IsFull == false)
                         .FirstOrDefault();
 

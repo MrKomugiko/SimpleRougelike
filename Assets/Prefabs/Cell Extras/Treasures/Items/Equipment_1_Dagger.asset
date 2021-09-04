@@ -12,20 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2830f37d3fc36846bc09ef240db0d67, type: 3}
   m_Name: Equipment_1_Dagger
   m_EditorClassIdentifier: 
-  Item_Sprite: {fileID: -1059138478, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
-  ItemID: 1
-  Name: Dagger
-  Value: 200
-  Description: Rusted dagger. Best tool for cutting pizza slices.
-  Rarity: 0
-  Type: 0
-  minCount: 1
-  maxCount: 1
-  IsStackable: 0
-  StackSize: 1
-  Level: 1
-  Strength: 2
-  Inteligence: 1
-  Dexterity: 2
+  ItemCoreSettings:
+    Item_Sprite: {fileID: -1059138478, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+    ItemID: 1
+    Name: Dagger
+    GoldValue: 1000
+    Description: Looks like small sword. But isnt should be sharp?
+    Rarity: 1
+    Type: 2
+  DropSettings:
+    minCount: 1
+    maxCount: 1
+  StackSettings:
+    IsStackable: 0
+    StackSize: 5
+  RequirmentsSettings:
+    Level: 0
+    Strength: 0
+    Inteligence: 0
+    Dexterity: 0
   CanBeAssignToQuickActions: 0
   eqType: 2
+  FrontSprite: {fileID: 0}
+  BackSprite: {fileID: 0}
+  LeftSprite: {fileID: 0}
+  RightSprite: {fileID: 0}

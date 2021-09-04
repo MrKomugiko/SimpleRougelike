@@ -12,20 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2830f37d3fc36846bc09ef240db0d67, type: 3}
   m_Name: Equipment_0_Shield
   m_EditorClassIdentifier: 
-  Item_Sprite: {fileID: -1399341705, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
-  ItemID: 0
-  Name: Shield
-  Value: 200
-  Description: Basic round shape shield.
-  Rarity: 0
-  Type: 0
-  minCount: 1
-  maxCount: 1
-  IsStackable: 0
-  StackSize: 1
-  Level: 3
-  Strength: 2
-  Inteligence: 1
-  Dexterity: 5
+  ItemCoreSettings:
+    Item_Sprite: {fileID: 1854839638, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+    ItemID: 0
+    Name: Shield
+    GoldValue: 1000
+    Description: Shield for protecting purpose, in any case someone throw stones
+      in your way.
+    Rarity: 1
+    Type: 2
+  DropSettings:
+    minCount: 1
+    maxCount: 1
+  StackSettings:
+    IsStackable: 0
+    StackSize: 5
+  RequirmentsSettings:
+    Level: 0
+    Strength: 0
+    Inteligence: 0
+    Dexterity: 0
   CanBeAssignToQuickActions: 0
   eqType: 3
+  FrontSprite: {fileID: 0}
+  BackSprite: {fileID: 0}
+  LeftSprite: {fileID: 0}
+  RightSprite: {fileID: 0}

@@ -17,7 +17,7 @@ public partial class ActionButtonScript : MonoBehaviour
     [SerializeField] private Button Description_Button;
     [SerializeField] public ActionSwitchController controller;
     [SerializeField] private bool _iSSELECTED = false;
-    [SerializeField] private TextMeshProUGUI ItemCounter_TMP;
+    [SerializeField] public TextMeshProUGUI ItemCounter_TMP;
 
     private Action myMainIconAction = null;
 

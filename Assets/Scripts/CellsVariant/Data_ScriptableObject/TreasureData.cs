@@ -42,7 +42,7 @@ public class TreasureData : ScriptableObject
             ListOfContainingItem.Add(
                 new ItemPack
                 {
-                    count = Random.Range(PossibleLootItems[index].minCount,PossibleLootItems[index].maxCount+1),
+                    count = Random.Range(PossibleLootItems[index].DropSettings.minCount,PossibleLootItems[index].DropSettings.maxCount+1),
                     item = PossibleLootItems[index]
                 }
             );
