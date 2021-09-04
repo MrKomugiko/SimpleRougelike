@@ -5,7 +5,7 @@ using static Chest;
 
 public class ItemSlot : MonoBehaviour
 {   
-    public ITEMTYPES ItemContentRestricion = ITEMTYPES.none;
+    public EquipmentType ItemContentRestricion;
     public EquipmentScript ParentStorage;
     internal ChestLootWindowScript chest;
     public bool PLAYER_BACKPACK = false;
@@ -53,8 +53,8 @@ public class ItemSlot : MonoBehaviour
     }
     
     [SerializeField] public Button _btn;
-    [SerializeField] private Image _itemIcon;
-    [SerializeField] private Image _emptyBackground;
+    [SerializeField] public Image _itemIcon;
+    [SerializeField] public Image _emptyBackground;
     [SerializeField] private Image _lockedBackground;
     [SerializeField] private GameObject _counterBox;
     [SerializeField] public GameObject _selectionBorder;
@@ -188,17 +188,6 @@ public class ItemSlot : MonoBehaviour
         AssignedToQuickSlot = null;
     }
 
-    public enum ITEMTYPES
-    {
-        none,
-        Armor,
-        Shoulders,
-        PrimaryWeapon,
-        SecondaryWeapon,
-        Shoes,
-        Gloves,
-        Helmet,
-        Belt,
-    }
+
 }
 

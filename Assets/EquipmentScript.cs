@@ -18,8 +18,8 @@ public class EquipmentScript : MonoBehaviour
     [SerializeField] public GameObject ItemDetailsWindow;
     [SerializeField] public List<ItemSlot> ItemSlots = new List<ItemSlot>();
 
-    private void Start() {
-
+    private void Start() 
+    {
         if(PLAYER_EQUIPMENTSLOT)
         {   
             StorageName = "Player";
@@ -48,6 +48,11 @@ public class EquipmentScript : MonoBehaviour
         ItemSlots.ForEach(s=>Destroy(s.gameObject));
         ItemSlots.Clear();
         Start();
+    }
+    public void Reset_WipeOutDataAndImages()
+    {
+        ItemSlots.ForEach(s=>s._itemIcon.sprite = s._emptyBackground.sprite);
+        ItemSlots.ForEach(s=>{s.ITEM.item = null; s.ITEM.count = 0;});
     }
 
     private static List<Button> turnOffButtonsList = new List<Button>();
@@ -141,18 +146,84 @@ public class EquipmentScript : MonoBehaviour
  
     public bool EquipItemFromSlot(ItemSlot fromSlot, EquipmentScript toEquipment)
     {
-        print("zakłądanie itemka typu "+fromSlot.ITEM.item.Type);
-        int? firstAvaiableSlot = toEquipment.ItemSlots.Where(s=>s.ITEM.count == 0).FirstOrDefault().itemSlotID;
-        print("firstAvaiableslot"+(int)firstAvaiableSlot);
-        if(firstAvaiableSlot != null)
+
+        //TODO: REQUIRMENT CHECK
+
+        //rozróżnienie czy item ma zostać założóny czy wrzucony do plecaka spowrotem
+        bool _equipItem = toEquipment.StorageName == "Player";
+
+        var equipmentItem = fromSlot.ITEM.item as EquipmentItem;
+        print("zakładanie itemka typu "+equipmentItem.eqType);
+
+        ItemPack ItemCopy = fromSlot.ITEM;
+
+        if(_equipItem)
         {
-            ItemPack ItemCopy = fromSlot.ITEM;
-            ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
+            print("Zakładanie");
+            // ZAKŁĄDANIE ITEMKA
+            int matchEqSlotIndex = toEquipment.ItemSlots.Where(s=>s.ItemContentRestricion == equipmentItem.eqType).First().itemSlotID;
+            print($"przypisany temu rodzajowi eq (w magazynie {toEquipment.StorageName}) slotem jest slot nr:"+(int)matchEqSlotIndex); 
 
-            toEquipment.ItemSlots[0].AddNewItemToSlot(ItemCopy);
+            // sprawdzanie czy w tym miejscu juz jest jakis item
+            if(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.count == 0)
+            {
+                // pusto, tylko zakładamy nowy item
+                // usuwamy z bierzącego położenia
+                this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
 
+                // przekazujemy kopie
+                toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
+                 // END succes nowy item zalozony
+            }
+            else
+            {
+                // inny item juz jest w tym slocie, 
+                // zrob kopie i wyciągniej go z 
+                ItemPack currentEquipedItemCopy = toEquipment.ItemSlots[matchEqSlotIndex].ITEM;
+                // usunięcie go z zalozonego eq
+                print("usunięcie przedmioru z gracza eq ( zapisanie w pamieci )");
+                toEquipment.ItemSlots[matchEqSlotIndex].UpdateItemAmount(-1);
+                
+                this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
+                //dodanie nowego
+                toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
+                //wrócenie starego spowrotem do plecaka
+                this.ItemSlots[this.GetNextEmptySlot()].AddNewItemToSlot(currentEquipedItemCopy);
+                // END succes stary item zdjęty spowrotem , nowy zalozony
+            }
+            if(ItemCopy.item.Name == "Roma Helmet")
+            {
+                PlayerManager.instance.HelmetIMG.enabled = true;
+            }
+
+            if(ItemCopy.item.Name == "Roma Armor")
+            {
+              PlayerManager.instance.ArmorIMG.enabled = true;
+            }
+
+              PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
             return true;
         }
+        
+        if(_equipItem == false)
+        {
+            print("zdejmowanie");
+            // ZDEJMOWANIE ITEMKA
+            print($"wolny slot w {toEquipment.StorageName} = "+toEquipment.GetNextEmptySlot());
+            this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
+            toEquipment.ItemSlots[toEquipment.GetNextEmptySlot()].AddNewItemToSlot(ItemCopy);
+            
+            if(ItemCopy.item.Name == "Roma Helmet")
+              PlayerManager.instance.HelmetIMG.enabled = false;
+
+            if(ItemCopy.item.Name == "Roma Armor")
+              PlayerManager.instance.ArmorIMG.enabled = false;
+            PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
+            return true; // END succes item z eq gracza zdjęty do plecaka
+
+        }
+        
+        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
         return false;
     }
     public (bool result,bool update, int index) CheckWhereCanYouFitThisItemInBackpack(ItemPack _itemToStack)

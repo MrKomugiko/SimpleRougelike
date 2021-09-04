@@ -36,11 +36,15 @@ public class AnimateWindowScript : MonoBehaviour
     public void HideTabWindow()
     {
         _transform.anchoredPosition = _position_OFF;
+        if(CurrentOpenedTab == "CharacterTab") 
+            CharacterEquipmentWindow.SetActive(false);
+
         CurrentOpenedTab = "";
         Active = false;
         _DarkBackground.SetActive(false);
 
     }
+    [SerializeField] GameObject CharacterEquipmentWindow;
     private IEnumerator SlideAnimation()
     {
         HideNotificationElementsExceptPlayer(_active);
@@ -107,6 +111,8 @@ public class AnimateWindowScript : MonoBehaviour
     {
         if(CurrentOpenedTab == "")
         {
+            if(CurrentOpenedTab == "CharacterTab") 
+                GameObject.Find("Content_CharacterTab").SetActive(true);
            // print("zadna zakladka nie była widoczna, otwieramy okno");
            // print("otwarta zakładka "+tabName);
             MoveWindow();
@@ -114,6 +120,8 @@ public class AnimateWindowScript : MonoBehaviour
         }
         else if(CurrentOpenedTab == tabName)
         {
+                 if(CurrentOpenedTab == "CharacterTab") 
+            GameObject.Find("Content_CharacterTab").SetActive(false);
            // print("ponowne wybranie tej samej zakładki = zamknięcie okna");
             foreach(var tab in tabList)
             {
@@ -125,10 +133,13 @@ public class AnimateWindowScript : MonoBehaviour
             // gdy zminimalizowany, wszytskie zakladki sa "aktywne"
             foreach(var tab in tabList)
                 ChangeTabButtonState(tab.name, true);
+
         }
         else
         {
            // print("przełączono zakładkę na "+tabName);
+            if(CurrentOpenedTab == "CharacterTab") 
+            GameObject.Find("Content_CharacterTab").SetActive(false);
             LoadTabData(tabName);
         }
 

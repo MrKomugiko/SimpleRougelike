@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager: MonoBehaviour
 {
+    public Image HelmetIMG;
+    public Image ArmorIMG;
+     [SerializeField] GameObject GraphicSwitchPrefab;
+    [SerializeField] public PlayerEquipmentVisualSwitchScript GraphicSwitch;
 
     public TextMeshProUGUI GoldCounter_TMP;
     public TextMeshProUGUI ExperienceCounter_TMP;
     public TextMeshProUGUI HealthCounter_TMP;
-    public int Level = 1;
-    public int Gold = 0;
-    public int Experience = 0;
-    public int Strength = 1;
-    public int Inteligence = 1;
-    public int Dexterity = 1;
+    public int Level = 1, Gold = 0, Experience = 0, Strength = 1, Inteligence = 1, Dexterity = 1;
     public Player_Cell _playerCell;
     public EquipmentScript _mainBackpack;
     public EquipmentScript _EquipedItems;
@@ -25,9 +25,12 @@ public class PlayerManager: MonoBehaviour
 
     public void SetPlayerManager(Player_Cell parentCell)
     {
-        _playerCell = parentCell;
-        _mainBackpack = GameObject.Find("Content_EquipmentTab").GetComponent<EquipmentScript>();
         instance = this;
+        _playerCell = parentCell;
+        //_mainBackpack = GameObject.Find("Content_EquipmentTab").GetComponent<EquipmentScript>();
+
+       var uicontroller = Instantiate(GraphicSwitchPrefab,_playerCell.playerSpriteObject.transform);
+       GraphicSwitch = uicontroller.GetComponent<PlayerEquipmentVisualSwitchScript>();
     }
     public void Reset_QuickSlotToDefault(int quickslotID)
     {
@@ -49,8 +52,6 @@ public class PlayerManager: MonoBehaviour
         EquipmentScript.AssignationItemToQuickSlotIsActive = false;
         EquipmentScript.CurrentSelectedActionButton = null;
     }
-    
-
     public void AddGold(int value)
     {
         int oldGoldvalue = Int32.Parse(GoldCounter_TMP.text);
@@ -58,4 +59,15 @@ public class PlayerManager: MonoBehaviour
         GoldCounter_TMP.SetText(Gold.ToString());
         NotificationManger.AddValueTo_Gold_Notification(value);
     }
+    public void Restart_ClearStatsAndEquipedItems()
+    {
+        ArmorIMG.enabled = false;
+        HelmetIMG.enabled = false;
+
+        _EquipedItems.Reset_WipeOutDataAndImages();
+
+        Level = 1; Gold = 0; Experience = 0; Strength = 1; Inteligence = 1; Dexterity = 1; 
+        _EquipedItems.ItemSlots.ForEach(slot=>slot.ITEM = new Chest.ItemPack(0, null));
+    }
+
 }

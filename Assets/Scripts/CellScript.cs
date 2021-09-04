@@ -194,6 +194,17 @@ public class CellScript : MonoBehaviour
     }
     public void MoveTo()
     {
+         if(GameManager.instance.TurnFinished == false) return;
+        Vector2Int direction = GameManager.Player_CELL.CurrentPosition-CurrentPosition;
+
+        print(direction);
+        if(direction.x == 0)
+            GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
+        
+        if(direction.y == 0)
+            GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
+        
+        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
         if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)CurrentPosition) < 1.1f)
         {
             if (GameManager.instance.WybuchWTrakcieWykonywania == true)

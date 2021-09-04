@@ -36,6 +36,14 @@ public class Obstacle_Cell : ISpecialTile
     }
     public void OnClick_MakeAction()
     {
+        Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
+        Debug.Log(direction);
+        if(direction.x == 0)
+            GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
+        
+        if(direction.y == 0)
+            GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
+        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
         Debug.Log($"click scianę");
     }
 }

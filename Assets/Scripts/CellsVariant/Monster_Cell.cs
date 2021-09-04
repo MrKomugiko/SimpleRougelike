@@ -123,6 +123,18 @@ public class Monster_Cell :ICreature
     }
     public void OnClick_MakeAction()
     {
+        if(GameManager.instance.TurnFinished == false) return;
+                // Debug.Log("Gracz kliknął na siebie samego");
+        Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
+
+        Debug.Log(direction);
+        if(direction.x == 0)
+            GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
+        
+        if(direction.y == 0)
+            GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
+        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
+
         if(GridManager.DistanceCheck(this) == false) {
             // out of range
              NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");

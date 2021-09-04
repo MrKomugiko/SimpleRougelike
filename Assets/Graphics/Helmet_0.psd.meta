@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f809f0be53d21eb40bb2f0510ac360aa
+guid: a82c3db48e7e7c9478b007bf60fb6fd1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -44,7 +44,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 32
@@ -116,85 +116,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hero_Front
+      name: Helmet_0_ICON
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 17
-        height: 30
-      alignment: 9
+        x: 1
+        y: 76
+        width: 25
+        height: 25
+      alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2014eeab2d131b48a989c32c21245b9
-      internalID: -126300143
+      spriteID: 11e8546907999d645b2ea843deec36af
+      internalID: -110020959
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hero_Back
+      name: Helmet_0_FRONT
       rect:
         serializedVersion: 2
-        x: 28
-        y: 0
-        width: 17
-        height: 30
+        x: 29
+        y: 76
+        width: 25
+        height: 25
       alignment: 9
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0.5, y: 0.08}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ebd7b43c683ca02499d0a016fee1e9ed
-      internalID: 798414474
+      spriteID: 53d511340d0935641b6f32fb4cb9aa44
+      internalID: 438496360
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hero_Left
+      name: Helmet_0_Right
       rect:
         serializedVersion: 2
         x: 57
-        y: 0
-        width: 13
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 76
+        width: 25
+        height: 25
+      alignment: 9
+      pivot: {x: 0.58, y: 0.08}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb6e124557315444caa869d2483b4a49
-      internalID: 925565425
+      spriteID: f9e508812c0c4ea40b323b872cef3877
+      internalID: -1332225781
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: hero_Right
+      name: Helmet_0_Bac
       rect:
         serializedVersion: 2
-        x: 73
-        y: 0
-        width: 13
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 85
+        y: 76
+        width: 25
+        height: 25
+      alignment: 9
+      pivot: {x: 0.5, y: 0.08}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 844a74879b1d61e44a149a4e7213a9d2
-      internalID: -1469009406
+      spriteID: 1ceca84fb56d32e4f9a71316b1aa9ce9
+      internalID: 1805359382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armor_0_ICON
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 58
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87cb156aabfc2324eb73024511602ef6
+      internalID: -680992347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armor_0_Fron
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 58
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0.50368017, y: 0.610375}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8470438f1dace094a8b1f50717094d78
+      internalID: 708081810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Armor_0_Back
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 58
+        width: 15
+        height: 15
+      alignment: 9
+      pivot: {x: 0.5015188, y: 0.60581815}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 639557a380d969549aa8cf93f76c6904
+      internalID: 1830846804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Helmet_0_Left
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 76
+        width: 25
+        height: 25
+      alignment: 9
+      pivot: {x: 0.42, y: 0.08}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76ea22fdf2711a4438c9768bd218a9df
+      internalID: 1467183350
       vertices: []
       indices: 
       edges: []
@@ -210,10 +294,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      hero_Left: 925565425
-      hero_Front: -126300143
-      hero_Right: -1469009406
-      hero_Back: 798414474
+      Armor_0_ICON: -680992347
+      Helmet_0_FRONT: -1332225781
+      Helmet_0_Right: -1332225781
+      Armor_0_Back: 1830846804
+      Helmet_0_Left: 1467183350
+      Helmet_0_Bac: 1805359382
+      Helmet_0_ICON: 438496360
+      Armor_0_Fron: 708081810
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1

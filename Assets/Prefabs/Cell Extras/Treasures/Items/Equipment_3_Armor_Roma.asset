@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2830f37d3fc36846bc09ef240db0d67, type: 3}
-  m_Name: Equipment_0_Shield
+  m_Name: Equipment_3_Armor_Roma
   m_EditorClassIdentifier: 
-  Item_Sprite: {fileID: -1399341705, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
-  ItemID: 0
-  Name: Shield
-  Value: 200
-  Description: Basic round shape shield.
+  Item_Sprite: {fileID: -680992347, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}
+  ItemID: 3
+  Name: Roma Armor
+  Value: 2000
+  Description: One of Cezar favourite shirt.
   Rarity: 0
   Type: 0
   minCount: 1
@@ -24,8 +24,12 @@ MonoBehaviour:
   IsStackable: 0
   StackSize: 1
   Level: 3
-  Strength: 2
-  Inteligence: 1
-  Dexterity: 5
+  Strength: 10
+  Inteligence: 2
+  Dexterity: 4
   CanBeAssignToQuickActions: 0
-  eqType: 3
+  eqType: 0
+  FrontSprite: {fileID: 1830846804, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}
+  BackSprite: {fileID: 708081810, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}
+  LeftSprite: {fileID: 0}
+  RightSprite: {fileID: 0}

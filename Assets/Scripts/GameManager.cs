@@ -52,8 +52,11 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    public bool TurnFinished = true;
     public IEnumerator AddTurn()
     {
+        if(TurnFinished == false) yield break;
+        yield return new WaitForSeconds(.25f);
         _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
         TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
         //print("dodanie tury");
@@ -69,23 +72,28 @@ public class GameManager : MonoBehaviour
             if(creature.TryMove(GameManager.Player_CELL))
             {
                 NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Moved.");
+                yield return new WaitForSeconds(.25f);
                 continue;
             }
 
             if(creature.TryAttack(GameManager.Player_CELL))
             {
+                yield return new WaitForSeconds(.25f);
                 continue;   
             }
 
              NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Waiting for turn.");
+
+            yield return new WaitForSeconds(.25f);
         }
-        yield return new WaitForSeconds(.25f);
         yield return null;
     }
     [SerializeField] ChestLootWindowScript _chestLootScript;
     [SerializeField] EquipmentScript _equipmentScript;
     internal static void Restart()
     {      
+
+        PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
         GameManager.instance.CurrentTurnNumber = 0;
 
         instance._chestLootScript.Clear();
@@ -241,6 +249,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<TreasureData> TreasureVariants = new List<TreasureData>();
     [SerializeField] private List<BombData> BombVariants = new List<BombData>();
     [SerializeField] public GameObject WALLSPRITE;
+    internal static string LastPlayerDirection;
 
     internal MonsterData GetMonsterData(int MonsterID = -1)
     {

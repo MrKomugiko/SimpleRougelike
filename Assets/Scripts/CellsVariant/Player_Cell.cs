@@ -52,6 +52,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         }
     }
 
+    public GameObject playerSpriteObject;
     public Player_Cell(CellScript parent, MonsterData _data/*PlayerData _data*/)
     {
         this.ParentCell = parent;
@@ -71,12 +72,12 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 3), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
         AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 4), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
 
-        var monsterObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
-        ParentCell.Trash.Add(monsterObject);
+        playerSpriteObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
+        ParentCell.Trash.Add(playerSpriteObject);
 
         if (_data.IsPathfinderRequired)
         {
-            monsterObject.AddComponent<Pathfinding>();
+            playerSpriteObject.AddComponent<Pathfinding>();
             ConfigurePathfinderComponent();
         }
 
@@ -99,6 +100,10 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     public void OnClick_MakeAction()
     {
         // Debug.Log("Gracz kliknął na siebie samego");
+ if(GameManager.instance.TurnFinished == false) return;
+ 
+        GameManager.LastPlayerDirection = "Front";
+        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
         GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
     }
     public void RemoveBorder()
