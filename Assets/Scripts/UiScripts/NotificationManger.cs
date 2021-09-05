@@ -74,35 +74,44 @@ public partial class NotificationManger : MonoBehaviour
     }
     public static void CreateNewNotificationElement(ISelectable cellRelated)
     {
-        var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell ==  (cellRelated as ISpecialTile).ParentCell)).FirstOrDefault();
-        int oldHierarhyPosition = 1;
-        if(existingnotification != null)
-            {
-                oldHierarhyPosition = existingnotification.transform.parent.GetSiblingIndex();
-                Destroy(existingnotification.gameObject.transform.parent.gameObject);
-            //    var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
-            //    x.Configure((cellRelated as ISpecialTile));
-            //     return; // nie dodawaj tego samego 
-            }
-        GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
-        notificationObject.transform.parent.SetSiblingIndex(oldHierarhyPosition);
-        notificationObject.transform.SetAsLastSibling();
-        NotificationScript notification = notificationObject.GetComponentInChildren<NotificationScript>();
-        NotificationManger.instance.NotificationList.Add(notification);
-        notificationObject.name = "Notification"+NotificationManger.instance.NotificationList.Count;
-        notification.BaseCell = (cellRelated as ISpecialTile).ParentCell;
-
-        notificationObject.GetComponent<Button>().onClick.AddListener(()=>
-            {
-                HighlightElementSwitch(notification);
-                notification.PossibleActions.SetActive(!notification.PossibleActions.activeSelf);
-                if(notification.PossibleActions.activeSelf == true) 
-                {   
-                    // print("reset to default, okno possible actions jest nieaktywne");
-                    notification.PossibleActions.GetComponent<ActionSwitchController>().ResetToDefault();
+        try
+        {
+            var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell ==  (cellRelated as ISpecialTile).ParentCell)).FirstOrDefault();
+            int oldHierarhyPosition = 1;
+            if(existingnotification != null)
+                {
+                    oldHierarhyPosition = existingnotification.transform.parent.GetSiblingIndex();
+                    Destroy(existingnotification.gameObject.transform.parent.gameObject);
+                //    var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
+                //    x.Configure((cellRelated as ISpecialTile));
+                //     return; // nie dodawaj tego samego 
                 }
-            }
-        );
+            GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
+            notificationObject.transform.parent.SetSiblingIndex(oldHierarhyPosition);
+            notificationObject.transform.SetAsLastSibling();
+            NotificationScript notification = notificationObject.GetComponentInChildren<NotificationScript>();
+            NotificationManger.instance.NotificationList.Add(notification);
+            notificationObject.name = "Notification"+NotificationManger.instance.NotificationList.Count;
+            notification.BaseCell = (cellRelated as ISpecialTile).ParentCell;
+
+            notificationObject.GetComponent<Button>().onClick.AddListener(()=>
+                {
+                    HighlightElementSwitch(notification);
+                    notification.PossibleActions.SetActive(!notification.PossibleActions.activeSelf);
+                    if(notification.PossibleActions.activeSelf == true) 
+                    {   
+                        // print("reset to default, okno possible actions jest nieaktywne");
+                        notification.PossibleActions.GetComponent<ActionSwitchController>().ResetToDefault();
+                    }
+                }
+            );
+             
+        }
+        catch (System.Exception ex)
+        {
+            
+            Debug.LogError("blad"+ex.Message);
+        }
         
     }
     public static void HighlightElementSwitch(NotificationScript notification, bool? state = null)
@@ -219,8 +228,10 @@ public partial class NotificationManger : MonoBehaviour
         }
     }
     public static void TriggerActionNotification(ISelectable INVOKER, AlertCategory CATEGORY,string message = "", ISpecialTile TARGET_BaseCEll = null)
+    {try
     {
-        NotificationScript Invoker_BaseCell_Notification = instance.NotificationList.FirstOrDefault(n=>n.BaseCell.SpecialTile as ISelectable == INVOKER);
+          NotificationScript Invoker_BaseCell_Notification = instance.NotificationList.FirstOrDefault(n=>n.BaseCell.SpecialTile as ISelectable == INVOKER);
+      
         NotificationScript Target_BaseCell_Notification = instance.NotificationList.FirstOrDefault(n=>n.BaseCell.SpecialTile == TARGET_BaseCEll);
 
         if(Invoker_BaseCell_Notification == null && CATEGORY != AlertCategory.ExplosionDamage) return;
@@ -267,6 +278,13 @@ public partial class NotificationManger : MonoBehaviour
                 );
                 break;
         }
+    }
+    catch (System.Exception ex)
+    {
+        
+        Debug.LogError(ex.Message);
+    }
+       
     }
     private static void Configure_Info_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification, string message)
     {

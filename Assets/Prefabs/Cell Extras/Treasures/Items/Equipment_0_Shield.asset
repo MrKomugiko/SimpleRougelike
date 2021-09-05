@@ -20,7 +20,7 @@ MonoBehaviour:
     Description: Shield for protecting purpose, in any case someone throw stones
       in your way.
     Rarity: 1
-    Type: 2
+    Type: 0
   DropSettings:
     minCount: 1
     maxCount: 1

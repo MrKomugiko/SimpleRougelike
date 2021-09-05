@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Large potion
     GoldValue: 1000
     Description: Any other drink can compare to, self made by grandpa' basement.
-    Rarity: 4
+    Rarity: 3
     Type: 1
   DropSettings:
     minCount: 1

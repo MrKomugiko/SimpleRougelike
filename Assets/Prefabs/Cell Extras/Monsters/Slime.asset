@@ -21,7 +21,7 @@ MonoBehaviour:
   LootData: {fileID: 11400000, guid: b98e0245cebaef54ab058715a8872f56, type: 2}
   Damage: 1
   Level: 1
-  ExperiencePoints: 1
+  ExperiencePoints: 5
   Type: 6
   IsWalkable: 1
   IsPathfinderRequired: 1

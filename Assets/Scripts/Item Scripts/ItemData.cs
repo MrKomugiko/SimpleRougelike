@@ -19,6 +19,20 @@ public abstract class ItemData : ScriptableObject
         PlayerManager.instance.AddGold(ItemCoreSettings.GoldValue);
         from.UpdateItemAmount(-1);
     }
+
+    public bool CheckRequirments()
+    {
+        if(PlayerManager.instance.Level < RequirmentsSettings.Level)
+            return false;
+        if(PlayerManager.instance.Strength < RequirmentsSettings.Strength)
+            return false;
+        if(PlayerManager.instance.Dexterity < RequirmentsSettings.Dexterity)
+            return false;
+        if(PlayerManager.instance.Inteligence < RequirmentsSettings.Inteligence)
+            return false;
+           
+        return true;
+    }
 }
 [Serializable]
 public class ItemCoreSettingsData

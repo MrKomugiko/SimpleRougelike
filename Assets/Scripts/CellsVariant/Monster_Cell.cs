@@ -44,6 +44,7 @@ public class Monster_Cell :ICreature
                 return true;
             else
             {
+                PlayerManager.instance.AddExperience(ExperiencePoints);
                 ChangeIntoTreasureObject(_data: lootID);
                 return  false;
             }
@@ -180,6 +181,7 @@ public class Monster_Cell :ICreature
     }
     public void ChangeIntoTreasureObject(TreasureData _data)
     {
+
         ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
         ParentCell.Trash.Clear();
 

@@ -194,7 +194,12 @@ public class CellScript : MonoBehaviour
     }
     public void MoveTo()
     {
-         if(GameManager.instance.TurnFinished == false) return;
+        if(PlayerManager.instance.currentAutopilot == null)
+          PlayerManager.instance.currentAutopilot = StartCoroutine(PlayerManager.instance.Autopilot(this));
+          
+        if(GameManager.instance.TurnFinished == false) 
+            return;
+
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition-CurrentPosition;
 
         print(direction);

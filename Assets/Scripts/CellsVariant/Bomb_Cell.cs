@@ -91,7 +91,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     
     public void OnClick_MakeAction()
     {        
-
+        if(GameManager.instance.TurnFinished == false) return;
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
 
         Debug.Log(direction);
@@ -108,6 +108,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     }
     public void Use()
     {
+
         if(IsImpactAreaHighlihted) SwitchHighlightImpactArea();
         if(IsReadyToUse == false) return;
         if(IsUsed == true) return;

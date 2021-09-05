@@ -20,7 +20,6 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         set
         {
             var HP = value;
-
             if(value > MaxHealthPoints) 
                 HP = MaxHealthPoints;
 
@@ -28,6 +27,9 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
                 HP = 0;
 
             _healthPoints = HP;
+            
+            if(PlayerManager.instance != null)
+                PlayerManager.instance.HealthBar.UpdateBar(_healthPoints,MaxHealthPoints);
         }
     }
     public int Level { get; set; }
@@ -47,6 +49,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
                 Debug.Log("Player is DEAD");
                 HealthPoints = 0;
                 ChangeToPlayerCorpse();
+         
                 return false;
             }
         }
@@ -100,7 +103,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     public void OnClick_MakeAction()
     {
         // Debug.Log("Gracz kliknął na siebie samego");
- if(GameManager.instance.TurnFinished == false) return;
+        if(GameManager.instance.TurnFinished == false) return;
  
         GameManager.LastPlayerDirection = "Front";
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();

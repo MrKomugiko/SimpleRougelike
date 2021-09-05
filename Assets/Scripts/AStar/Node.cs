@@ -7,7 +7,7 @@ public class Node : IHeapItem<Node> {
 	public Vector2Int Coordination;
     public int gridX;
     public int gridY;
-    public bool walkable = true;
+    public bool walkable;
 	public int gCost; 	// dystans od startu do tego punktu
 	public int hCost;	// przybliżona odległość od tego punktu do mety a^2 + b^2
 	public Node parent;

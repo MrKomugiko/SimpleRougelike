@@ -30,7 +30,9 @@ public class ItemDetailsWindow : MonoBehaviour
 
     
     private void OnEnable() {
-          NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,hide:true));    
+        NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,hide:true));   
+
+        ButtonsList.Where(b=>b.name == "EquipButton" ||b.name == "Consume").First().GetComponent<Button>().interactable = DATA.CheckRequirments();
     }
     private void OnDisable() {
           NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,hide:false));    

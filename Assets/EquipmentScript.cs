@@ -153,12 +153,14 @@ public class EquipmentScript : MonoBehaviour
         bool _equipItem = toEquipment.StorageName == "Player";
 
         var equipmentItem = fromSlot.ITEM.item as EquipmentItem;
-        print("zakładanie itemka typu "+equipmentItem.eqType);
+        print("proba zakładania itemka typu "+equipmentItem.eqType);
 
         ItemPack ItemCopy = fromSlot.ITEM;
 
         if(_equipItem)
         {
+            if(fromSlot.ITEM.item.CheckRequirments() == false) return false;
+            
             print("Zakładanie");
             // ZAKŁĄDANIE ITEMKA
             int matchEqSlotIndex = toEquipment.ItemSlots.Where(s=>s.ItemContentRestricion == equipmentItem.eqType).First().itemSlotID;

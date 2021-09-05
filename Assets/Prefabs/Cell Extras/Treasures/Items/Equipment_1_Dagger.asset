@@ -18,8 +18,8 @@ MonoBehaviour:
     Name: Dagger
     GoldValue: 1000
     Description: Looks like small sword. But isnt should be sharp?
-    Rarity: 1
-    Type: 2
+    Rarity: 2
+    Type: 0
   DropSettings:
     minCount: 1
     maxCount: 1

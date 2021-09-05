@@ -56,7 +56,8 @@ public class GameManager : MonoBehaviour
     public IEnumerator AddTurn()
     {
         if(TurnFinished == false) yield break;
-        yield return new WaitForSeconds(.25f);
+        TurnFinished=false;
+
         _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
         TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
         //print("dodanie tury");
@@ -72,27 +73,25 @@ public class GameManager : MonoBehaviour
             if(creature.TryMove(GameManager.Player_CELL))
             {
                 NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Moved.");
-                yield return new WaitForSeconds(.25f);
+                yield return new WaitForSeconds(.1f);
                 continue;
             }
 
             if(creature.TryAttack(GameManager.Player_CELL))
             {
-                yield return new WaitForSeconds(.25f);
+                yield return new WaitForSeconds(.1f);
                 continue;   
             }
 
              NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Waiting for turn.");
-
-            yield return new WaitForSeconds(.25f);
         }
+        TurnFinished = true;
         yield return null;
     }
     [SerializeField] ChestLootWindowScript _chestLootScript;
     [SerializeField] EquipmentScript _equipmentScript;
     internal static void Restart()
     {      
-
         PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
         GameManager.instance.CurrentTurnNumber = 0;
 
