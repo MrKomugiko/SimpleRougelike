@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Roma Helmet
     GoldValue: 3000
     Description: Secondhand helmet worn by Brutus yerars ago.
-    Rarity: 3
+    Rarity: 4
     Type: 0
   DropSettings:
     minCount: 1
@@ -27,10 +27,10 @@ MonoBehaviour:
     IsStackable: 0
     StackSize: 5
   RequirmentsSettings:
-    Level: 3
-    Strength: 4
+    Level: 2
+    Strength: 2
     Inteligence: 1
-    Dexterity: 2
+    Dexterity: 3
   CanBeAssignToQuickActions: 0
   eqType: 6
   FrontSprite: {fileID: 438496360, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}

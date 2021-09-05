@@ -87,13 +87,13 @@ public partial class ActionButtonScript : MonoBehaviour
     }
     public void ConfigureDescriptionButtonClick(Action action, string description, bool singleAction = true, string actionNameString = "")
     { 
-        print("przypisanie "+actionNameString);
+      //  print("przypisanie "+actionNameString);
         Description_Button.onClick.RemoveAllListeners();
         this.gameObject.name = "ACTION_"+description;
       //  Debug.LogWarning(description);
         Description_Button.onClick.AddListener(()=>
         {
-            print("wykonuje akcje");
+           // print("wykonuje akcje");
             action();
             if(singleAction)
                 CloseAndRemoveHighlightBorder();
@@ -106,7 +106,7 @@ public partial class ActionButtonScript : MonoBehaviour
      }
     private void ReAssignActionToDescriptionButton(Action action, string actionNameString)
     {
-        print("ReAssignActionToDescriptionButton, wykonanie: "+actionNameString);
+       // print("ReAssignActionToDescriptionButton, wykonanie: "+actionNameString);
         string text = Description_TMP.text;
         if(text.Contains("Show"))
         {

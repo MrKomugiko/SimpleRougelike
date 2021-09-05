@@ -114,7 +114,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
         if(IsUsed == true) return;
 
         IsUsed = true;
-        Debug.LogError("WYBUCH BOMBY !");
+       // Debug.LogError("WYBUCH BOMBY !");
         AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
         foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
         {   

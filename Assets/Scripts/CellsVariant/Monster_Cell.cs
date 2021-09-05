@@ -128,7 +128,7 @@ public class Monster_Cell :ICreature
                 // Debug.Log("Gracz kliknął na siebie samego");
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
 
-        Debug.Log(direction);
+//        Debug.Log(direction);
         if(direction.x == 0)
             GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
         
@@ -171,7 +171,7 @@ public class Monster_Cell :ICreature
         _pathfinder.FindPath(_targetCell);
         if (_pathfinder.FinalPath.Count > 1)
         {
-            Debug.LogError("RUCH STWORKA");
+           // Debug.LogError("RUCH STWORKA");
             //Debug.Log($"Monster wykonuje krok w strone celu [ komórki {_targetCell.name} ]");
             GridManager.SwapTiles(ParentCell, _pathfinder.FinalPath[0].Coordination);
             return true;

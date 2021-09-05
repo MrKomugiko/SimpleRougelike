@@ -70,11 +70,15 @@ public class PlayerManager: MonoBehaviour
             if(Experience >= NextLevelExperience)
             {
                 _experience = NextLevelExperience-Experience;
+
                 Level++;
-                AvailablePoints+=5;
-                print("Level UP");
+                AvailablePoints+=6;
+               // print("Level UP");
+                if(_experience<0) _experience=1;
                 ExperienceBar.UpdateBar(_experience,NextLevelExperience);
             }
+            if(_experience<0) _experience=1;
+
         }
     }
     public int Strength = 1;
@@ -125,25 +129,30 @@ public class PlayerManager: MonoBehaviour
         // init restart values
         Experience = 1;
         Level = 1;
-        Strength = 1;
-        Inteligence = 1;
-        Dexterity = 1;
-        Vitality = 1;
-        AvailablePoints = 0;
+        Strength = 0;
+        Inteligence = 0;
+        Dexterity = 0;
+        Vitality = 0;
+        AvailablePoints = 4;
+        AddResource("STR");
+        AddResource("DEX");
+        AddResource("INT");
+        AddResource("VIT");
 
-        print("Level 1->2 exp: "+((1)*(15*1*2)));
-        print("Level 2->3 exp: "+((2)*(15*2*2)));
-        print("Level 3->4 exp: "+((3)*(15*3*2)));
-        print("Level 4->5 exp: "+((4)*(15*4*2)));
+
+        // print("Level 1->2 exp: "+((1)*(15*1*2)));
+        // print("Level 2->3 exp: "+((2)*(15*2*2)));
+        // print("Level 3->4 exp: "+((3)*(15*3*2)));
+        // print("Level 4->5 exp: "+((4)*(15*4*2)));
 
 
     }
     public void Reset_QuickSlotToDefault(int quickslotID)
     {
-        Debug.Log("reset to default action button id: "+quickslotID);
+       // Debug.Log("reset to default action button id: "+quickslotID);
         Action defaultAction = () => 
         {
-            Debug.Log($"uruchomienie [EquipmentScript.AssignItemToActionSlot({quickslotID})]");
+           // Debug.Log($"uruchomienie [EquipmentScript.AssignItemToActionSlot({quickslotID})]");
             EquipmentScript.AssignItemToActionSlot(quickslotID);
         };
         _actionController.actionButtonsList[quickslotID].ButtonIcon_IMG.sprite = _actionController.actionButtonsList[quickslotID].IconSpriteList
@@ -190,28 +199,32 @@ public class PlayerManager: MonoBehaviour
             case ResourceType.STR:
                 Strength++;
                 CoreStatButtonsList.Where(b=>b.transform.parent.name == "Strength")
-                    .First().GetComponentInChildren<TextMeshProUGUI>()
+                    .First().transform.parent.transform.Find("Value")
+                    .GetComponent<TextMeshProUGUI>()
                     .SetText(Strength.ToString());
                 break;
                 
             case ResourceType.DEX:
                 Dexterity++;
                 CoreStatButtonsList.Where(b=>b.transform.parent.name == "Dexterity")
-                    .First().GetComponentInChildren<TextMeshProUGUI>()
+                    .First().transform.parent.transform.Find("Value")
+                    .GetComponent<TextMeshProUGUI>()
                     .SetText(Dexterity.ToString());
                 break;            
                 
             case ResourceType.INT:
                 Inteligence++;
                 CoreStatButtonsList.Where(b=>b.transform.parent.name == "Inteligence")
-                    .First().GetComponentInChildren<TextMeshProUGUI>()
+                    .First().transform.parent.transform.Find("Value")
+                    .GetComponent<TextMeshProUGUI>()
                     .SetText(Inteligence.ToString());
                break;            
                 
             case ResourceType.VIT:
                 Vitality++;
                 CoreStatButtonsList.Where(b=>b.transform.parent.name == "Vitality")
-                    .First().GetComponentInChildren<TextMeshProUGUI>()
+                    .First().transform.parent.transform.Find("Value")
+                    .GetComponent<TextMeshProUGUI>()
                     .SetText(Vitality.ToString());
                 break;
         }

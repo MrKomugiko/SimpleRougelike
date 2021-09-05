@@ -8,9 +8,7 @@ public class PotionItem : ItemData, IConsumable
     public void Awake() 
     {
         ItemCoreSettings.Type = ItemType.Consumable;
-        ItemCoreSettings.Rarity = RarityTypes.Common;
         CanBeAssignToQuickActions = true;
-        
     }
 
     public bool Use(int itemSlotID)

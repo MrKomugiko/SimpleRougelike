@@ -79,16 +79,16 @@ public class EquipmentScript : MonoBehaviour
 
         foreach(var itemSlot in PlayerManager.instance._mainBackpack.ItemSlots)
         {
-            if(itemSlot.ITEM.item == null) continue;
+            if(itemSlot.ITEM.item == null || itemSlot.ITEM.count == 0) continue;
 
             if(itemSlot.ITEM.item.CanBeAssignToQuickActions == false || itemSlot.IsInQuickSlot)
             {
                 turnOffButtonsList.Add(itemSlot._btn);  
-                if( itemSlot.ITEM.count == 0 ) continue;
                 itemSlot._btn.interactable = false;
             }
             else
             {
+                itemSlot._btn.interactable = true;
                 selectedItemsForQuickslot.Add(itemSlot);
                 itemSlot._selectionBorder.SetActive(true);
                 itemSlot._selectionBorder.GetComponent<Button>().onClick.AddListener(()=>itemSlot.AssignToQuickSlot(quickslotID));
@@ -97,7 +97,7 @@ public class EquipmentScript : MonoBehaviour
     }
     public static void QuitFromQuickbarSelectionMode()
     {
-        print("QuitFromQuickbarSelectionMode");
+     //   print("QuitFromQuickbarSelectionMode");
         
         if(AssignationItemToQuickSlotIsActive == true)
         {
@@ -128,12 +128,12 @@ public class EquipmentScript : MonoBehaviour
 
     public bool AddSingleItemPackToBackpack(ItemPack item, int slotIndex)
     {
-        print("AddSingleItemPackToBackpack");
+     //   print("AddSingleItemPackToBackpack");
         int avaiableSpace = ItemSlots.Count - ItemSlots.Where(s=>s.IsLocked).Count();
         if(avaiableSpace-1 < slotIndex) 
         {
-            print("avaiableSpace-1 < slotindex => "+(avaiableSpace-1)+" < "+ slotIndex);
-            Debug.LogWarning("Not enought space");
+        //    print("avaiableSpace-1 < slotindex => "+(avaiableSpace-1)+" < "+ slotIndex);
+          //  Debug.LogWarning("Not enought space");
             return false;
         }
         if(slotIndex != -1)
@@ -153,18 +153,18 @@ public class EquipmentScript : MonoBehaviour
         bool _equipItem = toEquipment.StorageName == "Player";
 
         var equipmentItem = fromSlot.ITEM.item as EquipmentItem;
-        print("proba zakładania itemka typu "+equipmentItem.eqType);
+      //  print("proba zakładania itemka typu "+equipmentItem.eqType);
 
         ItemPack ItemCopy = fromSlot.ITEM;
 
         if(_equipItem)
         {
             if(fromSlot.ITEM.item.CheckRequirments() == false) return false;
-            
-            print("Zakładanie");
+
+          //  print("Zakładanie");
             // ZAKŁĄDANIE ITEMKA
             int matchEqSlotIndex = toEquipment.ItemSlots.Where(s=>s.ItemContentRestricion == equipmentItem.eqType).First().itemSlotID;
-            print($"przypisany temu rodzajowi eq (w magazynie {toEquipment.StorageName}) slotem jest slot nr:"+(int)matchEqSlotIndex); 
+          //  print($"przypisany temu rodzajowi eq (w magazynie {toEquipment.StorageName}) slotem jest slot nr:"+(int)matchEqSlotIndex); 
 
             // sprawdzanie czy w tym miejscu juz jest jakis item
             if(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.count == 0)
@@ -183,7 +183,7 @@ public class EquipmentScript : MonoBehaviour
                 // zrob kopie i wyciągniej go z 
                 ItemPack currentEquipedItemCopy = toEquipment.ItemSlots[matchEqSlotIndex].ITEM;
                 // usunięcie go z zalozonego eq
-                print("usunięcie przedmioru z gracza eq ( zapisanie w pamieci )");
+            //    print("usunięcie przedmioru z gracza eq ( zapisanie w pamieci )");
                 toEquipment.ItemSlots[matchEqSlotIndex].UpdateItemAmount(-1);
                 
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
@@ -209,9 +209,9 @@ public class EquipmentScript : MonoBehaviour
         
         if(_equipItem == false)
         {
-            print("zdejmowanie");
+          //  print("zdejmowanie");
             // ZDEJMOWANIE ITEMKA
-            print($"wolny slot w {toEquipment.StorageName} = "+toEquipment.GetNextEmptySlot());
+          //  print($"wolny slot w {toEquipment.StorageName} = "+toEquipment.GetNextEmptySlot());
             this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
             toEquipment.ItemSlots[toEquipment.GetNextEmptySlot()].AddNewItemToSlot(ItemCopy);
             

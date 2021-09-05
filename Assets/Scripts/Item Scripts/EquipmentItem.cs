@@ -12,8 +12,7 @@ public class EquipmentItem : ItemData
     
     public void Awake() 
     {
-        ItemCoreSettings.Type = ItemType.Default;
-        ItemCoreSettings.Rarity = RarityTypes.Common;
+        ItemCoreSettings.Type = ItemType.Equipment;
         CanBeAssignToQuickActions = false;
     }
 

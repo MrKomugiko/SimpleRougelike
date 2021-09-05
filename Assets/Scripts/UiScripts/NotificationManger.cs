@@ -46,7 +46,7 @@ public partial class NotificationManger : MonoBehaviour
     
      public static void CreatePlayerNotificationElement(ISelectable cellRelated)
     {
-         print("CreatePlayerNotificationElement");
+       //  print("CreatePlayerNotificationElement");
 
         GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
         notificationObject.gameObject.name = "PlayerNotifications";

@@ -196,13 +196,13 @@ public class CellScript : MonoBehaviour
     {
         if(PlayerManager.instance.currentAutopilot == null)
           PlayerManager.instance.currentAutopilot = StartCoroutine(PlayerManager.instance.Autopilot(this));
-          
+
         if(GameManager.instance.TurnFinished == false) 
             return;
 
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition-CurrentPosition;
 
-        print(direction);
+//        print(direction);
         if(direction.x == 0)
             GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
         

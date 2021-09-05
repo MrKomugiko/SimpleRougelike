@@ -18,7 +18,7 @@ MonoBehaviour:
     Name: Roma Armor
     GoldValue: 4000
     Description: Great stainless steel armor made for Cesar.
-    Rarity: 4
+    Rarity: 2
     Type: 0
   DropSettings:
     minCount: 1
@@ -28,9 +28,9 @@ MonoBehaviour:
     StackSize: 5
   RequirmentsSettings:
     Level: 2
-    Strength: 5
+    Strength: 3
     Inteligence: 2
-    Dexterity: 5
+    Dexterity: 2
   CanBeAssignToQuickActions: 0
   eqType: 0
   FrontSprite: {fileID: 1830846804, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}

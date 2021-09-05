@@ -205,7 +205,7 @@ public class ItemSlot : MonoBehaviour
     {
         AssignedToQuickSlot = quickSlotID;
         IsInQuickSlot = true;
-        print("Assign to Quick Slot nr."+AssignedToQuickSlot);
+      //  print("Assign to Quick Slot nr."+AssignedToQuickSlot);
 
         PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ButtonIcon_IMG.sprite = ITEM.item.ItemCoreSettings.Item_Sprite;
         

@@ -65,7 +65,7 @@ public class ActionSwitchController : MonoBehaviour
                     singleAction: cell.AvaiableActions[i].singleAction,
                     actionNameString: actionNameString);
             }
-            print(button.name);
+           // print(button.name);
             i++;
         }            
     }       
@@ -138,7 +138,7 @@ public class ActionSwitchController : MonoBehaviour
     }
     private IEnumerator AnimateSelection(ActionButtonScript selectedButton)
     {
-        print("AnimateSelection = change color");
+      //  print("AnimateSelection = change color");
         // make others semi transparent 
         float colorIncrementvalue = 1f/(float)ColorDimmingSteps;
         var endColor = new Color32(255,255,255,90);
@@ -175,7 +175,8 @@ public class ActionSwitchController : MonoBehaviour
     }
     private IEnumerator AnimateDeselection(ActionButtonScript selectedButton)
     {
-        print("AnimateDeselection => change color ");
+        
+      //  ("AnimateDeselection => change color ");
         // make others semi transparent 
         float colorIncrementvalue = 1f/(float)ColorDimmingSteps;
         var startColor = new Color32(255,255,255,90);
@@ -193,7 +194,7 @@ public class ActionSwitchController : MonoBehaviour
 
         while(true)
         {
-            print(currentIncrement);
+        //    print(currentIncrement);
 
             if(currentIncrement >1)
                 break;

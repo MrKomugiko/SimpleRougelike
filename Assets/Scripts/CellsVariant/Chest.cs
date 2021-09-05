@@ -8,9 +8,10 @@ public class Chest : IChest
     public ISpecialTile Parent {get;set;}
     public List<ItemPack> ContentItems {get;set;} = new List<ItemPack>();
     public int TotalValue =>GetChestTotalValue();   
+    public bool ContentAlreadyGenerateed = false;
     public Chest(ISpecialTile source, List<ItemPack> contentItems )
     {
-        Debug.Log("utworzenie chest");
+       // Debug.Log("utworzenie chest");
         Parent = source;
         ContentItems = contentItems;
         
@@ -22,6 +23,8 @@ public class Chest : IChest
     }    
     public void GenerateChestLootWindowPopulatedWithItems(IChest source, List<ItemPack> items)
     {
+        
+     
         AnimateWindowScript.instance.SwitchTab("EquipmentTab");
         // Close map borders if open
         NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,true));    
@@ -29,9 +32,12 @@ public class Chest : IChest
       //  Debug.Log("TU BEDZIE SKRZYNECZKA");
         ChestLootWindow = GameManager.instance.ContentLootWindow.GetComponent<ChestLootWindowScript>();
         ChestLootWindow.gameObject.SetActive(true);
-        ChestLootWindow.PopulateChestWithItems(source,items);
+        if(ContentAlreadyGenerateed == false)
+        {
+            ChestLootWindow.PopulateChestWithItems(source,items);
+            ChestLootWindow.TotalValueText.SetText(TotalValue.ToString());
+        }
 
-        ChestLootWindow.TotalValueText.SetText(TotalValue.ToString());
     }
     public void SynchronizeItemDataWithParentCell()
     {

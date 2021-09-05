@@ -14,11 +14,11 @@ public class ResourceBarScript : MonoBehaviour
 
     public void UpdateBar(int currentValue,int MaxValue)
     {
-        print("current value:"+currentValue+" maxvalue:"+MaxValue);
+      //  print("current value:"+currentValue+" maxvalue:"+MaxValue);
         float percentFillvalue = (float)currentValue / Math.Max(MaxValue,1);
         LabelTMP.SetText($"{currentValue}/{MaxValue}");
         float fillValue = MaxWidth-(MaxWidth*(1-percentFillvalue));
-        print(name+" "+(100-(percentFillvalue*100)+"% = "+fillValue));
+       // print(name+" "+(100-(percentFillvalue*100)+"% = "+fillValue));
         rectTransform.sizeDelta = new Vector2(fillValue,rectTransform.sizeDelta.y);
     }   
 }
