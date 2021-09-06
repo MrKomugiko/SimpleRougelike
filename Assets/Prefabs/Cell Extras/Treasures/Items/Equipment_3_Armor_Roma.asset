@@ -19,7 +19,7 @@ MonoBehaviour:
     GoldValue: 4000
     Description: Great stainless steel armor made for Cesar.
     Rarity: 2
-    Type: 0
+    Type: 2
   DropSettings:
     minCount: 1
     maxCount: 1

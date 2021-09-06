@@ -8,16 +8,19 @@ public class Node : IHeapItem<Node> {
     public int gridX;
     public int gridY;
     public bool walkable;
+	public bool IsMonsterHere;
+	public bool MonsterVisited = false;
 	public int gCost; 	// dystans od startu do tego punktu
 	public int hCost;	// przybliżona odległość od tego punktu do mety a^2 + b^2
 	public Node parent;
     int heapIndex;
-    public Node(int _x, int _y, bool _isWalkable)
+    public Node(int _x, int _y, bool _isWalkable, bool _isMonsterHere)
     {
         this.Coordination = new Vector2Int(_x, _y);
         this.gridX = _x;
         this.gridY = _y;
         this.walkable = _isWalkable;
+		this.IsMonsterHere = _isMonsterHere;
     }
 
     public int fCost => gCost + hCost;	// całkowity 'koszt' podróży

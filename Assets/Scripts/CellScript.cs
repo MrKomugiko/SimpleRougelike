@@ -194,30 +194,33 @@ public class CellScript : MonoBehaviour
     }
     public void MoveTo()
     {
-        if(PlayerManager.instance.currentAutopilot == null)
-          PlayerManager.instance.currentAutopilot = StartCoroutine(PlayerManager.instance.Autopilot(this));
-
-        if(GameManager.instance.TurnFinished == false) 
-            return;
-
-        Vector2Int direction = GameManager.Player_CELL.CurrentPosition-CurrentPosition;
-
-//        print(direction);
-        if(direction.x == 0)
-            GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
-        
-        if(direction.y == 0)
-            GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
-        
-        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
-        if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)CurrentPosition) < 1.1f)
+        if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
         {
-            if (GameManager.instance.WybuchWTrakcieWykonywania == true)
-                return;
-
-            GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
-            GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+            print("trwa inna faza niz ruchu gracza");
+            return;
         }
+        PlayerManager.instance.currentAutopilot = StartCoroutine(PlayerManager.instance.Autopilot(this));
+
+//         Vector2Int direction = GameManager.Player_CELL.CurrentPosition-CurrentPosition;
+
+// //        print(direction);
+//         if(direction.x == 0)
+//             GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
+        
+//         if(direction.y == 0)
+//             GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
+        
+//         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
+//         if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)CurrentPosition) < 1.1f)
+//         {
+//             if (GameManager.instance.WybuchWTrakcieWykonywania == true)
+//                 return;
+
+//             GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
+//             GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+//         }
+
+//         GameManager.instance.PlayerMoved = true;
     }
     internal void AddEffectImage(GameObject sprite)
     {

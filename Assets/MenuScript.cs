@@ -21,7 +21,7 @@ public class MenuScript : MonoBehaviour
     [SerializeField] GameObject Exit;
         Button Exit_BTN;
         TextMeshProUGUI Exit_TMP;
-
+[SerializeField] GameObject OptionsWindow;
 
     [SerializeField] Color32 ButtonOff_TextColor;
     [SerializeField] Color32 ButtonON_TextColor;
@@ -60,9 +60,9 @@ public class MenuScript : MonoBehaviour
             Save_TMP.color = ButtonOff_TextColor;        
 
         Options_BTN = Options.GetComponent<Button>();
-            Options_BTN.interactable = false;        
+            Options_BTN.interactable = true;        
         Options_TMP = Options.GetComponentInChildren<TextMeshProUGUI>();
-            Options_TMP.color = ButtonOff_TextColor;        
+            Options_TMP.color = ButtonON_TextColor;        
 
         Exit_BTN = Exit.GetComponent<Button>();
             Exit_BTN.interactable = true;      
@@ -73,10 +73,21 @@ public class MenuScript : MonoBehaviour
     public void OnClick_NewGame()
     {
         MENU.SetActive(false);
-
+try
+{
+     
         PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
         Continue_BTN.interactable = true;
         Continue_TMP.color = ButtonON_TextColor;
+
+        Continue_BTN.interactable = true;
+        Continue_TMP.color = ButtonON_TextColor;
+}
+catch (System.Exception)
+{
+    
+    throw;
+}
 
         GameManager.Restart();
     }
@@ -92,6 +103,9 @@ public class MenuScript : MonoBehaviour
     public void OnClick_Options()
     {
         //TODO: Options Button
+        OptionsWindow.SetActive(true);
+        
+        
     }
     public void OnClick_Exit()
     {

@@ -19,7 +19,7 @@ MonoBehaviour:
     GoldValue: 1000
     Description: Looks like small sword. But isnt should be sharp?
     Rarity: 2
-    Type: 0
+    Type: 2
   DropSettings:
     minCount: 1
     maxCount: 1

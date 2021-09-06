@@ -19,14 +19,14 @@ public class NodeGrid : MonoBehaviour
         {
             for (int y = 0; y < GridSize.y; y++)
             {
-               MAPDATA[x,y] = new Node(x,y,_isWalkable: true);                
+               MAPDATA[x,y] = new Node(x,y,_isWalkable: true, false);                
             }
         }
       //  print("liczba dostępnych nodów w MAPDATA =  "+MAPDATA.Length);
 
     }
 
-    public static void UpdateMapObstacleData()
+    public static void UpdateMapObstacleData(bool passTroughtMonsters = false)
     {
        // print("odświeżono nodeGrid'a o aktualną pozycje ścian na mapie");
         // set all to true
@@ -39,6 +39,9 @@ public class NodeGrid : MonoBehaviour
         {
             if(! cell.Value.IsWalkable)
                 MAPDATA[cell.Key.x,cell.Key.y].walkable = false;
+            
+            if(cell.Value.Type == TileTypes.monster)
+                MAPDATA[cell.Key.x,cell.Key.y].IsMonsterHere = true;
         }
     }
     public static List<Node> GetNeighbours(Node node)

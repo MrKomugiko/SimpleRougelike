@@ -166,7 +166,7 @@ TextureImporter:
         width: 13
         height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -179,10 +179,94 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: hero_Head_Right
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 16
+        width: 13
+        height: 14
+      alignment: 9
+      pivot: {x: 0.61538464, y: -0.2857143}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 844a74879b1d61e44a149a4e7213a9d2
+      internalID: -1469009406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_Arm_Right
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 6
+        width: 6
+        height: 10
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30d30ce33a3413340af7a75e5f3b7558
+      internalID: -1135915151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_Torso_Right
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 2
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ad63d61ddbd45849bce4e97c457bbd4
+      internalID: 2127383824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_Leg_Right
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 0
+        width: 7
+        height: 8
+      alignment: 9
+      pivot: {x: 0.42857146, y: 1.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47f59f3c15c529146ab694731d8bbe91
+      internalID: 1679739002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: hero_Right
       rect:
         serializedVersion: 2
-        x: 73
+        x: 71
         y: 0
         width: 13
         height: 30
@@ -193,8 +277,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 844a74879b1d61e44a149a4e7213a9d2
-      internalID: -1469009406
+      spriteID: ff425f80359e33643a9272bc5086a445
+      internalID: 2001664674
       vertices: []
       indices: 
       edges: []
@@ -210,9 +294,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      hero_Head_Right: -1469009406
+      hero_Arm_Right: -1135915151
+      hero_Torso_Right: 2127383824
       hero_Left: 925565425
       hero_Front: -126300143
-      hero_Right: -1469009406
+      hero_Right: 2001664674
+      hero_Leg_Right: 1679739002
       hero_Back: 798414474
   spritePackingTag: 
   pSDRemoveMatte: 0

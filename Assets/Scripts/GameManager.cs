@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private bool wybuchWTrakcieWykonywania = false;
     private int _currentTurnNumber = 0;
+    public TurnPhase CurrentTurnPhase = TurnPhase.StartGame;
     public int CurrentTurnNumber
     {
         get => _currentTurnNumber;
@@ -55,45 +56,138 @@ public class GameManager : MonoBehaviour
     public bool TurnFinished = true;
     public IEnumerator AddTurn()
     {
-        if(TurnFinished == false) yield break;
-        TurnFinished=false;
-
-        _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
-        TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
-        //print("dodanie tury");
-
-        List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
-        tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
-
-        foreach (var creature in tempCurrentCreatureList)
+        if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
-            creature.TurnsElapsedCounter ++;
-            if(creature.ISReadyToMakeAction == false) continue;
+            TurnFinished = true;
+            print("PLAYER MOVE TURN BEGIN");
 
-            if(creature.TryMove(GameManager.Player_CELL))
-            {
-                NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Moved.");
-                yield return new WaitForSeconds(.1f);
-                continue;
-            }
+            _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
+            TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
 
-            if(creature.TryAttack(GameManager.Player_CELL))
-            {
-                yield return new WaitForSeconds(.1f);
-                continue;   
-            }
+            PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
 
-             NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Waiting for turn.");
+            yield return new WaitUntil(()=>GameManager.instance.PlayerMoved);
+            print("PLAYER MOVE TURN ENDED");
+            PlayerManager.instance.MovmentValidator.HideGrid();
+            PlayerMoved = false;
+            CurrentTurnPhase = TurnPhase.PlayerAttack;
+            StartCoroutine(AddTurn());
+            yield break;
         }
-        TurnFinished = true;
-        yield return null;
+        if(CurrentTurnPhase == TurnPhase.PlayerAttack && PlayerAttacked == false)
+        {
+            TurnFinished = true;
+
+           int _monstersInRange = PlayerManager.instance.MovmentValidator.ShowValidAttackGrid();
+           if(_monstersInRange == 0)
+           {
+                PlayerManager.instance.MovmentValidator.HideGrid();
+                print("There is no monsters around able to attack");
+                CurrentTurnPhase = TurnPhase.MonsterMovement;
+                PlayerAttacked = false;
+                print("PLAYER ATTACK TURN ENDED");
+                StartCoroutine(AddTurn());
+                yield break;
+           }
+
+            yield return new WaitUntil(()=>GameManager.instance.PlayerAttacked);
+            CurrentTurnPhase = TurnPhase.MonsterMovement;
+            PlayerManager.instance.MovmentValidator.HideGrid();
+            print("PLAYER ATTACK TURN ENDED");
+            PlayerAttacked = false;
+            StartCoroutine(AddTurn());
+            yield break;
+        }
+
+        if(CurrentTurnPhase == TurnPhase.MonsterMovement && MonstersMoved == false)
+        {
+            print("MONSTER MOVEMENT TURN BEGIN");
+            TurnFinished = true;
+
+            List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
+            tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
+
+            foreach (var creature in tempCurrentCreatureList)
+            {
+                creature.TurnsElapsedCounter ++;
+
+                if(creature.ISReadyToMakeAction == false) continue;
+
+                if(creature.TryMove(GameManager.Player_CELL))
+                {
+                    NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Moved.");
+                   // yield return new WaitForSeconds(.1f);
+                    continue;
+                }
+            }
+            
+             MonstersMoved = true;
+
+            yield return new WaitUntil(()=>GameManager.instance.MonstersMoved);
+            print("MONSTER MOVEMENT TURN ENDED");
+            MonstersMoved = false;
+            CurrentTurnPhase = TurnPhase.MonsterAttack;
+            StartCoroutine(AddTurn());
+            yield break;
+        }
+
+        if(CurrentTurnPhase == TurnPhase.MonsterAttack && MonsterAttack == false)
+        {
+            print("MONSTER ATTACKS TURN BEGIN");
+            TurnFinished = true;
+
+            List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
+            tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
+
+            foreach (var creature in tempCurrentCreatureList)
+            {
+              //  creature.TurnsElapsedCounter ++;
+
+                if(creature.ISReadyToMakeAction == false) continue;
+
+                if(creature.TryAttack(GameManager.Player_CELL))
+                {
+                  //  yield return new WaitForSeconds(.1f);
+                    continue;   
+                }
+
+                 NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Waiting for turn.");
+            }
+            MonsterAttack = true;
+
+
+            yield return new WaitUntil(()=>GameManager.instance.MonsterAttack);
+            print("MONSTER ATTACKS TURN ENDED");
+            MonsterAttack = false;
+            CurrentTurnPhase = TurnPhase.PlayerMovement;
+            StartCoroutine(AddTurn());
+            yield break;;
+        }
     }
+
+
+ 
     [SerializeField] ChestLootWindowScript _chestLootScript;
     [SerializeField] EquipmentScript _equipmentScript;
+    public enum TurnPhase
+    {
+        StartGame,
+        Win,
+        Lose,
+        PlayerMovement,
+        PlayerAttack,
+        MonsterMovement,
+        MonsterAttack
+    }
     internal static void Restart()
     {      
+        GameManager.instance.CurrentTurnPhase = TurnPhase.StartGame;
         PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
         GameManager.instance.CurrentTurnNumber = 0;
+        GameManager.instance.PlayerMoved = false;
+        GameManager.instance.PlayerAttacked = false;
+        GameManager.instance.MonstersMoved = false;
+        GameManager.instance.MonsterAttack = false;
 
         instance._chestLootScript.Clear();
         instance._equipmentScript.Clear();
@@ -118,6 +212,10 @@ public class GameManager : MonoBehaviour
         PlayerManager.instance.GoldCounter_TMP.SetText("0");
         PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
         PlayerManager.instance.ExperienceCounter_TMP.SetText("0");
+
+        GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
+        GameManager.instance.StopAllCoroutines();
+        GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
     }
 
     public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
@@ -201,8 +299,8 @@ public class GameManager : MonoBehaviour
 
         WybuchWTrakcieWykonywania = false;
      
-       GridManager.FillGaps();
-        
+        GridManager.FillGaps();
+        PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
         yield return null;
     }
 
@@ -249,6 +347,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<BombData> BombVariants = new List<BombData>();
     [SerializeField] public GameObject WALLSPRITE;
     internal static string LastPlayerDirection;
+
+    public bool MonstersMoved;
+    public bool PlayerAttacked;
+    public bool PlayerMoved;
+    public bool MonsterAttack;
+    public bool SwapTilesAsDefault = true;
+    public bool SlideAsDefault = false;
 
     internal MonsterData GetMonsterData(int MonsterID = -1)
     {

@@ -107,7 +107,8 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
  
         GameManager.LastPlayerDirection = "Front";
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
-        GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+    
+        GameManager.instance.PlayerMoved = true;
     }
     public void RemoveBorder()
     {

@@ -124,6 +124,11 @@ public class Monster_Cell :ICreature
     }
     public void OnClick_MakeAction()
     {
+        if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerAttack)
+        {
+            Debug.Log($"trwa innna tura({GameManager.instance.CurrentTurnPhase.ToString()}) niż tura ataku");
+            return;
+        }
         if(GameManager.instance.TurnFinished == false) return;
                 // Debug.Log("Gracz kliknął na siebie samego");
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
@@ -144,7 +149,9 @@ public class Monster_Cell :ICreature
         TakeDamage((GameManager.Player_CELL.SpecialTile as Player_Cell).Damage, "Attacked by player");
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
-        GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+        GameManager.instance.PlayerAttacked = true;
+       // GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+        
     }
     public void TakeDamage(int damage, string source)
     {
@@ -159,7 +166,7 @@ public class Monster_Cell :ICreature
         {
             return false;
         }
-        //TODO: rozpisać to , aktualnie na sztywno -10hp
+
         (_target.SpecialTile as ILivingThing).TakeDamage(Damage,Name);
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Attack);
         return true;
@@ -176,6 +183,7 @@ public class Monster_Cell :ICreature
             GridManager.SwapTiles(ParentCell, _pathfinder.FinalPath[0].Coordination);
             return true;
         }
+
         return false;
 
     }
@@ -186,6 +194,7 @@ public class Monster_Cell :ICreature
         ParentCell.Trash.Clear();
 
         ParentCell.Type = TileTypes.treasure;
+        ParentCell.IsWalkable = true;
         ParentCell.SpecialTile = new Treasure_Cell(ParentCell, _data);
 ;       (ParentCell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
         //4. assign LootID related reward to this object

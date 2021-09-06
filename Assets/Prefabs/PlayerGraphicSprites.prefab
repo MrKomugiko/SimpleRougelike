@@ -145,7 +145,7 @@ MonoBehaviour:
   FrontSprite: {fileID: -126300143, guid: f809f0be53d21eb40bb2f0510ac360aa, type: 3}
   BackSprite: {fileID: 798414474, guid: f809f0be53d21eb40bb2f0510ac360aa, type: 3}
   LeftSprite: {fileID: 925565425, guid: f809f0be53d21eb40bb2f0510ac360aa, type: 3}
-  RightSprite: {fileID: -1469009406, guid: f809f0be53d21eb40bb2f0510ac360aa, type: 3}
+  RightSprite: {fileID: 2001664674, guid: f809f0be53d21eb40bb2f0510ac360aa, type: 3}
 --- !u!1 &2424247878908387675
 GameObject:
   m_ObjectHideFlags: 0

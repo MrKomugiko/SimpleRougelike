@@ -19,7 +19,6 @@ public abstract class ItemData : ScriptableObject
         PlayerManager.instance.AddGold(ItemCoreSettings.GoldValue);
         from.UpdateItemAmount(-1);
     }
-
     public bool CheckRequirments()
     {
         if(PlayerManager.instance.Level < RequirmentsSettings.Level)

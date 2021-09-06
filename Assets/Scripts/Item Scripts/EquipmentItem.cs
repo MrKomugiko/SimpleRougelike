@@ -15,7 +15,6 @@ public class EquipmentItem : ItemData
         ItemCoreSettings.Type = ItemType.Equipment;
         CanBeAssignToQuickActions = false;
     }
-
     public bool Equip(ItemSlot slot)
     {
         var targetStorage = slot.ParentStorage.StorageName=="Player"?PlayerManager.instance._mainBackpack:PlayerManager.instance._EquipedItems;
@@ -24,12 +23,8 @@ public class EquipmentItem : ItemData
         
         return output;
     }
-
-    //------------------------------
-
-
-
 }
+
     public enum EquipmentType
     {
         Armor,

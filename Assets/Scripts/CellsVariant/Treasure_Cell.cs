@@ -65,11 +65,13 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 
     public void MoveAndPick()
     {
-        if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
-        {
-            PlayerManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
+        // if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
+        // {
+            //PlayerManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
+            bool status;
+            Pick(out status);
             ParentCell.MoveTo();
-        }
+        // }
     }
     public void RemoveFromMapIfChesIsEmpty()
     {

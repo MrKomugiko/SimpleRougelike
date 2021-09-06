@@ -90,7 +90,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     }
     
     public void OnClick_MakeAction()
-    {        
+    {   
         if(GameManager.instance.TurnFinished == false) return;
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
 
@@ -103,12 +103,18 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
-        if(IsReadyToUse == false) return;
-        Use();    
+        if(IsReadyToUse == true) 
+        {
+             Use();    
+        }
+        else
+        {
+          ParentCell.MoveTo();
+        }   
+
     }
     public void Use()
     {
-
         if(IsImpactAreaHighlihted) SwitchHighlightImpactArea();
         if(IsReadyToUse == false) return;
         if(IsUsed == true) return;
@@ -147,7 +153,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 
     public List<CellScript> GetDestroyedCellsFromCascadeContinueExploding()
     {
-        Debug.LogError("GetDestroyedCellsFromCascadeContinueExploding");
+        //Debug.LogError("GetDestroyedCellsFromCascadeContinueExploding");
         List<CellScript> result = new List<CellScript>();
 
         if(IsImpactAreaHighlihted)

@@ -12,7 +12,7 @@ public class PlayerManager: MonoBehaviour
     public Image ArmorIMG;
     [SerializeField] GameObject GraphicSwitchPrefab;
     [SerializeField] public PlayerEquipmentVisualSwitchScript GraphicSwitch;
-
+    [SerializeField] public MoveValidatorScript MovmentValidator;
     public TextMeshProUGUI GoldCounter_TMP;
     public TextMeshProUGUI ExperienceCounter_TMP;
     public TextMeshProUGUI HealthCounter_TMP;
@@ -28,6 +28,7 @@ public class PlayerManager: MonoBehaviour
             AvailablePoints_TMP.SetText(_availablePoints.ToString());
             if(AvailablePoints <= 0)
             {
+                _availablePoints = 0;
                 foreach(var button in CoreStatButtonsList)
                 {
                     button.interactable = false;
@@ -85,6 +86,8 @@ public class PlayerManager: MonoBehaviour
     public int Inteligence = 1;
     public int Dexterity = 1;
     public int Vitality = 1;
+    public int AttackRange = 1;
+    public int MoveRange = 2;
     [SerializeField] private int _healthPoints;
     public Player_Cell _playerCell;
     public EquipmentScript _mainBackpack;
@@ -97,23 +100,41 @@ public class PlayerManager: MonoBehaviour
     public Coroutine currentAutopilot = null;
     public IEnumerator Autopilot(CellScript target)
     {
-        // yield return new WaitUntil(()=>GameManager.instance.TurnFinished );
-        // print("szukanie trasy");
+        yield return new WaitUntil(()=>GameManager.instance.TurnFinished );
+        print("szukanie trasy");
         
-        // yield return new WaitForSeconds(.1f);
-        // Color32 randomcolor = new Color32((byte)UnityEngine.Random.Range(0,255),(byte)UnityEngine.Random.Range(0,255),(byte)UnityEngine.Random.Range(0,255),255);
-        // int i = 0;
-        // NodeGrid.UpdateMapObstacleData();
-        // PlayerManager.instance._playerCell._pathfinder.FindPath(target);
-        // foreach(var path in  PlayerManager.instance._playerCell._pathfinder.FinalPath)
-        // {
-        //     GridManager.CellGridTable[path.Coordination]._cellImage.color = randomcolor;
-        //     yield return new WaitUntil(()=>GameManager.instance.TurnFinished );
-        //     yield return new WaitForSeconds(.1f);
-        //     GridManager.SwapTiles(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
-        //     i++;
-        // }
-        // currentAutopilot = null;
+        int i = 0;
+        NodeGrid.UpdateMapObstacleData();
+        PlayerManager.instance._playerCell._pathfinder.FindPath(target);
+        if(PlayerManager.instance._playerCell._pathfinder.FinalPath.Count > PlayerManager.instance.MoveRange) 
+        {
+            print("point is too far");
+            yield break;
+        }
+        foreach(var path in  PlayerManager.instance._playerCell._pathfinder.FinalPath)
+        {
+            Vector2Int direction = GameManager.Player_CELL.CurrentPosition-path.Coordination;
+            if(direction.x == 0)
+                GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
+            if(direction.y == 0)
+                GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
+
+            PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
+
+            yield return new WaitUntil(()=>GameManager.instance.TurnFinished );
+            yield return new WaitForSeconds(.05f);
+
+            if(GameManager.instance.SwapTilesAsDefault)
+                GridManager.SwapTiles(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
+
+            if(GameManager.instance.SlideAsDefault)                
+                GridManager.CascadeMoveTo(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
+
+            i++;
+        }
+        currentAutopilot = null;
+
+        GameManager.instance.PlayerMoved = true;
         yield return null;
     }
     public void SetPlayerManager(Player_Cell parentCell)
@@ -140,12 +161,9 @@ public class PlayerManager: MonoBehaviour
         AddResource("VIT");
 
 
-        // print("Level 1->2 exp: "+((1)*(15*1*2)));
-        // print("Level 2->3 exp: "+((2)*(15*2*2)));
-        // print("Level 3->4 exp: "+((3)*(15*3*2)));
-        // print("Level 4->5 exp: "+((4)*(15*4*2)));
-
-
+       MovmentValidator = GetComponentInChildren<MoveValidatorScript>();
+       MovmentValidator.ParentPathfinder = parentCell._pathfinder;
+      // movmentGRidScript.SpawnMarksOnGrid();
     }
     public void Reset_QuickSlotToDefault(int quickslotID)
     {
@@ -173,6 +191,7 @@ public class PlayerManager: MonoBehaviour
         Gold = oldGoldvalue + value;
         GoldCounter_TMP.SetText(Gold.ToString());
         NotificationManger.AddValueTo_Gold_Notification(value);
+        
     }
     public void Restart_ClearStatsAndEquipedItems()
     {
@@ -191,13 +210,26 @@ public class PlayerManager: MonoBehaviour
         ExperienceCounter_TMP.SetText(Experience.ToString());
     }
 
-    public void AddResource(string _resource)
+    public void AddResource(string _resource, int value = 1, bool isFree = false)
     {
         ResourceType resource = (ResourceType)Enum.Parse(typeof(ResourceType),_resource);
+        if(isFree == false)
+        {
+            if(value <= AvailablePoints)
+            {
+                AvailablePoints =- value;
+            }
+            else
+            {
+                print("not enought statistics point to add");
+                return;
+            }
+        } 
+
         switch(resource)
         {
             case ResourceType.STR:
-                Strength++;
+                Strength+= value;
                 CoreStatButtonsList.Where(b=>b.transform.parent.name == "Strength")
                     .First().transform.parent.transform.Find("Value")
                     .GetComponent<TextMeshProUGUI>()
@@ -205,7 +237,7 @@ public class PlayerManager: MonoBehaviour
                 break;
                 
             case ResourceType.DEX:
-                Dexterity++;
+                Dexterity+= value;
                 CoreStatButtonsList.Where(b=>b.transform.parent.name == "Dexterity")
                     .First().transform.parent.transform.Find("Value")
                     .GetComponent<TextMeshProUGUI>()
@@ -213,7 +245,7 @@ public class PlayerManager: MonoBehaviour
                 break;            
                 
             case ResourceType.INT:
-                Inteligence++;
+                Inteligence+= value;
                 CoreStatButtonsList.Where(b=>b.transform.parent.name == "Inteligence")
                     .First().transform.parent.transform.Find("Value")
                     .GetComponent<TextMeshProUGUI>()
@@ -221,14 +253,14 @@ public class PlayerManager: MonoBehaviour
                break;            
                 
             case ResourceType.VIT:
-                Vitality++;
+                Vitality+= value;
                 CoreStatButtonsList.Where(b=>b.transform.parent.name == "Vitality")
                     .First().transform.parent.transform.Find("Value")
                     .GetComponent<TextMeshProUGUI>()
                     .SetText(Vitality.ToString());
                 break;
         }
-        AvailablePoints--;
+  
     }
 }
 public enum ResourceType

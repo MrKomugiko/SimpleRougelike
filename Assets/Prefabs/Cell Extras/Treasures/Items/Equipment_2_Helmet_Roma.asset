@@ -19,7 +19,7 @@ MonoBehaviour:
     GoldValue: 3000
     Description: Secondhand helmet worn by Brutus yerars ago.
     Rarity: 4
-    Type: 0
+    Type: 2
   DropSettings:
     minCount: 1
     maxCount: 1
