@@ -129,7 +129,7 @@ public class Monster_Cell :ICreature
             Debug.Log($"trwa innna tura({GameManager.instance.CurrentTurnPhase.ToString()}) niż tura ataku");
             return;
         }
-        if(GameManager.instance.TurnFinished == false) return;
+        if(GameManager.instance.TurnPhaseBegin == false) return;
                 // Debug.Log("Gracz kliknął na siebie samego");
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
 
@@ -149,9 +149,10 @@ public class Monster_Cell :ICreature
         TakeDamage((GameManager.Player_CELL.SpecialTile as Player_Cell).Damage, "Attacked by player");
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
-        GameManager.instance.PlayerAttacked = true;
-       // GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
-        
+
+        PlayerManager.instance.StartCoroutine(PlayerManager.instance.PerformRegularAttackAnimation(PlayerManager.instance._playerCell.ParentCell,this.ParentCell,GameManager.instance.attackAnimationFrames));
+
+        GameManager.instance.PlayerAttacked = true;        
     }
     public void TakeDamage(int damage, string source)
     {

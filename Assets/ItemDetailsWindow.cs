@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,16 +55,7 @@ public class ItemDetailsWindow : MonoBehaviour
         Description_TMP.SetText(DATA.ItemCoreSettings.Description);
 
         
-        // Spawn statystyk
-        // ostatnia pozycja jest value , przed nią spacja
-        var emptystat = Instantiate(EmptySpace_Prefab,StatsSection.transform);
-        StatList.Add(emptystat);
 
-        var stat = Instantiate(BasicStat_Prefab,StatsSection.transform);
-            stat.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Value:");
-            stat.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(DATA.ItemCoreSettings.GoldValue.ToString()+" Gold");
-            stat.transform.SetAsLastSibling();
-        StatList.Add(stat);
 
         // spawn przycisków
         GameObject button;
@@ -103,7 +95,19 @@ public class ItemDetailsWindow : MonoBehaviour
                 button.name = "EquipButton";
                 
             ButtonsList.Add(button);
+            ConfigureEquipmentDetails(DATA as EquipmentItem);
         }
+
+        // Spawn statystyk
+        // ostatnia pozycja jest value , przed nią spacja
+        var emptystat = Instantiate(EmptySpace_Prefab,StatsSection.transform);
+        StatList.Add(emptystat);
+
+        var stat = Instantiate(BasicStat_Prefab,StatsSection.transform);
+            stat.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Value:");
+            stat.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(DATA.ItemCoreSettings.GoldValue.ToString()+" Gold");
+            stat.transform.SetAsLastSibling();
+        StatList.Add(stat);
 
         button = Instantiate(Button_Prefab, ButtonSection.transform);
             button.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -129,6 +133,34 @@ public class ItemDetailsWindow : MonoBehaviour
         string requirmentsString = $"Lvl:{level}  Str:{Strength}  Int:{Inteligence}  Dex:{Dexterity}";
         Requirments_TMP.SetText(requirmentsString);
 
+    }
+
+    private void ConfigureEquipmentDetails(EquipmentItem item)
+    {
+        GameObject stat = null;
+        foreach(var mainPerk in item.MainPerks)
+        {
+            stat = Instantiate(BasicStat_Prefab,StatsSection.transform);
+            stat.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText($"<b>{mainPerk.type.ToString()}</b>");
+            stat.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText($"<b>{mainPerk.value.ToString()}</b>");
+            stat.transform.SetAsLastSibling();
+            StatList.Add(stat);
+        }
+        // przerwa
+        stat = Instantiate(BasicStat_Prefab,StatsSection.transform);
+        stat.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText($"");
+        stat.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText($"");
+        stat.transform.SetAsLastSibling();
+        StatList.Add(stat);
+
+        foreach(var extraPerk in item.ExtraPerks)
+        {
+            stat = Instantiate(BasicStat_Prefab,StatsSection.transform);
+            stat.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText($"<i>{extraPerk.type.ToString()}</i>");
+            stat.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText($"<i>{extraPerk.value.ToString()}</i>");
+            stat.transform.SetAsLastSibling();
+            StatList.Add(stat);
+        }
     }
 
     public void CheckButtons_ItemCount()

@@ -192,14 +192,29 @@ public class CellScript : MonoBehaviour
         }
         yield return null;
     }
+    
     public void MoveTo()
     {
+        
+        Debug.Log("click on cell "+CurrentPosition);
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
         {
             print("trwa inna faza niz ruchu gracza");
             return;
         }
-        PlayerManager.instance.currentAutopilot = StartCoroutine(PlayerManager.instance.Autopilot(this));
+
+        if(PlayerManager.instance.playerCurrentlyMoving == true)
+        {
+            Debug.Log("player currenly moving");
+            return;
+        }
+
+        if(PlayerManager.instance.playerCurrentlyMoving == false && GameManager.instance.MovingRequestTriggered==false && GameManager.instance.CurrentTurnPhase == GameManager.TurnPhase.PlayerMovement)
+        {
+            GameManager.instance.MovingRequestTriggered = true;
+            print("spokojnie mozna sie ruszyc");
+            StartCoroutine(PlayerManager.instance.Autopilot(this));
+        }
 
 //         Vector2Int direction = GameManager.Player_CELL.CurrentPosition-CurrentPosition;
 
@@ -220,7 +235,6 @@ public class CellScript : MonoBehaviour
 //             GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
 //         }
 
-//         GameManager.instance.PlayerMoved = true;
     }
     internal void AddEffectImage(GameObject sprite)
     {

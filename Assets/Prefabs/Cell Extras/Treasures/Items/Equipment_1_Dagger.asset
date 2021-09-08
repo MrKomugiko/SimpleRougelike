@@ -33,6 +33,16 @@ MonoBehaviour:
     Dexterity: 0
   CanBeAssignToQuickActions: 0
   eqType: 2
+  MainPerks:
+  - type: 0
+    value: 1
+  - type: 1
+    value: 3
+  ExtraPerks:
+  - type: 3
+    value: 5
+  - type: 14
+    value: 5
   FrontSprite: {fileID: 0}
   BackSprite: {fileID: 0}
   LeftSprite: {fileID: 0}

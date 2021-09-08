@@ -91,10 +91,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     
     public void OnClick_MakeAction()
     {   
-        if(GameManager.instance.TurnFinished == false) return;
+        Debug.Log("bomb click");
+        if(GameManager.instance.TurnPhaseBegin == false) return;
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
 
-        Debug.Log(direction);
+//        Debug.Log(direction);
         if(direction.x == 0)
             GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
         
@@ -105,11 +106,19 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 
         if(IsReadyToUse == true) 
         {
-             Use();    
+            if(GameManager.instance.CurrentTurnPhase == GameManager.TurnPhase.PlayerMovement)
+            {
+                Use();    
+            }
         }
         else
         {
-          ParentCell.MoveTo();
+            if(GameManager.instance.CurrentTurnPhase == GameManager.TurnPhase.PlayerMovement)
+            {
+                ParentCell.MoveTo();
+            }       
+            Debug.Log("to nie tura ruchu");
+
         }   
 
     }

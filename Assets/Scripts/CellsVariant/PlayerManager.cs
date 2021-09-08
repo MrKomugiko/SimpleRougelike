@@ -25,7 +25,6 @@ public class PlayerManager: MonoBehaviour
         get => _availablePoints; 
         set {
             _availablePoints = value; 
-            AvailablePoints_TMP.SetText(_availablePoints.ToString());
             if(AvailablePoints <= 0)
             {
                 _availablePoints = 0;
@@ -41,6 +40,8 @@ public class PlayerManager: MonoBehaviour
                     button.interactable = true;
                 }
             }
+
+            AvailablePoints_TMP.SetText(_availablePoints.ToString());
         }
     }
 
@@ -98,19 +99,31 @@ public class PlayerManager: MonoBehaviour
     public int NextLevelExperience => (Level)*(15*Level*2);
 
     public Coroutine currentAutopilot = null;
+    public bool playerCurrentlyMoving = false;
+
+
     public IEnumerator Autopilot(CellScript target)
     {
-        yield return new WaitUntil(()=>GameManager.instance.TurnFinished );
-        print("szukanie trasy");
-        
         int i = 0;
         NodeGrid.UpdateMapObstacleData();
         PlayerManager.instance._playerCell._pathfinder.FindPath(target);
         if(PlayerManager.instance._playerCell._pathfinder.FinalPath.Count > PlayerManager.instance.MoveRange) 
         {
             print("point is too far");
+            GameManager.instance.MovingRequestTriggered = false;
+          /////////////////////////////////// GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
             yield break;
         }
+        if(playerCurrentlyMoving == true) 
+        {
+            print("autopilot przerwany");
+            GameManager.instance.MovingRequestTriggered = false;
+          ///////////////////////////////////GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+            yield break;
+        }
+        print("wystartowanie autopilota");
+        playerCurrentlyMoving = true;
+        PlayerManager.instance.MovmentValidator.HideGrid();
         foreach(var path in  PlayerManager.instance._playerCell._pathfinder.FinalPath)
         {
             Vector2Int direction = GameManager.Player_CELL.CurrentPosition-path.Coordination;
@@ -121,20 +134,31 @@ public class PlayerManager: MonoBehaviour
 
             PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
-            yield return new WaitUntil(()=>GameManager.instance.TurnFinished );
-            yield return new WaitForSeconds(.05f);
+            yield return new WaitUntil(()=>GameManager.instance.TurnPhaseBegin );
+           // yield return new WaitForSeconds(.1f);
+            
+            if(i <= PlayerManager.instance._playerCell._pathfinder.FinalPath.Count)
+            {
+                if(GameManager.instance.SwapTilesAsDefault)
+                    GridManager.SwapTiles(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
 
-            if(GameManager.instance.SwapTilesAsDefault)
-                GridManager.SwapTiles(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
-
-            if(GameManager.instance.SlideAsDefault)                
-                GridManager.CascadeMoveTo(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
+                if(GameManager.instance.SlideAsDefault)                
+                    GridManager.CascadeMoveTo(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
+            }
+            else
+            {
+                Debug.LogError("hola hola o co chodzi");
+            }
 
             i++;
         }
         currentAutopilot = null;
-
+ 
+        playerCurrentlyMoving = false;
         GameManager.instance.PlayerMoved = true;
+        PlayerManager.instance.MovmentValidator.HideGrid();
+        GameManager.instance.MovingRequestTriggered = false;
+
         yield return null;
     }
     public void SetPlayerManager(Player_Cell parentCell)
@@ -210,6 +234,10 @@ public class PlayerManager: MonoBehaviour
         ExperienceCounter_TMP.SetText(Experience.ToString());
     }
 
+    public void OnClick_AddResource(string _resource)
+    {
+        AddResource(_resource,1,false);
+    }
     public void AddResource(string _resource, int value = 1, bool isFree = false)
     {
         ResourceType resource = (ResourceType)Enum.Parse(typeof(ResourceType),_resource);
@@ -217,7 +245,7 @@ public class PlayerManager: MonoBehaviour
         {
             if(value <= AvailablePoints)
             {
-                AvailablePoints =- value;
+                AvailablePoints -= value;
             }
             else
             {
@@ -262,6 +290,54 @@ public class PlayerManager: MonoBehaviour
         }
   
     }
+
+
+    public bool AtackAnimationInProgress = false;
+    public IEnumerator PerformRegularAttackAnimation(CellScript attacker, CellScript target, int _aniamtionFrames)
+    {
+      //  print("start attack animation");
+        AtackAnimationInProgress = true;
+
+        Vector2Int direction = target.CurrentPosition - attacker.CurrentPosition;
+       // print(direction.ToString());
+        int directionShift  = 112; // TODO: potem rozmiar komórki moze ulec zmianie, wiec dopracować
+        Vector3 StartPosition = attacker.transform.localPosition;
+        Vector3 EndPosition = new Vector3(attacker.transform.localPosition.x + (direction.x*directionShift),
+                                        attacker.transform.localPosition.y + (direction.y*directionShift),
+                                        0);
+
+        int framesPerMove = _aniamtionFrames/2;
+       // print((1f/framesPerMove).ToString());
+        // wejscie
+        for (float progress = 0; progress < 1; progress+=(1f/framesPerMove))
+        {
+          //  print("Start:"+progress);
+            attacker.transform.localPosition = Vector3.Lerp(StartPosition,EndPosition,progress);
+            if(progress > .75)
+            {
+                target._cellImage.color = Color.red;
+            }
+           yield return new WaitForFixedUpdate();
+        }        
+        
+
+        // podswietlenie mobka na czerwono 
+        for (float progress = 0; progress <= 1; progress+=(1f/framesPerMove))
+        {
+         //   print("end:"+progress);
+            attacker.transform.localPosition = Vector3.Lerp(EndPosition,StartPosition,progress);
+            if(progress > .25)
+            {
+                target._cellImage.color = Color.white;
+            }
+            yield return new WaitForFixedUpdate();
+        }       
+
+        AtackAnimationInProgress = false;
+        yield return null;
+    }
+
+
 }
 public enum ResourceType
 {

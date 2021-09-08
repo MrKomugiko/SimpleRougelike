@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] public TextMeshProUGUI TurnInfo_TMP;
     [SerializeField] public TextMeshProUGUI TurnCounter_TMP;    
     [SerializeField] public Vector2Int StartingPlayerPosition;
     [SerializeField] private GameObject TickCounterPrefab;
@@ -53,56 +55,83 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public bool TurnFinished = true;
+    public bool TurnPhaseBegin = true;
+    [SerializeField] private List<Image> TurnImageIndicators = new List<Image>();
     public IEnumerator AddTurn()
-    {
-        if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
+    {   
+        if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false && PlayerManager.instance.playerCurrentlyMoving == false)
         {
-            TurnFinished = true;
-            print("PLAYER MOVE TURN BEGIN");
+            Debug.LogWarning("Player move - start");
+
+            TurnImageIndicators[0].color = Color.yellow;
+            TurnImageIndicators[1].color = Color.red;
+            TurnImageIndicators[2].color = Color.red;
+            TurnImageIndicators[3].color = Color.red;
+
+            TurnPhaseBegin = true;
+            instance.TurnInfo_TMP.SetText("PLAYER MOVE TURN BEGIN");
 
             _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
             TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
 
             PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
 
-            yield return new WaitUntil(()=>GameManager.instance.PlayerMoved);
-            print("PLAYER MOVE TURN ENDED");
-            PlayerManager.instance.MovmentValidator.HideGrid();
+            yield return new WaitUntil(()=>PlayerMoved && PlayerManager.instance.playerCurrentlyMoving==false);
+            instance.TurnInfo_TMP.SetText("PLAYER MOVE TURN ENDED");
+            yield return new WaitForSeconds(turnPhaseDelay);
+           
             PlayerMoved = false;
+            TurnPhaseBegin = false;
             CurrentTurnPhase = TurnPhase.PlayerAttack;
+            TurnImageIndicators[0].color = Color.green;
+            TurnImageIndicators[1].color = Color.yellow;
+            Debug.LogWarning("Player move - end");
+
+            yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
             yield break;
         }
+       
         if(CurrentTurnPhase == TurnPhase.PlayerAttack && PlayerAttacked == false)
         {
-            TurnFinished = true;
+            Debug.LogWarning("Player attack - start");
+
+            TurnPhaseBegin = true;
 
            int _monstersInRange = PlayerManager.instance.MovmentValidator.ShowValidAttackGrid();
            if(_monstersInRange == 0)
            {
                 PlayerManager.instance.MovmentValidator.HideGrid();
-                print("There is no monsters around able to attack");
                 CurrentTurnPhase = TurnPhase.MonsterMovement;
+                TurnImageIndicators[1].color = Color.green;
+                TurnImageIndicators[2].color = Color.yellow;
                 PlayerAttacked = false;
-                print("PLAYER ATTACK TURN ENDED");
+                TurnPhaseBegin = false;
+                Debug.LogWarning("Player attack - end - no monsters to attack");
                 StartCoroutine(AddTurn());
                 yield break;
            }
-
+            yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
             yield return new WaitUntil(()=>GameManager.instance.PlayerAttacked);
+            instance.TurnInfo_TMP.SetText("PLAYER ATTACK TURN ENDED");
+
+            yield return new WaitForSeconds(turnPhaseDelay);
             CurrentTurnPhase = TurnPhase.MonsterMovement;
+            TurnImageIndicators[1].color = Color.green;
+            TurnImageIndicators[2].color = Color.yellow;
             PlayerManager.instance.MovmentValidator.HideGrid();
-            print("PLAYER ATTACK TURN ENDED");
             PlayerAttacked = false;
+            TurnPhaseBegin = false;
+            Debug.LogWarning("Player attack - end");
+            yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
             yield break;
         }
 
         if(CurrentTurnPhase == TurnPhase.MonsterMovement && MonstersMoved == false)
         {
-            print("MONSTER MOVEMENT TURN BEGIN");
-            TurnFinished = true;
+            Debug.LogWarning("Monster move - start");
+            TurnPhaseBegin = true;
 
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
             tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
@@ -116,7 +145,8 @@ public class GameManager : MonoBehaviour
                 if(creature.TryMove(GameManager.Player_CELL))
                 {
                     NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Moved.");
-                   // yield return new WaitForSeconds(.1f);
+                    // yield return new WaitForSeconds(.05f);
+                    countMonsterMoveThisTurn++;
                     continue;
                 }
             }
@@ -124,17 +154,24 @@ public class GameManager : MonoBehaviour
              MonstersMoved = true;
 
             yield return new WaitUntil(()=>GameManager.instance.MonstersMoved);
-            print("MONSTER MOVEMENT TURN ENDED");
+            instance.TurnInfo_TMP.SetText("MONSTER MOVEMENT TURN ENDED");
+
             MonstersMoved = false;
+            TurnPhaseBegin = false;
             CurrentTurnPhase = TurnPhase.MonsterAttack;
+            TurnImageIndicators[2].color = Color.green;
+            TurnImageIndicators[3].color = Color.yellow;
+            Debug.LogWarning("Monster move - end");
+
+            if(tempCurrentCreatureList.Count > 0) yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
             yield break;
         }
 
         if(CurrentTurnPhase == TurnPhase.MonsterAttack && MonsterAttack == false)
         {
-            print("MONSTER ATTACKS TURN BEGIN");
-            TurnFinished = true;
+            Debug.LogWarning("Monster attack - start");
+            TurnPhaseBegin = true;
 
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
             tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
@@ -147,7 +184,11 @@ public class GameManager : MonoBehaviour
 
                 if(creature.TryAttack(GameManager.Player_CELL))
                 {
-                  //  yield return new WaitForSeconds(.1f);
+                  //  yield return new WaitForSeconds(.05f);
+                   PlayerManager.instance.StartCoroutine(
+                       PlayerManager.instance.PerformRegularAttackAnimation(
+                           creature.ParentCell,PlayerManager.instance._playerCell.ParentCell,attackAnimationFrames));
+                           countMonsterAttackThisTurn++;
                     continue;   
                 }
 
@@ -155,18 +196,26 @@ public class GameManager : MonoBehaviour
             }
             MonsterAttack = true;
 
-
+            yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
             yield return new WaitUntil(()=>GameManager.instance.MonsterAttack);
-            print("MONSTER ATTACKS TURN ENDED");
+            instance.TurnInfo_TMP.SetText("MONSTER ATTACKS TURN ENDED");
+
             MonsterAttack = false;
+            TurnPhaseBegin = false;
+
+            TurnImageIndicators[3].color = Color.green;
             CurrentTurnPhase = TurnPhase.PlayerMovement;
+            Debug.LogWarning("Monster attack - end");
+
+            if(tempCurrentCreatureList.Count > 0) yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
-            yield break;;
+            yield break;
         }
     }
 
+    public float turnPhaseDelay = 0f;
+    public int attackAnimationFrames = 80;   
 
- 
     [SerializeField] ChestLootWindowScript _chestLootScript;
     [SerializeField] EquipmentScript _equipmentScript;
     public enum TurnPhase
@@ -217,19 +266,15 @@ public class GameManager : MonoBehaviour
         GameManager.instance.StopAllCoroutines();
         GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
     }
-
     public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
 
         wybuchWTrakcieWykonywania = value; 
         }
     }
-
-
     public GameObject InstantiateTicker(Bomb_Cell bomb_Cellcs)
     {
         return Instantiate(TickCounterPrefab, bomb_Cellcs.ParentCell.transform);
     }
-
     private void Awake()
     {
         if (instance == null)
@@ -300,7 +345,14 @@ public class GameManager : MonoBehaviour
         WybuchWTrakcieWykonywania = false;
      
         GridManager.FillGaps();
-        PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
+        if(GameManager.instance.CurrentTurnPhase == TurnPhase.PlayerMovement)
+        {
+            PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
+        }
+        else if (GameManager.instance.CurrentTurnPhase == TurnPhase.PlayerAttack)
+        {
+            PlayerManager.instance.MovmentValidator.ShowValidAttackGrid();
+        }
         yield return null;
     }
 
@@ -354,6 +406,9 @@ public class GameManager : MonoBehaviour
     public bool MonsterAttack;
     public bool SwapTilesAsDefault = true;
     public bool SlideAsDefault = false;
+    private int countMonsterMoveThisTurn;
+    private int countMonsterAttackThisTurn;
+    internal bool MovingRequestTriggered = false;
 
     internal MonsterData GetMonsterData(int MonsterID = -1)
     {

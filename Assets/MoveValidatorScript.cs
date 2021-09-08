@@ -11,7 +11,7 @@ public class MoveValidatorScript : MonoBehaviour
 
     public void SpawnMarksOnGrid()
     {
-        GridIndicators.ForEach(g=>Destroy(g.gameObject));
+            GridIndicators.ForEach(g=>Destroy(g.gameObject));
         GridIndicators.Clear();
         foreach(var cell in GridManager.CellGridTable.Values)
         {
@@ -92,7 +92,7 @@ public class MoveValidatorScript : MonoBehaviour
             NodeGrid.UpdateMapObstacleData();
 
             ParentPathfinder.FindPath(checkedMonster.Value);
-            print(ParentPathfinder.FinalPath.Count);
+//            print(ParentPathfinder.FinalPath.Count);
             if(ParentPathfinder.FinalPath.Count >0 && ParentPathfinder.FinalPath.Count<=PlayerManager.instance.AttackRange)
             {
             //    print("in attack range");

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -5,6 +7,9 @@ using UnityEngine;
 public class EquipmentItem : ItemData
 {
     public EquipmentType eqType = EquipmentType.Helmet;
+    public List<Perk> MainPerks  = new List<Perk>();
+    public List<Perk> ExtraPerks = new List<Perk>();
+
     public Sprite FrontSprite;
     public Sprite BackSprite;
     public Sprite LeftSprite;
@@ -24,15 +29,24 @@ public class EquipmentItem : ItemData
         return output;
     }
 }
-
+    [Serializable]
+    public struct Perk
+    {
+        public PerkType type;
+        public string value;
+    }
+    
+    public enum PerkType
+    {
+        MinAttack,              Accuracy,           Evasion,
+        MaxAttack,              DamageReduction,    StrengthBonus,
+        Range,                  Armor,              InteligenceBonus,
+        CrticalHitRate,         HealthRegen,        DexterityBonus,
+        CriticalHitDamage,      StaminaRegen,       VitalityBonus
+    }
     public enum EquipmentType
     {
-        Armor,
-        Shoulders,
-        PrimaryWeapon,
-        SecondaryWeapon,
-        Shoes,
-        Gloves,
-        Helmet,
-        Belt,
+        Armor,                  SecondaryWeapon,    Helmet,
+        Shoulders,              Shoes,              Belt,
+        PrimaryWeapon,          Gloves,
     }
