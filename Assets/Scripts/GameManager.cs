@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public int CurrentStageLevel = 1;
+    public int CurrentStageFloor = 1;
+    [SerializeField] GameObject ClearStageWindow;
     [SerializeField] public TextMeshProUGUI TurnInfo_TMP;
     [SerializeField] public TextMeshProUGUI TurnCounter_TMP;    
     [SerializeField] public Vector2Int StartingPlayerPosition;
@@ -59,7 +62,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Image> TurnImageIndicators = new List<Image>();
     public IEnumerator AddTurn()
     {   
-        if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false && PlayerManager.instance.playerCurrentlyMoving == false)
+        if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
             Debug.LogWarning("Player move - start");
 
@@ -150,8 +153,17 @@ public class GameManager : MonoBehaviour
                     continue;
                 }
             }
+            if(tempCurrentCreatureList.Count == 0)
+            {
+                Debug.Log("Map cleared");
+                TurnPhaseBegin = false;
+                CurrentTurnPhase = TurnPhase.MapClear;
+                StartCoroutine(AddTurn());
+                yield break;
+            }
             
-             MonstersMoved = true;
+            yield return new WaitUntil(()=>tempCurrentCreatureList.Where(m=>m.ParentCell.IsCurrentlyMoving).Count()==0);
+            MonstersMoved = true;
 
             yield return new WaitUntil(()=>GameManager.instance.MonstersMoved);
             instance.TurnInfo_TMP.SetText("MONSTER MOVEMENT TURN ENDED");
@@ -187,7 +199,9 @@ public class GameManager : MonoBehaviour
                   //  yield return new WaitForSeconds(.05f);
                    PlayerManager.instance.StartCoroutine(
                        PlayerManager.instance.PerformRegularAttackAnimation(
-                           creature.ParentCell,PlayerManager.instance._playerCell.ParentCell,attackAnimationFrames));
+                           creature.ParentCell,
+                           PlayerManager.instance._playerCell.ParentCell,
+                           attackAnimationFrames));
                            countMonsterAttackThisTurn++;
                     continue;   
                 }
@@ -211,17 +225,24 @@ public class GameManager : MonoBehaviour
             StartCoroutine(AddTurn());
             yield break;
         }
+        if(CurrentTurnPhase == TurnPhase.MapClear)
+        {
+            TurnPhaseBegin = true;
+            GameManager.instance.ClearStageWindow.SetActive(true);
+            print("end of loop");
+            yield break;
+        }
     }
 
     public float turnPhaseDelay = 0f;
-    public int attackAnimationFrames = 80;   
+    public int attackAnimationFrames = 16;   
 
     [SerializeField] ChestLootWindowScript _chestLootScript;
     [SerializeField] EquipmentScript _equipmentScript;
     public enum TurnPhase
     {
         StartGame,
-        Win,
+        MapClear,
         Lose,
         PlayerMovement,
         PlayerAttack,
@@ -388,11 +409,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    internal void ExecuteCoroutine(IEnumerator coroutine)
-    {
-        StartCoroutine(coroutine);
-    }
-
     //--------------------------------------------------------------------------------------------------------------------------------------
     [SerializeField] private List<MonsterData> MonsterVariants = new List<MonsterData>();
     [SerializeField] private List<TreasureData> TreasureVariants = new List<TreasureData>();
@@ -408,7 +424,7 @@ public class GameManager : MonoBehaviour
     public bool SlideAsDefault = false;
     private int countMonsterMoveThisTurn;
     private int countMonsterAttackThisTurn;
-    internal bool MovingRequestTriggered = false;
+    public bool MovingRequestTriggered = false;
 
     internal MonsterData GetMonsterData(int MonsterID = -1)
     {

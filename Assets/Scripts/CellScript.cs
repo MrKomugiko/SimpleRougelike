@@ -20,6 +20,8 @@ public class CellScript : MonoBehaviour
     [SerializeField] private bool isWalkable = true;
 
     [SerializeField] private string CurrentAssignedSpecialTileScript;
+    public bool IsCurrentlyMoving;
+
     private void OnDrawGizmos() 
     {
         if(isWalkable == false)
@@ -174,7 +176,7 @@ public class CellScript : MonoBehaviour
     {
         this._cellImage.transform.localScale = Vector3.zero;
         this._recTransform.localPosition = position;
-        for (int i = 1; i <= 8; i++)
+        for (int i = 1; i <= 8+1; i++)
         {
             float progress = i / 8.0f;
             yield return new WaitForFixedUpdate();
@@ -184,12 +186,14 @@ public class CellScript : MonoBehaviour
     }
     private IEnumerator SlideAnimation(Vector3 startingPosition, Vector3 endPosition)
     {
-        for (int i = 1; i <= 8; i++)
+        IsCurrentlyMoving = true;
+        for (int i = 1; i <= 8+1; i++)
         {
             float progress = i / 8.0f;
             yield return new WaitForFixedUpdate();
             this._recTransform.localPosition = Vector3.Lerp(startingPosition, endPosition, progress);
         }
+        IsCurrentlyMoving = false;;
         yield return null;
     }
     
@@ -209,32 +213,10 @@ public class CellScript : MonoBehaviour
             return;
         }
 
-        if(PlayerManager.instance.playerCurrentlyMoving == false && GameManager.instance.MovingRequestTriggered==false && GameManager.instance.CurrentTurnPhase == GameManager.TurnPhase.PlayerMovement)
-        {
             GameManager.instance.MovingRequestTriggered = true;
             print("spokojnie mozna sie ruszyc");
             StartCoroutine(PlayerManager.instance.Autopilot(this));
-        }
-
-//         Vector2Int direction = GameManager.Player_CELL.CurrentPosition-CurrentPosition;
-
-// //        print(direction);
-//         if(direction.x == 0)
-//             GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
         
-//         if(direction.y == 0)
-//             GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
-        
-//         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
-//         if(Vector3.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition,(Vector3Int)CurrentPosition) < 1.1f)
-//         {
-//             if (GameManager.instance.WybuchWTrakcieWykonywania == true)
-//                 return;
-
-//             GridManager.CascadeMoveTo(GameManager.Player_CELL, this.CurrentPosition);
-//             GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
-//         }
-
     }
     internal void AddEffectImage(GameObject sprite)
     {

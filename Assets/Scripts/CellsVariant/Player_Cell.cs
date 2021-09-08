@@ -102,34 +102,11 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     }
     public void OnClick_MakeAction()
     {
-        // Debug.Log("Click on player");
-        // // Debug.Log("Gracz kliknął na siebie samego");
-        // if(GameManager.instance.TurnFinished == false) return;
-        // if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
-        // {
-        //     Debug.Log("trwa inna faza niz ruchu gracza");
-        //     return;
-        // }
-        // // if(GameManager.instance.PlayerMoved == true)
-        // // {
-        // //     GameManager.instance.StopAllCoroutines();
-        // //     Debug.Log("przerwanie pętli addTurn i jej wznowienie");
-        // //     GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
-        // //     return;
-        // // }
-
-        // GameManager.LastPlayerDirection = "Front";
-        // PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
-    
-        // GameManager.instance.PlayerMoved = true;
-        // PlayerManager.instance.MovmentValidator.HideGrid();
-
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
         {
             Debug.Log("trwa inna faza niz ruchu gracza");
             return;
         }
-        Debug.Log("wystartowanie autopilota");
 
         if(PlayerManager.instance.playerCurrentlyMoving == true)
         {
@@ -141,9 +118,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         PlayerManager.instance.MovmentValidator.HideGrid();
         PlayerManager.instance.playerCurrentlyMoving = false;
         GameManager.instance.PlayerMoved = true;
-      /////////////////////////////////// GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
-     // nie ruszamy sie klikajac na gracza
-     //   StartCoroutine(PlayerManager.instance.Autopilot(this));
+
     }
     public void RemoveBorder()
     {
@@ -161,6 +136,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             Debug.Log($"Player HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");
         }
         PlayerManager.instance.HealthCounter_TMP.SetText(HealthPoints.ToString());
+        PlayerManager.instance.CumulativeStageDamageGained += damage;
     }
     public void ChangeToPlayerCorpse()
     {

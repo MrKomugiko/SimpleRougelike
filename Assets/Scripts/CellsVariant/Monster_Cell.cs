@@ -147,6 +147,7 @@ public class Monster_Cell :ICreature
              return;
         }
         TakeDamage((GameManager.Player_CELL.SpecialTile as Player_Cell).Damage, "Attacked by player");
+        PlayerManager.instance.CumulativeStageDamageTaken += (GameManager.Player_CELL.SpecialTile as Player_Cell).Damage;
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
 
@@ -156,6 +157,7 @@ public class Monster_Cell :ICreature
     }
     public void TakeDamage(int damage, string source)
     {
+    
         HealthPoints -= damage;
      
         if(IsAlive)
@@ -173,8 +175,7 @@ public class Monster_Cell :ICreature
         return true;
     }
     public bool TryMove(CellScript _targetCell)
-    {
-
+    {;
         NodeGrid.UpdateMapObstacleData();
         _pathfinder.FindPath(_targetCell);
         if (_pathfinder.FinalPath.Count > 1)
@@ -184,13 +185,12 @@ public class Monster_Cell :ICreature
             GridManager.SwapTiles(ParentCell, _pathfinder.FinalPath[0].Coordination);
             return true;
         }
-
         return false;
-
     }
     public void ChangeIntoTreasureObject(TreasureData _data)
     {
-
+        PlayerManager.instance.CumulativeMonsterKilled++;
+        
         ParentCell.Trash.ForEach(t=>GameObject.Destroy(t.gameObject));
         ParentCell.Trash.Clear();
 

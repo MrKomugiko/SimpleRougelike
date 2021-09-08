@@ -211,7 +211,7 @@ public partial class NotificationManger : MonoBehaviour
 
         if(cell.IsHighlighted == true)
         { 
-            GameManager.instance.ExecuteCoroutine(ChangeBorder(timeDelay, Color.red));
+            GameManager.instance.StartCoroutine(ChangeBorder(timeDelay, Color.red));
         }
         else
         {

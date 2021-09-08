@@ -111,14 +111,12 @@ public class PlayerManager: MonoBehaviour
         {
             print("point is too far");
             GameManager.instance.MovingRequestTriggered = false;
-          /////////////////////////////////// GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
             yield break;
         }
         if(playerCurrentlyMoving == true) 
         {
             print("autopilot przerwany");
             GameManager.instance.MovingRequestTriggered = false;
-          ///////////////////////////////////GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
             yield break;
         }
         print("wystartowanie autopilota");
@@ -135,7 +133,6 @@ public class PlayerManager: MonoBehaviour
             PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
             yield return new WaitUntil(()=>GameManager.instance.TurnPhaseBegin );
-           // yield return new WaitForSeconds(.1f);
             
             if(i <= PlayerManager.instance._playerCell._pathfinder.FinalPath.Count)
             {
@@ -184,17 +181,13 @@ public class PlayerManager: MonoBehaviour
         AddResource("INT");
         AddResource("VIT");
 
-
        MovmentValidator = GetComponentInChildren<MoveValidatorScript>();
        MovmentValidator.ParentPathfinder = parentCell._pathfinder;
-      // movmentGRidScript.SpawnMarksOnGrid();
     }
     public void Reset_QuickSlotToDefault(int quickslotID)
     {
-       // Debug.Log("reset to default action button id: "+quickslotID);
         Action defaultAction = () => 
         {
-           // Debug.Log($"uruchomienie [EquipmentScript.AssignItemToActionSlot({quickslotID})]");
             EquipmentScript.AssignItemToActionSlot(quickslotID);
         };
         _actionController.actionButtonsList[quickslotID].ButtonIcon_IMG.sprite = _actionController.actionButtonsList[quickslotID].IconSpriteList
@@ -215,6 +208,7 @@ public class PlayerManager: MonoBehaviour
         Gold = oldGoldvalue + value;
         GoldCounter_TMP.SetText(Gold.ToString());
         NotificationManger.AddValueTo_Gold_Notification(value);
+        CumulativeStageGoldEarned+=value;
         
     }
     public void Restart_ClearStatsAndEquipedItems()
@@ -232,8 +226,8 @@ public class PlayerManager: MonoBehaviour
     {
         Experience += value;
         ExperienceCounter_TMP.SetText(Experience.ToString());
+        CumulativeStageExperienceEarned +=value;
     }
-
     public void OnClick_AddResource(string _resource)
     {
         AddResource(_resource,1,false);
@@ -293,13 +287,19 @@ public class PlayerManager: MonoBehaviour
 
 
     public bool AtackAnimationInProgress = false;
+    public int CumulativeStageExperienceEarned;
+    public int CumulativeStageGoldEarned;
+    public int CumulativeStageDamageTaken;
+    public int CumulativeStageDamageGained;
+    public int CumulativeMonsterKilled;
+
+
     public IEnumerator PerformRegularAttackAnimation(CellScript attacker, CellScript target, int _aniamtionFrames)
     {
-      //  print("start attack animation");
         AtackAnimationInProgress = true;
 
         Vector2Int direction = target.CurrentPosition - attacker.CurrentPosition;
-       // print(direction.ToString());
+   
         int directionShift  = 112; // TODO: potem rozmiar komórki moze ulec zmianie, wiec dopracować
         Vector3 StartPosition = attacker.transform.localPosition;
         Vector3 EndPosition = new Vector3(attacker.transform.localPosition.x + (direction.x*directionShift),
@@ -339,10 +339,3 @@ public class PlayerManager: MonoBehaviour
 
 
 }
-public enum ResourceType
-{
-    STR,
-    INT,
-    DEX,
-    VIT
-    }
