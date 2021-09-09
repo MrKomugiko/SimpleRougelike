@@ -12,6 +12,7 @@ public class Monster_Cell :ICreature
     private int _turnsElapsedCounter;
     public Pathfinding _pathfinder;
     
+
     #region core
     public CellScript ParentCell { get; set; }
     public TileTypes Type { get; set; } = TileTypes.monster;
@@ -30,12 +31,15 @@ public class Monster_Cell :ICreature
         get => _healthPoints; 
         set 
         {
+            OnMonsterTakeDamageEvent?.Invoke(this,(ParentCell,value-_healthPoints));
             _healthPoints = value;
             
             if(value>MaxHealthPoints)
                 _healthPoints = MaxHealthPoints;
         }
     }
+    public event EventHandler<(CellScript ParticleSystemEmissionType, int damageTaken)> OnMonsterTakeDamageEvent;
+    public event EventHandler<string> OnMonsterDieEvent;
     public bool IsAlive
     {
         get
@@ -44,6 +48,7 @@ public class Monster_Cell :ICreature
                 return true;
             else
             {
+                OnMonsterDieEvent?.Invoke(this,Name+" died.");
                 PlayerManager.instance.AddExperience(ExperiencePoints);
                 ChangeIntoTreasureObject(_data: lootID);
                 return  false;
@@ -93,6 +98,8 @@ public class Monster_Cell :ICreature
         this.Corpse_Sprite                =       _data.Corpse_Sprite; 
         this.Level                        =       _data.Level;
 
+        CustomEventManager.instance.RegisterMonsterInEventManager(this);
+
         AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword, true));
         NotificationManger.CreateNewNotificationElement(this);
        
@@ -104,6 +111,11 @@ public class Monster_Cell :ICreature
             monsterObject.AddComponent<Pathfinding>();  
             ConfigurePathfinderComponent();
         }
+        CustomEventManager.instance.OnMonsterDieEvent += MonsterDie;
+    }
+    private void MonsterDie(object sender, string e)
+    {
+        Debug.LogError(e);
     }
     public void ConfigurePathfinderComponent()
     {

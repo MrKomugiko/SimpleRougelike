@@ -29,6 +29,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.Icon_Sprite    =       _data.Icon_Sprite;
         this.GoldValue      =       _data.Value;
         this.RandomGeneratedLoot = _data.GetRandomizeLootPacks();
+
         chest = new Chest(source:this,RandomGeneratedLoot);
 
         AvaiableActions.Add((  ()=>{
@@ -49,10 +50,9 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     }
     public void OnClick_MakeAction()
     {
-        
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
-
         Debug.Log(direction);
+
         if(direction.x == 0)
             GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
         
@@ -60,18 +60,17 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
-        MoveAndPick();       
+        if(chest.ContentItems.Count>0){
+            chest.GenerateChestLootWindowPopulatedWithItems(chest,chest.ContentItems);
+        }
+        else
+            MoveAndPick();       
     }
-
     public void MoveAndPick()
     {
-        // if(Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)this.ParentCell.CurrentPosition) < 1.1f)
-        // {
-            //PlayerManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
-            bool status;
-            Pick(out status);
-            ParentCell.MoveTo();
-        // }
+        bool status;
+        Pick(out status);
+        ParentCell.MoveTo();
     }
     public void RemoveFromMapIfChesIsEmpty()
     {
@@ -79,7 +78,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         {
             if(GridManager.CellGridTable.ContainsKey(ParentCell.CurrentPosition))
             {
-              //  Debug.Log("dont spawn empty chest");
                 if (Border != null)
                 GameObject.Destroy(Border.gameObject);
 
@@ -88,7 +86,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
                 GridManager.CellGridTable[ParentCell.CurrentPosition].SetCell(currentPosition);
                 return;
             }
-        //    Debug.Log("empty treasure chest - in init");
         }
     }
     public void Pick(out bool status)
@@ -97,8 +94,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         {
             if (Border != null)
             GameObject.Destroy(Border.gameObject);
-
-          //  Debug.Log("pick");
 
             PlayerManager.instance.AddGold(chest==null?GoldValue:chest.TotalValue);
 

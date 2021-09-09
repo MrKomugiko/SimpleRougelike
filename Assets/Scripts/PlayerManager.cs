@@ -134,13 +134,17 @@ public class PlayerManager: MonoBehaviour
 
             yield return new WaitUntil(()=>GameManager.instance.TurnPhaseBegin );
             
-            if(i <= PlayerManager.instance._playerCell._pathfinder.FinalPath.Count)
+            if(i < PlayerManager.instance._playerCell._pathfinder.FinalPath.Count)
             {
                 if(GameManager.instance.SwapTilesAsDefault)
+                {
                     GridManager.SwapTiles(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
+                }
 
-                if(GameManager.instance.SlideAsDefault)                
+                if(GameManager.instance.SlideAsDefault)       
+                {
                     GridManager.CascadeMoveTo(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
+                }         
             }
             else
             {

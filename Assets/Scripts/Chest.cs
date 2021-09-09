@@ -32,11 +32,12 @@ public class Chest : IChest
       //  Debug.Log("TU BEDZIE SKRZYNECZKA");
         ChestLootWindow = GameManager.instance.ContentLootWindow.GetComponent<ChestLootWindowScript>();
         ChestLootWindow.gameObject.SetActive(true);
-        if(ContentAlreadyGenerateed == false)
-        {
+       // if(ContentAlreadyGenerateed == false)
+       // {
+            ChestLootWindow.Clear();
             ChestLootWindow.PopulateChestWithItems(source,items);
             ChestLootWindow.TotalValueText.SetText(TotalValue.ToString());
-        }
+      //  }
 
     }
     public void SynchronizeItemDataWithParentCell()

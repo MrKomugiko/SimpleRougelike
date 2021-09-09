@@ -60,9 +60,11 @@ MonoBehaviour:
   _recTransform: {fileID: 2745940764255640305}
   _button: {fileID: 9166997105114444478}
   _type: 0
-  damagedTimes: 0
+  DEBUG_BUTTON_ATTACHED_METHODS: []
   Trash: []
   isWalkable: 1
+  CurrentAssignedSpecialTileScript: 
+  IsCurrentlyMoving: 0
 --- !u!114 &9166997105114444478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,7 +200,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5081893720320378623}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
