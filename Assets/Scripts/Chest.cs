@@ -55,21 +55,24 @@ public class Chest : IChest
         foreach(var item in ContentItems)
         {
             if(item.item == null) continue;
-            total += item.count * item.item.ItemCoreSettings.GoldValue;
+            total += item.Count * item.item.ItemCoreSettings.GoldValue;
         }
         return total;
     }
 
     [Serializable]
-    public struct ItemPack
+    public class ItemPack
     {
-        public int count;
+        [SerializeField] private int count;
         public ItemData item;
+
+        public int Count { get => count; set => count = value; }
 
         public ItemPack(int count, ItemData item)
         {
             this.count = count;
             this.item = item;
         }
+
     }
 }

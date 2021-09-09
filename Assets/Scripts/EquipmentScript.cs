@@ -79,7 +79,7 @@ public class EquipmentScript : MonoBehaviour
 
         foreach(var itemSlot in PlayerManager.instance._mainBackpack.ItemSlots)
         {
-            if(itemSlot.ITEM.item == null || itemSlot.ITEM.count == 0) continue;
+            if(itemSlot.ITEM.item == null || itemSlot.ITEM.Count == 0) continue;
 
             if(itemSlot.ITEM.item.CanBeAssignToQuickActions == false || itemSlot.IsInQuickSlot)
             {
@@ -167,7 +167,7 @@ public class EquipmentScript : MonoBehaviour
           //  print($"przypisany temu rodzajowi eq (w magazynie {toEquipment.StorageName}) slotem jest slot nr:"+(int)matchEqSlotIndex); 
 
             // sprawdzanie czy w tym miejscu juz jest jakis item
-            if(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.count == 0)
+            if(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count == 0)
             {
                 // pusto, tylko zakładamy nowy item
                 // usuwamy z bierzącego położenia

@@ -13,7 +13,7 @@ public class PotionItem : ItemData, IConsumable
 
     public bool Use(int itemSlotID)
     {
-        if(PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].ITEM.count <= 0) return false;
+        if(PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].ITEM.Count <= 0) return false;
 
         (GameManager.Player_CELL.SpecialTile as ILivingThing).TakeDamage(-HealthRegenerationValue, ItemCoreSettings.Name);
         NotificationManger.AddValueTo_Health_Notification(HealthRegenerationValue);

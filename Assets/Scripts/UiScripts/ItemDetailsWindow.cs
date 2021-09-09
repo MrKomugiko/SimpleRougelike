@@ -167,7 +167,7 @@ public class ItemDetailsWindow : MonoBehaviour
     {
         foreach(var btn in ButtonsList)
         {
-            if(PlayerManager.instance._mainBackpack.ItemSlots[ParentSlot.itemSlotID].ITEM.count == 0)
+            if(PlayerManager.instance._mainBackpack.ItemSlots[ParentSlot.itemSlotID].ITEM.Count == 0)
             {
                 btn.GetComponent<Button>().interactable = false;
                 btn.GetComponentInChildren<TextMeshProUGUI>().alpha = .75f;

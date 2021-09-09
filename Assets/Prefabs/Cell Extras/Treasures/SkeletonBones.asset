@@ -15,10 +15,9 @@ MonoBehaviour:
   ID: 2
   TreasureName: Skeleton Bones
   Icon_Sprite: {fileID: 179587530871585500, guid: a2912684cda9b9d468426bcf2005194e, type: 3}
-  Value: 30
+  GuarantedGoldReward: 100
   Type: 5
   IsWalkable: 1
   PossibleLootItems:
-  - {fileID: 11400000, guid: ee2e6c13da44a664faca92aabdaadb45, type: 2}
+  - {fileID: 11400000, guid: 66f8a0c9355120a4e8521b80b14db7b7, type: 2}
   - {fileID: 11400000, guid: 91e61f1b72c6584419b1ecb30fda388e, type: 2}
-  - {fileID: 11400000, guid: 9e57d90ac3761e548a7faaaa388913c3, type: 2}

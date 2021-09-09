@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static Chest;
 
 public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 {
@@ -19,18 +21,48 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public List<(Action action, string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
 
     private List<Chest.ItemPack> RandomGeneratedLoot = new List<Chest.ItemPack>();
+
     public IChest chest {get;} = null;
     public Treasure_Cell(CellScript parent, TreasureData _data)
     {
-        this.ParentCell     =       parent;
-        this.ID             =       _data.ID;
-        this.Name           =       _data.TreasureName;
-        this.Type           =       _data.Type;
-        this.Icon_Sprite    =       _data.Icon_Sprite;
-        this.GoldValue      =       _data.Value;
-        this.RandomGeneratedLoot = _data.GetRandomizeLootPacks();
+        this.ParentCell             =       parent;
+        this.ID                     =       _data.ID;
+        this.Name                   =       _data.TreasureName;
+        this.Type                   =       _data.Type;
+        this.Icon_Sprite            =       _data.Icon_Sprite;
+        this.GoldValue              =       _data.GuarantedGoldReward;
+        this.RandomGeneratedLoot    =       _data.GetRandomizeLootPacks();
 
-        chest = new Chest(source:this,RandomGeneratedLoot);
+        var goldReward = RandomGeneratedLoot.Where(item=>item.item is GoldItem).FirstOrDefault();
+        if(goldReward == null)
+        {
+            RandomGeneratedLoot.Add(new ItemPack(GoldValue,_data.PossibleLootItems.Where(item=>item is GoldItem).First()));
+            foreach(var item in RandomGeneratedLoot)
+            {
+                Debug.Log("* "+item.Count + " / "+ item.item.name);
+            }
+        }
+        else
+        {
+            RandomGeneratedLoot.Where(item=>item.item is GoldItem).FirstOrDefault().Count = GoldValue;
+        }
+
+        var treasureObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
+        
+        if(RandomGeneratedLoot.Count==1)
+        {
+            Debug.Log("RandomGeneratedLoot.Count == 1");
+            // przypadek tylko golda w środku
+            treasureObject.GetComponent<SpriteRenderer>().sprite = RandomGeneratedLoot[0].item.ItemCoreSettings.Item_Sprite;
+            RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
+        }
+        else
+        {
+            Debug.Log("RandomGeneratedLoot.Count > 1");
+            RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
+            treasureObject.GetComponent<SpriteRenderer>().sprite = this.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
+            chest = new Chest(source:this,RandomGeneratedLoot);
+        }
 
         AvaiableActions.Add((  ()=>{
             bool result;
@@ -44,7 +76,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 
         NotificationManger.CreateNewNotificationElement(this);
     
-        var treasureObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
+        
         ParentCell.Trash.Add(treasureObject);
         RemoveFromMapIfChesIsEmpty();
     }
@@ -60,8 +92,10 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
-        if(chest.ContentItems.Count>0){
-            chest.GenerateChestLootWindowPopulatedWithItems(chest,chest.ContentItems);
+        if(chest != null){
+            if(chest.ContentItems.Count>0){
+                chest.GenerateChestLootWindowPopulatedWithItems(chest,chest.ContentItems);
+            }
         }
         else
             MoveAndPick();       
@@ -74,6 +108,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     }
     public void RemoveFromMapIfChesIsEmpty()
     {
+        if(chest == null) return;
         if(chest.ContentItems.Count == 0)
         {
             if(GridManager.CellGridTable.ContainsKey(ParentCell.CurrentPosition))

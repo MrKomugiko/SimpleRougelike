@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe80419a82bacfc4eadec25e13c54c35, type: 3}
-  m_Name: SlimeCore
+  m_Name: SlimeDrop
   m_EditorClassIdentifier: 
   ID: 1
   TreasureName: Slime' core
   Icon_Sprite: {fileID: 179587530871585500, guid: 928158b7cdd87d143b06c7e9ad4654be, type: 3}
-  Value: 20
+  GuarantedGoldReward: 50
   Type: 5
   IsWalkable: 1
   PossibleLootItems:
-  - {fileID: 11400000, guid: ee2e6c13da44a664faca92aabdaadb45, type: 2}
+  - {fileID: 11400000, guid: 66f8a0c9355120a4e8521b80b14db7b7, type: 2}
+  - {fileID: 11400000, guid: f58baac47246f234b96fa090de803624, type: 2}

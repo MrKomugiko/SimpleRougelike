@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +29,7 @@ public class ItemSlot : MonoBehaviour
             }
         } 
     }
-    public bool IsEmpty => ITEM.count == 0?true:false;
+    public bool IsEmpty => ITEM.Count == 0?true:false;
     [SerializeField] bool ISFull;
     public bool IsFull {
         get{
@@ -41,7 +42,7 @@ public class ItemSlot : MonoBehaviour
                 return false;
             }
 
-            if(ITEM.count == ITEM.item.StackSettings.StackSize)
+            if(ITEM.Count == ITEM.item.StackSettings.StackSize)
             {
               //  print($"count {ITEM.count} == item stacksize {ITEM.item.ItemCoreSettings.StackSize} ");
                 value = true;
@@ -94,7 +95,7 @@ public class ItemSlot : MonoBehaviour
     public void ChangeItemCount(int value)
     {
         var _item = ITEM;
-        _item.count+=value;
+        _item.Count+=value;
         ITEM = _item;
     }
     
@@ -104,14 +105,20 @@ public class ItemSlot : MonoBehaviour
         ITEM = _item;
         // if(IsEmpty) return; 
 
-        _counterBox.SetActive(_item.count>1?true:false);
+        _counterBox.SetActive(_item.Count>1?true:false);
         _counterBox_TMP = _counterBox.GetComponentInChildren<TextMeshProUGUI>();
-        _counterBox_TMP.SetText(_item.count.ToString());    
+        _counterBox_TMP.SetText(_item.Count.ToString());    
 
         _itemIcon.sprite = _item.item.ItemCoreSettings.Item_Sprite;   
          _btn.onClick.RemoveAllListeners();
         if(PLAYER_BACKPACK == false)
         {
+            if(_item.item is GoldItem)
+            {
+                _btn.onClick.AddListener(()=>PickAllGoldFromSlot());   
+                return;
+            }
+
             _btn.onClick.AddListener(()=>MoveSinglePieceTo_Backpack());   
         }
         
@@ -120,6 +127,8 @@ public class ItemSlot : MonoBehaviour
             _btn.onClick.AddListener(()=>ShowDetailsWindow());   
         }
     }
+
+
     private void ShowDetailsWindow()
     {
         PlayerManager.instance._mainBackpack.ItemDetailsWindow
@@ -129,15 +138,29 @@ public class ItemSlot : MonoBehaviour
         PlayerManager.instance._mainBackpack.ItemDetailsWindow.SetActive(true);
 
     }
+    public void PickAllGoldFromSlot()
+    {
+        _counterBox.SetActive(ITEM.Count>1?true:false);
+
+        PlayerManager.instance.AddGold(ITEM.Count);
+        this.UpdateItemAmount(-ITEM.Count);
+        
+        // UPDATE VALUE IN SOURCE CHEST TO PREVEENT RESPAWN CONTENT ALL OVER AGAIN
+        chest.LootChest.SynchronizeItemDataWithParentCell();
+        
+        // CLOSE CHEST IF LEFT EMPTY
+        chest.IfEmptyRemoveEmptyChestFromMap();
+    }
     public void MoveSinglePieceTo_Backpack()
     {
         // extract one piece
-        ItemPack SinglePieceItem;
+        ItemPack SinglePieceItem = new ItemPack(0,null);
             SinglePieceItem.item = ITEM.item;
-            SinglePieceItem.count = 1;
+            SinglePieceItem.Count = 1;
 
-        _counterBox.SetActive(ITEM.count>1?true:false);
-        (bool result,bool update, int index) slotInBackpack =  PlayerManager.instance._mainBackpack.CheckWhereCanYouFitThisItemInBackpack(SinglePieceItem);
+        _counterBox.SetActive(ITEM.Count>1?true:false);
+        (bool result,bool update, int index) slotInBackpack =  
+            PlayerManager.instance._mainBackpack.CheckWhereCanYouFitThisItemInBackpack(SinglePieceItem);
         
         if(slotInBackpack.result == true)
         {
@@ -165,7 +188,7 @@ public class ItemSlot : MonoBehaviour
         ChangeItemCount(value);
         if(IsInQuickSlot)
         {
-            PlayerManager.instance._actionController.actionButtonsList[(int)AssignedToQuickSlot].UpdateItemCounter(ITEM.count.ToString());
+            PlayerManager.instance._actionController.actionButtonsList[(int)AssignedToQuickSlot].UpdateItemCounter(ITEM.Count.ToString());
         }
 
         if(IsEmpty)
@@ -185,15 +208,15 @@ public class ItemSlot : MonoBehaviour
             ITEM = new ItemPack(0,null);
         }
 
-        if(ITEM.count <= 1)
+        if(ITEM.Count <= 1)
         {
             // ukrycie counterboxa
             _counterBox.SetActive(false);
         }
-        if(ITEM.count > 1)
+        if(ITEM.Count > 1)
         {
             _counterBox.SetActive(true);
-            string countLeft = ITEM.count.ToString();
+            string countLeft = ITEM.Count.ToString();
             _counterBox_TMP.SetText(countLeft); 
      
         }
@@ -210,7 +233,7 @@ public class ItemSlot : MonoBehaviour
         PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ButtonIcon_IMG.sprite = ITEM.item.ItemCoreSettings.Item_Sprite;
         
         PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ConfigureDescriptionButtonClick(()=>(this.ITEM.item as IConsumable).Use(itemSlotID),$"{ITEM.item.ItemCoreSettings.Name}",false);
-        PlayerManager.instance._actionController.actionButtonsList[quickSlotID].UpdateItemCounter(ITEM.count.ToString());
+        PlayerManager.instance._actionController.actionButtonsList[quickSlotID].UpdateItemCounter(ITEM.Count.ToString());
         // przywróć eq do stanu przed wyboru tego itemka do slotu
         EquipmentScript.QuitFromQuickbarSelectionMode();
     }

@@ -8,12 +8,10 @@ public abstract class ItemData : ScriptableObject
     public DropSettingsData DropSettings;
     public StackSettingsData StackSettings;
     public RequirmentsSettingsData RequirmentsSettings;
-    
     public bool CanBeAssignToQuickActions;
-
     public void Sell(ItemSlot from)
     {
-        if(from.ITEM.count <= 0) 
+        if(from.ITEM.Count <= 0) 
             return;
 
         PlayerManager.instance.AddGold(ItemCoreSettings.GoldValue);
@@ -71,8 +69,9 @@ public enum ItemType
         Consumable,
         Equipment,
         CraftComponent,
-        Trash
-    }
+        Trash,
+    Gold
+}
 [Serializable]
 public class RequirmentsSettingsData
 {

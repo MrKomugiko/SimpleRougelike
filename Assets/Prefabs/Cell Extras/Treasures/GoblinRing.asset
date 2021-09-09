@@ -15,8 +15,9 @@ MonoBehaviour:
   ID: 3
   TreasureName: Goblin' ring
   Icon_Sprite: {fileID: 179587530871585500, guid: bd5385c8f699382468835d53b85c3e9f, type: 3}
-  Value: 100
+  GuarantedGoldReward: 200
   Type: 5
   IsWalkable: 1
   PossibleLootItems:
   - {fileID: 11400000, guid: ee2e6c13da44a664faca92aabdaadb45, type: 2}
+  - {fileID: 11400000, guid: 66f8a0c9355120a4e8521b80b14db7b7, type: 2}

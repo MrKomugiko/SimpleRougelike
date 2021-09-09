@@ -48,7 +48,11 @@ public class ChestLootWindowScript : MonoBehaviour
     {
         foreach(var slot in ItemSlots)
         {
-            int itemCount = slot.ITEM.count;
+            if(slot.ITEM.item is GoldItem) {
+                slot.PickAllGoldFromSlot();
+                continue;
+            }
+            int itemCount = slot.ITEM.Count;
             for(int i =0; i < itemCount ; i++)
             {
                 slot.MoveSinglePieceTo_Backpack();
@@ -64,7 +68,7 @@ public class ChestLootWindowScript : MonoBehaviour
         int slotIndex = 0;
         foreach(var item in items)
         {
-            if(item.count == 0) continue;
+            if(item.Count == 0) continue;
             ItemSlots[slotIndex].AddNewItemToSlot(item);
             slotIndex++;
         }

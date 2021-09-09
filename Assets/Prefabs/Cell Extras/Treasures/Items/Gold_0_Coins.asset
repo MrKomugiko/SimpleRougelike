@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d05fc9996b800442ae108bd6f116dfc, type: 3}
+  m_Name: Gold_0_Coins
+  m_EditorClassIdentifier: 
+  ItemCoreSettings:
+    Item_Sprite: {fileID: 290687976, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+    ItemID: 0
+    Name: Coins
+    GoldValue: 1
+    Description: 
+    Rarity: 0
+    Type: 5
+  DropSettings:
+    minCount: 1
+    maxCount: 1
+  StackSettings:
+    IsStackable: 1
+    StackSize: 100000
+  RequirmentsSettings:
+    Level: 0
+    Strength: 0
+    Inteligence: 0
+    Dexterity: 0
+  CanBeAssignToQuickActions: 0

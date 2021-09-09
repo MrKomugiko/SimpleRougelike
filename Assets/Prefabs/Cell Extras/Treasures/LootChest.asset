@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 5
   TreasureName: Loot Chest
   Icon_Sprite: {fileID: 179587530871585500, guid: 23cde1ade238c82479e2fc937030fce2, type: 3}
-  Value: 0
+  GuarantedGoldReward: 1000
   Type: 5
   IsWalkable: 1
   PossibleLootItems:
@@ -27,3 +27,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ee2e6c13da44a664faca92aabdaadb45, type: 2}
   - {fileID: 11400000, guid: 3fd03e787ab3f7341b5e9440785063a3, type: 2}
   - {fileID: 11400000, guid: 8b8b45999eb818748a17ca480c303b82, type: 2}
+  - {fileID: 11400000, guid: 66f8a0c9355120a4e8521b80b14db7b7, type: 2}
