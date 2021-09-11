@@ -86,7 +86,7 @@ try
 catch (System.Exception)
 {
     
-    throw;
+  //  throw;
 }
 
         GameManager.Restart();

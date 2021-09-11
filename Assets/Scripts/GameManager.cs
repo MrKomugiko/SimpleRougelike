@@ -303,11 +303,8 @@ public class GameManager : MonoBehaviour
         else
             Destroy(this);
     }
-    private void Start()
-    {
-        Init_PlacePlayerOnGrid();
-    }
-    private void Init_PlacePlayerOnGrid()
+
+    public void Init_PlacePlayerOnGrid()
     {
         Player_CELL = GridManager.CellGridTable[StartingPlayerPosition];
         Player_CELL.Trash.ForEach(t => Destroy(t.gameObject));

@@ -74,7 +74,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             } ,"Collect Only",ActionIcon.Pick,
             true));
 
-        NotificationManger.CreateNewNotificationElement(this);
+       // NotificationManger.CreateNewNotificationElement(this);
     
         
         ParentCell.Trash.Add(treasureObject);

@@ -86,7 +86,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
         AvaiableActions.Add((()=>SwitchHighlightImpactArea(),"Show Inpact Area",ActionIcon.Flag, false));
         // AvaiableActions.Add((null,"WIP: Disarm",ActionIcon.Delete));
 
-        NotificationManger.CreateNewNotificationElement(this);
+      //  NotificationManger.CreateNewNotificationElement(this);
     }
     
     public void OnClick_MakeAction()

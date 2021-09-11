@@ -47,7 +47,7 @@ public class AnimateWindowScript : MonoBehaviour
     [SerializeField] GameObject CharacterEquipmentWindow;
     private IEnumerator SlideAnimation()
     {
-        HideNotificationElementsExceptPlayer(_active);
+      //  HideNotificationElementsExceptPlayer(_active);
 
         var bgImg = _DarkBackground.GetComponent<Image>();
         Color32 colorstart = new Color32(0, 0, 0, 200);

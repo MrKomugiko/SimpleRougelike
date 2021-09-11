@@ -3286,7 +3286,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 26}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3088012928371105370
@@ -9922,11 +9922,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2640244145254142742, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 601
+      value: 517
       objectReference: {fileID: 0}
     - target: {fileID: 2640244145254142742, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 889.67
+      value: 659
       objectReference: {fileID: 0}
     - target: {fileID: 2640244145254142742, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9943,6 +9943,10 @@ PrefabInstance:
     - target: {fileID: 3866881458631534242, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
       propertyPath: m_Name
       value: EquipmentSlots
+      objectReference: {fileID: 0}
+    - target: {fileID: 3866881458631534242, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}

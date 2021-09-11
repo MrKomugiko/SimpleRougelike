@@ -43,7 +43,8 @@ public class GridManager : MonoBehaviour
                 (cell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
             }
         }
-        NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
+          GameManager.instance.Init_PlacePlayerOnGrid();
+      //  NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
     }
     public static TileTypes GetRandomType()
     {

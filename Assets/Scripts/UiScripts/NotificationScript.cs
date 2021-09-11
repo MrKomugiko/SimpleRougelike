@@ -94,7 +94,7 @@ public class NotificationScript : MonoBehaviour
         if(BaseCell.SpecialTile == null) return false;
         if((BaseCell.SpecialTile is ISelectable) == false) return false;
         if((BaseCell.SpecialTile as ISelectable).IsHighlighted) return true;
-        
+        if(playerCell == null) return false;
         float distance = Vector2Int.Distance(playerCell.CurrentPosition, BaseCell.SpecialTile.ParentCell.CurrentPosition);
         if(distance < 1.5f)
             return true;
