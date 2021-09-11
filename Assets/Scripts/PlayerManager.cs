@@ -344,5 +344,13 @@ public class PlayerManager: MonoBehaviour
         yield return null;
     }
 
+    public void CreateNewHero()
+    {
+        Debug.Log("tworzenie nowego bohatera.");
+
+        MenuScript.instance.MENU.gameObject.SetActive(false);
+        Debug.Log("przejscie do gry");
+
+    }
 
 }

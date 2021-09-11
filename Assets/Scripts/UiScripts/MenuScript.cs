@@ -6,30 +6,17 @@ using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
-    [SerializeField] GameObject NewGame;
-        Button NewGame_BTN;
-        TextMeshProUGUI NewGame_TMP;
-    [SerializeField] GameObject Continue;
-        Button Continue_BTN;
-        TextMeshProUGUI Continue_TMP;
-    [SerializeField] GameObject Save;
-        Button Save_BTN;
-        TextMeshProUGUI Save_TMP;
-    [SerializeField] GameObject Options;
-        Button Options_BTN;
-        TextMeshProUGUI Options_TMP;
-    [SerializeField] GameObject Exit;
-        Button Exit_BTN;
-        TextMeshProUGUI Exit_TMP;
-[SerializeField] GameObject OptionsWindow;
+    public static MenuScript instance;
+    [SerializeField] GameObject NewHero,Continue,Heroes,Options, Exit,OPTIONSWINDOW,HEROCREATORWINDOW,HEROESLISTWINDOW;
+    [SerializeField] public GameObject MENU;
+    [SerializeField] Color32 ButtonOff_TextColor,ButtonON_TextColor;
+    Button NewHero_BTN, Continue_BTN,Heroes_BTN, Options_BTN, Exit_BTN;
+    TextMeshProUGUI NewHero_TMP, Continue_TMP, Heroes_TMP,Options_TMP,Exit_TMP;
 
-    [SerializeField] Color32 ButtonOff_TextColor;
-    [SerializeField] Color32 ButtonON_TextColor;
-
-    [SerializeField] GameObject MENU;
-
+    [SerializeField] GameObject HomeCanvas;
     private void OnEnable() {
         // hide all border and selections 
+        Debug.Log(Application.persistentDataPath);
         try
         {
             NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.HighlightElementSwitch(n,false));    
@@ -41,24 +28,28 @@ public class MenuScript : MonoBehaviour
     }
     private void Awake() 
     {
-        MENU = this.gameObject;
+        instance = this;
+        
         MENU.SetActive(true);
 
-        NewGame_BTN = NewGame.GetComponent<Button>();
-            NewGame_BTN.interactable = true;
-        NewGame_TMP = NewGame.GetComponentInChildren<TextMeshProUGUI>();
-            NewGame_TMP.color = ButtonON_TextColor;
+        NewHero_BTN = NewHero.GetComponent<Button>();
+            NewHero_BTN.interactable = true;
+        NewHero_TMP = NewHero.GetComponentInChildren<TextMeshProUGUI>();
+            NewHero_TMP.color = ButtonON_TextColor;
 
+        //TODO: jezeli okno pojawilo sie poprzez kliknięcie przycisku X, kontynuuj zamyka tylko te okno 
         Continue_BTN = Continue.GetComponent<Button>();
             Continue_BTN.interactable = false;      
         Continue_TMP = Continue.GetComponentInChildren<TextMeshProUGUI>();
             Continue_TMP.color = ButtonOff_TextColor;      
 
-        Save_BTN = Save.GetComponent<Button>();
-            Save_BTN.interactable = false;        
-        Save_TMP = Save.GetComponentInChildren<TextMeshProUGUI>();
-            Save_TMP.color = ButtonOff_TextColor;        
+        // TODO: aktywne jezeli w bazie widnieje jakikolwiek wpis bohatera
+        Heroes_BTN = Heroes.GetComponent<Button>();
+            Heroes_BTN.interactable = false;        
+        Heroes_TMP = Heroes.GetComponentInChildren<TextMeshProUGUI>();
+            Heroes_TMP.color = ButtonOff_TextColor;        
 
+        //TODO: opcje, sam jeszcze neiw iem czy sie przydadza teraz xd
         Options_BTN = Options.GetComponent<Button>();
             Options_BTN.interactable = true;        
         Options_TMP = Options.GetComponentInChildren<TextMeshProUGUI>();
@@ -70,42 +61,40 @@ public class MenuScript : MonoBehaviour
             Exit_TMP.color = ButtonON_TextColor;      
     }
 
-    public void OnClick_NewGame()
+    public void OnClick_NewHero()
     {
-        // MENU.SetActive(false);
-        // try
-        // {
-     
-        //     // PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
-        //     Continue_BTN.interactable = true;
-        //     Continue_TMP.color = ButtonON_TextColor;
-
-        //     Continue_BTN.interactable = true;
-        //     Continue_TMP.color = ButtonON_TextColor;
-        // }
-        // catch (System.Exception)
-        // {
-            
-        // //  throw;
-        // }
-
-        // GameManager.NewGame();
+        HEROCREATORWINDOW.SetActive(true);
+        Options.SetActive(false);
+        Exit.SetActive(false);
+        Continue.SetActive(false);
+        Heroes.SetActive(false);
     }
     public void OnClick_Continue()
     {
         // TODO: Continue Button
         MENU.SetActive(false);
     }
-    public void OnClick_Save()
+    public void OnClick_Back()
     {
-        // TODO: Save Button
+        HEROESLISTWINDOW.SetActive(false);
+        HEROCREATORWINDOW.SetActive(false);
+        OPTIONSWINDOW.SetActive(false);
+
+        NewHero.SetActive(true);
+        Options.SetActive(true);
+        Exit.SetActive(true);
+        Continue.SetActive(true);
+        Heroes.SetActive(true);
+        
+    }
+    public void OnClick_Heroes()
+    {
+       HEROESLISTWINDOW.SetActive(true);
     }
     public void OnClick_Options()
     {
         //TODO: Options Button
-        OptionsWindow.SetActive(true);
-        
-        
+        OPTIONSWINDOW.SetActive(true);
     }
     public void OnClick_Exit()
     {

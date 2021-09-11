@@ -5,6 +5,7 @@ using static GameManager;
 
 public class DungeonManager : MonoBehaviour
 {
+    [SerializeField] GameObject DungeonSelectionWindow;
     public int maxDungeonStage = 0;
     public int recentDungeonStage = 0;
     /* DungeonData dungeondata */
@@ -17,6 +18,7 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private GameObject DungeonCanvas;
     public void OpenDungeon(/* dungeondata */ )
     {
+        DungeonSelectionWindow.SetActive(false);
         DungeonCanvas.SetActive(true);
         GridManager.instance.CreateEmptyGrid();
         GridManager.instance.RandomizeDataOnGrid();
