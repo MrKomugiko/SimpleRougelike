@@ -6,10 +6,10 @@ using UnityEngine;
 public class NodeGrid : MonoBehaviour
 {
     static public Vector2Int GridSize;
-    static public Node[,] MAPDATA;
+    static public Node[,] MAPDATA = null;
     public static int MapSize => GridSize.x*GridSize.y;
 
-    private void Start() 
+    public static void CreateNodesMap() 
     {
         GridSize = GridManager.instance._gridSize;
         MAPDATA = new Node[GridSize.x,GridSize.y];
@@ -22,13 +22,15 @@ public class NodeGrid : MonoBehaviour
                MAPDATA[x,y] = new Node(x,y,_isWalkable: true, false);                
             }
         }
-      //  print("liczba dostępnych nodów w MAPDATA =  "+MAPDATA.Length);
+        print("liczba dostępnych nodów w MAPDATA =  "+MAPDATA.Length);
 
     }
-
     public static void UpdateMapObstacleData(bool passTroughtMonsters = false)
     {
-       // print("odświeżono nodeGrid'a o aktualną pozycje ścian na mapie");
+        if(MAPDATA == null)
+            CreateNodesMap();
+
+        print("odświeżono nodeGrid'a o aktualną pozycje ścian na mapie");
         // set all to true
         foreach(var node in MAPDATA)
         {

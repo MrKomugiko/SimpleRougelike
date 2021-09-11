@@ -13,9 +13,9 @@ public class PlayerManager: MonoBehaviour
     [SerializeField] GameObject GraphicSwitchPrefab;
     [SerializeField] public PlayerEquipmentVisualSwitchScript GraphicSwitch;
     [SerializeField] public MoveValidatorScript MovmentValidator;
-    public TextMeshProUGUI GoldCounter_TMP;
-    public TextMeshProUGUI ExperienceCounter_TMP;
-    public TextMeshProUGUI HealthCounter_TMP;
+    // public TextMeshProUGUI GoldCounter_TMP;
+    // public TextMeshProUGUI ExperienceCounter_TMP;
+    // public TextMeshProUGUI HealthCounter_TMP;
     [SerializeField] private TextMeshProUGUI AvailablePoints_TMP;
     [SerializeField] private int _availablePoints;
     [SerializeField] List<Button> CoreStatButtonsList = new List<Button>();
@@ -45,30 +45,30 @@ public class PlayerManager: MonoBehaviour
         }
     }
 
-    [SerializeField] private TextMeshProUGUI Level_TMP;
+    // [SerializeField] private TextMeshProUGUI Level_TMP;
     [SerializeField] private int _level;
     public int Level{
         get => _level;
         set
         {
             _level=value;
-            Level_TMP.SetText(_level.ToString());
+            UIManager.instance.Level_TMP.SetText(_level.ToString());
         }
     }
     public int Gold = 0;
     private int _experience;
-    [SerializeField] public  ResourceBarScript ExperienceBar;
-    [SerializeField] public  ResourceBarScript HealthBar;
-    [SerializeField] public  ResourceBarScript StaminaBar;
-    [SerializeField] public  ResourceBarScript EnergyBar;
+    // [SerializeField] public  ResourceBarScript ExperienceBar;
+    // [SerializeField] public  ResourceBarScript HealthBar;
+    // [SerializeField] public  ResourceBarScript StaminaBar;
+    // [SerializeField] public  ResourceBarScript EnergyBar;
     public int Experience 
     {
         get => _experience;
         set
         {
             _experience = value;
-            ExperienceCounter_TMP.SetText(Experience.ToString());
-            ExperienceBar.UpdateBar(_experience,NextLevelExperience);
+            // ExperienceCounter_TMP.SetText(Experience.ToString());
+            UIManager.instance.Experience_Bar.UpdateBar(_experience,NextLevelExperience);
             if(Experience >= NextLevelExperience)
             {
                 _experience = NextLevelExperience-Experience;
@@ -77,7 +77,7 @@ public class PlayerManager: MonoBehaviour
                 AvailablePoints+=6;
                // print("Level UP");
                 if(_experience<0) _experience=1;
-                ExperienceBar.UpdateBar(_experience,NextLevelExperience);
+                UIManager.instance.Experience_Bar.UpdateBar(_experience,NextLevelExperience);
             }
             if(_experience<0) _experience=1;
 
@@ -171,7 +171,6 @@ public class PlayerManager: MonoBehaviour
         var uicontroller = Instantiate(GraphicSwitchPrefab,_playerCell.playerSpriteObject.transform);
         GraphicSwitch = uicontroller.GetComponent<PlayerEquipmentVisualSwitchScript>();
         
-        HealthBar.UpdateBar(parentCell.HealthPoints,parentCell.MaxHealthPoints);
         // init restart values
         Experience = 1;
         Level = 1;
@@ -208,9 +207,9 @@ public class PlayerManager: MonoBehaviour
     }
     public void AddGold(int value)
     {
-        int oldGoldvalue = Int32.Parse(GoldCounter_TMP.text);
+        int oldGoldvalue = Int32.Parse(UIManager.instance.Gold_TMP.text);
         Gold = oldGoldvalue + value;
-        GoldCounter_TMP.SetText(Gold.ToString());
+        UIManager.instance.Gold_TMP.SetText(Gold.ToString());
         NotificationManger.AddValueTo_Gold_Notification(value);
         CumulativeStageGoldEarned+=value;
         
@@ -222,14 +221,18 @@ public class PlayerManager: MonoBehaviour
 
         _EquipedItems.Reset_WipeOutDataAndImages();
 
-        Level = 1; Gold = 0; Experience = 0; Strength = 1; Inteligence = 1; Dexterity = 1; 
+        Level = 1; 
+        Gold = 0; 
+        Experience = 0; 
+        Strength = 1; 
+        Inteligence = 1; 
+        Dexterity = 1; 
         _EquipedItems.ItemSlots.ForEach(slot=>slot.ITEM = new Chest.ItemPack(0, null));
     }
 
     public void AddExperience(int value)
     {
         Experience += value;
-        ExperienceCounter_TMP.SetText(Experience.ToString());
         CumulativeStageExperienceEarned +=value;
     }
     public void OnClick_AddResource(string _resource)

@@ -237,8 +237,8 @@ public class GameManager : MonoBehaviour
     public float turnPhaseDelay = 0f;
     public int attackAnimationFrames = 16;   
 
-    [SerializeField] ChestLootWindowScript _chestLootScript;
-    [SerializeField] EquipmentScript _equipmentScript;
+    [SerializeField] public ChestLootWindowScript _chestLootScript;
+    [SerializeField] public EquipmentScript _playerBackpackequipmentScript;
     public enum TurnPhase
     {
         StartGame,
@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
         MonsterMovement,
         MonsterAttack
     }
-    internal static void Restart()
+    internal static void NewGame()
     {      
         GameManager.instance.CurrentTurnPhase = TurnPhase.StartGame;
         PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
@@ -260,7 +260,7 @@ public class GameManager : MonoBehaviour
         GameManager.instance.MonsterAttack = false;
 
         instance._chestLootScript.Clear();
-        instance._equipmentScript.Clear();
+        instance._playerBackpackequipmentScript.Clear();
 
         NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
         NotificationManger.instance.NotificationList.Clear();
@@ -275,13 +275,8 @@ public class GameManager : MonoBehaviour
 
         GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
 
-        GridManager.instance.Start();
-        GameManager.instance.Init_PlacePlayerOnGrid();
-
-        GameManager.instance.TurnCounter_TMP.SetText("0");
-        PlayerManager.instance.GoldCounter_TMP.SetText("0");
-        PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
-        PlayerManager.instance.ExperienceCounter_TMP.SetText("0");
+        GridManager.instance.CreateEmptyGrid();
+        GridManager.instance.RandomizeDataOnGrid();
 
         GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
         GameManager.instance.StopAllCoroutines();

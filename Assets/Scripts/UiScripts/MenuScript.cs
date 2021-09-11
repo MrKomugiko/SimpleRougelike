@@ -72,24 +72,24 @@ public class MenuScript : MonoBehaviour
 
     public void OnClick_NewGame()
     {
-        MENU.SetActive(false);
-try
-{
+        // MENU.SetActive(false);
+        // try
+        // {
      
-        PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
-        Continue_BTN.interactable = true;
-        Continue_TMP.color = ButtonON_TextColor;
+        //     // PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
+        //     Continue_BTN.interactable = true;
+        //     Continue_TMP.color = ButtonON_TextColor;
 
-        Continue_BTN.interactable = true;
-        Continue_TMP.color = ButtonON_TextColor;
-}
-catch (System.Exception)
-{
-    
-  //  throw;
-}
+        //     Continue_BTN.interactable = true;
+        //     Continue_TMP.color = ButtonON_TextColor;
+        // }
+        // catch (System.Exception)
+        // {
+            
+        // //  throw;
+        // }
 
-        GameManager.Restart();
+        // GameManager.NewGame();
     }
     public void OnClick_Continue()
     {

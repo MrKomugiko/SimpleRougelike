@@ -18,7 +18,7 @@ public class GridManager : MonoBehaviour
     private void Awake() {
         instance = this;
     }
-    public void Start()
+    public void CreateEmptyGrid()
     {   
         for(int x = 0; x<_gridSize.x; x++)
         {
@@ -26,15 +26,34 @@ public class GridManager : MonoBehaviour
             {
                 var newCell = Instantiate(_cellPrefab,this.transform,false).GetComponent<CellScript>();
                 newCell.SetCell(new Vector2Int(x,y), false);
-                if(newCell.CurrentPosition == GameManager.instance.StartingPlayerPosition) 
-                    newCell.AssignType(TileTypes.player);
-                else
-                    newCell.AssignType(GetRandomType());
+                // if(newCell.CurrentPosition == GameManager.instance.StartingPlayerPosition) 
+                //     newCell.AssignType(TileTypes.player);
+                // else
+                //     newCell.AssignType(GetRandomType());
                     
                 CellGridTable.Add(new Vector2Int(x,y),newCell);
             }   
         }
 
+        // // wyczysc mape z pustych skrzynek
+        // foreach(var cell in CellGridTable.Values)
+        // {
+        //     if(cell.SpecialTile is Treasure_Cell)
+        //     {
+        //         (cell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
+        //     }
+        // }
+        // GameManager.instance.Init_PlacePlayerOnGrid();
+    }
+    public void RandomizeDataOnGrid()
+    {
+        foreach(var cell in CellGridTable)
+        {
+            cell.Value.AssignType(GetRandomType());
+        }
+        
+        GameManager.instance.Init_PlacePlayerOnGrid();
+         
         // wyczysc mape z pustych skrzynek
         foreach(var cell in CellGridTable.Values)
         {
@@ -43,8 +62,6 @@ public class GridManager : MonoBehaviour
                 (cell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
             }
         }
-          GameManager.instance.Init_PlacePlayerOnGrid();
-      //  NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
     }
     public static TileTypes GetRandomType()
     {

@@ -101,7 +101,7 @@ public class Monster_Cell :ICreature
         CustomEventManager.instance.RegisterMonsterInEventManager(this);
 
         AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword, true));
-       // NotificationManger.CreateNewNotificationElement(this);
+        NotificationManger.CreateNewNotificationElement(this);
        
         var monsterObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
         ParentCell.Trash.Add(monsterObject);

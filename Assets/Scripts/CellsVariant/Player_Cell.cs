@@ -29,7 +29,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             _healthPoints = HP;
             
             if(PlayerManager.instance != null)
-                PlayerManager.instance.HealthBar.UpdateBar(_healthPoints,MaxHealthPoints);
+                UIManager.instance.Health_Bar.UpdateBar(_healthPoints,MaxHealthPoints);
         }
     }
     public int Level { get; set; }
@@ -83,8 +83,8 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             playerSpriteObject.AddComponent<Pathfinding>();
             ConfigurePathfinderComponent();
         }
-
         GameObject.Find("PlayerManager").GetComponent<PlayerManager>().SetPlayerManager(this);
+        NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
     }
 
     public Pathfinding _pathfinder;
@@ -135,7 +135,6 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         {
             Debug.Log($"Player HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");
         }
-        PlayerManager.instance.HealthCounter_TMP.SetText(HealthPoints.ToString());
         PlayerManager.instance.CumulativeStageDamageGained += damage;
     }
     public void ChangeToPlayerCorpse()
