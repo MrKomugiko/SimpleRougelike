@@ -571,7 +571,7 @@ GameObject:
   - component: {fileID: 2527792311923414109}
   - component: {fileID: 4563223629968470700}
   m_Layer: 5
-  m_Name: Power
+  m_Name: nick_TMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -625,7 +625,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Power: 9000+'
+  m_text: nick
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1728,7 +1728,7 @@ GameObject:
   - component: {fileID: 4996357808484239194}
   - component: {fileID: 8114049997028790035}
   m_Layer: 5
-  m_Name: PowerLevel
+  m_Name: Nickname
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,9 +15,6 @@ public class PlayerManager: MonoBehaviour
     [SerializeField] GameObject GraphicSwitchPrefab;
     [SerializeField] public PlayerEquipmentVisualSwitchScript GraphicSwitch;
     [SerializeField] public MoveValidatorScript MovmentValidator;
-    // public TextMeshProUGUI GoldCounter_TMP;
-    // public TextMeshProUGUI ExperienceCounter_TMP;
-    // public TextMeshProUGUI HealthCounter_TMP;
     [SerializeField] private TextMeshProUGUI AvailablePoints_TMP;
     [SerializeField] private int _availablePoints;
     [SerializeField] List<Button> CoreStatButtonsList = new List<Button>();
@@ -348,7 +347,22 @@ public class PlayerManager: MonoBehaviour
     {
         Debug.Log("tworzenie nowego bohatera.");
 
-        MenuScript.instance.MENU.gameObject.SetActive(false);
+
+        string nickname = GameObject.Find("InputField_NewHeroNickName").GetComponent<InputField>().text;
+        // sprawdzenie czy taki bohater juz istnieje
+        if(MenuScript.instance.storedHeroesCard.Any(hero=>hero.data.NickName == nickname))  
+        {
+            Debug.LogError("hero with this name already exist");
+            MenuScript.instance.HEROCREATORWINDOW_ErrorTMP.SetText("hero with this name already exist");
+            return;
+        }
+        MenuScript.instance.HEROCREATORWINDOW_ErrorTMP.SetText("");
+        PlayerProgressModel newHero = new PlayerProgressModel(nickname);
+        string JSONresult = JsonConvert.SerializeObject(newHero);
+        File.WriteAllText(Application.persistentDataPath + $"/Hero_{nickname}.json", JSONresult);
+
+        Debug.Log(JSONresult);
+        MenuScript.instance.LoadGameWithPlayerData(newHero);
         Debug.Log("przejscie do gry");
 
     }

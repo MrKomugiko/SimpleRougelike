@@ -417,6 +417,7 @@ public class GameManager : MonoBehaviour
     private int countMonsterMoveThisTurn;
     private int countMonsterAttackThisTurn;
     public bool MovingRequestTriggered = false;
+    [SerializeField] public PlayerProgressModel PLAYER_PROGRESS_DATA;
 
     internal MonsterData GetMonsterData(int MonsterID = -1)
     {
