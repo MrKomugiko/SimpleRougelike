@@ -229,6 +229,7 @@ public class GameManager : MonoBehaviour
         {
             TurnPhaseBegin = true;
             GameManager.instance.ClearStageWindow.SetActive(true);
+            PlayerManager.instance.SavePlayerData();
             print("end of loop");
             yield break;
         }
@@ -237,8 +238,8 @@ public class GameManager : MonoBehaviour
     public float turnPhaseDelay = 0f;
     public int attackAnimationFrames = 16;   
 
-    [SerializeField] ChestLootWindowScript _chestLootScript;
-    [SerializeField] EquipmentScript _equipmentScript;
+    [SerializeField] public ChestLootWindowScript _chestLootScript;
+    [SerializeField] public EquipmentScript _playerBackpackequipmentScript;
     public enum TurnPhase
     {
         StartGame,
@@ -249,10 +250,10 @@ public class GameManager : MonoBehaviour
         MonsterMovement,
         MonsterAttack
     }
-    internal static void Restart()
+    internal static void NewGame()
     {      
         GameManager.instance.CurrentTurnPhase = TurnPhase.StartGame;
-        PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
+       // PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
         GameManager.instance.CurrentTurnNumber = 0;
         GameManager.instance.PlayerMoved = false;
         GameManager.instance.PlayerAttacked = false;
@@ -260,7 +261,7 @@ public class GameManager : MonoBehaviour
         GameManager.instance.MonsterAttack = false;
 
         instance._chestLootScript.Clear();
-        instance._equipmentScript.Clear();
+        instance._playerBackpackequipmentScript.Clear();
 
         NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
         NotificationManger.instance.NotificationList.Clear();
@@ -275,13 +276,8 @@ public class GameManager : MonoBehaviour
 
         GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
 
-        GridManager.instance.Start();
-        GameManager.instance.Init_PlacePlayerOnGrid();
-
-        GameManager.instance.TurnCounter_TMP.SetText("0");
-        PlayerManager.instance.GoldCounter_TMP.SetText("0");
-        PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
-        PlayerManager.instance.ExperienceCounter_TMP.SetText("0");
+        GridManager.instance.CreateEmptyGrid();
+        GridManager.instance.RandomizeDataOnGrid();
 
         GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
         GameManager.instance.StopAllCoroutines();
@@ -303,11 +299,8 @@ public class GameManager : MonoBehaviour
         else
             Destroy(this);
     }
-    private void Start()
-    {
-        Init_PlacePlayerOnGrid();
-    }
-    private void Init_PlacePlayerOnGrid()
+
+    public void Init_PlacePlayerOnGrid()
     {
         Player_CELL = GridManager.CellGridTable[StartingPlayerPosition];
         Player_CELL.Trash.ForEach(t => Destroy(t.gameObject));
@@ -425,6 +418,7 @@ public class GameManager : MonoBehaviour
     private int countMonsterMoveThisTurn;
     private int countMonsterAttackThisTurn;
     public bool MovingRequestTriggered = false;
+    [SerializeField] public PlayerProgressModel PLAYER_PROGRESS_DATA;
 
     internal MonsterData GetMonsterData(int MonsterID = -1)
     {

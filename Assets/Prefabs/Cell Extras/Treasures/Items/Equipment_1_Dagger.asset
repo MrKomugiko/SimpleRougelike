@@ -32,7 +32,7 @@ MonoBehaviour:
     Inteligence: 0
     Dexterity: 0
   CanBeAssignToQuickActions: 0
-  eqType: 2
+  eqType: 6
   MainPerks:
   - type: 0
     value: 1

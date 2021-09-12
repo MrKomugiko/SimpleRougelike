@@ -1,111 +1,154 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
-    [SerializeField] GameObject NewGame;
-        Button NewGame_BTN;
-        TextMeshProUGUI NewGame_TMP;
-    [SerializeField] GameObject Continue;
-        Button Continue_BTN;
-        TextMeshProUGUI Continue_TMP;
-    [SerializeField] GameObject Save;
-        Button Save_BTN;
-        TextMeshProUGUI Save_TMP;
-    [SerializeField] GameObject Options;
-        Button Options_BTN;
-        TextMeshProUGUI Options_TMP;
-    [SerializeField] GameObject Exit;
-        Button Exit_BTN;
-        TextMeshProUGUI Exit_TMP;
-[SerializeField] GameObject OptionsWindow;
 
-    [SerializeField] Color32 ButtonOff_TextColor;
-    [SerializeField] Color32 ButtonON_TextColor;
+    public static MenuScript instance;
+    [SerializeField] GameObject NewHero,Continue,Heroes,Options, Exit,OPTIONSWINDOW,HEROESLISTWINDOW;
+    [SerializeField] public GameObject MENU,HEROCREATORWINDOW;
+    [SerializeField] Color32 ButtonOff_TextColor,ButtonON_TextColor;
+    public TextMeshProUGUI HEROCREATORWINDOW_ErrorTMP;
+    [SerializeField] GameObject HomeCanvas;
+    [SerializeField] public Button HEROESLISTWINDOW_RemoveConfirmButton;
 
-    [SerializeField] GameObject MENU;
-
-    private void OnEnable() {
-        // hide all border and selections 
-        try
-        {
-            NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.HighlightElementSwitch(n,false));    
-        }
-        catch (System.Exception)
-        {
-            
-        }
-    }
-    private void Awake() 
+    private void Start() 
     {
-        MENU = this.gameObject;
+    
+        instance = this;
+
+        if(HeroDataController.instance.storedHeroesCard.Count > 0)
+        {
+            Heroes.SetActive(true);
+                SetButtonState("Heroes",true); 
+            NewHero.SetActive(false);
+                SetButtonState("NewHero");  
+        }
+        else
+        {
+            Heroes.SetActive(false);
+                SetButtonState("Heroes");    
+            NewHero.SetActive(true);
+                SetButtonState("NewHero",true);  
+        }
+
         MENU.SetActive(true);
 
-        NewGame_BTN = NewGame.GetComponent<Button>();
-            NewGame_BTN.interactable = true;
-        NewGame_TMP = NewGame.GetComponentInChildren<TextMeshProUGUI>();
-            NewGame_TMP.color = ButtonON_TextColor;
-
-        Continue_BTN = Continue.GetComponent<Button>();
-            Continue_BTN.interactable = false;      
-        Continue_TMP = Continue.GetComponentInChildren<TextMeshProUGUI>();
-            Continue_TMP.color = ButtonOff_TextColor;      
-
-        Save_BTN = Save.GetComponent<Button>();
-            Save_BTN.interactable = false;        
-        Save_TMP = Save.GetComponentInChildren<TextMeshProUGUI>();
-            Save_TMP.color = ButtonOff_TextColor;        
-
-        Options_BTN = Options.GetComponent<Button>();
-            Options_BTN.interactable = true;        
-        Options_TMP = Options.GetComponentInChildren<TextMeshProUGUI>();
-            Options_TMP.color = ButtonON_TextColor;        
-
-        Exit_BTN = Exit.GetComponent<Button>();
-            Exit_BTN.interactable = true;      
-        Exit_TMP = Exit.GetComponentInChildren<TextMeshProUGUI>();
-            Exit_TMP.color = ButtonON_TextColor;      
+        SetButtonState("Continue"); 
+        SetButtonState("Options",true);        
+        SetButtonState("Exit",true);      
     }
 
-    public void OnClick_NewGame()
+    internal void SetButtonState(string buttonName, bool isactive=false)
     {
-        MENU.SetActive(false);
-try
-{
-     
-        PlayerManager.instance.HealthCounter_TMP.SetText((GameManager.Player_CELL.SpecialTile as ILivingThing).HealthPoints.ToString());
-        Continue_BTN.interactable = true;
-        Continue_TMP.color = ButtonON_TextColor;
+        Button BTN = null;
+        TextMeshProUGUI TMP = null;
 
-        Continue_BTN.interactable = true;
-        Continue_TMP.color = ButtonON_TextColor;
-}
-catch (System.Exception)
-{
-    
-    throw;
-}
+        switch(buttonName)
+        {
+            case "NewHero":
+                BTN = NewHero.GetComponent<Button>();
+                TMP = NewHero.GetComponentInChildren<TextMeshProUGUI>();
+                break;
 
-        GameManager.Restart();
+            case "Exit":
+                BTN = Exit.GetComponent<Button>();
+                TMP = Exit.GetComponentInChildren<TextMeshProUGUI>();
+                break;
+
+            case "Options":
+                BTN = Options.GetComponent<Button>();
+                TMP =  Options.GetComponentInChildren<TextMeshProUGUI>();
+                break;
+
+            case "Continue":
+                BTN = Continue.GetComponent<Button>();
+                TMP =  Continue.GetComponentInChildren<TextMeshProUGUI>();
+                break;
+
+            case "Heroes":
+                BTN = Heroes.GetComponent<Button>();
+                TMP = Heroes.GetComponentInChildren<TextMeshProUGUI>();
+                break;
+        }
+
+        BTN.interactable = isactive;
+        TMP.color = isactive?ButtonON_TextColor:ButtonOff_TextColor;
+    }
+
+
+   
+    public void OnClick_NewHero(int slotID)
+    {
+        HEROESLISTWINDOW.SetActive(false);
+        HeroDataController.instance.CreateHeroButton.onClick.RemoveAllListeners();
+        HeroDataController.instance.CreateHeroButton.onClick.AddListener(()=>HeroDataController.instance.CreateNewHero(slotID));
+        
+        HEROCREATORWINDOW.SetActive(true);
+        Options.SetActive(false);
+        Exit.SetActive(false);
+        Continue.SetActive(false);
+        Heroes.SetActive(false);
     }
     public void OnClick_Continue()
     {
         // TODO: Continue Button
         MENU.SetActive(false);
     }
-    public void OnClick_Save()
+    
+    public void OpenGameScene()
     {
-        // TODO: Save Button
+        // TODO:
+        HEROESLISTWINDOW.SetActive(false);
+        HEROCREATORWINDOW.SetActive(false);
+        MENU.SetActive(false);
+    }
+    public void PauseMenu()
+    {
+        
+        if(HeroDataController.instance.storedHeroesCard.Count > 0)
+        {
+            SetButtonState("Heroes",true);   
+        }
+        else
+        {
+             SetButtonState("Heroes");    
+        }
+        OnClick_Back();
+
+        SetButtonState("Continue",true); 
+    }
+    public void OnClick_Back()
+    {
+        MENU.SetActive(true);
+        HEROESLISTWINDOW.SetActive(HEROCREATORWINDOW.gameObject.activeSelf?true:false);
+        HEROCREATORWINDOW.SetActive(false);
+        OPTIONSWINDOW.SetActive(false);
+
+        NewHero.SetActive(true);
+        Options.SetActive(true);
+        Exit.SetActive(true);
+        Continue.SetActive(true);
+        Heroes.SetActive(true);
+        
+    }
+    public void OnClick_Heroes()
+    {
+        
+        HeroDataController.instance.LoadHeroesDataFromDevice();
+        HEROESLISTWINDOW.SetActive(true);
     }
     public void OnClick_Options()
     {
         //TODO: Options Button
-        OptionsWindow.SetActive(true);
-        
-        
+        OPTIONSWINDOW.SetActive(true);
     }
     public void OnClick_Exit()
     {

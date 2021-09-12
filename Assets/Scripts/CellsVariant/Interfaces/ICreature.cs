@@ -2,6 +2,7 @@ using UnityEngine;
 
 internal interface ICreature : ISpecialTile, ISelectable, ILivingThing
 {
+    int Level { get; set; }
     int ExperiencePoints {get;set;}
     TreasureData lootID { get; }
     int TurnsRequiredToMakeAction { get; }

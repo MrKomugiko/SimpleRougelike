@@ -29,10 +29,9 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             _healthPoints = HP;
             
             if(PlayerManager.instance != null)
-                PlayerManager.instance.HealthBar.UpdateBar(_healthPoints,MaxHealthPoints);
+                UIManager.instance.Health_Bar.UpdateBar(_healthPoints,MaxHealthPoints);
         }
     }
-    public int Level { get; set; }
     public int MaxHealthPoints { get; private set; }
     public int Damage { get; private set; }
     public bool IsHighlighted { get; set; }
@@ -54,20 +53,21 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             }
         }
     }
-
+    public Pathfinding _pathfinder;
+    private int _healthPoints;
     public GameObject playerSpriteObject;
-    public Player_Cell(CellScript parent, MonsterData _data/*PlayerData _data*/)
+    public Player_Cell(CellScript parent, MonsterData _data)
     {
         this.ParentCell = parent;
-        this.Name = _data.MonsterName;
-        this.MaxHealthPoints = _data.MaxHealthPoints;
-        this.HealthPoints = _data.MaxHealthPoints;
-        this.Damage = _data.Damage;
-        this.Type = _data.Type; ;
+        this.Type = _data.Type;
         this.ParentCell.IsWalkable = _data.IsWalkable;
         this.Icon_Sprite = _data.Icon_Sprite;
         this.Corpse_Sprite = _data.Corpse_Sprite;
-        this.Level = _data.Level;
+
+        this.Damage = PlayerManager.instance.BaseDamage;
+        this.MaxHealthPoints = PlayerManager.instance.MaxHealth;
+        this.Name = PlayerManager.instance.NickName;
+        this.HealthPoints = PlayerManager.instance.CurrentHealth;
 
         AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 0), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
         AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 1), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
@@ -83,13 +83,9 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             playerSpriteObject.AddComponent<Pathfinding>();
             ConfigurePathfinderComponent();
         }
-
         GameObject.Find("PlayerManager").GetComponent<PlayerManager>().SetPlayerManager(this);
+        NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
     }
-
-    public Pathfinding _pathfinder;
-    private int _healthPoints;
-
     public void ConfigurePathfinderComponent()
     {
         if (_pathfinder != null) return;
@@ -131,11 +127,11 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     public void TakeDamage(int damage, string source)
     {
         HealthPoints -= damage;
+        PlayerManager.instance.CurrentHealth = HealthPoints;
         if (IsAlive)
         {
             Debug.Log($"Player HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");
         }
-        PlayerManager.instance.HealthCounter_TMP.SetText(HealthPoints.ToString());
         PlayerManager.instance.CumulativeStageDamageGained += damage;
     }
     public void ChangeToPlayerCorpse()

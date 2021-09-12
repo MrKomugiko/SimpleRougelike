@@ -46,7 +46,18 @@ public partial class NotificationManger : MonoBehaviour
     
      public static void CreatePlayerNotificationElement(ISelectable cellRelated)
     {
-       //  print("CreatePlayerNotificationElement");
+        print("CreatePlayerNotificationElement");
+    
+         var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell ==  (cellRelated as ISpecialTile).ParentCell)).FirstOrDefault();
+            //int oldHierarhyPosition = 1;
+            if(existingnotification != null)
+                {
+                  //  oldHierarhyPosition = existingnotification.transform.parent.GetSiblingIndex();
+                    Destroy(existingnotification.gameObject.transform.parent.gameObject);
+                //    var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
+                //    x.Configure((cellRelated as ISpecialTile));
+                //     return; // nie dodawaj tego samego 
+                }
 
         GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
         notificationObject.gameObject.name = "PlayerNotifications";
@@ -69,8 +80,23 @@ public partial class NotificationManger : MonoBehaviour
         );
         PlayerManager.instance._notificationScript = notification;
 
-        var existingnotification = NotificationManger.instance.NotificationList.Where(n=>n == notification).First();
+        existingnotification = NotificationManger.instance.NotificationList.Where(n=>n == notification).First();
         notification.PossibleActions.GetComponent<ActionSwitchController>().ConfigurePlayerButtons((cellRelated as ISpecialTile), "default");
+        Debug.Log("dodanie canvas'a do quickslota gracza");
+        var canvas = existingnotification.gameObject.AddComponent<Canvas>();
+        NotificationManger.instance.StartCoroutine(NotificationManger.instance.DoWhenActiveInHierarchy(canvas.gameObject, 
+        ()=>{
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = 21;}
+            ));
+        Debug.LogError(canvas.gameObject.activeInHierarchy);
+        existingnotification.gameObject.AddComponent<GraphicRaycaster>();
+
+    }
+    public IEnumerator DoWhenActiveInHierarchy(GameObject o, Action action)
+    {
+        yield return new WaitUntil(()=>o.activeInHierarchy);
+        action();
     }
     public static void CreateNewNotificationElement(ISelectable cellRelated)
     {
@@ -87,7 +113,7 @@ public partial class NotificationManger : MonoBehaviour
                 //     return; // nie dodawaj tego samego 
                 }
             GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
-            notificationObject.transform.parent.SetSiblingIndex(oldHierarhyPosition);
+            notificationObject.transform.SetSiblingIndex(oldHierarhyPosition);
             notificationObject.transform.SetAsLastSibling();
             NotificationScript notification = notificationObject.GetComponentInChildren<NotificationScript>();
             NotificationManger.instance.NotificationList.Add(notification);
@@ -230,7 +256,7 @@ public partial class NotificationManger : MonoBehaviour
     public static void TriggerActionNotification(ISelectable INVOKER, AlertCategory CATEGORY,string message = "", ISpecialTile TARGET_BaseCEll = null)
     {try
     {
-          NotificationScript Invoker_BaseCell_Notification = instance.NotificationList.FirstOrDefault(n=>n.BaseCell.SpecialTile as ISelectable == INVOKER);
+        NotificationScript Invoker_BaseCell_Notification = instance.NotificationList.FirstOrDefault(n=>n.BaseCell.SpecialTile as ISelectable == INVOKER);
       
         NotificationScript Target_BaseCell_Notification = instance.NotificationList.FirstOrDefault(n=>n.BaseCell.SpecialTile == TARGET_BaseCEll);
 
@@ -407,62 +433,62 @@ public partial class NotificationManger : MonoBehaviour
     // -------------------- [Player related UI notification] --------------------
     public static void AddValueTo_Health_Notification(int damageValue)
     {
-        AlertScript notificationToModife = null;
-        int currentValue = 0;
-        AlertScript existingHPAlert = GameObject.Find("HealthTab").transform.Find("HP").GetComponentInChildren<AlertScript>();
-        if (existingHPAlert == null)
-        {
-            // jest to pierwsze powiadomienie, dodaj go, ustaw na wierzchu, i zapisz bierzącą wartość 
-            //      unikalne dla HP, jeżeli wartość będzie powyżej 0, kolor z czerwonego zmieni sie na zielony.
-            var healthSectionOverlay = Instantiate(instance.AlertPrefab, GameObject.Find("HealthTab").transform.Find("HP").transform);
-            healthSectionOverlay.transform.SetAsLastSibling();
-            notificationToModife = healthSectionOverlay.GetComponent<AlertScript>();
-            currentValue = damageValue;
-        }
-        else
-        {
-            notificationToModife = existingHPAlert;
-            currentValue = Int32.Parse(existingHPAlert.TextValue);
-            currentValue += damageValue;
-        }
+        // AlertScript notificationToModife = null;
+        // int currentValue = 0;
+        // AlertScript existingHPAlert = GameObject.Find("HealthTab").transform.Find("HP").GetComponentInChildren<AlertScript>();
+        // if (existingHPAlert == null)
+        // {
+        //     // jest to pierwsze powiadomienie, dodaj go, ustaw na wierzchu, i zapisz bierzącą wartość 
+        //     //      unikalne dla HP, jeżeli wartość będzie powyżej 0, kolor z czerwonego zmieni sie na zielony.
+        //     var healthSectionOverlay = Instantiate(instance.AlertPrefab, GameObject.Find("HealthTab").transform.Find("HP").transform);
+        //     healthSectionOverlay.transform.SetAsLastSibling();
+        //     notificationToModife = healthSectionOverlay.GetComponent<AlertScript>();
+        //     currentValue = damageValue;
+        // }
+        // else
+        // {
+        //     notificationToModife = existingHPAlert;
+        //     currentValue = Int32.Parse(existingHPAlert.TextValue);
+        //     currentValue += damageValue;
+        // }
 
-        // Przypisanie zsumowanej wartośc na polu HP.
-        notificationToModife.TextValue = currentValue.ToString();
-        notificationToModife.text.text = notificationToModife.TextValue;
-        if (currentValue > 0)
-        {
-            notificationToModife.text.text = "+"+notificationToModife.TextValue;
-            notificationToModife.Color = Color.green;
-        }
+        // // Przypisanie zsumowanej wartośc na polu HP.
+        // notificationToModife.TextValue = currentValue.ToString();
+        // notificationToModife.text.text = notificationToModife.TextValue;
+        // if (currentValue > 0)
+        // {
+        //     notificationToModife.text.text = "+"+notificationToModife.TextValue;
+        //     notificationToModife.Color = Color.green;
+        // }
     }
     public static void AddValueTo_Gold_Notification(int goldValue)
     {
         //print("AddValueTo_Gold_Notification");
-        AlertScript notificationToModife = null;
-        int currentValue = 0;
-        AlertScript existingGoldAlert = GameObject.Find("GoldTab").transform.Find("GOLD").GetComponentInChildren<AlertScript>();
-        if (existingGoldAlert == null)
-        {
-            // jest to pierwsze powiadomienie, dodaj go, ustaw na wierzchu, i zapisz bierzącą wartość 
-            //      unikalne dla HP, jeżeli wartość będzie powyżej 0, kolor z czerwonego zmieni sie na zielony.
-            var healthSectionOverlay = Instantiate(instance.AlertPrefab, GameObject.Find("GoldTab").transform.Find("GOLD").transform);
-            healthSectionOverlay.transform.SetAsLastSibling();
-            notificationToModife = healthSectionOverlay.GetComponent<AlertScript>();
-            currentValue = goldValue;
-        }
-        else
-        {
-            notificationToModife = existingGoldAlert;
-            currentValue = Int32.Parse(existingGoldAlert.TextValue);
-            currentValue += goldValue;
-        }
+        // AlertScript notificationToModife = null;
+        // int currentValue = 0;
+        // AlertScript existingGoldAlert = GameObject.Find("GoldTab").transform.Find("GOLD").GetComponentInChildren<AlertScript>();
+        // if (existingGoldAlert == null)
+        // {
+        //     // jest to pierwsze powiadomienie, dodaj go, ustaw na wierzchu, i zapisz bierzącą wartość 
+        //     //      unikalne dla HP, jeżeli wartość będzie powyżej 0, kolor z czerwonego zmieni sie na zielony.
+        //     var healthSectionOverlay = Instantiate(instance.AlertPrefab, GameObject.Find("GoldTab").transform.Find("GOLD").transform);
+        //     healthSectionOverlay.transform.SetAsLastSibling();
+        //     notificationToModife = healthSectionOverlay.GetComponent<AlertScript>();
+        //     currentValue = goldValue;
+        // }
+        // else
+        // {
+        //     notificationToModife = existingGoldAlert;
+        //     currentValue = Int32.Parse(existingGoldAlert.TextValue);
+        //     currentValue += goldValue;
+        // }
 
-        // Przypisanie zsumowanej wartośc na polu HP.
-        notificationToModife.Color = Color.yellow;
-        notificationToModife.TextValue = currentValue.ToString();
-        notificationToModife.text.text = notificationToModife.TextValue;
-        if (currentValue < 0)
-            notificationToModife.Color = Color.red;
+        // // Przypisanie zsumowanej wartośc na polu HP.
+        // notificationToModife.Color = Color.yellow;
+        // notificationToModife.TextValue = currentValue.ToString();
+        // notificationToModife.text.text = notificationToModife.TextValue;
+        // if (currentValue < 0)
+        //     notificationToModife.Color = Color.red;
     }
 
 }

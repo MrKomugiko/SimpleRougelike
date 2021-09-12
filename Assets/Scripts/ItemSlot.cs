@@ -102,6 +102,7 @@ public class ItemSlot : MonoBehaviour
     TextMeshProUGUI _counterBox_TMP;
     public void AddNewItemToSlot(ItemPack _item)
     {
+        Debug.Log("tesT");
         ITEM = _item;
         // if(IsEmpty) return; 
 
@@ -140,6 +141,7 @@ public class ItemSlot : MonoBehaviour
     }
     public void PickAllGoldFromSlot()
     {
+        Debug.Log("pick all");
         _counterBox.SetActive(ITEM.Count>1?true:false);
 
         PlayerManager.instance.AddGold(ITEM.Count);
@@ -153,6 +155,7 @@ public class ItemSlot : MonoBehaviour
     }
     public void MoveSinglePieceTo_Backpack()
     {
+        Debug.Log("move one item to backpack");
         // extract one piece
         ItemPack SinglePieceItem = new ItemPack(0,null);
             SinglePieceItem.item = ITEM.item;
@@ -220,7 +223,6 @@ public class ItemSlot : MonoBehaviour
             _counterBox_TMP.SetText(countLeft); 
      
         }
-        
     }
     public bool IsInQuickSlot = false;
     public int? AssignedToQuickSlot = null;
@@ -251,7 +253,5 @@ public class ItemSlot : MonoBehaviour
         IsInQuickSlot = false;
         AssignedToQuickSlot = null;
     }
-
-
 }
 
