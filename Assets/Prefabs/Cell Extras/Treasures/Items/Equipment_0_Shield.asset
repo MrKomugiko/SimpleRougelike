@@ -33,7 +33,9 @@ MonoBehaviour:
     Inteligence: 0
     Dexterity: 0
   CanBeAssignToQuickActions: 0
-  eqType: 3
+  eqType: 1
+  MainPerks: []
+  ExtraPerks: []
   FrontSprite: {fileID: 0}
   BackSprite: {fileID: 0}
   LeftSprite: {fileID: 0}

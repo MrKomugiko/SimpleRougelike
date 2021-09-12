@@ -51,6 +51,7 @@ public class DungeonManager : MonoBehaviour
         GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
         DungeonCanvas.SetActive(false);
 
+        
         maxDungeonStage = recentDungeonStage>maxDungeonStage?recentDungeonStage:maxDungeonStage;
     }
 }

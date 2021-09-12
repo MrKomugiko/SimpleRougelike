@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -9,47 +10,43 @@ using UnityEngine.UI;
 
 public class MenuScript : MonoBehaviour
 {
+
     public static MenuScript instance;
     [SerializeField] GameObject NewHero,Continue,Heroes,Options, Exit,OPTIONSWINDOW,HEROESLISTWINDOW;
     [SerializeField] public GameObject MENU,HEROCREATORWINDOW;
     [SerializeField] Color32 ButtonOff_TextColor,ButtonON_TextColor;
-    Button NewHero_BTN, Continue_BTN,Heroes_BTN, Options_BTN, Exit_BTN;
-    TextMeshProUGUI NewHero_TMP, Continue_TMP, Heroes_TMP,Options_TMP,Exit_TMP;
     public TextMeshProUGUI HEROCREATORWINDOW_ErrorTMP;
     [SerializeField] GameObject HomeCanvas;
     [SerializeField] public Button HEROESLISTWINDOW_RemoveConfirmButton;
-    // private void OnEnable() {
-    //     try
-    //     {
-    //         NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.HighlightElementSwitch(n,false));    
-    //     }
-    //     catch (System.Exception)
-    //     {
-            
-    //     }
-    // }
-    private void Awake() 
+
+    private void Start() 
     {
+    
         instance = this;
-        LoadHeroesDataFromDevice();
-        if(storedHeroesCard.Count > 0)
+
+        if(HeroDataController.instance.storedHeroesCard.Count > 0)
         {
-            SetBtunState("Heroes",true);  
+            Heroes.SetActive(true);
+                SetButtonState("Heroes",true); 
+            NewHero.SetActive(false);
+                SetButtonState("NewHero");  
         }
         else
         {
-           SetBtunState("Heroes");      
+            Heroes.SetActive(false);
+                SetButtonState("Heroes");    
+            NewHero.SetActive(true);
+                SetButtonState("NewHero",true);  
         }
 
         MENU.SetActive(true);
 
-        SetBtunState("NewHero",true); 
-        SetBtunState("Continue"); 
-        SetBtunState("Options",true);        
-        SetBtunState("Exit",true);      
+        SetButtonState("Continue"); 
+        SetButtonState("Options",true);        
+        SetButtonState("Exit",true);      
     }
 
-    internal void SetBtunState(string buttonName, bool isactive=false)
+    internal void SetButtonState(string buttonName, bool isactive=false)
     {
         Button BTN = null;
         TextMeshProUGUI TMP = null;
@@ -86,42 +83,14 @@ public class MenuScript : MonoBehaviour
         TMP.color = isactive?ButtonON_TextColor:ButtonOff_TextColor;
     }
 
-    [SerializeField] GameObject LoginHeroCardPrefab;
-    [SerializeField] GameObject HerolistContainer;
-    public List<HeroLoadCard> storedHeroesCard = new List<HeroLoadCard>();
-    private void LoadHeroesDataFromDevice()
-    {
-        var storedHeroes = Directory.GetFiles(Application.persistentDataPath);
-        foreach(var hero in storedHeroes)
-        {
-            if(hero.Contains("Hero_"))
-            {
-                string heroNick = hero.Replace(Application.persistentDataPath+"\\"+"Hero_","").Replace(".json","");
-                print(heroNick);
-                var heroDataFromDevice_JSON = File.ReadAllText(hero);
-                var heroDataFromDevice = JsonConvert.DeserializeObject<PlayerProgressModel>(heroDataFromDevice_JSON);
 
-                if(storedHeroesCard.Any(card=>card.data.NickName == heroNick))
-                {
-                    // update
-                    print("update");
-                    storedHeroesCard.First(card=>card.data.NickName == heroNick).ConfigureCard(heroDataFromDevice);
-                    continue;
-                }
-                else
-                {
-                    // create new
-                    print("new");
-                    var heroCard = Instantiate(LoginHeroCardPrefab,HerolistContainer.transform).GetComponent<HeroLoadCard>();
-                    heroCard.ConfigureCard(heroDataFromDevice);
-                    storedHeroesCard.Add(heroCard);
-                }
-            }
-        }
-        
-    }
-    public void OnClick_NewHero()
+   
+    public void OnClick_NewHero(int slotID)
     {
+        HEROESLISTWINDOW.SetActive(false);
+        HeroDataController.instance.CreateHeroButton.onClick.RemoveAllListeners();
+        HeroDataController.instance.CreateHeroButton.onClick.AddListener(()=>HeroDataController.instance.CreateNewHero(slotID));
+        
         HEROCREATORWINDOW.SetActive(true);
         Options.SetActive(false);
         Exit.SetActive(false);
@@ -134,34 +103,32 @@ public class MenuScript : MonoBehaviour
         MENU.SetActive(false);
     }
     
-    public void LoadGameWithPlayerData(PlayerProgressModel heroData)
+    public void OpenGameScene()
     {
         // TODO:
-        GameManager.instance.PLAYER_PROGRESS_DATA = heroData;
         HEROESLISTWINDOW.SetActive(false);
         HEROCREATORWINDOW.SetActive(false);
         MENU.SetActive(false);
-
     }
     public void PauseMenu()
     {
-        LoadHeroesDataFromDevice();
-        if(storedHeroesCard.Count > 0)
+        
+        if(HeroDataController.instance.storedHeroesCard.Count > 0)
         {
-            SetBtunState("Heroes",true);   
+            SetButtonState("Heroes",true);   
         }
         else
         {
-             SetBtunState("Heroes");    
+             SetButtonState("Heroes");    
         }
         OnClick_Back();
 
-        SetBtunState("Continue",true); 
+        SetButtonState("Continue",true); 
     }
     public void OnClick_Back()
     {
         MENU.SetActive(true);
-        HEROESLISTWINDOW.SetActive(false);
+        HEROESLISTWINDOW.SetActive(HEROCREATORWINDOW.gameObject.activeSelf?true:false);
         HEROCREATORWINDOW.SetActive(false);
         OPTIONSWINDOW.SetActive(false);
 
@@ -174,7 +141,9 @@ public class MenuScript : MonoBehaviour
     }
     public void OnClick_Heroes()
     {
-       HEROESLISTWINDOW.SetActive(true);
+        
+        HeroDataController.instance.LoadHeroesDataFromDevice();
+        HEROESLISTWINDOW.SetActive(true);
     }
     public void OnClick_Options()
     {

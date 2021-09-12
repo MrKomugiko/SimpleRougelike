@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Chest;
 
 public class PlayerManager: MonoBehaviour
 {
@@ -54,12 +55,8 @@ public class PlayerManager: MonoBehaviour
             UIManager.instance.Level_TMP.SetText(_level.ToString());
         }
     }
-    public int Gold = 0;
+
     private int _experience;
-    // [SerializeField] public  ResourceBarScript ExperienceBar;
-    // [SerializeField] public  ResourceBarScript HealthBar;
-    // [SerializeField] public  ResourceBarScript StaminaBar;
-    // [SerializeField] public  ResourceBarScript EnergyBar;
     public int Experience 
     {
         get => _experience;
@@ -82,13 +79,9 @@ public class PlayerManager: MonoBehaviour
 
         }
     }
-    public int Strength = 1;
-    public int Inteligence = 1;
-    public int Dexterity = 1;
-    public int Vitality = 1;
-    public int AttackRange = 1;
-    public int MoveRange = 2;
-    [SerializeField] private int _healthPoints;
+
+    public string NickName;
+    public int Strength,Inteligence,Dexterity,Vitality,AttackRange,MoveRange,Gold,Cristals,MaxHealth,CurrentHealth,BaseDamage;
     public Player_Cell _playerCell;
     public EquipmentScript _mainBackpack;
     public EquipmentScript _EquipedItems;
@@ -96,6 +89,8 @@ public class PlayerManager: MonoBehaviour
     public NotificationScript _notificationScript;
     public ActionSwitchController _actionController;
     public int NextLevelExperience => (Level)*(15*Level*2);
+
+    public int Power { get; private set; }
 
     public Coroutine currentAutopilot = null;
     public bool playerCurrentlyMoving = false;
@@ -161,30 +156,51 @@ public class PlayerManager: MonoBehaviour
 
         yield return null;
     }
+    public void LoadPlayerData(PlayerProgressModel _progressData)
+    {
+        Debug.Log("Load data from player progress file");
+        // progress & resources 
+        Experience       =  _progressData.Experience;                   // OK - setter
+        NickName         =  _progressData.NickName;             // TODO: aktualizuje sie w PlayerCell przy starcie - nowa mapa           
+        Level            =  _progressData.Level;                        // OK - setter
+        AvailablePoints  =  _progressData.AvailablePoints;              // OK - setter
+        Strength         =  _progressData.Strength;             // TODO: aktualizacja przy starcie gracza                                         
+        Inteligence      =  _progressData.Inteligence;          // TODO: aktualizacja przy starcie gracza                             
+        Dexterity        =  _progressData.Dexterity;            // TODO: aktualizacja przy starcie gracza                                     
+        Vitality         =  _progressData.Vitality;             // TODO: aktualizacja przy starcie gracza                                     
+        AttackRange      =  _progressData.AttackRange;                                                      
+        MoveRange        =  _progressData.MoveRange;                            
+        Gold             =  _progressData.Gold;
+            UIManager.instance.Gold_TMP.SetText(Gold.ToString());   // TODO:
+        Cristals         =  _progressData.Cristals;
+            UIManager.instance.Diamonds_TMP.SetText(Cristals.ToString());   // TODO:
+        MaxHealth        =  _progressData.MaxHealth;
+        CurrentHealth    =  _progressData.CurrentHealth;                        // TODO wyniesc z playercell do managera i wstawic do settera
+            UIManager.instance.Health_Bar.UpdateBar(CurrentHealth,MaxHealth);   // TODO:
+        BaseDamage       =  _progressData.BaseDamage;
+
+        // bagpack & eq items
+
+        // set ui numbers in character details tab
+        SetResourceToValue("STR",Strength);
+        SetResourceToValue("DEX",Dexterity);
+        SetResourceToValue("INT",Inteligence);
+        SetResourceToValue("VIT",Vitality);
+    }
+    private void Awake() {
+         instance = this;
+    }
     public void SetPlayerManager(Player_Cell parentCell)
     {
-        instance = this;
+       
         _playerCell = parentCell;
         //_mainBackpack = GameObject.Find("Content_EquipmentTab").GetComponent<EquipmentScript>();
 
         var uicontroller = Instantiate(GraphicSwitchPrefab,_playerCell.playerSpriteObject.transform);
         GraphicSwitch = uicontroller.GetComponent<PlayerEquipmentVisualSwitchScript>();
         
-        // init restart values
-        Experience = 1;
-        Level = 1;
-        Strength = 0;
-        Inteligence = 0;
-        Dexterity = 0;
-        Vitality = 0;
-        AvailablePoints = 4;
-        AddResource("STR");
-        AddResource("DEX");
-        AddResource("INT");
-        AddResource("VIT");
-
-       MovmentValidator = GetComponentInChildren<MoveValidatorScript>();
-       MovmentValidator.ParentPathfinder = parentCell._pathfinder;
+        MovmentValidator = GetComponentInChildren<MoveValidatorScript>();
+        MovmentValidator.ParentPathfinder = parentCell._pathfinder;
     }
     public void Reset_QuickSlotToDefault(int quickslotID)
     {
@@ -236,13 +252,52 @@ public class PlayerManager: MonoBehaviour
     }
     public void OnClick_AddResource(string _resource)
     {
-        AddResource(_resource,1,false);
+        AddResource(_resource,1);
     }
-    public void AddResource(string _resource, int value = 1, bool isFree = false)
+
+    public void SetResourceToValue(string _resource, int value)
     {
         ResourceType resource = (ResourceType)Enum.Parse(typeof(ResourceType),_resource);
-        if(isFree == false)
+
+        switch(resource)
         {
+            case ResourceType.STR:
+                Strength = value;
+                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Strength")
+                    .First().transform.parent.transform.Find("Value")
+                    .GetComponent<TextMeshProUGUI>()
+                    .SetText(Strength.ToString());
+                break;
+                
+            case ResourceType.DEX:
+                Dexterity = value;
+                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Dexterity")
+                    .First().transform.parent.transform.Find("Value")
+                    .GetComponent<TextMeshProUGUI>()
+                    .SetText(Dexterity.ToString());
+                break;            
+                
+            case ResourceType.INT:
+                Inteligence = value;
+                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Inteligence")
+                    .First().transform.parent.transform.Find("Value")
+                    .GetComponent<TextMeshProUGUI>()
+                    .SetText(Inteligence.ToString());
+               break;            
+                
+            case ResourceType.VIT:
+                Vitality = value;
+                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Vitality")
+                    .First().transform.parent.transform.Find("Value")
+                    .GetComponent<TextMeshProUGUI>()
+                    .SetText(Vitality.ToString());
+                break;
+        }
+    }
+    public void AddResource(string _resource, int value = 1)
+    {
+        ResourceType resource = (ResourceType)Enum.Parse(typeof(ResourceType),_resource);
+
             if(value <= AvailablePoints)
             {
                 AvailablePoints -= value;
@@ -252,7 +307,7 @@ public class PlayerManager: MonoBehaviour
                 print("not enought statistics point to add");
                 return;
             }
-        } 
+        
 
         switch(resource)
         {
@@ -343,28 +398,38 @@ public class PlayerManager: MonoBehaviour
         yield return null;
     }
 
-    public void CreateNewHero()
+
+
+    [ContextMenu("Wykonaj zrzut danych gracza")]
+    public void SavePlayerData()
     {
-        Debug.Log("tworzenie nowego bohatera.");
+        PlayerProgressModel _updatedData = GameManager.instance.PLAYER_PROGRESS_DATA;
+        _updatedData.LastVisitedDate = DateTime.Now;
+   // -------------------
+        _updatedData.Level =                    this.Level;
+        _updatedData.Experience =               this.Experience;
+        _updatedData.MaxHealth=                 this.MaxHealth;
+        _updatedData.CurrentHealth =            this.CurrentHealth;
+        _updatedData.Power =                    this.Power;
+        _updatedData.BaseDamage =               this.BaseDamage;
+    // -------------------
+        _updatedData.Strength =                 this.Strength;
+        _updatedData.Inteligence =              this.Inteligence;
+        _updatedData.Dexterity =                this.Dexterity;
+        _updatedData.Vitality =                 this.Vitality;
+    // -------------------
+        _updatedData.Gold =                     this.Gold;
+        _updatedData.Cristals =                 this.Cristals;
+    // -------------------
+        _updatedData.CurrentLocation =          "Home";
+        _updatedData.MoveRange =                this.MoveRange;
+        _updatedData.AttackRange =              this.AttackRange;
+        _updatedData.AvailablePoints =          this.AvailablePoints;
 
+    // ----------------------------- EQUIPMENT --------------------
+        _updatedData.EquipedItems.AddRange(PlayerManager.instance._EquipedItems.GetBackupListOfItemsAndSlots());
+        _updatedData.BagpackItems.AddRange(PlayerManager.instance._mainBackpack.GetBackupListOfItemsAndSlots());
 
-        string nickname = GameObject.Find("InputField_NewHeroNickName").GetComponent<InputField>().text;
-        // sprawdzenie czy taki bohater juz istnieje
-        if(MenuScript.instance.storedHeroesCard.Any(hero=>hero.data.NickName == nickname))  
-        {
-            Debug.LogError("hero with this name already exist");
-            MenuScript.instance.HEROCREATORWINDOW_ErrorTMP.SetText("hero with this name already exist");
-            return;
-        }
-        MenuScript.instance.HEROCREATORWINDOW_ErrorTMP.SetText("");
-        PlayerProgressModel newHero = new PlayerProgressModel(nickname);
-        string JSONresult = JsonConvert.SerializeObject(newHero);
-        File.WriteAllText(Application.persistentDataPath + $"/Hero_{nickname}.json", JSONresult);
-
-        Debug.Log(JSONresult);
-        MenuScript.instance.LoadGameWithPlayerData(newHero);
-        Debug.Log("przejscie do gry");
-
+        HeroDataController.instance.UpdatePlayerDataFileOnDevice(_updatedData);
     }
-
 }

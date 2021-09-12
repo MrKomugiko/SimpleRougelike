@@ -20,7 +20,10 @@ public class EquipmentScript : MonoBehaviour
     [SerializeField] public List<ItemSlot> ItemSlots = new List<ItemSlot>();
 
     private void OnEnable() {
-        this.transform.Find("NickName").GetComponentInChildren<TextMeshProUGUI>().SetText(GameManager.instance.PLAYER_PROGRESS_DATA.NickName);
+         if(PLAYER_EQUIPMENTSLOT)
+        {   
+            this.transform.Find("NickName").GetComponentInChildren<TextMeshProUGUI>().SetText(GameManager.instance.PLAYER_PROGRESS_DATA.NickName);
+        }
     }
     private void Start() 
     {
@@ -150,7 +153,7 @@ public class EquipmentScript : MonoBehaviour
  
     public bool EquipItemFromSlot(ItemSlot fromSlot, EquipmentScript toEquipment)
     {
-
+        Debug.Log("Equip item");
         //TODO: REQUIRMENT CHECK
 
         //rozróżnienie czy item ma zostać założóny czy wrzucony do plecaka spowrotem
@@ -159,10 +162,13 @@ public class EquipmentScript : MonoBehaviour
         var equipmentItem = fromSlot.ITEM.item as EquipmentItem;
       //  print("proba zakładania itemka typu "+equipmentItem.eqType);
 
-        ItemPack ItemCopy = fromSlot.ITEM;
+        ItemPack ItemCopy = new ItemPack(fromSlot.ITEM.Count,fromSlot.ITEM.item);
+        Debug.Log(fromSlot.ITEM.Count +"szt => "+fromSlot.ITEM.item.name);
+        Debug.Log("KOPIA:"+ItemCopy.Count +"szt => "+ItemCopy.item.name);
 
         if(_equipItem)
         {
+            Debug.Log("equip");
             if(fromSlot.ITEM.item.CheckRequirments() == false) return false;
 
           //  print("Zakładanie");
@@ -175,25 +181,36 @@ public class EquipmentScript : MonoBehaviour
             {
                 // pusto, tylko zakładamy nowy item
                 // usuwamy z bierzącego położenia
+                Debug.Log("nie masz zalozoengo itemka tego typu");
+
+                Debug.Log("z aktualnego slotu zmniejszamy liczbe szt: z "+this.ItemSlots[fromSlot.itemSlotID].ITEM.Count +"szt na "+(this.ItemSlots[fromSlot.itemSlotID].ITEM.Count-1));
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
 
                 // przekazujemy kopie
+                Debug.Log("tylko go wrzucamy");
                 toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
+                Debug.Log("wrzucenie do eq: "+ItemCopy.Count +"szt => "+ItemCopy.item.name);
                  // END succes nowy item zalozony
             }
             else
             {
+                Debug.Log("podmianka");
                 // inny item juz jest w tym slocie, 
                 // zrob kopie i wyciągniej go z 
                 ItemPack currentEquipedItemCopy = toEquipment.ItemSlots[matchEqSlotIndex].ITEM;
+                Debug.Log("aktualnie założony =>"+currentEquipedItemCopy.Count+"szt =>"+currentEquipedItemCopy.item.name);
                 // usunięcie go z zalozonego eq
-            //    print("usunięcie przedmioru z gracza eq ( zapisanie w pamieci )");
+                //    print("usunięcie przedmioru z gracza eq ( zapisanie w pamieci )");
+                Debug.Log("zwolnienie slotu w eq gracza");
                 toEquipment.ItemSlots[matchEqSlotIndex].UpdateItemAmount(-1);
                 
+                Debug.Log("usuniecie 1 szt z plecaka");
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
                 //dodanie nowego
+                Debug.Log("dodanie zakladanego nowego itemka do eq gracza");
                 toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
                 //wrócenie starego spowrotem do plecaka
+                Debug.Log("dodanie zdjętego starego itemka do plecaka");
                 this.ItemSlots[this.GetNextEmptySlot()].AddNewItemToSlot(currentEquipedItemCopy);
                 // END succes stary item zdjęty spowrotem , nowy zalozony
             }
@@ -213,10 +230,12 @@ public class EquipmentScript : MonoBehaviour
         
         if(_equipItem == false)
         {
-          //  print("zdejmowanie");
+            print("zdejmowanie");
             // ZDEJMOWANIE ITEMKA
-          //  print($"wolny slot w {toEquipment.StorageName} = "+toEquipment.GetNextEmptySlot());
+            print($"wolny slot w {toEquipment.StorageName} = "+toEquipment.GetNextEmptySlot());
+            print("usunięcie 1szt z eq");
             this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
+            print("dodanie 1 szt do plecaka itemka "+ItemCopy.Count +"szt =>"+ItemCopy.item.name);
             toEquipment.ItemSlots[toEquipment.GetNextEmptySlot()].AddNewItemToSlot(ItemCopy);
             
             if(ItemCopy.item.ItemCoreSettings.Name == "Roma Helmet")
@@ -283,5 +302,39 @@ public class EquipmentScript : MonoBehaviour
         }
         else
             return emptySlot.itemSlotID;
+    }
+
+    public List<ItemBackupData> GetBackupListOfItemsAndSlots()
+    {
+        List<ItemBackupData> _backup = new List<ItemBackupData>();
+
+        foreach(var slot in ItemSlots)
+        {
+            if(slot.ITEM.item == null) continue;
+            
+            _backup.Add(
+                new ItemBackupData(
+                    slot.itemSlotID,
+                    slot.ITEM.Count,
+                    slot.ITEM.item.name
+                    )
+                );
+        }
+        return _backup;
+    }
+
+    [Serializable]
+    public class ItemBackupData
+    {
+        public int SlotID;
+        public int Count;
+        public string ScriptableObjectName;
+
+        public ItemBackupData(int slotID, int count, string scriptableObjectName)
+        {
+            SlotID = slotID;
+            Count = count;
+            ScriptableObjectName = scriptableObjectName;
+        }
     }
 }

@@ -7522,6 +7522,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6279909560500049493}
     m_Modifications:
+    - target: {fileID: 245851641948039883, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
+      propertyPath: ItemContentRestricion
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 388533985440499840, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
       propertyPath: m_Name
       value: NickName
@@ -7529,6 +7533,10 @@ PrefabInstance:
     - target: {fileID: 1892376028684154594, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
       propertyPath: m_Name
       value: NickName
+      objectReference: {fileID: 0}
+    - target: {fileID: 2033706362414519590, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
+      propertyPath: ItemContentRestricion
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2640244145254142742, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
       propertyPath: m_Pivot.x
@@ -7625,6 +7633,22 @@ PrefabInstance:
     - target: {fileID: 4563223629968470700, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
       propertyPath: m_text
       value: NickName
+      objectReference: {fileID: 0}
+    - target: {fileID: 7034692066790982187, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
+      propertyPath: ItemContentRestricion
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7272798952314507107, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
+      propertyPath: ItemContentRestricion
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7304340950851748697, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
+      propertyPath: ItemContentRestricion
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7398490448902500440, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}
+      propertyPath: ItemContentRestricion
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 583005ab8f3cbad45a64e34cb8af658e, type: 3}

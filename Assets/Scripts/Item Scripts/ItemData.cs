@@ -45,6 +45,7 @@ public class ItemCoreSettingsData
 [Serializable]
 public class DropSettingsData
 {
+
     public int minCount = 1;
     public int maxCount = 1;
 }
@@ -70,7 +71,7 @@ public enum ItemType
         Equipment,
         CraftComponent,
         Trash,
-    Gold
+        Gold
 }
 [Serializable]
 public class RequirmentsSettingsData

@@ -1,12 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HeroLoadCard : MonoBehaviour
-{
+{    
+    public int SlotID;
+
+    [SerializeField] GameObject MainSection, DetailSection;
+    [SerializeField] TextMeshProUGUI AddHero_TMP;
+
     [SerializeField] TextMeshProUGUI Level;
     [SerializeField] TextMeshProUGUI Nick;
     [SerializeField] TextMeshProUGUI Location;
@@ -15,15 +22,34 @@ public class HeroLoadCard : MonoBehaviour
     [SerializeField] TextMeshProUGUI Cristals;
     [SerializeField] TextMeshProUGUI Power;
     [SerializeField] TextMeshProUGUI MaxDungeon;
-    
     [SerializeField] Button MainButton;
-   
-    [SerializeField] public PlayerProgressModel data;
-    private string deviceFilePath = "";
+    [SerializeField] Button RemoveButton;
 
-    public void ConfigureCard(PlayerProgressModel _data)
+    [SerializeField] public PlayerProgressModel data;
+
+    public void ConfigureCard(PlayerProgressModel _data, int _slotID )
     {
+        SlotID = _slotID;
         data = _data;
+
+        if(_data.NickName == "_EMPTY_" || _data.NickName == "_DELETED_")
+        {
+            MainSection.SetActive(false);
+            DetailSection.SetActive(false);
+            AddHero_TMP.gameObject.SetActive(true);
+
+            GetComponent<Button>().onClick.RemoveAllListeners();
+            GetComponent<Button>().onClick.AddListener(()=>{
+                    MenuScript.instance.OnClick_NewHero(SlotID);
+                }
+            );
+            return;
+        }
+
+        MainSection.SetActive(true);
+        DetailSection.SetActive(true);
+        AddHero_TMP.gameObject.SetActive(false);
+        
         Level.SetText($"Lvl.: {data.Level}");
         Nick.SetText($"{data.NickName}");
         Location.SetText($"Location: {data.CurrentLocation}");
@@ -33,34 +59,14 @@ public class HeroLoadCard : MonoBehaviour
         Power.SetText($"Power: {data.Power}");
         MaxDungeon.SetText($"Top Dungeon: {data.HighestDungeonStage}");
 
-        deviceFilePath = $"{Application.persistentDataPath}\\Hero_{data.NickName}.json";
-
         GetComponent<Button>().onClick.RemoveAllListeners();
-        GetComponent<Button>().onClick.AddListener(()=>MenuScript.instance.LoadGameWithPlayerData(data));
-    }
-
-    public void RemoveHeroFromDevice()
-    {
-        if(GameManager.instance.PLAYER_PROGRESS_DATA.NickName == data.NickName)
-        {
-            
-            MenuScript.instance.HEROESLISTWINDOW_RemoveConfirmButton.transform.parent.gameObject.SetActive(true);
-            MenuScript.instance.HEROESLISTWINDOW_RemoveConfirmButton.onClick.RemoveAllListeners();
-            MenuScript.instance.HEROESLISTWINDOW_RemoveConfirmButton.onClick.AddListener(
-                ()=>{
-                        MenuScript.instance.storedHeroesCard.Remove(this);
-                        Destroy(this.gameObject);
-                        File.Delete(deviceFilePath);
-                        MenuScript.instance.SetBtunState("Continue",false);
-                    }
-                );
-            //wyswietlenie ostrzerzenia ze usuwane jest aktualnie zalogowane konto,
-            MenuScript.instance.HEROESLISTWINDOW_RemoveConfirmButton.transform.parent.GetComponentInChildren<TextMeshProUGUI>().SetText($"This Hero <b>({data.NickName})</b> is currently logged.\n\nAre you shure You want to delete this account?\n\n<b>[This operation is permanent!]</b>");
-            return;
+        GetComponent<Button>().onClick.AddListener(
+            ()=>{
+                    MenuScript.instance.OpenGameScene();
+                    HeroDataController.instance.LoadPlayerDataInGame(data);
+                }
+            );
+        RemoveButton.onClick.RemoveAllListeners();
+            RemoveButton.onClick.AddListener(()=>HeroDataController.instance.RemoveHeroFromDevice(data));
         }
-
-        MenuScript.instance.storedHeroesCard.Remove(this);
-        Destroy(this.gameObject);
-        File.Delete(deviceFilePath);
-    }
 }

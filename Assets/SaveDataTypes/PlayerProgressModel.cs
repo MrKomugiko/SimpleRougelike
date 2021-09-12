@@ -3,9 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Chest;
+using static EquipmentScript;
 
 [Serializable] public class PlayerProgressModel
 {
+    public int SlotID;
+    public bool isDeleted = false;
+    //-------------------------------------------------------------
     public DateTime CreatedDate;
     public DateTime LastVisitedDate;
 
@@ -16,6 +20,7 @@ using static Chest;
     public int MaxHealth=25;
     public int CurrentHealth = 25;
     public int Power = 100;
+    public int BaseDamage = 1;
 
     // ----------------------------- MAIN STATS  ------------------
     public int Strength = 1;
@@ -25,23 +30,28 @@ using static Chest;
 
     // ----------------------------- CURRECIES  -------------------
     public int Gold = 0;
-    public int Cristals = 1;
+    public int Cristals = 0;
 
    // ----------------------------- LOCATION AND PROGRESS  --------
     public string CurrentLocation = "Home";
     public int HighestDungeonStage = 0;
     public int RecentDungeonStage = 0;
+    public int MoveRange = 2;
+    public int AttackRange = 1;
+    public int AvailablePoints = 0;
 
     // ----------------------------- EQUIPMENT --------------------
-    List<ItemPack> EquipedItems = new List<ItemPack>();
-    List<ItemPack> BagpackItems = new List<ItemPack>();
+   public List<ItemBackupData> EquipedItems = new List<ItemBackupData>();
+   public List<ItemBackupData> BagpackItems = new List<ItemBackupData>();
 
-    public PlayerProgressModel(string _nickname)
+    public PlayerProgressModel(string _nickname,int _slotId)
     {
-        Debug.Log("generated default hero named: "+_nickname);
         NickName = _nickname;
+        SlotID = _slotId;
         CreatedDate = DateTime.Now;
         LastVisitedDate = CreatedDate;
+
+       // Debug.Log("Created PPMData with nick: "+_nickname);
     }
 
     // ----------------------------- ARCHIVMENTS PROGRES ----------

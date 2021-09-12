@@ -82,11 +82,21 @@ public partial class NotificationManger : MonoBehaviour
 
         existingnotification = NotificationManger.instance.NotificationList.Where(n=>n == notification).First();
         notification.PossibleActions.GetComponent<ActionSwitchController>().ConfigurePlayerButtons((cellRelated as ISpecialTile), "default");
+        Debug.Log("dodanie canvas'a do quickslota gracza");
         var canvas = existingnotification.gameObject.AddComponent<Canvas>();
+        NotificationManger.instance.StartCoroutine(NotificationManger.instance.DoWhenActiveInHierarchy(canvas.gameObject, 
+        ()=>{
             canvas.overrideSorting = true;
-            canvas.sortingLayerID = 25;
+            canvas.sortingOrder = 21;}
+            ));
+        Debug.LogError(canvas.gameObject.activeInHierarchy);
         existingnotification.gameObject.AddComponent<GraphicRaycaster>();
 
+    }
+    public IEnumerator DoWhenActiveInHierarchy(GameObject o, Action action)
+    {
+        yield return new WaitUntil(()=>o.activeInHierarchy);
+        action();
     }
     public static void CreateNewNotificationElement(ISelectable cellRelated)
     {
@@ -423,33 +433,33 @@ public partial class NotificationManger : MonoBehaviour
     // -------------------- [Player related UI notification] --------------------
     public static void AddValueTo_Health_Notification(int damageValue)
     {
-        AlertScript notificationToModife = null;
-        int currentValue = 0;
-        AlertScript existingHPAlert = GameObject.Find("HealthTab").transform.Find("HP").GetComponentInChildren<AlertScript>();
-        if (existingHPAlert == null)
-        {
-            // jest to pierwsze powiadomienie, dodaj go, ustaw na wierzchu, i zapisz bierzącą wartość 
-            //      unikalne dla HP, jeżeli wartość będzie powyżej 0, kolor z czerwonego zmieni sie na zielony.
-            var healthSectionOverlay = Instantiate(instance.AlertPrefab, GameObject.Find("HealthTab").transform.Find("HP").transform);
-            healthSectionOverlay.transform.SetAsLastSibling();
-            notificationToModife = healthSectionOverlay.GetComponent<AlertScript>();
-            currentValue = damageValue;
-        }
-        else
-        {
-            notificationToModife = existingHPAlert;
-            currentValue = Int32.Parse(existingHPAlert.TextValue);
-            currentValue += damageValue;
-        }
+        // AlertScript notificationToModife = null;
+        // int currentValue = 0;
+        // AlertScript existingHPAlert = GameObject.Find("HealthTab").transform.Find("HP").GetComponentInChildren<AlertScript>();
+        // if (existingHPAlert == null)
+        // {
+        //     // jest to pierwsze powiadomienie, dodaj go, ustaw na wierzchu, i zapisz bierzącą wartość 
+        //     //      unikalne dla HP, jeżeli wartość będzie powyżej 0, kolor z czerwonego zmieni sie na zielony.
+        //     var healthSectionOverlay = Instantiate(instance.AlertPrefab, GameObject.Find("HealthTab").transform.Find("HP").transform);
+        //     healthSectionOverlay.transform.SetAsLastSibling();
+        //     notificationToModife = healthSectionOverlay.GetComponent<AlertScript>();
+        //     currentValue = damageValue;
+        // }
+        // else
+        // {
+        //     notificationToModife = existingHPAlert;
+        //     currentValue = Int32.Parse(existingHPAlert.TextValue);
+        //     currentValue += damageValue;
+        // }
 
-        // Przypisanie zsumowanej wartośc na polu HP.
-        notificationToModife.TextValue = currentValue.ToString();
-        notificationToModife.text.text = notificationToModife.TextValue;
-        if (currentValue > 0)
-        {
-            notificationToModife.text.text = "+"+notificationToModife.TextValue;
-            notificationToModife.Color = Color.green;
-        }
+        // // Przypisanie zsumowanej wartośc na polu HP.
+        // notificationToModife.TextValue = currentValue.ToString();
+        // notificationToModife.text.text = notificationToModife.TextValue;
+        // if (currentValue > 0)
+        // {
+        //     notificationToModife.text.text = "+"+notificationToModife.TextValue;
+        //     notificationToModife.Color = Color.green;
+        // }
     }
     public static void AddValueTo_Gold_Notification(int goldValue)
     {

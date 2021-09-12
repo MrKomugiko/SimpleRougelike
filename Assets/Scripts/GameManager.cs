@@ -229,6 +229,7 @@ public class GameManager : MonoBehaviour
         {
             TurnPhaseBegin = true;
             GameManager.instance.ClearStageWindow.SetActive(true);
+            PlayerManager.instance.SavePlayerData();
             print("end of loop");
             yield break;
         }
@@ -252,7 +253,7 @@ public class GameManager : MonoBehaviour
     internal static void NewGame()
     {      
         GameManager.instance.CurrentTurnPhase = TurnPhase.StartGame;
-        PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
+       // PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
         GameManager.instance.CurrentTurnNumber = 0;
         GameManager.instance.PlayerMoved = false;
         GameManager.instance.PlayerAttacked = false;

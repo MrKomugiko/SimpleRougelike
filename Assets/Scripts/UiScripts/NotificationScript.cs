@@ -29,7 +29,7 @@ public class NotificationScript : MonoBehaviour
             var player = BaseCell.SpecialTile as ILivingThing;
 
             IconImage.sprite = BaseCell.SpecialTile.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
-            CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name} [Level {player.Level} ]"); 
+            CreatureName.SetText($"[{BaseCell.Type}] {BaseCell.SpecialTile.Name} [Level {PlayerManager.instance.Level} ]"); 
             HP.SetText($"HP: {player.HealthPoints}/{player.MaxHealthPoints}");
             Speed.SetText($" ");
             Deffence.SetText($" ");

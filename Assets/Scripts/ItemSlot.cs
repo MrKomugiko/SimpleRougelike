@@ -223,7 +223,6 @@ public class ItemSlot : MonoBehaviour
             _counterBox_TMP.SetText(countLeft); 
      
         }
-        
     }
     public bool IsInQuickSlot = false;
     public int? AssignedToQuickSlot = null;
@@ -254,7 +253,5 @@ public class ItemSlot : MonoBehaviour
         IsInQuickSlot = false;
         AssignedToQuickSlot = null;
     }
-
-
 }
 

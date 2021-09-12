@@ -142,6 +142,7 @@ public partial class ActionButtonScript : MonoBehaviour
 
     internal void UpdateItemCounter(string countLeft)
     {
+        if(ItemCounter_TMP == null) return;
         //print("update item counter");
         ItemCounter_TMP.SetText(countLeft);
         if(Int32.Parse(countLeft) >1)
