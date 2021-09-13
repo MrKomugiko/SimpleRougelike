@@ -6888,7 +6888,6 @@ MonoBehaviour:
   turnPhaseDelay: 0.25
   attackAnimationFrames: 10
   _chestLootScript: {fileID: 1428449489}
-  _playerBackpackequipmentScript: {fileID: 590005529}
   MonsterVariants:
   - {fileID: 11400000, guid: 9bcc1287e377edf4088afdad26a4ef58, type: 2}
   - {fileID: 11400000, guid: 0240c0e0a49ef934aa9fbe9bdb4d9c38, type: 2}
@@ -15648,7 +15647,7 @@ Canvas:
   m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 25
   m_TargetDisplay: 0
@@ -32455,7 +32454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2630459811786091463, guid: 62f7cf9a5529bd04c9cc49b27f6f8971, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2634276233797699003, guid: 62f7cf9a5529bd04c9cc49b27f6f8971, type: 3}
       propertyPath: m_AnchorMax.y
@@ -32547,7 +32546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2661864606195884973, guid: 62f7cf9a5529bd04c9cc49b27f6f8971, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2661864606195884974, guid: 62f7cf9a5529bd04c9cc49b27f6f8971, type: 3}
       propertyPath: m_SizeDelta.y

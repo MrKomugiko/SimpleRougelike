@@ -179,6 +179,7 @@ public class PlayerManager: MonoBehaviour
             UIManager.instance.Health_Bar.UpdateBar(CurrentHealth,MaxHealth);   // TODO:
         BaseDamage       =  _progressData.BaseDamage;
 
+ 
         // bagpack & eq items
 
         // set ui numbers in character details tab
@@ -187,6 +188,36 @@ public class PlayerManager: MonoBehaviour
         SetResourceToValue("INT",Inteligence);
         SetResourceToValue("VIT",Vitality);
     }
+    public void LoadPlayerItensAndEq(PlayerProgressModel _progressData, string equipmentTypeTarget)
+    {
+        Debug.Log("LOAD ITEMS");
+        
+       List<ItemData> itemsDatabase = Resources.LoadAll<ItemData>("Items").ToList();
+       if(equipmentTypeTarget == "MainBackpack")
+       {
+        foreach(var data in _progressData.BagpackItems)
+        {
+            var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
+            ItemPack loadedItem = new ItemPack(data.Count, item);
+            Debug.Log(loadedItem.item.name);
+            _mainBackpack.ItemSlots[data.SlotID].AddNewItemToSlot(loadedItem);
+        }
+       }
+
+        if(equipmentTypeTarget == "PlayerEQ")
+        {
+            // wyczyszczenie aktualnie zalozonych itemkow gracza
+            _EquipedItems.ItemSlots.ForEach(i=>i.ITEM = new ItemPack(0,null));
+            foreach(var data in _progressData.EquipedItems)
+            {           
+                var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
+                ItemPack loadedItem = new ItemPack(data.Count, item);
+                Debug.Log("equip => "+loadedItem.item.name);
+            _EquipedItems.LoadItemInPlayerEq(data.SlotID, loadedItem);
+            }
+        }
+    }
+
     private void Awake() {
          instance = this;
     }
@@ -231,18 +262,18 @@ public class PlayerManager: MonoBehaviour
     }
     public void Restart_ClearStatsAndEquipedItems()
     {
-        ArmorIMG.enabled = false;
-        HelmetIMG.enabled = false;
+        // ArmorIMG.enabled = false;
+        // HelmetIMG.enabled = false;
 
-        _EquipedItems.Reset_WipeOutDataAndImages();
+        // _EquipedItems.Reset_WipeOutDataAndImages();
 
-        Level = 1; 
-        Gold = 0; 
-        Experience = 0; 
-        Strength = 1; 
-        Inteligence = 1; 
-        Dexterity = 1; 
-        _EquipedItems.ItemSlots.ForEach(slot=>slot.ITEM = new Chest.ItemPack(0, null));
+        // Level = 1; 
+        // Gold = 0; 
+        // Experience = 0; 
+        // Strength = 1; 
+        // Inteligence = 1; 
+        // Dexterity = 1; 
+        // _EquipedItems.ItemSlots.ForEach(slot=>slot.ITEM = new Chest.ItemPack(0, null));
     }
 
     public void AddExperience(int value)
@@ -427,8 +458,8 @@ public class PlayerManager: MonoBehaviour
         _updatedData.AvailablePoints =          this.AvailablePoints;
 
     // ----------------------------- EQUIPMENT --------------------
-        _updatedData.EquipedItems.AddRange(PlayerManager.instance._EquipedItems.GetBackupListOfItemsAndSlots());
-        _updatedData.BagpackItems.AddRange(PlayerManager.instance._mainBackpack.GetBackupListOfItemsAndSlots());
+        _updatedData.EquipedItems = (PlayerManager.instance._EquipedItems.GetBackupListOfItemsAndSlots());
+        _updatedData.BagpackItems = (PlayerManager.instance._mainBackpack.GetBackupListOfItemsAndSlots());
 
         HeroDataController.instance.UpdatePlayerDataFileOnDevice(_updatedData);
     }

@@ -239,7 +239,7 @@ public class GameManager : MonoBehaviour
     public int attackAnimationFrames = 16;   
 
     [SerializeField] public ChestLootWindowScript _chestLootScript;
-    [SerializeField] public EquipmentScript _playerBackpackequipmentScript;
+    // [SerializeField] public EquipmentScript _playerBackpackequipmentScript;
     public enum TurnPhase
     {
         StartGame,
@@ -252,36 +252,36 @@ public class GameManager : MonoBehaviour
     }
     internal static void NewGame()
     {      
-        GameManager.instance.CurrentTurnPhase = TurnPhase.StartGame;
-       // PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
-        GameManager.instance.CurrentTurnNumber = 0;
-        GameManager.instance.PlayerMoved = false;
-        GameManager.instance.PlayerAttacked = false;
-        GameManager.instance.MonstersMoved = false;
-        GameManager.instance.MonsterAttack = false;
+    //     GameManager.instance.CurrentTurnPhase = TurnPhase.StartGame;
+    //    // PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
+    //     GameManager.instance.CurrentTurnNumber = 0;
+    //     GameManager.instance.PlayerMoved = false;
+    //     GameManager.instance.PlayerAttacked = false;
+    //     GameManager.instance.MonstersMoved = false;
+    //     GameManager.instance.MonsterAttack = false;
 
-        instance._chestLootScript.Clear();
-        instance._playerBackpackequipmentScript.Clear();
+    //     instance._chestLootScript.Clear();
+    //     instance._playerBackpackequipmentScript.Clear();
 
-        NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
-        NotificationManger.instance.NotificationList.Clear();
+    //     NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
+    //     NotificationManger.instance.NotificationList.Clear();
         
-        foreach (var cell in GridManager.CellGridTable)
-        {
-            Destroy(cell.Value.gameObject);
-        }
+    //     foreach (var cell in GridManager.CellGridTable)
+    //     {
+    //         Destroy(cell.Value.gameObject);
+    //     }
 
-        GridManager.destroyedTilesPool.Clear();
-        GridManager.CellGridTable.Clear();
+    //     GridManager.destroyedTilesPool.Clear();
+    //     GridManager.CellGridTable.Clear();
 
-        GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
+    //     GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
 
-        GridManager.instance.CreateEmptyGrid();
-        GridManager.instance.RandomizeDataOnGrid();
+    //     GridManager.instance.CreateEmptyGrid();
+    //     GridManager.instance.RandomizeDataOnGrid();
 
-        GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
-        GameManager.instance.StopAllCoroutines();
-        GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+    //     GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
+    //     GameManager.instance.StopAllCoroutines();
+    //     GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
     }
     public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
 

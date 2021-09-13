@@ -15,8 +15,20 @@ public class PotionItem : ItemData, IConsumable
     {
         if(PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].ITEM.Count <= 0) return false;
 
-        (GameManager.Player_CELL.SpecialTile as ILivingThing).TakeDamage(-HealthRegenerationValue, ItemCoreSettings.Name);
-        NotificationManger.AddValueTo_Health_Notification(HealthRegenerationValue);
+        if(GameManager.Player_CELL != null)
+        {
+            (GameManager.Player_CELL.SpecialTile as ILivingThing).TakeDamage(-HealthRegenerationValue, ItemCoreSettings.Name);
+            NotificationManger.AddValueTo_Health_Notification(HealthRegenerationValue);
+        }
+        else
+        {
+            PlayerManager.instance.CurrentHealth += HealthRegenerationValue;
+            if(PlayerManager.instance.CurrentHealth > PlayerManager.instance.MaxHealth)
+            {
+                PlayerManager.instance.CurrentHealth = PlayerManager.instance.MaxHealth;
+            }
+            UIManager.instance.Health_Bar.UpdateBar(PlayerManager.instance.CurrentHealth,PlayerManager.instance.MaxHealth);
+        }
         PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].UpdateItemAmount(-1);
 
         return true; 

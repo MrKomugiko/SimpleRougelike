@@ -89,6 +89,10 @@ public class ItemSlot : MonoBehaviour
              {
                  if(rarityBackgroundColor != null)
                      rarityBackgroundColor.color = new Color32(81,126,56,255);
+
+                // czyszczenie pola gdy puste
+                _btn.onClick.RemoveAllListeners();
+                _itemIcon.sprite = _emptyBackground.sprite;
              }
         }
     }
@@ -102,7 +106,7 @@ public class ItemSlot : MonoBehaviour
     TextMeshProUGUI _counterBox_TMP;
     public void AddNewItemToSlot(ItemPack _item)
     {
-        Debug.Log("tesT");
+        Debug.Log("ITEMPACK: "+_item.Count+"szt, "+_item.item.name);
         ITEM = _item;
         // if(IsEmpty) return; 
 
@@ -197,8 +201,6 @@ public class ItemSlot : MonoBehaviour
         if(IsEmpty)
         {         
              // usuwanie obrazka ze slotu
-            _btn.onClick.RemoveAllListeners();
-            _itemIcon.sprite = _emptyBackground.sprite;
             print("itemek jest pusty");
             if(IsInQuickSlot)
             {
@@ -207,8 +209,6 @@ public class ItemSlot : MonoBehaviour
                 RemoveFromQuickSlot((int)AssignedToQuickSlot);
                 return;
             }
-            Debug.Log("usunięcie itemku:"+ITEM.item.ItemCoreSettings.Name);
-            ITEM = new ItemPack(0,null);
         }
 
         if(ITEM.Count <= 1)

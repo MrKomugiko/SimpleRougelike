@@ -31,12 +31,28 @@ public class ItemDetailsWindow : MonoBehaviour
 
     
     private void OnEnable() {
-        NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,hide:true));   
+        try
+        {
+            NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,hide:true));   
+        }
+        catch (System.Exception)
+        {
+            
+    //        throw;
+        }
 
         ButtonsList.Where(b=>b.name == "EquipButton" ||b.name == "Consume").First().GetComponent<Button>().interactable = DATA.CheckRequirments();
     }
     private void OnDisable() {
+         try
+        {
           NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,hide:false));    
+        }
+        catch (System.Exception)
+        {
+            
+    //        throw;
+        }
     }
     public void SelfConfigure(ItemData _data, ItemSlot slot)
     {
