@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public static CellScript Player_CELL;
     public static List<CellScript> DamagedCells = new List<CellScript>();
     public static GameManager instance;
-   [SerializeField] public GameObject GameOverScreen;
+    [SerializeField] public GameObject GameOverScreen;
    [SerializeField] public GameObject ContentLootWindow;
 
     [SerializeField] private bool wybuchWTrakcieWykonywania = false;
@@ -225,6 +225,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(AddTurn());
             yield break;
         }
+       
         if(CurrentTurnPhase == TurnPhase.MapClear)
         {
             TurnPhaseBegin = true;
@@ -252,36 +253,43 @@ public class GameManager : MonoBehaviour
     }
     internal static void NewGame()
     {      
-    //     GameManager.instance.CurrentTurnPhase = TurnPhase.StartGame;
-    //    // PlayerManager.instance.Restart_ClearStatsAndEquipedItems();
-    //     GameManager.instance.CurrentTurnNumber = 0;
-    //     GameManager.instance.PlayerMoved = false;
-    //     GameManager.instance.PlayerAttacked = false;
-    //     GameManager.instance.MonstersMoved = false;
-    //     GameManager.instance.MonsterAttack = false;
 
-    //     instance._chestLootScript.Clear();
-    //     instance._playerBackpackequipmentScript.Clear();
+        // // `REsetowanie widoku gry w czasie przełączania sie z konta na konto, 
+        // //  `lub po śmierci gracza w przypadku kontynuowania gry w ciągu 1 sesji 
+        // //  `ale dla innego konta
 
-    //     NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
-    //     NotificationManger.instance.NotificationList.Clear();
+        // GameManager.instance.CurrentTurnPhase = TurnPhase.StartGame;
+
+        // GameManager.instance.CurrentTurnNumber = 0;
+        // GameManager.instance.PlayerMoved = false;
+        // GameManager.instance.PlayerAttacked = false;
+        // GameManager.instance.MonstersMoved = false;
+        // GameManager.instance.MonsterAttack = false;
+
+        // instance._chestLootScript.Clear();
+
+        // NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
+        // NotificationManger.instance.NotificationList.Clear();
         
-    //     foreach (var cell in GridManager.CellGridTable)
-    //     {
-    //         Destroy(cell.Value.gameObject);
-    //     }
+        // //  niszczenie obiektór mapy
+        // foreach (var cell in GridManager.CellGridTable)
+        // {
+        //     Destroy(cell.Value.gameObject);
+        // }
+        // // kasowanie pamięci mapki
+        // GridManager.destroyedTilesPool.Clear();
+        // GridManager.CellGridTable.Clear();
 
-    //     GridManager.destroyedTilesPool.Clear();
-    //     GridManager.CellGridTable.Clear();
+        // // gdyby gracz zostawil otwartą zakładke, zamknij ją
+        // GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
 
-    //     GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
 
-    //     GridManager.instance.CreateEmptyGrid();
-    //     GridManager.instance.RandomizeDataOnGrid();
+        // GridManager.instance.CreateEmptyGrid();
+        // GridManager.instance.RandomizeDataOnGrid();
 
-    //     GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
-    //     GameManager.instance.StopAllCoroutines();
-    //     GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
+        // GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
+        // GameManager.instance.StopAllCoroutines();
+        // GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
     }
     public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
 
@@ -455,5 +463,20 @@ public class GameManager : MonoBehaviour
         }
         else
             return BombVariants.Where(m=>m.ID == BombID).First();
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("GameOver, create new account sorry xd");
+
+        Debug.Log("wyczyszczenie danych mapy dunga i wyjscie do camp'u");
+        DungeonManager.instance.DungeonClearAndGoToCamp();
+
+        Debug.Log("zapisanie danych gracza");
+        PlayerManager.instance.SavePlayerData();
+
+        Debug.Log("wyjscie do menu głownego");
+        MenuScript.instance.KickToMenuAfterDeath();
+        
     }
 }

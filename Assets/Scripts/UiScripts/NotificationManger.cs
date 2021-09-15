@@ -370,7 +370,7 @@ public partial class NotificationManger : MonoBehaviour
     private static void Configure_PlayerAttack_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification)
     {
         Debug.LogWarning("PLAYER NOTIFICATION");
-        int damageValue =  (invoker_BaseCell as ILivingThing).Damage;
+        float damageValue =  (invoker_BaseCell as ILivingThing).Damage;
         Color32 color = Color.yellow;
 
         GameObject Alert = instance.AlertPrefab;
@@ -406,7 +406,7 @@ public partial class NotificationManger : MonoBehaviour
     private static void Configure_Attack_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification)
     {
         // Pobranie ataku jaki posiada przeciwnik.
-        int damageValue = (invoker_BaseCell as ICreature).Damage *-1;
+        float damageValue = (invoker_BaseCell as ICreature).Damage *-1;
 
         // Przypisanie odpowiedniego koloru ramce.
         Color32 color = Color.red;
@@ -427,7 +427,7 @@ public partial class NotificationManger : MonoBehaviour
         ShowBorder(invoker_BaseCell as ISelectable,color);
         HideBorder(invoker_BaseCell as ISelectable,.5f);
 
-        AddValueTo_Health_Notification(damageValue);
+        AddValueTo_Health_Notification(Mathf.RoundToInt(damageValue));
     }
 
     // -------------------- [Player related UI notification] --------------------

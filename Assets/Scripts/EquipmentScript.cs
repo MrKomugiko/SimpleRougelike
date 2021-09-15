@@ -11,7 +11,7 @@ using static Treasure_Cell;
 public class EquipmentScript : MonoBehaviour
 {
     public string StorageName;
-    [SerializeField] public bool PLAYER_EQUIPMENTSLOT= false;
+    [SerializeField] public bool PLAYER_EQUIPMENTSLOT;
     [SerializeField] GameObject ItemSlotPrefab;
     [SerializeField] int MaxCapacity;
     [SerializeField] int NumberOfUnlockedSlots;
@@ -25,35 +25,53 @@ public class EquipmentScript : MonoBehaviour
             this.transform.Find("NickName").GetComponentInChildren<TextMeshProUGUI>().SetText(GameManager.instance.PLAYER_PROGRESS_DATA.NickName);
         }
     }
-    private void Awake() {
+    public void GenerateEquipment() 
+    {
+        
+        Debug.Log("Generate EQUIPMENT SCRIPT");
+
+
         if(PLAYER_EQUIPMENTSLOT == false) // poniewaz eq gracza jest juz na scenie nie trzeba go znowu generowac
         {
-            // create grid
-            for(int i = 0; i< MaxCapacity; i++)
+            
+            if(ItemSlots.Count>0)
             {
-                StorageName = "Backpack";
-                ItemSlot itemSlot = Instantiate(ItemSlotPrefab, ItemsContainer.transform).GetComponent<ItemSlot>();
-                ItemSlots.Add(itemSlot);
-                itemSlot.PLAYER_BACKPACK = true;
-                itemSlot.itemSlotID = i;
-                itemSlot.IsLocked = i < NumberOfUnlockedSlots?false:true;
-                itemSlot.ParentStorage = this;
+                // gra juz załadowana, ponowne wejscie, reset backpacka
+                foreach(var slot in ItemSlots)
+                {
+                    slot.ITEM = null;
+                    slot.UpdateItemAmount(0);
+                }
+                   Debug.Log("zresetowano backpack");
+            }
+            else
+            {
+                Debug.Log("Create grid");
+                for(int i = 0; i< MaxCapacity; i++)
+                {
+                    StorageName = "Backpack";
+                    ItemSlot itemSlot = Instantiate(ItemSlotPrefab, ItemsContainer.transform).GetComponent<ItemSlot>();
+                    ItemSlots.Add(itemSlot);
+                    itemSlot.PLAYER_BACKPACK = true;
+                    itemSlot.itemSlotID = i;
+                    itemSlot.IsLocked = i < NumberOfUnlockedSlots?false:true;
+                    itemSlot.ParentStorage = this;
+                }
             }
         }
-    }
-    private void Start() 
-    {
-        Debug.Log("START EQUIPMENT SCRIPT");
         if(PLAYER_EQUIPMENTSLOT)
         {   
             StorageName = "Player";
-            
+            Debug.Log("ŁADOWANIE ITEMKOW ZALOZONEGO EQ GRACZA");
             ItemSlots.ForEach(slot=>slot.ParentStorage = this);
             ItemSlots.ForEach(slot=>slot.PLAYER_BACKPACK = true);
             PlayerManager.instance.LoadPlayerItensAndEq(GameManager.instance.PLAYER_PROGRESS_DATA,"PlayerEQ");
-           return;
-        } 
-         PlayerManager.instance.LoadPlayerItensAndEq(GameManager.instance.PLAYER_PROGRESS_DATA,"MainBackpack");
+        }
+        else
+        {
+            Debug.Log("ŁADOWANIE ITEMKOW W PLECAKU");
+            PlayerManager.instance.LoadPlayerItensAndEq(GameManager.instance.PLAYER_PROGRESS_DATA,"MainBackpack");
+        }
     }
 
     public void Reset_WipeOutDataAndImages()
@@ -198,8 +216,17 @@ public class EquipmentScript : MonoBehaviour
         
         if(_equipItem == false)
         {
-            // ZDEJMOWANIE ITEMKA
-            this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
+            if(toEquipment.GetNextEmptySlot() != -1)
+            {
+                // ZDEJMOWANIE ITEMKA
+                this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
+            }
+            else
+            {
+                Debug.Log("brak wolnego slotu - nie mozna zdjac itemka");
+                return false;
+            }
+
             toEquipment.ItemSlots[toEquipment.GetNextEmptySlot()].AddNewItemToSlot(ItemCopy);
             
             if(ItemCopy.item.ItemCoreSettings.Name == "Roma Helmet")
@@ -274,8 +301,7 @@ public class EquipmentScript : MonoBehaviour
 
         foreach(var slot in ItemSlots)
         {
-            if(slot.ITEM.item == null) continue;
-            
+            if(slot.ITEM.item == null || slot.ITEM.Count == 0) continue;
             _backup.Add(
                 new ItemBackupData(
                     slot.itemSlotID,

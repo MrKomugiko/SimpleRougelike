@@ -24,7 +24,7 @@ public class Monster_Cell :ICreature
     #region Monster-specific
     public int ExperiencePoints { get; set; } = 10;
     public int MaxHealthPoints {get; private set;}
-    public int Damage {get; private set;}
+    public float Damage {get; private set;}
     string Corpse_Url {get;set;} = "monster_bones";
     public int HealthPoints 
     { 
@@ -158,7 +158,7 @@ public class Monster_Cell :ICreature
              NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");
              return;
         }
-        TakeDamage((GameManager.Player_CELL.SpecialTile as Player_Cell).Damage, "Attacked by player");
+        TakeDamage((GameManager.Player_CELL.SpecialTile as Player_Cell).Damage + PlayerManager.instance.STATS.BaseDamage, "Attacked by player");
         PlayerManager.instance.CumulativeStageDamageTaken += (GameManager.Player_CELL.SpecialTile as Player_Cell).Damage;
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
@@ -167,10 +167,10 @@ public class Monster_Cell :ICreature
 
         GameManager.instance.PlayerAttacked = true;        
     }
-    public void TakeDamage(int damage, string source)
+    public void TakeDamage(float damage, string source)
     {
     
-        HealthPoints -= damage;
+        HealthPoints -= Mathf.RoundToInt(damage);
      
         if(IsAlive)
             Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");    

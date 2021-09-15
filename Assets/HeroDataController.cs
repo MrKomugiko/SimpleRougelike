@@ -48,7 +48,7 @@ public class HeroDataController : MonoBehaviour
             return;
         }
 
-        print("create empty hero data file");
+       // print("create empty hero data file");
         PlayerProgressModel newHero = new PlayerProgressModel("_EMPTY_", _ID);
         newHero.SlotID = _ID;    
         string JSONresult = JsonConvert.SerializeObject(newHero);
@@ -56,6 +56,7 @@ public class HeroDataController : MonoBehaviour
     }
     public void LoadHeroesDataFromDevice()
     {
+        print("load heroes form device");
         Dictionary<int,PlayerProgressModel> AllPlayersData = new Dictionary<int, PlayerProgressModel>();
         for (int slotID = 0; slotID < 6; slotID++)
         {
@@ -99,7 +100,7 @@ public class HeroDataController : MonoBehaviour
             return data;
         }
 
-        print(data.NickName);
+      //  print(data.NickName);
         return data;
     } 
     public void CreateNewHero(int slotID)
@@ -140,12 +141,12 @@ public class HeroDataController : MonoBehaviour
         LoadHeroesDataFromDevice();
         LoadPlayerDataInGame(newCreatedHero);
      //   Debug.Log("przejscie do gry");
-        MenuScript.instance.OpenGameScene();
-        HeroDataController.instance.LoadPlayerDataInGame(newCreatedHero);
+        MenuScript.instance.OpenCampScene();
 
     }
     public void LoadPlayerDataInGame(PlayerProgressModel heroData)
     {
+
         GameManager.instance.PLAYER_PROGRESS_DATA = heroData;
         PlayerManager.instance.LoadPlayerData(heroData);
     }  
@@ -193,14 +194,14 @@ public class HeroDataController : MonoBehaviour
     {
         if(storedHeroesCard.Any(hero=>hero.Value.data.NickName == _updatedData.NickName))  
         {
-            Debug.LogError("hero exist, overrite data");
+          //  Debug.LogError("hero exist, overrite data");
             string JSONresult = JsonConvert.SerializeObject(_updatedData);
 
             File.WriteAllText(Application.persistentDataPath + $"/[{_updatedData.SlotID}]_Hero_{_updatedData.NickName}.json", JSONresult);
 
             LoadHeroesDataFromDevice();
 
-            Debug.Log(JSONresult);
+         //   Debug.Log(JSONresult);
             return;
         }
     }

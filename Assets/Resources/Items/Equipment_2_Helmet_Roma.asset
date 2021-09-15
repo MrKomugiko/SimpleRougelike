@@ -27,10 +27,10 @@ MonoBehaviour:
     IsStackable: 0
     StackSize: 5
   RequirmentsSettings:
-    Level: 2
-    Strength: 2
+    Level: 1
+    Strength: 1
     Inteligence: 1
-    Dexterity: 3
+    Dexterity: 1
   CanBeAssignToQuickActions: 0
   eqType: 2
   MainPerks: []

@@ -36,13 +36,13 @@ MonoBehaviour:
   MainPerks:
   - type: 0
     value: 1
-  - type: 1
+  - type: 3
     value: 3
   ExtraPerks:
-  - type: 3
+  - type: 5
     value: 5
   - type: 14
-    value: 5
+    value: 1
   FrontSprite: {fileID: 0}
   BackSprite: {fileID: 0}
   LeftSprite: {fileID: 0}

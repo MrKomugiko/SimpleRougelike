@@ -8,6 +8,7 @@ using static EquipmentScript;
 [Serializable] public class PlayerProgressModel
 {
     public int SlotID;
+    public bool isDead = false;
     public bool isDeleted = false;
     //-------------------------------------------------------------
     public DateTime CreatedDate;
@@ -20,7 +21,7 @@ using static EquipmentScript;
     public int MaxHealth=25;
     public int CurrentHealth = 25;
     public int Power = 100;
-    public int BaseDamage = 1;
+    public float BaseDamage = 1;
 
     // ----------------------------- MAIN STATS  ------------------
     public int Strength = 1;

@@ -28,12 +28,11 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
 
             _healthPoints = HP;
             
-            if(PlayerManager.instance != null)
-                UIManager.instance.Health_Bar.UpdateBar(_healthPoints,MaxHealthPoints);
+            PlayerManager.instance.CurrentHealth = HP;
         }
     }
     public int MaxHealthPoints { get; private set; }
-    public int Damage { get; private set; }
+    public float Damage { get; private set; } = UnityEngine.Random.Range(PlayerManager.instance.STATS.TotalDamage.min,PlayerManager.instance.STATS.TotalDamage.max);
     public bool IsHighlighted { get; set; }
     public bool IsAlive
     {
@@ -48,7 +47,9 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
                 Debug.Log("Player is DEAD");
                 HealthPoints = 0;
                 ChangeToPlayerCorpse();
-         
+
+                GameManager.instance.PLAYER_PROGRESS_DATA.isDead = true;
+
                 return false;
             }
         }
@@ -64,8 +65,8 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         this.Icon_Sprite = _data.Icon_Sprite;
         this.Corpse_Sprite = _data.Corpse_Sprite;
 
-        this.Damage = PlayerManager.instance.BaseDamage;
-        this.MaxHealthPoints = PlayerManager.instance.MaxHealth;
+        this.Damage = 1 + PlayerManager.instance.STATS.BaseDamage;
+        this.MaxHealthPoints = Mathf.RoundToInt(PlayerManager.instance.STATS.HealthPoints);
         this.Name = PlayerManager.instance.NickName;
         this.HealthPoints = PlayerManager.instance.CurrentHealth;
 
@@ -124,9 +125,9 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             GameObject.Destroy(Border.gameObject);
         }
     }
-    public void TakeDamage(int damage, string source)
+    public void TakeDamage(float damage, string source)
     {
-        HealthPoints -= damage;
+        HealthPoints -= Mathf.RoundToInt(damage);
         PlayerManager.instance.CurrentHealth = HealthPoints;
         if (IsAlive)
         {
@@ -151,6 +152,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         NotificationManger.TriggerActionNotification(ParentCell.SpecialTile as ISelectable, NotificationManger.AlertCategory.Loot);
 
         GameManager.instance.GameOverScreen.SetActive(true);
+        PlayerManager.instance.SavePlayerData();
     }
-
+    
 }

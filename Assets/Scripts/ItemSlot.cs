@@ -29,7 +29,16 @@ public class ItemSlot : MonoBehaviour
             }
         } 
     }
-    public bool IsEmpty => ITEM.Count == 0?true:false;
+    public bool IsEmpty {
+        get{
+            if(ITEM == null)
+            {
+                return true; // empty
+            }
+
+           return ITEM.Count == 0?true:false; // gdy liczba sztuk 0 -> empty
+        }    
+    }
     [SerializeField] bool ISFull;
     public bool IsFull {
         get{
@@ -68,32 +77,40 @@ public class ItemSlot : MonoBehaviour
         get => iTEM; 
         set
         {
-             iTEM = value; 
-             if(value.item != null)
-             {
-                switch(value.item.ItemCoreSettings.Rarity)
-                {
-                    case RarityTypes.Common:
-                        rarityBackgroundColor.color = new Color32(192,191,191,155);break;
-                    case RarityTypes.Rare:
-                        rarityBackgroundColor.color = new Color32(36,159,75,155);break;
-                    case RarityTypes.Epic:
-                        rarityBackgroundColor.color = new Color32(35,90,165,155);break;
-                    case RarityTypes.Legend:
-                        rarityBackgroundColor.color = new Color32(192,177,39,155);break;
-                    case RarityTypes.Ancient:
-                        rarityBackgroundColor.color = new Color32(192,34,175,155); break;
-                }
-             }
-             else
-             {
-                 if(rarityBackgroundColor != null)
-                     rarityBackgroundColor.color = new Color32(81,126,56,255);
+            if(value == null)
+            {
+                value = new ItemPack(0,null);
+            }
+            iTEM = value; 
+            if(value.item != null)
+            {
+            switch(value.item.ItemCoreSettings.Rarity)
+            {
+                case RarityTypes.Common:
+                    rarityBackgroundColor.color = new Color32(192,191,191,155);break;
+                case RarityTypes.Rare:
+                    rarityBackgroundColor.color = new Color32(36,159,75,155);break;
+                case RarityTypes.Epic:
+                    rarityBackgroundColor.color = new Color32(35,90,165,155);break;
+                case RarityTypes.Legend:
+                    rarityBackgroundColor.color = new Color32(192,177,39,155);break;
+                case RarityTypes.Ancient:
+                    rarityBackgroundColor.color = new Color32(192,34,175,155); break;
+            }
+            }
+            else
+            {
+                if(rarityBackgroundColor != null)
+                    rarityBackgroundColor.color = new Color32(81,126,56,255);
+            }
 
-                // czyszczenie pola gdy puste
+            if(value.Count == 0)
+            {
                 _btn.onClick.RemoveAllListeners();
                 _itemIcon.sprite = _emptyBackground.sprite;
-             }
+            }
+
+           
         }
     }
     public void ChangeItemCount(int value)
@@ -101,6 +118,8 @@ public class ItemSlot : MonoBehaviour
         var _item = ITEM;
         _item.Count+=value;
         ITEM = _item;
+
+        
     }
     
     TextMeshProUGUI _counterBox_TMP;
@@ -201,13 +220,15 @@ public class ItemSlot : MonoBehaviour
         if(IsEmpty)
         {         
              // usuwanie obrazka ze slotu
-            print("itemek jest pusty");
+         //   print("itemek jest pusty");
             if(IsInQuickSlot)
             {
-                print("item jest podpięty pod quickslot, zostanie od niego usunięty");
+               // print("item jest podpięty pod quickslot, zostanie od niego usunięty");
                 _counterBox.SetActive(false);
                 RemoveFromQuickSlot((int)AssignedToQuickSlot);
+                
                 return;
+
             }
         }
 

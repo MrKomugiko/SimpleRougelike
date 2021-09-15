@@ -22,11 +22,19 @@ public class EquipmentItem : ItemData
     }
     public bool Equip(ItemSlot slot)
     {
-        var targetStorage = slot.ParentStorage.StorageName=="Player"?PlayerManager.instance._mainBackpack:PlayerManager.instance._EquipedItems;
+        var MoveItemFromStorage = slot.ParentStorage.StorageName=="Player"?PlayerManager.instance._mainBackpack:PlayerManager.instance._EquipedItems;
         
-        var output = slot.ParentStorage.EquipItemFromSlot(slot, targetStorage);
-        
-        return output;
+        var result = slot.ParentStorage.EquipItemFromSlot(slot, MoveItemFromStorage);
+
+            if(result == true)
+            {
+                if(MoveItemFromStorage == PlayerManager.instance._EquipedItems )  //  item wyciągany z założonych == UNEQUIP
+                    {PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(this);}
+               
+               if(MoveItemFromStorage == PlayerManager.instance._mainBackpack )  // item wyciągany z plecaka == EQUIP
+                    {PlayerManager.instance.STATS.EquipItem_UpdateStatistics(this);}
+            }
+        return result;
     }
 }
     [Serializable]
@@ -35,7 +43,6 @@ public class EquipmentItem : ItemData
         public PerkType type;
         public string value;
     }
-    
     public enum PerkType
     {
         MinAttack,              Accuracy,           Evasion,

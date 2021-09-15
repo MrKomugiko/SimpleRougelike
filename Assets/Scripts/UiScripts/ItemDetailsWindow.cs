@@ -40,8 +40,16 @@ public class ItemDetailsWindow : MonoBehaviour
             
     //        throw;
         }
-
-        ButtonsList.Where(b=>b.name == "EquipButton" ||b.name == "Consume").First().GetComponent<Button>().interactable = DATA.CheckRequirments();
+        try
+        {
+          ButtonsList.Where(b=>b.name == "EquipButton" ||b.name == "ConsumeButton").First().GetComponent<Button>().interactable = DATA.CheckRequirments();
+        }
+        catch (System.Exception)
+        {
+            
+            Debug.LogError("nie znaleziono buttona?? dla ButtonsList.Where(b=>b.name == \"EquipButton\" ||b.name == \"ConsumeButton\").First() ");
+        }
+       
     }
     private void OnDisable() {
          try
@@ -141,10 +149,10 @@ public class ItemDetailsWindow : MonoBehaviour
         ButtonsList.Add(button);
 
         // konfiguracja wymagań
-        string level = DATA.RequirmentsSettings.Level <= PlayerManager.instance.Level?$"<color={RequirmentGood_colorHex}>{DATA.RequirmentsSettings.Level}</color>":$"<color={RequirmentFail_colorHex}>{DATA.RequirmentsSettings.Level}</color>";
-        string Strength = DATA.RequirmentsSettings.Strength <= PlayerManager.instance.Strength?$"<color={RequirmentGood_colorHex}>{DATA.RequirmentsSettings.Strength}</color>":$"<color={RequirmentFail_colorHex}>{DATA.RequirmentsSettings.Strength}</color>";
-        string Inteligence = DATA.RequirmentsSettings.Inteligence <= PlayerManager.instance.Inteligence?$"<color={RequirmentGood_colorHex}>{DATA.RequirmentsSettings.Inteligence}</color>":$"<color={RequirmentFail_colorHex}>{DATA.RequirmentsSettings.Inteligence}</color>";
-        string Dexterity = DATA.RequirmentsSettings.Dexterity <= PlayerManager.instance.Dexterity?$"<color={RequirmentGood_colorHex}>{DATA.RequirmentsSettings.Dexterity}</color>":$"<color={RequirmentFail_colorHex}>{DATA.RequirmentsSettings.Dexterity}</color>";
+        string level = DATA.RequirmentsSettings.Level <= PlayerManager.instance.STATS.Level?$"<color={RequirmentGood_colorHex}>{DATA.RequirmentsSettings.Level}</color>":$"<color={RequirmentFail_colorHex}>{DATA.RequirmentsSettings.Level}</color>";
+        string Strength = DATA.RequirmentsSettings.Strength <= PlayerManager.instance.STATS.Strength?$"<color={RequirmentGood_colorHex}>{DATA.RequirmentsSettings.Strength}</color>":$"<color={RequirmentFail_colorHex}>{DATA.RequirmentsSettings.Strength}</color>";
+        string Inteligence = DATA.RequirmentsSettings.Inteligence <= PlayerManager.instance.STATS.Inteligence?$"<color={RequirmentGood_colorHex}>{DATA.RequirmentsSettings.Inteligence}</color>":$"<color={RequirmentFail_colorHex}>{DATA.RequirmentsSettings.Inteligence}</color>";
+        string Dexterity = DATA.RequirmentsSettings.Dexterity <= PlayerManager.instance.STATS.Dexterity?$"<color={RequirmentGood_colorHex}>{DATA.RequirmentsSettings.Dexterity}</color>":$"<color={RequirmentFail_colorHex}>{DATA.RequirmentsSettings.Dexterity}</color>";
 
         string requirmentsString = $"Lvl:{level}  Str:{Strength}  Int:{Inteligence}  Dex:{Dexterity}";
         Requirments_TMP.SetText(requirmentsString);

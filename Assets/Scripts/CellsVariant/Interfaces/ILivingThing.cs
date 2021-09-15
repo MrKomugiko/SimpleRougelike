@@ -4,11 +4,11 @@ public interface ILivingThing
 {
     int HealthPoints { get; set; }
     bool IsAlive { get; }
-    int Damage { get; }
+    float Damage { get; }
     GameObject Corpse_Sprite { get; }
     int MaxHealthPoints { get; }
 
-    void TakeDamage(int value, string source);
+    void TakeDamage(float value, string source);
     
     
 }

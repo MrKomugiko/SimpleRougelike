@@ -19,13 +19,13 @@ public abstract class ItemData : ScriptableObject
     }
     public bool CheckRequirments()
     {
-        if(PlayerManager.instance.Level < RequirmentsSettings.Level)
+        if(PlayerManager.instance.STATS.Level < RequirmentsSettings.Level)
             return false;
-        if(PlayerManager.instance.Strength < RequirmentsSettings.Strength)
+        if(PlayerManager.instance.STATS.Strength < RequirmentsSettings.Strength)
             return false;
-        if(PlayerManager.instance.Dexterity < RequirmentsSettings.Dexterity)
+        if(PlayerManager.instance.STATS.Dexterity < RequirmentsSettings.Dexterity)
             return false;
-        if(PlayerManager.instance.Inteligence < RequirmentsSettings.Inteligence)
+        if(PlayerManager.instance.STATS.Inteligence < RequirmentsSettings.Inteligence)
             return false;
            
         return true;

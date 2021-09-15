@@ -11,86 +11,36 @@ using static Chest;
 
 public class PlayerManager: MonoBehaviour
 {
+    [SerializeField] public Statistics STATS;
     public Image HelmetIMG;
     public Image ArmorIMG;
     [SerializeField] GameObject GraphicSwitchPrefab;
     [SerializeField] public PlayerEquipmentVisualSwitchScript GraphicSwitch;
     [SerializeField] public MoveValidatorScript MovmentValidator;
-    [SerializeField] private TextMeshProUGUI AvailablePoints_TMP;
-    [SerializeField] private int _availablePoints;
-    [SerializeField] List<Button> CoreStatButtonsList = new List<Button>();
-    
-    public int AvailablePoints 
-    { 
-        get => _availablePoints; 
-        set {
-            _availablePoints = value; 
-            if(AvailablePoints <= 0)
-            {
-                _availablePoints = 0;
-                foreach(var button in CoreStatButtonsList)
-                {
-                    button.interactable = false;
-                }
-            }
-            else
-            {
-                foreach(var button in CoreStatButtonsList)
-                {
-                    button.interactable = true;
-                }
-            }
 
-            AvailablePoints_TMP.SetText(_availablePoints.ToString());
-        }
-    }
-
-    // [SerializeField] private TextMeshProUGUI Level_TMP;
-    [SerializeField] private int _level;
-    public int Level{
-        get => _level;
-        set
-        {
-            _level=value;
-            UIManager.instance.Level_TMP.SetText(_level.ToString());
-        }
-    }
-
-    private int _experience;
-    public int Experience 
-    {
-        get => _experience;
-        set
-        {
-            _experience = value;
-            // ExperienceCounter_TMP.SetText(Experience.ToString());
-            UIManager.instance.Experience_Bar.UpdateBar(_experience,NextLevelExperience);
-            if(Experience >= NextLevelExperience)
-            {
-                _experience = NextLevelExperience-Experience;
-
-                Level++;
-                AvailablePoints+=6;
-               // print("Level UP");
-                if(_experience<0) _experience=1;
-                UIManager.instance.Experience_Bar.UpdateBar(_experience,NextLevelExperience);
-            }
-            if(_experience<0) _experience=1;
-
-        }
-    }
-
+   
     public string NickName;
-    public int Strength,Inteligence,Dexterity,Vitality,AttackRange,MoveRange,Gold,Cristals,MaxHealth,CurrentHealth,BaseDamage;
+    
+    public int AttackRange,MoveRange,Gold,Cristals;
+
+   
     public Player_Cell _playerCell;
     public EquipmentScript _mainBackpack;
     public EquipmentScript _EquipedItems;
     public static PlayerManager instance;
     public NotificationScript _notificationScript;
     public ActionSwitchController _actionController;
-    public int NextLevelExperience => (Level)*(15*Level*2);
+ 
 
     public int Power { get; private set; }
+    public int CurrentHealth { 
+        get => _currentHealth; 
+        set 
+        {
+            _currentHealth = value; 
+            UIManager.instance.Health_Bar.UpdateBar(_currentHealth,Mathf.RoundToInt(STATS.HealthPoints));
+        }
+    } 
 
     public Coroutine currentAutopilot = null;
     public bool playerCurrentlyMoving = false;
@@ -158,46 +108,50 @@ public class PlayerManager: MonoBehaviour
     }
     public void LoadPlayerData(PlayerProgressModel _progressData)
     {
+        // clear extra data from items and perks before load new data from saveFile
+        STATS.ResetExtraValues(); 
+
+        // wyczyszczenie dunga przed załądowaniem danych nowego gracza
+        DungeonManager.instance.DungeonClearAndGoToCamp();
+
         Debug.Log("Load data from player progress file");
         // progress & resources 
-        Experience       =  _progressData.Experience;                   // OK - setter
+        STATS.Experience       =  _progressData.Experience;                   // OK - setter
         NickName         =  _progressData.NickName;             // TODO: aktualizuje sie w PlayerCell przy starcie - nowa mapa           
-        Level            =  _progressData.Level;                        // OK - setter
-        AvailablePoints  =  _progressData.AvailablePoints;              // OK - setter
-        Strength         =  _progressData.Strength;             // TODO: aktualizacja przy starcie gracza                                         
-        Inteligence      =  _progressData.Inteligence;          // TODO: aktualizacja przy starcie gracza                             
-        Dexterity        =  _progressData.Dexterity;            // TODO: aktualizacja przy starcie gracza                                     
-        Vitality         =  _progressData.Vitality;             // TODO: aktualizacja przy starcie gracza                                     
+        STATS.Level            =  _progressData.Level;                        // OK - setter
+        STATS.AvailablePoints  =  _progressData.AvailablePoints;              // OK - setter
+        STATS.Strength         =  _progressData.Strength;             // TODO: aktualizacja przy starcie gracza                                         
+        STATS.Inteligence      =  _progressData.Inteligence;          // TODO: aktualizacja przy starcie gracza                             
+        STATS.Dexterity  =  _progressData.Dexterity;            // TODO: aktualizacja przy starcie gracza                                     
+        STATS.Vitality         =  _progressData.Vitality;             // TODO: aktualizacja przy starcie gracza                                     
         AttackRange      =  _progressData.AttackRange;                                                      
         MoveRange        =  _progressData.MoveRange;                            
         Gold             =  _progressData.Gold;
             UIManager.instance.Gold_TMP.SetText(Gold.ToString());   // TODO:
         Cristals         =  _progressData.Cristals;
             UIManager.instance.Diamonds_TMP.SetText(Cristals.ToString());   // TODO:
-        MaxHealth        =  _progressData.MaxHealth;
+        STATS.HealthPoints        =  _progressData.MaxHealth;
         CurrentHealth    =  _progressData.CurrentHealth;                        // TODO wyniesc z playercell do managera i wstawic do settera
-            UIManager.instance.Health_Bar.UpdateBar(CurrentHealth,MaxHealth);   // TODO:
-        BaseDamage       =  _progressData.BaseDamage;
+            UIManager.instance.Health_Bar.UpdateBar(CurrentHealth,Mathf.RoundToInt(STATS.HealthPoints));   // TODO:
+      //  BaseDamage       =  _progressData.BaseDamage;
 
- 
-        // bagpack & eq items
-
-        // set ui numbers in character details tab
-        SetResourceToValue("STR",Strength);
-        SetResourceToValue("DEX",Dexterity);
-        SetResourceToValue("INT",Inteligence);
-        SetResourceToValue("VIT",Vitality);
+        _mainBackpack.GenerateEquipment();
+        _EquipedItems.GenerateEquipment();
     }
+
     public void LoadPlayerItensAndEq(PlayerProgressModel _progressData, string equipmentTypeTarget)
     {
         Debug.Log("LOAD ITEMS");
-        
+
        List<ItemData> itemsDatabase = Resources.LoadAll<ItemData>("Items").ToList();
        if(equipmentTypeTarget == "MainBackpack")
        {
+        Debug.Log("dodawanie itemkow z save'a do backpacka");
         foreach(var data in _progressData.BagpackItems)
         {
+            if(data.Count == 0) continue;
             var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
+            
             ItemPack loadedItem = new ItemPack(data.Count, item);
             Debug.Log(loadedItem.item.name);
             _mainBackpack.ItemSlots[data.SlotID].AddNewItemToSlot(loadedItem);
@@ -210,10 +164,11 @@ public class PlayerManager: MonoBehaviour
             _EquipedItems.ItemSlots.ForEach(i=>i.ITEM = new ItemPack(0,null));
             foreach(var data in _progressData.EquipedItems)
             {           
+                if(data.Count == 0) continue;
                 var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
                 ItemPack loadedItem = new ItemPack(data.Count, item);
                 Debug.Log("equip => "+loadedItem.item.name);
-            _EquipedItems.LoadItemInPlayerEq(data.SlotID, loadedItem);
+                _EquipedItems.LoadItemInPlayerEq(data.SlotID, loadedItem);
             }
         }
     }
@@ -260,131 +215,26 @@ public class PlayerManager: MonoBehaviour
         CumulativeStageGoldEarned+=value;
         
     }
-    public void Restart_ClearStatsAndEquipedItems()
-    {
-        // ArmorIMG.enabled = false;
-        // HelmetIMG.enabled = false;
-
-        // _EquipedItems.Reset_WipeOutDataAndImages();
-
-        // Level = 1; 
-        // Gold = 0; 
-        // Experience = 0; 
-        // Strength = 1; 
-        // Inteligence = 1; 
-        // Dexterity = 1; 
-        // _EquipedItems.ItemSlots.ForEach(slot=>slot.ITEM = new Chest.ItemPack(0, null));
-    }
 
     public void AddExperience(int value)
     {
-        Experience += value;
+        STATS.Experience += value;
         CumulativeStageExperienceEarned +=value;
     }
     public void OnClick_AddResource(string _resource)
     {
-        AddResource(_resource,1);
+
+        STATS.AddValue(statname:_resource);
+        STATS.AvailablePoints--;
     }
-
-    public void SetResourceToValue(string _resource, int value)
-    {
-        ResourceType resource = (ResourceType)Enum.Parse(typeof(ResourceType),_resource);
-
-        switch(resource)
-        {
-            case ResourceType.STR:
-                Strength = value;
-                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Strength")
-                    .First().transform.parent.transform.Find("Value")
-                    .GetComponent<TextMeshProUGUI>()
-                    .SetText(Strength.ToString());
-                break;
-                
-            case ResourceType.DEX:
-                Dexterity = value;
-                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Dexterity")
-                    .First().transform.parent.transform.Find("Value")
-                    .GetComponent<TextMeshProUGUI>()
-                    .SetText(Dexterity.ToString());
-                break;            
-                
-            case ResourceType.INT:
-                Inteligence = value;
-                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Inteligence")
-                    .First().transform.parent.transform.Find("Value")
-                    .GetComponent<TextMeshProUGUI>()
-                    .SetText(Inteligence.ToString());
-               break;            
-                
-            case ResourceType.VIT:
-                Vitality = value;
-                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Vitality")
-                    .First().transform.parent.transform.Find("Value")
-                    .GetComponent<TextMeshProUGUI>()
-                    .SetText(Vitality.ToString());
-                break;
-        }
-    }
-    public void AddResource(string _resource, int value = 1)
-    {
-        ResourceType resource = (ResourceType)Enum.Parse(typeof(ResourceType),_resource);
-
-            if(value <= AvailablePoints)
-            {
-                AvailablePoints -= value;
-            }
-            else
-            {
-                print("not enought statistics point to add");
-                return;
-            }
-        
-
-        switch(resource)
-        {
-            case ResourceType.STR:
-                Strength+= value;
-                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Strength")
-                    .First().transform.parent.transform.Find("Value")
-                    .GetComponent<TextMeshProUGUI>()
-                    .SetText(Strength.ToString());
-                break;
-                
-            case ResourceType.DEX:
-                Dexterity+= value;
-                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Dexterity")
-                    .First().transform.parent.transform.Find("Value")
-                    .GetComponent<TextMeshProUGUI>()
-                    .SetText(Dexterity.ToString());
-                break;            
-                
-            case ResourceType.INT:
-                Inteligence+= value;
-                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Inteligence")
-                    .First().transform.parent.transform.Find("Value")
-                    .GetComponent<TextMeshProUGUI>()
-                    .SetText(Inteligence.ToString());
-               break;            
-                
-            case ResourceType.VIT:
-                Vitality+= value;
-                CoreStatButtonsList.Where(b=>b.transform.parent.name == "Vitality")
-                    .First().transform.parent.transform.Find("Value")
-                    .GetComponent<TextMeshProUGUI>()
-                    .SetText(Vitality.ToString());
-                break;
-        }
-  
-    }
-
 
     public bool AtackAnimationInProgress = false;
     public int CumulativeStageExperienceEarned;
     public int CumulativeStageGoldEarned;
-    public int CumulativeStageDamageTaken;
-    public int CumulativeStageDamageGained;
+    public float CumulativeStageDamageTaken;
+    public float CumulativeStageDamageGained;
     public int CumulativeMonsterKilled;
-
+    private int _currentHealth;
 
     public IEnumerator PerformRegularAttackAnimation(CellScript attacker, CellScript target, int _aniamtionFrames)
     {
@@ -437,17 +287,17 @@ public class PlayerManager: MonoBehaviour
         PlayerProgressModel _updatedData = GameManager.instance.PLAYER_PROGRESS_DATA;
         _updatedData.LastVisitedDate = DateTime.Now;
    // -------------------
-        _updatedData.Level =                    this.Level;
-        _updatedData.Experience =               this.Experience;
-        _updatedData.MaxHealth=                 this.MaxHealth;
+        _updatedData.Level =                    this.STATS.Level;
+        _updatedData.Experience =               this.STATS.Experience;
+        _updatedData.MaxHealth=                 Mathf.RoundToInt(this.STATS.HealthPoints);
         _updatedData.CurrentHealth =            this.CurrentHealth;
         _updatedData.Power =                    this.Power;
-        _updatedData.BaseDamage =               this.BaseDamage;
+        _updatedData.BaseDamage =               this.STATS.BaseDamage;
     // -------------------
-        _updatedData.Strength =                 this.Strength;
-        _updatedData.Inteligence =              this.Inteligence;
-        _updatedData.Dexterity =                this.Dexterity;
-        _updatedData.Vitality =                 this.Vitality;
+        _updatedData.Strength =                 this.STATS.Strength;
+        _updatedData.Inteligence =              this.STATS.Inteligence;
+        _updatedData.Dexterity =                this.STATS.Dexterity;
+        _updatedData.Vitality =                 this.STATS.Vitality;
     // -------------------
         _updatedData.Gold =                     this.Gold;
         _updatedData.Cristals =                 this.Cristals;
@@ -455,7 +305,7 @@ public class PlayerManager: MonoBehaviour
         _updatedData.CurrentLocation =          "Home";
         _updatedData.MoveRange =                this.MoveRange;
         _updatedData.AttackRange =              this.AttackRange;
-        _updatedData.AvailablePoints =          this.AvailablePoints;
+        _updatedData.AvailablePoints =          this.STATS.AvailablePoints;
 
     // ----------------------------- EQUIPMENT --------------------
         _updatedData.EquipedItems = (PlayerManager.instance._EquipedItems.GetBackupListOfItemsAndSlots());
@@ -463,4 +313,13 @@ public class PlayerManager: MonoBehaviour
 
         HeroDataController.instance.UpdatePlayerDataFileOnDevice(_updatedData);
     }
+
+
+
+
+
+
+
+
+    
 }

@@ -16,7 +16,7 @@ public class MenuScript : MonoBehaviour
     [SerializeField] public GameObject MENU,HEROCREATORWINDOW;
     [SerializeField] Color32 ButtonOff_TextColor,ButtonON_TextColor;
     public TextMeshProUGUI HEROCREATORWINDOW_ErrorTMP;
-    [SerializeField] GameObject HomeCanvas;
+    [SerializeField] public GameObject CampCanvas;
     [SerializeField] public Button HEROESLISTWINDOW_RemoveConfirmButton;
 
     private void Start() 
@@ -103,12 +103,24 @@ public class MenuScript : MonoBehaviour
         MENU.SetActive(false);
     }
     
-    public void OpenGameScene()
+    public void OpenCampScene()
     {
         // TODO:
+        
         HEROESLISTWINDOW.SetActive(false);
         HEROCREATORWINDOW.SetActive(false);
         MENU.SetActive(false);
+
+        CampCanvas.SetActive(true);
+    }
+    public void KickToMenuAfterDeath()
+    {
+        OnClick_Back();
+
+        // nie zyjesz nie mozesz kontynuowac
+        SetButtonState("Continue"); 
+
+
     }
     public void PauseMenu()
     {
@@ -141,7 +153,6 @@ public class MenuScript : MonoBehaviour
     }
     public void OnClick_Heroes()
     {
-        
         HeroDataController.instance.LoadHeroesDataFromDevice();
         HEROESLISTWINDOW.SetActive(true);
     }

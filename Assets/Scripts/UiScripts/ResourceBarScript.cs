@@ -9,7 +9,7 @@ public class ResourceBarScript : MonoBehaviour
 {
     public Image fillProgressBarIMG;
     [SerializeField] TextMeshProUGUI LabelTMP;
-    public void UpdateBar(int currentValue,int MaxValue)
+    public void UpdateBar(float currentValue,int MaxValue)
     {
         float percentFillvalue = (float)currentValue / Math.Max(MaxValue,1);
         LabelTMP.SetText($"{currentValue}/{MaxValue}");
