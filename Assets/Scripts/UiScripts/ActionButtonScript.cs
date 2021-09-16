@@ -21,6 +21,9 @@ public partial class ActionButtonScript : MonoBehaviour
 
     private Action myMainIconAction = null;
 
+    private void OnDisable() {
+        // EquipmentScript.QuitFromQuickbarSelectionMode();
+    }
     public bool ISSELECTED { 
         get => _iSSELECTED; 
         set 
@@ -87,6 +90,7 @@ public partial class ActionButtonScript : MonoBehaviour
     }
     public void ConfigureDescriptionButtonClick(Action action, string description, bool singleAction = true, string actionNameString = "")
     { 
+        Debug.LogWarning("config. btn description =>"+description);
       //  print("przypisanie "+actionNameString);
         Description_Button.onClick.RemoveAllListeners();
         this.gameObject.name = "ACTION_"+description;
@@ -102,8 +106,8 @@ public partial class ActionButtonScript : MonoBehaviour
         });
        // Debug.LogWarning(description);
         Description_TMP.SetText(description);
-
      }
+
     private void ReAssignActionToDescriptionButton(Action action, string actionNameString)
     {
        // print("ReAssignActionToDescriptionButton, wykonanie: "+actionNameString);

@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     {   
         if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
-            Debug.LogWarning("Player move - start");
+           // Debug.LogWarning("Player move - start");
 
             TurnImageIndicators[0].color = Color.yellow;
             TurnImageIndicators[1].color = Color.red;
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
             CurrentTurnPhase = TurnPhase.PlayerAttack;
             TurnImageIndicators[0].color = Color.green;
             TurnImageIndicators[1].color = Color.yellow;
-            Debug.LogWarning("Player move - end");
+            //Debug.LogWarning("Player move - end");
 
             yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
        
         if(CurrentTurnPhase == TurnPhase.PlayerAttack && PlayerAttacked == false)
         {
-            Debug.LogWarning("Player attack - start");
+            //Debug.LogWarning("Player attack - start");
 
             TurnPhaseBegin = true;
 
@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
                 TurnImageIndicators[2].color = Color.yellow;
                 PlayerAttacked = false;
                 TurnPhaseBegin = false;
-                Debug.LogWarning("Player attack - end - no monsters to attack");
+               // Debug.LogWarning("Player attack - end - no monsters to attack");
                 StartCoroutine(AddTurn());
                 yield break;
            }
@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
             PlayerManager.instance.MovmentValidator.HideGrid();
             PlayerAttacked = false;
             TurnPhaseBegin = false;
-            Debug.LogWarning("Player attack - end");
+          //  Debug.LogWarning("Player attack - end");
             yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
             yield break;
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
 
         if(CurrentTurnPhase == TurnPhase.MonsterMovement && MonstersMoved == false)
         {
-            Debug.LogWarning("Monster move - start");
+           // Debug.LogWarning("Monster move - start");
             TurnPhaseBegin = true;
 
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour
             CurrentTurnPhase = TurnPhase.MonsterAttack;
             TurnImageIndicators[2].color = Color.green;
             TurnImageIndicators[3].color = Color.yellow;
-            Debug.LogWarning("Monster move - end");
+            //Debug.LogWarning("Monster move - end");
 
             if(tempCurrentCreatureList.Count > 0) yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
 
         if(CurrentTurnPhase == TurnPhase.MonsterAttack && MonsterAttack == false)
         {
-            Debug.LogWarning("Monster attack - start");
+           // Debug.LogWarning("Monster attack - start");
             TurnPhaseBegin = true;
 
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
@@ -219,7 +219,7 @@ public class GameManager : MonoBehaviour
 
             TurnImageIndicators[3].color = Color.green;
             CurrentTurnPhase = TurnPhase.PlayerMovement;
-            Debug.LogWarning("Monster attack - end");
+          //  Debug.LogWarning("Monster attack - end");
 
             if(tempCurrentCreatureList.Count > 0) yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());

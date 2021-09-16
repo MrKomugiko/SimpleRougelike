@@ -40,6 +40,17 @@ public class DungeonManager : MonoBehaviour
 
     public void DungeonClearAndGoToCamp()
     {
+
+        // poodpinanie zalozonych itemkow w quickslocie gracza
+        PlayerManager.instance._mainBackpack.ItemSlots.ForEach(slot=> 
+            {
+                if(slot.IsInQuickSlot)
+                {
+                    slot.RemoveFromQuickSlot((int)slot.AssignedToQuickSlot);
+                }
+            }
+        );
+
         Debug.Log("DUNGEON CLEAR AND BACK TO CAMP");
       //  recentDungeonStage = dungeonData.stage;
         recentDungeonStage++; // tymczasowe

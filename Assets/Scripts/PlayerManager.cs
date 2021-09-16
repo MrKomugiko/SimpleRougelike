@@ -138,7 +138,7 @@ public class PlayerManager: MonoBehaviour
         _mainBackpack.GenerateEquipment();
         _EquipedItems.GenerateEquipment();
     }
-
+ 
     public void LoadPlayerItensAndEq(PlayerProgressModel _progressData, string equipmentTypeTarget)
     {
         Debug.Log("LOAD ITEMS");
@@ -307,6 +307,12 @@ public class PlayerManager: MonoBehaviour
         _updatedData.AttackRange =              this.AttackRange;
         _updatedData.AvailablePoints =          this.STATS.AvailablePoints;
 
+
+        _updatedData.ItemAssignedToAuicslot_0 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(0);
+        _updatedData.ItemAssignedToAuicslot_1 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(1);
+        _updatedData.ItemAssignedToAuicslot_2 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(2);
+        _updatedData.ItemAssignedToAuicslot_3 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(3);
+        _updatedData.ItemAssignedToAuicslot_4 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(4);
     // ----------------------------- EQUIPMENT --------------------
         _updatedData.EquipedItems = (PlayerManager.instance._EquipedItems.GetBackupListOfItemsAndSlots());
         _updatedData.BagpackItems = (PlayerManager.instance._mainBackpack.GetBackupListOfItemsAndSlots());

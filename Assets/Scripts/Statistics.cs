@@ -156,6 +156,7 @@ public class Statistics : MonoBehaviour
                  _experience = 1;
                 UIManager.instance.Experience_Bar.UpdateBar(_experience, NextLevelExperience);
             }
+            UIManager.instance.Experience_Bar.UpdateBar(_experience, NextLevelExperience);
         }
     }
     public float Accuracy { 
@@ -344,19 +345,19 @@ public class Statistics : MonoBehaviour
 
     public void EquipItem_UpdateStatistics(EquipmentItem item)
     {
-        Debug.Log("ZDJĘCIE ITEMKA - staty w dół");
-        item.MainPerks.ForEach(perk=>UpdateValueByPerkData(perk));
-        item.ExtraPerks.ForEach(perk=>UpdateValueByPerkData(perk));
+        Debug.Log("Zalozenie ITEMKA - staty w gore");
+        item.MainPerks.ForEach(perk=>AddValueByPerkData(perk));
+        item.ExtraPerks.ForEach(perk=>AddValueByPerkData(perk));
     }
 
     public void UnequipItem_UpdateStatistics(EquipmentItem item)
     {
-        Debug.Log("ZAŁOŻENIE ITEMKA - staty w góe");
-                item.MainPerks.ForEach(perk=>UpdateValueByPerkData(perk));
-        item.ExtraPerks.ForEach(perk=>UpdateValueByPerkData(perk));
+        Debug.Log("Zdjęcie ITEMKA - staty w dol");
+        item.MainPerks.ForEach(perk=>SubtractValueByPerkData(perk));
+        item.ExtraPerks.ForEach(perk=>SubtractValueByPerkData(perk));
     }
 
-    private void UpdateValueByPerkData(Perk perk)
+    private void AddValueByPerkData(Perk perk)
     {
         switch(perk.type)
         {
@@ -374,6 +375,27 @@ public class Statistics : MonoBehaviour
 
             case PerkType.VitalityBonus:
                 Vitality+=Int32.Parse(perk.value);
+                return;
+        }
+    }
+    private void SubtractValueByPerkData(Perk perk)
+    {
+        switch(perk.type)
+        {
+            case PerkType.MinAttack:
+                Extra_Damage = ( Extra_Damage.min-Int32.Parse(perk.value), Extra_Damage.max);
+                return;
+
+            case PerkType.MaxAttack:
+                Extra_Damage = ( Extra_Damage.min, Extra_Damage.max-Int32.Parse(perk.value));
+                return;
+
+            case PerkType.StrengthBonus:
+                Strength-=Int32.Parse(perk.value);
+                return;
+
+            case PerkType.VitalityBonus:
+                Vitality-=Int32.Parse(perk.value);
                 return;
         }
     }

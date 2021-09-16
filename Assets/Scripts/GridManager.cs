@@ -26,24 +26,9 @@ public class GridManager : MonoBehaviour
             {
                 var newCell = Instantiate(_cellPrefab,this.transform,false).GetComponent<CellScript>();
                 newCell.SetCell(new Vector2Int(x,y), false);
-                // if(newCell.CurrentPosition == GameManager.instance.StartingPlayerPosition) 
-                //     newCell.AssignType(TileTypes.player);
-                // else
-                //     newCell.AssignType(GetRandomType());
-                    
                 CellGridTable.Add(new Vector2Int(x,y),newCell);
             }   
         }
-
-        // // wyczysc mape z pustych skrzynek
-        // foreach(var cell in CellGridTable.Values)
-        // {
-        //     if(cell.SpecialTile is Treasure_Cell)
-        //     {
-        //         (cell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
-        //     }
-        // }
-        // GameManager.instance.Init_PlacePlayerOnGrid();
     }
     public void RandomizeDataOnGrid()
     {
@@ -212,7 +197,6 @@ public class GridManager : MonoBehaviour
         CellGridTable[newPosition].SetCell(newPosition);
         CellGridTable[oldPosition].SetCell(oldPosition);
     }
-
     public static bool DistanceCheck(ISpecialTile cell)    
     {
         if (Vector3Int.Distance((Vector3Int)GameManager.Player_CELL.CurrentPosition, (Vector3Int)cell.ParentCell.CurrentPosition) < 1.1f)

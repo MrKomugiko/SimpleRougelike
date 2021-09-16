@@ -67,15 +67,30 @@ public partial class NotificationManger : MonoBehaviour
         NotificationManger.instance.NotificationList.Add(notification);
         notification.BaseCell = PlayerManager.instance._playerCell.ParentCell;
 
+        PlayerManager.instance._actionController = notification.PossibleActions.GetComponent<ActionSwitchController>();
         notificationObject.GetComponent<Button>().onClick.AddListener(()=>
             {
                 HighlightElementSwitch(notification);
                 notification.PossibleActions.SetActive(!notification.PossibleActions.activeSelf);
-                if(notification.PossibleActions.activeSelf == true) 
-                {   
-                   PlayerManager.instance._actionController = notification.PossibleActions.GetComponent<ActionSwitchController>();
-                   PlayerManager.instance._actionController.ResetToDefault();
-                }
+                // if(notification.PossibleActions.activeSelf == true) 
+                // {   
+                //    PlayerManager.instance._actionController.ResetToDefault();
+
+                // }
+
+                
+                    Debug.LogWarning("only load item in quicslot dont restart."); 
+               
+                    Debug.LogWarning("config. załadowanie wczesniej przypisanych itemkow do quickslota");
+                    var quick_0 = GameManager.instance.PLAYER_PROGRESS_DATA.ItemAssignedToAuicslot_0;
+                    if(quick_0 != null)
+                    {
+                        if(string.IsNullOrEmpty(quick_0.ScriptableObjectName) == false)
+                        {
+                            Debug.LogError($"wrzucanie itemka z slotu [{quick_0.SlotID}] do quicslotu nr0");
+                            PlayerManager.instance._mainBackpack.ItemSlots[quick_0.SlotID].AssignToQuickSlot(0);
+                        }
+                    }
             }
         );
         PlayerManager.instance._notificationScript = notification;
@@ -127,9 +142,13 @@ public partial class NotificationManger : MonoBehaviour
                     if(notification.PossibleActions.activeSelf == true) 
                     {   
                         // print("reset to default, okno possible actions jest nieaktywne");
+                        print("click");
                         notification.PossibleActions.GetComponent<ActionSwitchController>().ResetToDefault();
+        
+
+                
                     }
-                }
+               }
             );
              
         }

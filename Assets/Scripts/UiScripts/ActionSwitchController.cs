@@ -13,7 +13,8 @@ public class ActionSwitchController : MonoBehaviour
     private void Start()
     {
         notificationParent = GetComponentInParent<NotificationScript>();
-        Configure(notificationParent.BaseCell.SpecialTile);
+        if(notificationParent.BaseCell.SpecialTile is Player_Cell == false) 
+            Configure(notificationParent.BaseCell.SpecialTile);
     }
     public void OnClick_SelectActionIcon(ActionButtonScript selectedButton)
     {
@@ -49,6 +50,7 @@ public class ActionSwitchController : MonoBehaviour
     
     public void ConfigurePlayerButtons(ISpecialTile cell,string actionNameString="")
     {
+        Debug.LogWarning("Configure default-empty PlayerButtons"); 
         int i =0;
         foreach(var button in actionButtonsList)
         {
@@ -67,10 +69,11 @@ public class ActionSwitchController : MonoBehaviour
             }
            // print(button.name);
             i++;
-        }            
+        }         
     }       
     public void Configure(ISpecialTile cell)
     {
+        Debug.LogWarning("coonfig");
         int i =0;
         ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
         actionButtonsList.CopyTo(temp);

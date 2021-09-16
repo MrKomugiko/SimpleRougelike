@@ -65,7 +65,7 @@ public class PlayerEquipmentVisualSwitchScript : MonoBehaviour
                 break;
 
             case "Left":
-                Hero_Sprite.sprite = LeftSprite;
+               Hero_Sprite.sprite = LeftSprite;
                 Helmet_Sprite.sprite = Helmet == null ? null : Helmet.LeftSprite;
                 Armor_Sprite.sprite = Armor == null ? null : Armor.LeftSprite;
                 break;

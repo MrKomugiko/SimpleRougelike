@@ -59,4 +59,11 @@ using static EquipmentScript;
     // ----------------------------- UNLOCKED THINGS --------------
     // ----------------------------- ITEMS IN QUICKSLOT -----------
 
+    public ItemBackupData ItemAssignedToAuicslot_0;
+    public ItemBackupData ItemAssignedToAuicslot_1;
+    public ItemBackupData ItemAssignedToAuicslot_2;
+    public ItemBackupData ItemAssignedToAuicslot_3;
+    public ItemBackupData ItemAssignedToAuicslot_4;
+
+
 }

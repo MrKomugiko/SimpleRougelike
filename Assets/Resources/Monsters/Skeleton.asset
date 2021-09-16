@@ -16,8 +16,8 @@ MonoBehaviour:
   MonsterName: Skeleton
   Icon_Sprite: {fileID: 179587530871585500, guid: 43a388e7a06d8d346ad61f6ac331bea9, type: 3}
   Corpse_Sprite: {fileID: 179587530871585500, guid: a2912684cda9b9d468426bcf2005194e, type: 3}
-  MaxHealthPoints: 2
-  Speed: 2
+  MaxHealthPoints: 6
+  Speed: 1
   LootData: {fileID: 11400000, guid: b98e0245cebaef54ab058715a8872f56, type: 2}
   Damage: 2
   Level: 1

@@ -30,10 +30,8 @@ public class EquipmentScript : MonoBehaviour
         
         Debug.Log("Generate EQUIPMENT SCRIPT");
 
-
         if(PLAYER_EQUIPMENTSLOT == false) // poniewaz eq gracza jest juz na scenie nie trzeba go znowu generowac
-        {
-            
+        { 
             if(ItemSlots.Count>0)
             {
                 // gra juz załadowana, ponowne wejscie, reset backpacka
@@ -56,9 +54,11 @@ public class EquipmentScript : MonoBehaviour
                     itemSlot.itemSlotID = i;
                     itemSlot.IsLocked = i < NumberOfUnlockedSlots?false:true;
                     itemSlot.ParentStorage = this;
+                    itemSlot.IsInQuickSlot = false;
                 }
             }
         }
+
         if(PLAYER_EQUIPMENTSLOT)
         {   
             StorageName = "Player";
@@ -86,7 +86,7 @@ public class EquipmentScript : MonoBehaviour
     public static bool AssignationItemToQuickSlotIsActive = false;
     public static int? CurrentSelectedActionButton = null;
 
-    public static void AssignItemToActionSlot(int quickslotID)
+    public static void AssignItemToActionSlot(int quickslotID) 
     {
         print("AssignItemToActionSlot");
         if(AssignationItemToQuickSlotIsActive) 
@@ -164,14 +164,19 @@ public class EquipmentScript : MonoBehaviour
         if(slotIndex != -1)
             ItemSlots[slotIndex].AddNewItemToSlot(item);
         else
-            ItemSlots[slotIndex].UpdateItemAmount(1);
+        {
+            //ItemSlots[slotIndex].UpdateItemAmount(1);
+            Debug.LogError(("add item to backpack index -1 ?"));
+                return false;
+
+        }
         return true;
     }
     
     public void LoadItemInPlayerEq( int asociatedSlotId, ItemPack _item )
     {
         EquipmentItem itemEq = _item.item as EquipmentItem;
-
+        PlayerManager.instance.STATS.EquipItem_UpdateStatistics(itemEq);
         this.ItemSlots[asociatedSlotId].AddNewItemToSlot(_item);
         
         if(_item.item.ItemCoreSettings.Name == "Roma Helmet")  
@@ -194,15 +199,21 @@ public class EquipmentScript : MonoBehaviour
             int matchEqSlotIndex = toEquipment.ItemSlots.Where(s=>s.ItemContentRestricion == equipmentItem.eqType).First().itemSlotID;
             if(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count == 0)
             {
+                print("nie masz tego rodzaju itemka zalozonego");
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
                 toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
             }
             else
             {
-                ItemPack currentEquipedItemCopy = toEquipment.ItemSlots[matchEqSlotIndex].ITEM;
+                print("posiadasz juz zalozony item tego typu");
+                ItemPack currentEquipedItemCopy = new ItemPack(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count,toEquipment.ItemSlots[matchEqSlotIndex].ITEM.item);
+                // ItemPack currentEquipedItemCopy = toEquipment.ItemSlots[matchEqSlotIndex].ITEM;
                 toEquipment.ItemSlots[matchEqSlotIndex].UpdateItemAmount(-1);
+                PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(currentEquipedItemCopy.item as EquipmentItem);
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
+                this.ItemSlots[fromSlot.itemSlotID].AddNewItemToSlot(currentEquipedItemCopy);
                 toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
+
             }
             if(ItemCopy.item.ItemCoreSettings.Name == "Roma Helmet")  
                 PlayerManager.instance.HelmetIMG.enabled = true;
@@ -311,6 +322,35 @@ public class EquipmentScript : MonoBehaviour
                 );
         }
         return _backup;
+    }
+
+    public ItemBackupData GetItemsAssignedToQuickslot(int quickSlotID)
+    {
+        ItemBackupData _quickslotbackup = null;
+
+        foreach(var slot in ItemSlots)
+        {
+            if(slot.IsInQuickSlot)
+            {
+                if(slot.AssignedToQuickSlot != null)
+                {
+                    if((int)slot.AssignedToQuickSlot == quickSlotID)
+                    {  
+                        if(slot.ITEM.item == null || slot.ITEM.Count == 0) continue;
+                    
+                        _quickslotbackup = new ItemBackupData(
+                            slot.itemSlotID,
+                            slot.ITEM.Count,
+                            slot.ITEM.item.name
+                            );
+
+                            Debug.LogWarning($"zapisano z quickslta [{quickSlotID}] = item z backpacka [{_quickslotbackup.SlotID}]");
+                    }
+                }
+            }
+        }
+        
+        return _quickslotbackup;
     }
 
     [Serializable]

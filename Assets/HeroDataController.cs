@@ -147,8 +147,11 @@ public class HeroDataController : MonoBehaviour
     public void LoadPlayerDataInGame(PlayerProgressModel heroData)
     {
 
-        GameManager.instance.PLAYER_PROGRESS_DATA = heroData;
-        PlayerManager.instance.LoadPlayerData(heroData);
+        if(heroData.NickName != GameManager.instance.PLAYER_PROGRESS_DATA.NickName)
+        {
+            GameManager.instance.PLAYER_PROGRESS_DATA = heroData;
+            PlayerManager.instance.LoadPlayerData(heroData);
+        }
     }  
     public void RemoveHeroFromDevice(PlayerProgressModel data)
     {

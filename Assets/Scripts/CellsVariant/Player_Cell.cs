@@ -70,6 +70,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         this.Name = PlayerManager.instance.NickName;
         this.HealthPoints = PlayerManager.instance.CurrentHealth;
 
+        
         AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 0), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
         AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 1), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));
         AvaiableActions.Add((() => EquipmentScript.AssignItemToActionSlot(quickslotID: 2), "Tap to <b>Add Item</b>", ActionIcon.Empty, false));

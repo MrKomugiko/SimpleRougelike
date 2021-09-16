@@ -22,17 +22,17 @@ public class EquipmentItem : ItemData
     }
     public bool Equip(ItemSlot slot)
     {
-        var MoveItemFromStorage = slot.ParentStorage.StorageName=="Player"?PlayerManager.instance._mainBackpack:PlayerManager.instance._EquipedItems;
+        var MoveItemTo = slot.ParentStorage.StorageName=="Player"?PlayerManager.instance._mainBackpack:PlayerManager.instance._EquipedItems;
         
-        var result = slot.ParentStorage.EquipItemFromSlot(slot, MoveItemFromStorage);
+        var result = slot.ParentStorage.EquipItemFromSlot(slot, MoveItemTo);
 
             if(result == true)
             {
-                if(MoveItemFromStorage == PlayerManager.instance._EquipedItems )  //  item wyciągany z założonych == UNEQUIP
-                    {PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(this);}
-               
-               if(MoveItemFromStorage == PlayerManager.instance._mainBackpack )  // item wyciągany z plecaka == EQUIP
+                if(MoveItemTo == PlayerManager.instance._EquipedItems )  //  item wyciągany z założonych == UNEQUIP
                     {PlayerManager.instance.STATS.EquipItem_UpdateStatistics(this);}
+               
+               if(MoveItemTo == PlayerManager.instance._mainBackpack )  // item wyciągany z plecaka == EQUIP
+                    {PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(this);}
             }
         return result;
     }

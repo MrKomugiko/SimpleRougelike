@@ -11,6 +11,7 @@ public class MoveValidatorScript : MonoBehaviour
 
     public void SpawnMarksOnGrid()
     {
+        
         GridIndicators.ForEach(g=>{if(g!=null){Destroy(g.gameObject);}});
         GridIndicators.Clear();
         foreach(var cell in GridManager.CellGridTable.Values)
