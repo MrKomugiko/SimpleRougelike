@@ -9,19 +9,21 @@ public class DungeonRoomScript : MonoBehaviour
 {
     public static DungeonRoomScript instance;
     private void Awake() {
-        instance = this;
-    }
-   [SerializeField] public List<Sprite> roomsTemplates = new List<Sprite>();
+            instance = this;
+        }
+    [SerializeField] public List<Sprite> roomsTemplates = new List<Sprite>();
 
-   public Vector2Int Location = Vector2Int.zero;
-   public Dictionary<Vector2Int, SpriteRenderer> existingRooms = new Dictionary<Vector2Int, SpriteRenderer>();
+    public Vector2Int Location = Vector2Int.zero;
+    public Dictionary<Vector2Int, SpriteRenderer> existingRooms = new Dictionary<Vector2Int, SpriteRenderer>();
     public static Dictionary<string, Vector2Int> directionsDict = new Dictionary<string, Vector2Int>{
         {"W",Vector2Int.up},
         {"D",Vector2Int.right},
         {"S",Vector2Int.down},
         {"A",Vector2Int.left}
     };
-
+   
+    public Vector2Int BackupPlayerPosition;
+    
     
     [ContextMenu("SpawnFirstRoom")]
     public static void GenerateDungeonRooms()
@@ -108,8 +110,10 @@ public class DungeonRoomScript : MonoBehaviour
     }
     public class Room
     {
+        public bool WasVisited = false;
         public Vector2Int position;
         public String doorsNameCode;
+        public RoomGridData DATA;
         public Room(Vector2Int position, string doorsNameCode)
         {
             this.position = position;
@@ -118,6 +122,22 @@ public class DungeonRoomScript : MonoBehaviour
             Debug.Log("Room Created: "+position+" ["+doorsNameCode+"]");
         }
     }
+
+    public class RoomGridData
+    {
+        public Dictionary<Vector2Int,MonsterData> Backup_Monsters = new Dictionary<Vector2Int, MonsterData>();
+        public Dictionary<Vector2Int,TreasureData> Backup_Treasures = new Dictionary<Vector2Int, TreasureData>();
+        public Dictionary<Vector2Int,BombData> Backup_Bombs = new Dictionary<Vector2Int, BombData>();
+        public HashSet<Vector2Int> WallPositions = new HashSet<Vector2Int>();
+        public RoomGridData(Dictionary<Vector2Int, MonsterData> backup_Monsters, Dictionary<Vector2Int, TreasureData> backup_Treasures, Dictionary<Vector2Int, BombData> backup_Bombs, HashSet<Vector2Int> wallPositions)
+        {
+            Backup_Monsters = backup_Monsters;
+            Backup_Treasures = backup_Treasures;
+            Backup_Bombs = backup_Bombs;
+            WallPositions = wallPositions;
+        }
+    }
+
     [ContextMenu("Generate full dungeon data")]
     public void GenerateFullData()
     {
@@ -170,6 +190,9 @@ public class DungeonRoomScript : MonoBehaviour
 
         return TileTypes.undefined.ToString();
     }
+    
+    
+    
     #region  wizualizacja
     [ContextMenu("SpawnFirstRoom-Visual")]
     public void SpawnRoomVisual()

@@ -90,7 +90,7 @@ public partial class ActionButtonScript : MonoBehaviour
     }
     public void ConfigureDescriptionButtonClick(Action action, string description, bool singleAction = true, string actionNameString = "")
     { 
-        Debug.LogWarning("config. btn description =>"+description);
+//        Debug.LogWarning("config. btn description =>"+description);
       //  print("przypisanie "+actionNameString);
         Description_Button.onClick.RemoveAllListeners();
         this.gameObject.name = "ACTION_"+description;

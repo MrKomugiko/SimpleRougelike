@@ -83,8 +83,10 @@ public class Monster_Cell :ICreature
     public List<(Action action,string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
     public string Name { get; set; }
 
+    public MonsterData MonsterData_Backup_DATA;
     public Monster_Cell(CellScript parent, MonsterData _data)
     {
+        MonsterData_Backup_DATA = _data;
         this.ParentCell                   =       parent;       
         this.lootID                       =       _data.LootData;
         this.Name                         =       _data.MonsterName;

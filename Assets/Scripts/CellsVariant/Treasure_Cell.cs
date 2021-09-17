@@ -22,9 +22,12 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 
     private List<Chest.ItemPack> RandomGeneratedLoot = new List<Chest.ItemPack>();
 
+    public TreasureData TreasureData_Backup_DATA;
+
     public IChest chest {get;} = null;
     public Treasure_Cell(CellScript parent, TreasureData _data)
     {
+        TreasureData_Backup_DATA = _data;
         this.ParentCell             =       parent;
         this.ID                     =       _data.ID;
         this.Name                   =       _data.TreasureName;
@@ -37,10 +40,10 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         if(goldReward == null)
         {
             RandomGeneratedLoot.Add(new ItemPack(GoldValue,_data.PossibleLootItems.Where(item=>item is GoldItem).First()));
-            foreach(var item in RandomGeneratedLoot)
-            {
-                Debug.Log("* "+item.Count + " / "+ item.item.name);
-            }
+            // foreach(var item in RandomGeneratedLoot)
+            // {
+            //     Debug.Log("* "+item.Count + " / "+ item.item.name);
+            // }
         }
         else
         {
@@ -51,14 +54,14 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         
         if(RandomGeneratedLoot.Count==1)
         {
-            Debug.Log("RandomGeneratedLoot.Count == 1");
+         //   Debug.Log("RandomGeneratedLoot.Count == 1");
             // przypadek tylko golda w środku
             treasureObject.GetComponent<SpriteRenderer>().sprite = RandomGeneratedLoot[0].item.ItemCoreSettings.Item_Sprite;
             RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
         }
         else
         {
-            Debug.Log("RandomGeneratedLoot.Count > 1");
+           // Debug.Log("RandomGeneratedLoot.Count > 1");
             RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
             treasureObject.GetComponent<SpriteRenderer>().sprite = this.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
             chest = new Chest(source:this,RandomGeneratedLoot);

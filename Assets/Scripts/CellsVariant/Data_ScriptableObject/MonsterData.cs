@@ -8,6 +8,7 @@ public class MonsterData : ScriptableObject
     public GameObject Icon_Sprite;
     public GameObject Corpse_Sprite;
     public int MaxHealthPoints; 
+    public int CurrentHealthPoints;
     public int Speed;
     public TreasureData LootData;
     public int Damage;
@@ -16,6 +17,4 @@ public class MonsterData : ScriptableObject
     public TileTypes Type = TileTypes.monster;
     public bool IsWalkable = true;
     public bool IsPathfinderRequired = true;
-
-    
 }

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static GameManager;
+using static DungeonRoomScript;
 
 public class GridManager : MonoBehaviour
 {
@@ -38,9 +39,14 @@ public class GridManager : MonoBehaviour
         foreach(var cell in CellGridTable)
         {
             cell.Value.SpecialTile = null;
+            cell.Value.AssignType(TileTypes.grass);
             cell.Value.SetCell(cell.Key,false);
         }
     }
+
+
+
+
     public void RandomizeDataOnGrid()
     {
         foreach(var cell in CellGridTable)

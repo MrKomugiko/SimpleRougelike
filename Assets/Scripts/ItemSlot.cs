@@ -109,6 +109,11 @@ public class ItemSlot : MonoBehaviour
                 _btn.onClick.RemoveAllListeners();
                 _itemIcon.sprite = _emptyBackground.sprite;
             }
+            else
+            {
+
+                _itemIcon.sprite = value.item.ItemCoreSettings.Item_Sprite;
+            }
 
            
         }
@@ -148,6 +153,7 @@ public class ItemSlot : MonoBehaviour
         
         if(PLAYER_BACKPACK)
         {
+            Debug.Log(" _btn.onClick.AddListener(()=>ShowDetailsWindow());   ");
             _btn.onClick.AddListener(()=>ShowDetailsWindow());   
         }
     }
@@ -192,6 +198,7 @@ public class ItemSlot : MonoBehaviour
         {
             if(slotInBackpack.update)
             {
+                
                 PlayerManager.instance._mainBackpack.ItemSlots[slotInBackpack.index].UpdateItemAmount(1);
                 this.UpdateItemAmount(-1);
             }

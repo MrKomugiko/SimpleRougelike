@@ -53,7 +53,7 @@ public class PlayerManager: MonoBehaviour
         PlayerManager.instance._playerCell._pathfinder.FindPath(target);
         if(PlayerManager.instance._playerCell._pathfinder.FinalPath.Count > PlayerManager.instance.MoveRange) 
         {
-            print("point is too far");
+          //  print("point is too far");
             GameManager.instance.MovingRequestTriggered = false;
             yield break;
         }
@@ -63,7 +63,7 @@ public class PlayerManager: MonoBehaviour
             GameManager.instance.MovingRequestTriggered = false;
             yield break;
         }
-        print("wystartowanie autopilota");
+       // print("wystartowanie autopilota");
         playerCurrentlyMoving = true;
         PlayerManager.instance.MovmentValidator.HideGrid();
         foreach(var path in  PlayerManager.instance._playerCell._pathfinder.FinalPath)

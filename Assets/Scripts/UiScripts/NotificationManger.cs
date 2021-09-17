@@ -46,7 +46,7 @@ public partial class NotificationManger : MonoBehaviour
     
      public static void CreatePlayerNotificationElement(ISelectable cellRelated)
     {
-        print("CreatePlayerNotificationElement");
+       // print("CreatePlayerNotificationElement");
     
          var existingnotification = NotificationManger.instance.NotificationList.Where(c=>(c.BaseCell ==  (cellRelated as ISpecialTile).ParentCell)).FirstOrDefault();
             //int oldHierarhyPosition = 1;
@@ -79,9 +79,9 @@ public partial class NotificationManger : MonoBehaviour
                 // }
 
                 
-                    Debug.LogWarning("only load item in quicslot dont restart."); 
+                  //  Debug.LogWarning("only load item in quicslot dont restart."); 
                
-                    Debug.LogWarning("config. załadowanie wczesniej przypisanych itemkow do quickslota");
+                  //  Debug.LogWarning("config. załadowanie wczesniej przypisanych itemkow do quickslota");
                     var quick_0 = GameManager.instance.PLAYER_PROGRESS_DATA.ItemAssignedToAuicslot_0;
                     if(quick_0 != null)
                     {
@@ -97,7 +97,7 @@ public partial class NotificationManger : MonoBehaviour
 
         existingnotification = NotificationManger.instance.NotificationList.Where(n=>n == notification).First();
         notification.PossibleActions.GetComponent<ActionSwitchController>().ConfigurePlayerButtons((cellRelated as ISpecialTile), "default");
-        Debug.Log("dodanie canvas'a do quickslota gracza");
+       // Debug.Log("dodanie canvas'a do quickslota gracza");
         var canvas = existingnotification.gameObject.AddComponent<Canvas>();
         NotificationManger.instance.StartCoroutine(NotificationManger.instance.DoWhenActiveInHierarchy(canvas.gameObject, 
         ()=>{

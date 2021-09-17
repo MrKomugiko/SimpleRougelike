@@ -17,14 +17,14 @@ public class CustomEventManager : MonoBehaviour
 
     public void RegisterMonsterInEventManager(Monster_Cell monster_Cell)
     {
-        Debug.LogError("nowy mosnter: "+monster_Cell.Name);
+//        Debug.LogError("nowy mosnter: "+monster_Cell.Name);
         monster_Cell.OnMonsterDieEvent += DeathAnimation;
         monster_Cell.OnMonsterTakeDamageEvent += FloatingDamageValueAnimation;
     }
 
     private void FloatingDamageValueAnimation(object sender, (CellScript parent, int damageTaken) e)
     {
-        print("rozpoczecie animacji zadania obrazenia i unoszacej sie wartosci dmg");
+     //   print("rozpoczecie animacji zadania obrazenia i unoszacej sie wartosci dmg");
         StartCoroutine(AnimateDamage(e.parent,e.damageTaken));
     }
 

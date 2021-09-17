@@ -219,7 +219,7 @@ public class CellScript : MonoBehaviour
         }
 
             GameManager.instance.MovingRequestTriggered = true;
-            print("spokojnie mozna sie ruszyc");
+         //   print("spokojnie mozna sie ruszyc");
             StartCoroutine(PlayerManager.instance.Autopilot(this));
         
     }

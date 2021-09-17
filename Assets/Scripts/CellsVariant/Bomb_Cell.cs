@@ -50,9 +50,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     public List<CellScript> CellsToDestroy = new List<CellScript>();
     public List<Vector2Int> ExplosionVectors = new List<Vector2Int>();
     internal bool IsImpactAreaHighlihted = false;
- 
+    public BombData BombData_Backup_DATA;
     public Bomb_Cell(CellScript parent, BombData _data)
     {
+
+        BombData_Backup_DATA = _data;
         this.ParentCell                   =       parent;       
         this.ParentCell.IsWalkable        =       _data.IsWalkable;
         this.Type                         =       _data.Type;;
@@ -260,6 +262,8 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
         }
     }
     private List<GameObject> HighlihtedArea = new List<GameObject>();
+
+
     public void SwitchHighlightImpactArea()
     {
         Debug.Log($"switch impact area range from {IsImpactAreaHighlihted} to {!IsImpactAreaHighlihted}");

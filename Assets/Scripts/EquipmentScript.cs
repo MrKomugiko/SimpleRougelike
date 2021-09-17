@@ -209,7 +209,7 @@ public class EquipmentScript : MonoBehaviour
                 ItemPack currentEquipedItemCopy = new ItemPack(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count,toEquipment.ItemSlots[matchEqSlotIndex].ITEM.item);
                 // ItemPack currentEquipedItemCopy = toEquipment.ItemSlots[matchEqSlotIndex].ITEM;
                 toEquipment.ItemSlots[matchEqSlotIndex].UpdateItemAmount(-1);
-                PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(currentEquipedItemCopy.item as EquipmentItem);
+                PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(currentEquipedItemCopy.item as EquipmentItem);   
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
                 this.ItemSlots[fromSlot.itemSlotID].AddNewItemToSlot(currentEquipedItemCopy);
                 toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
@@ -290,6 +290,17 @@ public class EquipmentScript : MonoBehaviour
                     return (false,false,-1);   
             }
 
+            Debug.Log("dodanie istniejacego slota z tym itemkiem");
+            Debug.Log(slot.ITEM.Count+"szt -> "+slot.ITEM.item.name);
+    
+            if(slot.IsEmpty == true)
+            {
+                // true = mozna wlozyc
+                // false = trzeba nadpisac bo slot jest juz pusty ( zuzyty potek np.)
+                return (true,false,slot.itemSlotID);   
+            }
+            // true = znaleziono miejsce
+            // true = wystarczy tylko dodac 1 szt do tego slota
             return (true,true,slot.itemSlotID);   
         }
 

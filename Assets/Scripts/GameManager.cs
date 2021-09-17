@@ -104,6 +104,7 @@ public class GameManager : MonoBehaviour
            int _monstersInRange = PlayerManager.instance.MovmentValidator.ShowValidAttackGrid();
            if(_monstersInRange == 0)
            {
+               Debug.Log("no monsters to attack");
                 PlayerManager.instance.MovmentValidator.HideGrid();
                 CurrentTurnPhase = TurnPhase.MonsterMovement;
                 TurnImageIndicators[1].color = Color.green;
