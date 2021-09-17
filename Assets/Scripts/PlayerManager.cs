@@ -68,6 +68,7 @@ public class PlayerManager: MonoBehaviour
         PlayerManager.instance.MovmentValidator.HideGrid();
         foreach(var path in  PlayerManager.instance._playerCell._pathfinder.FinalPath)
         {
+           
             Vector2Int direction = GameManager.Player_CELL.CurrentPosition-path.Coordination;
             if(direction.x == 0)
                 GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";

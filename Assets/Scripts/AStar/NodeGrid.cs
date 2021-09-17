@@ -22,7 +22,7 @@ public class NodeGrid : MonoBehaviour
                MAPDATA[x,y] = new Node(x,y,_isWalkable: true, false);                
             }
         }
-        print("liczba dostępnych nodów w MAPDATA =  "+MAPDATA.Length);
+        Debug.Log("liczba dostępnych nodów w MAPDATA =  "+MAPDATA.Length);
 
     }
     public static void UpdateMapObstacleData(bool passTroughtMonsters = false)

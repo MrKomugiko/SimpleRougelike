@@ -17,7 +17,7 @@ public class CellScript : MonoBehaviour
     public List<String> DEBUG_BUTTON_ATTACHED_METHODS;
     public List<GameObject> Trash = new List<GameObject>();
     [SerializeField] private ISpecialTile _specialTile;
-    [SerializeField] private bool isWalkable = true;
+    [SerializeField] public bool isWalkable = true;
 
     [SerializeField] private string CurrentAssignedSpecialTileScript;
     public bool IsCurrentlyMoving;
@@ -199,7 +199,12 @@ public class CellScript : MonoBehaviour
     
     public void MoveTo()
     {
-        
+        if(this.gameObject.transform.Find("MarkSign(Clone)").gameObject.activeInHierarchy == false) 
+        {
+            Debug.LogError("yr not allowed to move this spot");
+            return;
+        }
+
         Debug.Log("click on cell "+CurrentPosition);
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
         {

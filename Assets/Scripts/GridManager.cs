@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameManager;
 
 public class GridManager : MonoBehaviour
 {
@@ -30,15 +31,40 @@ public class GridManager : MonoBehaviour
             }   
         }
     }
+    [ContextMenu("RESET")]
+    public void ResetGridToDefault()
+    {
+        Debug.Log("reset");
+        foreach(var cell in CellGridTable)
+        {
+            cell.Value.SpecialTile = null;
+            cell.Value.SetCell(cell.Key,false);
+        }
+    }
     public void RandomizeDataOnGrid()
     {
         foreach(var cell in CellGridTable)
         {
-            cell.Value.AssignType(GetRandomType());
+            if(cell.Key.x==0 || cell.Key.x==_gridSize.x-1||cell.Key.y==0 || cell.Key.y==_gridSize.y-1 )
+            {
+                cell.Value.AssignType(TileTypes.grass);
+                cell.Value.isWalkable = false;
+            }
+            else
+                cell.Value.AssignType(GetRandomType());
         }
         
-        GameManager.instance.Init_PlacePlayerOnGrid();
-         
+        CellGridTable[new Vector2Int(0,4)].AssignType(TileTypes.grass);
+        CellGridTable[new Vector2Int(0,4)].isWalkable = true;
+
+        CellGridTable[new Vector2Int(8,4)].AssignType(TileTypes.grass);
+        CellGridTable[new Vector2Int(8,4)].isWalkable = true;
+
+        CellGridTable[new Vector2Int(4,0)].AssignType(TileTypes.grass);
+        CellGridTable[new Vector2Int(4,0)].isWalkable = true;
+
+        CellGridTable[new Vector2Int(4,8)].AssignType(TileTypes.grass);
+        CellGridTable[new Vector2Int(4,8)].isWalkable = true;        
         // wyczysc mape z pustych skrzynek
         foreach(var cell in CellGridTable.Values)
         {
@@ -47,6 +73,8 @@ public class GridManager : MonoBehaviour
                 (cell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
             }
         }
+
+        
     }
     public static TileTypes GetRandomType()
     {
@@ -116,7 +144,43 @@ public class GridManager : MonoBehaviour
         CellGridTable[positionToFill] = destroyedTilesPool.First();
         destroyedTilesPool.Remove(destroyedTilesPool.First());
         CellGridTable[positionToFill].SetCell(positionToFill,false);
-        CellGridTable[positionToFill].AssignType(GetRandomType());      
+        if(positionToFill == new Vector2Int(0,4))
+        {
+            CellGridTable[new Vector2Int(0,4)].AssignType(TileTypes.grass);
+            CellGridTable[new Vector2Int(0,4)].isWalkable = true;
+            return;
+        }
+
+        if(positionToFill == new Vector2Int(8,4))
+        {
+            CellGridTable[new Vector2Int(8,4)].AssignType(TileTypes.grass);
+            CellGridTable[new Vector2Int(8,4)].isWalkable = true;
+            return;
+        }
+        if(positionToFill == new Vector2Int(4,0))
+        {
+            CellGridTable[new Vector2Int(4,0)].AssignType(TileTypes.grass);
+            CellGridTable[new Vector2Int(4,0)].isWalkable = true;
+            return;
+        }
+        if(positionToFill == new Vector2Int(4,8))
+        {
+            CellGridTable[new Vector2Int(4,8)].AssignType(TileTypes.grass);
+            CellGridTable[new Vector2Int(4,8)].isWalkable = true;
+            return;
+        }
+
+        if(positionToFill.x==0 || positionToFill.x==GridManager.instance._gridSize.x-1||positionToFill.y==0 || positionToFill.y==GridManager.instance._gridSize.y-1 )
+        {
+                CellGridTable[positionToFill].AssignType(TileTypes.grass);
+                CellGridTable[positionToFill].isWalkable = false;
+        }
+        else
+        {
+            CellGridTable[positionToFill].SetCell(positionToFill,false);
+            CellGridTable[positionToFill].AssignType(GetRandomType());      
+        }
+ 
     }
     public static void SendToGraveyard(Vector2Int cellPosition)
     {

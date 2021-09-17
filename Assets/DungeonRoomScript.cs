@@ -7,11 +7,15 @@ using UnityEngine.UI;
 
 public class DungeonRoomScript : MonoBehaviour
 {
-   [SerializeField] List<Sprite> roomsTemplates = new List<Sprite>();
+    public static DungeonRoomScript instance;
+    private void Awake() {
+        instance = this;
+    }
+   [SerializeField] public List<Sprite> roomsTemplates = new List<Sprite>();
 
    public Vector2Int Location = Vector2Int.zero;
    public Dictionary<Vector2Int, SpriteRenderer> existingRooms = new Dictionary<Vector2Int, SpriteRenderer>();
-    public Dictionary<string, Vector2Int> directionsDict = new Dictionary<string, Vector2Int>{
+    public static Dictionary<string, Vector2Int> directionsDict = new Dictionary<string, Vector2Int>{
         {"W",Vector2Int.up},
         {"D",Vector2Int.right},
         {"S",Vector2Int.down},
@@ -20,10 +24,11 @@ public class DungeonRoomScript : MonoBehaviour
 
     
     [ContextMenu("SpawnFirstRoom")]
-    public void SpawnRoom()
+    public static void GenerateDungeonRooms()
     {
         // create init center room
         Room MainRoom = new Room(Vector2Int.zero,"WDSA");
+        Dungeon.Clear();
         Dungeon.Add(Vector2Int.zero,MainRoom);
         foreach(var dirChar in "WDSA".ToCharArray().ToList())
         {
@@ -31,7 +36,7 @@ public class DungeonRoomScript : MonoBehaviour
         }
     }
     public static Dictionary<Vector2Int, Room> Dungeon = new Dictionary<Vector2Int, Room>();
-    private void CreateRoom(Vector2Int from, Vector2Int direction)
+    private static void CreateRoom(Vector2Int from, Vector2Int direction)
     {
         print("create new room from " + from + " in direction:" + direction);
         var newLocation = from + direction;
@@ -49,7 +54,7 @@ public class DungeonRoomScript : MonoBehaviour
             }
         }
     }
-    private string AdjustDorrsBasedOnNeighbours(Vector2Int location)
+    private  static string AdjustDorrsBasedOnNeighbours(Vector2Int location)
     {
         string W = "";
         string D = "";
@@ -116,7 +121,7 @@ public class DungeonRoomScript : MonoBehaviour
     [ContextMenu("Generate full dungeon data")]
     public void GenerateFullData()
     {
-        SpawnRoom();
+        GenerateDungeonRooms();
 
         string FULLDATA = "";
         string wallsDATA = "";
@@ -182,7 +187,7 @@ public class DungeonRoomScript : MonoBehaviour
     room.name = Location.ToString();
     var spriteRenderer = room.AddComponent<SpriteRenderer>();
     spriteRenderer.sortingOrder = 150;
-    spriteRenderer.sprite = roomsTemplates[UnityEngine.Random.Range(0, 15)];
+    spriteRenderer.sprite = roomsTemplates.Where(n=> n.name == "WDSA_OPEN").First();
     existingRooms.Add(Vector2Int.zero, spriteRenderer);
 
     var avaiablenewroomDirections = room.GetComponent<SpriteRenderer>().sprite.name.Replace("_OPEN", "").ToCharArray();
