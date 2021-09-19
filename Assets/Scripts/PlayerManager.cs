@@ -117,9 +117,10 @@ public class PlayerManager: MonoBehaviour
 
         Debug.Log("Load data from player progress file");
         // progress & resources 
-        STATS.Experience       =  _progressData.Experience;                   // OK - setter
+         Debug.LogError("wczytanie expa:"+_progressData.Experience);
         NickName         =  _progressData.NickName;             // TODO: aktualizuje sie w PlayerCell przy starcie - nowa mapa           
         STATS.Level            =  _progressData.Level;                        // OK - setter
+        STATS.Experience       =  _progressData.Experience;                   // OK - setter
         STATS.AvailablePoints  =  _progressData.AvailablePoints;              // OK - setter
         STATS.Strength         =  _progressData.Strength;             // TODO: aktualizacja przy starcie gracza                                         
         STATS.Inteligence      =  _progressData.Inteligence;          // TODO: aktualizacja przy starcie gracza                             
@@ -285,11 +286,13 @@ public class PlayerManager: MonoBehaviour
     [ContextMenu("Wykonaj zrzut danych gracza")]
     public void SavePlayerData()
     {
+        Debug.LogError("ZAPISANIE POSTEPOW GRACZA");
         PlayerProgressModel _updatedData = GameManager.instance.PLAYER_PROGRESS_DATA;
         _updatedData.LastVisitedDate = DateTime.Now;
    // -------------------
         _updatedData.Level =                    this.STATS.Level;
         _updatedData.Experience =               this.STATS.Experience;
+        Debug.LogError("zapisanie expa:"+_updatedData.Experience);
         _updatedData.MaxHealth=                 Mathf.RoundToInt(this.STATS.HealthPoints);
         _updatedData.CurrentHealth =            this.CurrentHealth;
         _updatedData.Power =                    this.Power;

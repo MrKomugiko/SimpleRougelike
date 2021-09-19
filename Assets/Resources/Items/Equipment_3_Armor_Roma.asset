@@ -27,12 +27,20 @@ MonoBehaviour:
     IsStackable: 0
     StackSize: 5
   RequirmentsSettings:
-    Level: 2
-    Strength: 3
-    Inteligence: 2
-    Dexterity: 2
+    Level: 0
+    Strength: 0
+    Inteligence: 0
+    Dexterity: 0
   CanBeAssignToQuickActions: 0
   eqType: 0
+  MainPerks:
+  - type: 7
+    value: 100
+  ExtraPerks:
+  - type: 3
+    value: 3
+  - type: 4
+    value: 20
   FrontSprite: {fileID: 1830846804, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}
   BackSprite: {fileID: 708081810, guid: a82c3db48e7e7c9478b007bf60fb6fd1, type: 3}
   LeftSprite: {fileID: 0}

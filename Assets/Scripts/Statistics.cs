@@ -8,11 +8,12 @@ using UnityEngine.UI;
 
 public class Statistics : MonoBehaviour
 {
-    [SerializeField] private int _experience, _level, _availablePoints, _dexterity, _strength, _inteligence, _vitality;
+    [SerializeField] private int _experience, _level, _availablePoints, _dexterity, _strength, _inteligence, _vitality, _armor;
     [SerializeField] private float _extra_Critical_Hit_Rate, _extra_Critical_Hit_Damage, _critical_Hit_Rate, 
         _critical_Hit_Damage, _extra_Accuracy, _extra_Evasion,_accuracy,_evasion,_baseDamage, _staminaPoints, 
         _staminaRegeneration, _energyPoints, _energyRegeneration, _healthPoints, _healthRegeneration, _blockChance,
-        _extra_BlockChance;
+        _extra_BlockChance, _extra_DamageReductione, _damageReductione,_extra_EnergyPoints,_extra_StaminaPoints,
+        _extra_HealthPoints,_extra_DamageReduction;
     [SerializeField] public (float min, float max) _extraDamage;
 
     public int Level {
@@ -150,8 +151,8 @@ public class Statistics : MonoBehaviour
                 // print("Level UP");
                 if (_experience < 0) _experience = 1;
                 UIManager.instance.Experience_Bar.UpdateBar(_experience, NextLevelExperience);
-            }
-            if (_experience < 0)
+            } 
+            else if (_experience < 0)
             {
                  _experience = 1;
                 UIManager.instance.Experience_Bar.UpdateBar(_experience, NextLevelExperience);
@@ -198,7 +199,7 @@ public class Statistics : MonoBehaviour
         get => _staminaPoints; 
         set 
         {
-            _staminaPoints = 4 + Mathf.RoundToInt((Strength * .5f) + (Vitality * .2f)); 
+            _staminaPoints = 4 + Mathf.RoundToInt((Strength * .5f) + (Vitality * .2f)) + Extra_StaminaPoints; 
             StaminaPoints_TMP.SetText(_staminaPoints.ToString());
         } 
     }
@@ -213,7 +214,7 @@ public class Statistics : MonoBehaviour
         get => _energyPoints; 
         set 
         {
-            _energyPoints = 4 + Inteligence * 1f;
+            _energyPoints = 4 + Inteligence * 1f + Extra_EnergyPoints;
             EnergyPoints_TMP.SetText(_energyPoints.ToString());
         } 
     }
@@ -228,7 +229,7 @@ public class Statistics : MonoBehaviour
         get => _healthPoints; 
         set 
         {
-            _healthPoints = 25 + Mathf.RoundToInt(Vitality * 1f);
+            _healthPoints = 25 + Mathf.RoundToInt(Vitality * 1f) + Extra_HealthPoints;
             HealthPoints_TMP.SetText(_healthPoints.ToString());
             UIManager.instance.Health_Bar.UpdateBar(PlayerManager.instance.CurrentHealth,Mathf.RoundToInt(_healthPoints));
         } 
@@ -248,6 +249,27 @@ public class Statistics : MonoBehaviour
                 BlockChance_TMP.SetText(BlockChance.ToString() + "%");
             } 
         }
+    public int Armor{
+        get => _armor; 
+        set
+        {
+            _armor = value;
+            // refreshes
+            DamageReduction = DamageReduction;
+            Armor_TMP.SetText(_armor.ToString());
+        }
+    }
+    public float DamageReduction
+      {
+        get => _damageReductione; 
+        private set
+        {
+            float baseValue = Armor * 0.01f;
+            _damageReductione = baseValue + Extra_DamageReduction;;
+              // TODO: update in player statistic window
+            DamageReduction_TMP.SetText(_damageReductione.ToString("N2")+"%");
+        }
+    }
     
     public  (float min, float max) Extra_Damage{
         get => _extraDamage;
@@ -257,6 +279,33 @@ public class Statistics : MonoBehaviour
              //refresh
              TotalDamage = TotalDamage;
         }
+    }
+    public float Extra_HealthPoints { 
+    get => _extra_HealthPoints; 
+    private set 
+    {
+        _extra_HealthPoints = value; 
+        //refresh
+        HealthPoints = HealthPoints;
+    } 
+}
+    public float Extra_StaminaPoints { 
+    get => _extra_StaminaPoints; 
+        private set 
+        {
+            _extra_StaminaPoints = value; 
+            //refresh
+            StaminaPoints = StaminaPoints;
+        } 
+    }
+    public float Extra_EnergyPoints { 
+    get => _extra_EnergyPoints; 
+    private  set 
+        {
+            _extra_EnergyPoints = value; 
+            //refresh
+            EnergyPoints = EnergyPoints;
+        } 
     }
     public float Extra_Critical_Hit_Rate { 
         get => _extra_Critical_Hit_Rate; 
@@ -302,12 +351,21 @@ public class Statistics : MonoBehaviour
             BlockChance = BlockChance;
         }
     }
-
+    
+    public float Extra_DamageReduction{
+        get => _extra_DamageReductione; 
+        set
+        {
+            _extra_DamageReduction = value;
+            DamageReduction = DamageReduction;
+        }
+    }
     public int NextLevelExperience => (Level) * (15 * Level * 2);
 
     [SerializeField] TextMeshProUGUI AvailablePoints_TMP, CriticalHitRate_TMP, CriticalHitDamage_TMP, 
         Accuracy_TMP, Evasion_TMP, BaseDamage_TMP, StaminaPoints_TMP, StaminaRegeneration_TMP, HealthPoints_TMP, 
-        HealthRegeneration_TMP, EnergyPoints_TMP, EnergyRegeneration_TMP, BlockChance_TMP,TotalDamage_TMP;
+        HealthRegeneration_TMP, EnergyPoints_TMP, EnergyRegeneration_TMP, BlockChance_TMP,TotalDamage_TMP,Armor_TMP,
+        DamageReduction_TMP;
     [SerializeField] List<Button> CoreStatButtonsList = new List<Button>();
 
     public void AddValue(string statname, float statisticChangeValue = 1)
@@ -340,6 +398,11 @@ public class Statistics : MonoBehaviour
         Extra_Critical_Hit_Damage = 0;
         Extra_Critical_Hit_Rate = 0;
         Extra_Damage = (0,0);
+        Extra_DamageReduction = 0;
+        Extra_HealthPoints = 0;
+        Extra_StaminaPoints = 0;
+        Extra_EnergyPoints = 0;
+        
     }
     
 
@@ -362,20 +425,52 @@ public class Statistics : MonoBehaviour
         switch(perk.type)
         {
             case PerkType.MinAttack:
-                Extra_Damage = ( Extra_Damage.min+Int32.Parse(perk.value), Extra_Damage.max);
-                return;
+                Extra_Damage = ( Extra_Damage.min+Int32.Parse(perk.value), Extra_Damage.max);   return;
 
             case PerkType.MaxAttack:
-                Extra_Damage = ( Extra_Damage.min, Extra_Damage.max+Int32.Parse(perk.value));
-                return;
+                Extra_Damage = ( Extra_Damage.min, Extra_Damage.max+Int32.Parse(perk.value));   return;
 
             case PerkType.StrengthBonus:
-                Strength+=Int32.Parse(perk.value);
-                return;
+                Strength+=Int32.Parse(perk.value);  return;
 
             case PerkType.VitalityBonus:
-                Vitality+=Int32.Parse(perk.value);
-                return;
+                Vitality+=Int32.Parse(perk.value);  return;
+
+            case PerkType.DexterityBonus:
+                Dexterity+=Int32.Parse(perk.value);  return;
+
+            case PerkType.InteligenceBonus:
+                Inteligence+=Int32.Parse(perk.value);  return;
+
+            case PerkType.Armor:
+                Armor += Int32.Parse(perk.value);  return;
+
+            case PerkType.Accuracy:
+                Extra_Accuracy += Int32.Parse(perk.value); return;
+
+            case PerkType.Evasion:
+                Extra_Evasion += Int32.Parse(perk.value); return;
+
+            case PerkType.BlockRate:
+                Extra_BlockChance += (float)Double.Parse(perk.value); return;
+
+            case PerkType.MaxHealth:
+                Extra_HealthPoints += Int32.Parse(perk.value); return;
+
+            case PerkType.MaxStamina:
+                Extra_StaminaPoints += Int32.Parse(perk.value); return;
+                
+            case PerkType.MaxEnergy:
+                Extra_EnergyPoints += Int32.Parse(perk.value); return;
+                
+            case PerkType.CriticalHitDamage:
+                Extra_Critical_Hit_Damage += (float)Double.Parse(perk.value); return;
+
+            case PerkType.CrticalHitRate:
+                Extra_Critical_Hit_Rate += (float)Double.Parse(perk.value); return;
+                
+            case PerkType.DamageReduction:
+                Extra_DamageReduction += (float)Double.Parse(perk.value); return;
         }
     }
     private void SubtractValueByPerkData(Perk perk)
@@ -397,6 +492,42 @@ public class Statistics : MonoBehaviour
             case PerkType.VitalityBonus:
                 Vitality-=Int32.Parse(perk.value);
                 return;
+            
+            case PerkType.DexterityBonus:
+                Dexterity-=Int32.Parse(perk.value);  return;
+
+            case PerkType.InteligenceBonus:
+                Inteligence-=Int32.Parse(perk.value);  return;
+
+            case PerkType.Armor:
+                Armor -= Int32.Parse(perk.value);  return;
+
+            case PerkType.Accuracy:
+                Extra_Accuracy -= Int32.Parse(perk.value); return;
+
+            case PerkType.Evasion:
+                Extra_Evasion -= Int32.Parse(perk.value); return;
+
+            case PerkType.BlockRate:
+                Extra_BlockChance -= (float)Double.Parse(perk.value); return;
+
+            case PerkType.MaxHealth:
+                Extra_HealthPoints -= Int32.Parse(perk.value); return;
+
+            case PerkType.MaxStamina:
+                Extra_StaminaPoints -= Int32.Parse(perk.value); return;
+                
+            case PerkType.MaxEnergy:
+                Extra_EnergyPoints -= Int32.Parse(perk.value); return;
+                
+            case PerkType.CriticalHitDamage:
+                Extra_Critical_Hit_Damage -= (float)Double.Parse(perk.value); return;
+
+            case PerkType.CrticalHitRate:
+                Extra_Critical_Hit_Rate -= (float)Double.Parse(perk.value); return;
+                
+            case PerkType.DamageReduction:
+                Extra_DamageReduction -= (float)Double.Parse(perk.value); return;
         }
     }
 }

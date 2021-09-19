@@ -23,15 +23,16 @@ public class HeroDataController : MonoBehaviour
         
         LoadHeroesDataFromDevice();
     }
-    private void CreateEmptyHeroCards()
+    public void CreateEmptyHeroCards()
     {
         for (int i = 0; i < 6; i++)
         {
             CreateEmptyHeroDataIfNotExist(i);
+            if(storedHeroesCard.ContainsKey(i)) continue;
             storedHeroesCard.Add(i,Instantiate(HeroCard_Prefab,HerolistContainer.transform).GetComponent<HeroLoadCard>());
         }
     }
-    private void CreateEmptyHeroDataIfNotExist(int _ID)
+    public void CreateEmptyHeroDataIfNotExist(int _ID)
     {
         List<int> existingIndexes = new List<int>();
 
@@ -90,7 +91,9 @@ public class HeroDataController : MonoBehaviour
         }
 
         string heroDataFromDevice_JSON = File.ReadAllText(heroPath);
-        data = JsonConvert.DeserializeObject<PlayerProgressModel>(heroDataFromDevice_JSON);
+
+        data = JsonConvert.DeserializeObject<PlayerProgressModel>(heroDataFromDevice_JSON); 
+
         //print("odczytano dane: nick == "+data.NickName);
         if(data.isDeleted == true) 
         {
@@ -100,7 +103,6 @@ public class HeroDataController : MonoBehaviour
             return data;
         }
 
-      //  print(data.NickName);
         return data;
     } 
     public void CreateNewHero(int slotID)
@@ -197,6 +199,7 @@ public class HeroDataController : MonoBehaviour
     {
         if(storedHeroesCard.Any(hero=>hero.Value.data.NickName == _updatedData.NickName))  
         {
+            Debug.LogError("ZAPISANIE POSTEPOW NA URZADZENIU - w pliku");
           //  Debug.LogError("hero exist, overrite data");
             string JSONresult = JsonConvert.SerializeObject(_updatedData);
 

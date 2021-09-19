@@ -83,12 +83,49 @@ public partial class NotificationManger : MonoBehaviour
                
                   //  Debug.LogWarning("config. załadowanie wczesniej przypisanych itemkow do quickslota");
                     var quick_0 = GameManager.instance.PLAYER_PROGRESS_DATA.ItemAssignedToAuicslot_0;
+                    var quick_1 = GameManager.instance.PLAYER_PROGRESS_DATA.ItemAssignedToAuicslot_1;
+                    var quick_2 = GameManager.instance.PLAYER_PROGRESS_DATA.ItemAssignedToAuicslot_2;
+                    var quick_3 = GameManager.instance.PLAYER_PROGRESS_DATA.ItemAssignedToAuicslot_3;
+                    var quick_4 = GameManager.instance.PLAYER_PROGRESS_DATA.ItemAssignedToAuicslot_4;
+
                     if(quick_0 != null)
                     {
                         if(string.IsNullOrEmpty(quick_0.ScriptableObjectName) == false)
                         {
                             Debug.LogError($"wrzucanie itemka z slotu [{quick_0.SlotID}] do quicslotu nr0");
                             PlayerManager.instance._mainBackpack.ItemSlots[quick_0.SlotID].AssignToQuickSlot(0);
+                        }
+                    }
+                    if(quick_1 != null)
+                    {
+                        if(string.IsNullOrEmpty(quick_1.ScriptableObjectName) == false)
+                        {
+                            Debug.LogError($"wrzucanie itemka z slotu [{quick_1.SlotID}] do quicslotu nr1");
+                            PlayerManager.instance._mainBackpack.ItemSlots[quick_1.SlotID].AssignToQuickSlot(1);
+                        }
+                    }
+                    if(quick_2 != null)
+                    {
+                        if(string.IsNullOrEmpty(quick_2.ScriptableObjectName) == false)
+                        {
+                            Debug.LogError($"wrzucanie itemka z slotu [{quick_2.SlotID}] do quicslotu nr2");
+                            PlayerManager.instance._mainBackpack.ItemSlots[quick_2.SlotID].AssignToQuickSlot(2);
+                        }
+                    }
+                    if(quick_0 != null)
+                    {
+                        if(string.IsNullOrEmpty(quick_3.ScriptableObjectName) == false)
+                        {
+                            Debug.LogError($"wrzucanie itemka z slotu [{quick_3.SlotID}] do quicslotu nr3");
+                            PlayerManager.instance._mainBackpack.ItemSlots[quick_3.SlotID].AssignToQuickSlot(3);
+                        }
+                    }
+                    if(quick_4 != null)
+                    {
+                        if(string.IsNullOrEmpty(quick_4.ScriptableObjectName) == false)
+                        {
+                            Debug.LogError($"wrzucanie itemka z slotu [{quick_4.SlotID}] do quicslotu nr4");
+                            PlayerManager.instance._mainBackpack.ItemSlots[quick_4.SlotID].AssignToQuickSlot(4);
                         }
                     }
             }

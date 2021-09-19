@@ -49,7 +49,9 @@ public class EquipmentItem : ItemData
         MaxAttack,              DamageReduction,    StrengthBonus,
         Range,                  Armor,              InteligenceBonus,
         CrticalHitRate,         HealthRegen,        DexterityBonus,
-        CriticalHitDamage,      StaminaRegen,       VitalityBonus
+        CriticalHitDamage,      StaminaRegen,       VitalityBonus,
+        BlockRate,              MaxHealth,          MaxStamina,
+        MaxEnergy,
     }
     public enum EquipmentType
     {

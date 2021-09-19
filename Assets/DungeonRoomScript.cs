@@ -197,121 +197,122 @@ public class DungeonRoomScript : MonoBehaviour
     
     
     #region  wizualizacja
-    [ContextMenu("SpawnFirstRoom-Visual")]
-    public void SpawnRoomVisual()
-    {
-    foreach (var r in existingRooms)
-    {
-        Destroy(r.Value.gameObject);
-    }
-    existingRooms.Clear();
+    // [ContextMenu("SpawnFirstRoom-Visual")]
+    // public void SpawnRoomVisual()
+    // {
+    // foreach (var r in existingRooms)
+    // {
+    //     Destroy(r.Value.gameObject);
+    // }
+    // existingRooms.Clear();
 
-    var room = new GameObject(Location.ToString());
-    room.transform.parent = this.transform;
-    room.transform.localScale = Vector3.one * 150;
-    room.transform.localPosition = new Vector3(0, 0);
-    room.name = Location.ToString();
-    var spriteRenderer = room.AddComponent<SpriteRenderer>();
-    spriteRenderer.sortingOrder = 150;
-    spriteRenderer.sprite = roomsTemplates.Where(n=> n.name == "WDSA_OPEN").First();
-    existingRooms.Add(Vector2Int.zero, spriteRenderer);
+    // var room = new GameObject(Location.ToString());
+    // room.transform.parent = this.transform;
+    // room.transform.localScale = Vector3.one * 150;
+    // room.transform.localPosition = new Vector3(0, 0);
+    // room.name = Location.ToString();
+    // var spriteRenderer = room.AddComponent<SpriteRenderer>();
+    // spriteRenderer.sortingOrder = 150;
+    // spriteRenderer.sprite = roomsTemplates.Where(n=> n.name == "WDSA_OPEN").First();
+    // existingRooms.Add(Vector2Int.zero, spriteRenderer);
 
-    var avaiablenewroomDirections = room.GetComponent<SpriteRenderer>().sprite.name.Replace("_OPEN", "").ToCharArray();
-    foreach (var dir in avaiablenewroomDirections)
-    {
-      //  print($"dir check:[ {dir} ]");
-        CreateNewRoom_OLD(from: Location, directionsDict[dir.ToString()]);
-    }
-    }
-    public void CreateNewRoom_OLD(Vector2Int from, Vector2Int direction)
-    {
+    // var avaiablenewroomDirections = room.GetComponent<SpriteRenderer>().sprite.name.Replace("_OPEN", "").ToCharArray();
+    // foreach (var dir in avaiablenewroomDirections)
+    // {
+    //   //  print($"dir check:[ {dir} ]");
+    //     CreateNewRoom_OLD(from: Location, directionsDict[dir.ToString()]);
+    // }
+    // }
+    // public void CreateNewRoom_OLD(Vector2Int from, Vector2Int direction)
+    // {
 
-    //    print("create new room from " + from + " in direction:" + direction);
-        var newLocation = from + direction;
-        if (existingRooms.ContainsKey(newLocation))
-        {
-            return;
-        }
-        else
-        {
-            var room = new GameObject(newLocation.ToString());
-            room.transform.parent = this.transform;
-            room.name = newLocation.ToString();
-            room.transform.localScale = Vector3.one * 150;
-            room.transform.localPosition = new Vector3(225 * newLocation.x, +225 * newLocation.y);
-            var spriteRenderer = room.AddComponent<SpriteRenderer>();
-            spriteRenderer.sortingOrder = 150;
-            spriteRenderer.sprite = ModifeNeighboursDungeonSpritesBasedOnAvaiableEnters_OLD(newLocation);
-            existingRooms.Add(newLocation, spriteRenderer);
+    // //    print("create new room from " + from + " in direction:" + direction);
+    //     var newLocation = from + direction;
+    //     if (existingRooms.ContainsKey(newLocation))
+    //     {
+    //         return;
+    //     }
+    //     else
+    //     {
+    //         var room = new GameObject(newLocation.ToString());
+    //         room.transform.parent = this.transform;
+    //         room.name = newLocation.ToString();
+    //         room.transform.localScale = Vector3.one * 150;
+    //         room.transform.localPosition = new Vector3(225 * newLocation.x, +225 * newLocation.y);
+    //         var spriteRenderer = room.AddComponent<SpriteRenderer>();
+    //         spriteRenderer.sortingOrder = 150;
+    //         spriteRenderer.sprite = ModifeNeighboursDungeonSpritesBasedOnAvaiableEnters_OLD(newLocation);
+    //         existingRooms.Add(newLocation, spriteRenderer);
 
-            var avaiablenewroomDirections = room.GetComponent<SpriteRenderer>().sprite.name.Replace("_OPEN", "").ToCharArray();
-            foreach (var dir in avaiablenewroomDirections)
-            {
-                CreateNewRoom_OLD(from: newLocation, directionsDict[dir.ToString()]);
-            }
-        }
-    }
-    private Sprite ModifeNeighboursDungeonSpritesBasedOnAvaiableEnters_OLD(Vector2Int location)
-    {
-        string W = "";
-        string D = "";
-        string S = "";
-        string A = "";
+    //         var avaiablenewroomDirections = room.GetComponent<SpriteRenderer>().sprite.name.Replace("_OPEN", "").ToCharArray();
+    //         foreach (var dir in avaiablenewroomDirections)
+    //         {
+    //             CreateNewRoom_OLD(from: newLocation, directionsDict[dir.ToString()]);
+    //         }
+    //     }
+    // }
+    // private Sprite ModifeNeighboursDungeonSpritesBasedOnAvaiableEnters_OLD(Vector2Int location)
+    // {
+    //     string W = "";
+    //     string D = "";
+    //     string S = "";
+    //     string A = "";
 
-        if (location.x >= -4 && location.x <= 4)
-        {
-            if (location.y >= -4 && location.y <= 4)
-            {
-                W = UnityEngine.Random.Range(0, 100) < 40 ? "W" : "";
-                D = UnityEngine.Random.Range(0, 100) < 40 ? "D" : "";
-                S = UnityEngine.Random.Range(0, 100) < 40 ? "S" : "";
-                A = UnityEngine.Random.Range(0, 100) < 40 ? "A" : "";
-            }
-        }
+    //     if (location.x >= -4 && location.x <= 4)
+    //     {
+    //         if (location.y >= -4 && location.y <= 4)
+    //         {
+    //             W = UnityEngine.Random.Range(0, 100) < 40 ? "W" : "";
+    //             D = UnityEngine.Random.Range(0, 100) < 40 ? "D" : "";
+    //             S = UnityEngine.Random.Range(0, 100) < 40 ? "S" : "";
+    //             A = UnityEngine.Random.Range(0, 100) < 40 ? "A" : "";
+    //         }
+    //     }
 
-        if (existingRooms.ContainsKey(location + Vector2Int.up))
-        {
-          //  print("jest sąsiad u góry" + existingRooms[location + Vector2Int.up].sprite.name.Replace("_OPEN", ""));
+    //     if (existingRooms.ContainsKey(location + Vector2Int.up))
+    //     {
+    //       //  print("jest sąsiad u góry" + existingRooms[location + Vector2Int.up].sprite.name.Replace("_OPEN", ""));
 
-            if (existingRooms[location + Vector2Int.up].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("S"))))
-                W = "W";
-            else
-                W = "";
-        }
+    //         if (existingRooms[location + Vector2Int.up].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("S"))))
+    //             W = "W";
+    //         else
+    //             W = "";
+    //     }
 
-        if (existingRooms.ContainsKey(location + Vector2Int.right))
-        {
-         //   print("jest sąsiad po prawej" + existingRooms[location + Vector2Int.right].sprite.name.Replace("_OPEN", ""));
+    //     if (existingRooms.ContainsKey(location + Vector2Int.right))
+    //     {
+    //      //   print("jest sąsiad po prawej" + existingRooms[location + Vector2Int.right].sprite.name.Replace("_OPEN", ""));
 
-            if (existingRooms[location + Vector2Int.right].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("A"))))
-                D = "D";
-            else
-                D = "";
-        }
+    //         if (existingRooms[location + Vector2Int.right].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("A"))))
+    //             D = "D";
+    //         else
+    //             D = "";
+    //     }
 
-        if (existingRooms.ContainsKey(location + Vector2Int.down))
-        {
-        //    print("jest sąsiad na dole" + existingRooms[location + Vector2Int.down].sprite.name.Replace("_OPEN", ""));
+    //     if (existingRooms.ContainsKey(location + Vector2Int.down))
+    //     {
+    //     //    print("jest sąsiad na dole" + existingRooms[location + Vector2Int.down].sprite.name.Replace("_OPEN", ""));
 
-            if (existingRooms[location + Vector2Int.down].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("W"))))
-                S = "S";
-            else
-                S = "";
-        }
+    //         if (existingRooms[location + Vector2Int.down].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("W"))))
+    //             S = "S";
+    //         else
+    //             S = "";
+    //     }
 
-        if (existingRooms.ContainsKey(location + Vector2Int.left))
-        {
-          //  print("jest sąsiad po lewej" + existingRooms[location + Vector2Int.left].sprite.name.Replace("_OPEN", ""));
+    //     if (existingRooms.ContainsKey(location + Vector2Int.left))
+    //     {
+    //       //  print("jest sąsiad po lewej" + existingRooms[location + Vector2Int.left].sprite.name.Replace("_OPEN", ""));
 
-            if (existingRooms[location + Vector2Int.left].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("D"))))
-                A = "A";
-            else
-                A = "";
-        }
+    //         if (existingRooms[location + Vector2Int.left].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("D"))))
+    //             A = "A";
+    //         else
+    //             A = "";
+    //     }
 
-        var spriteName = $"{W}{D}{S}{A}_OPEN";
-       // print(" MUST HAVE => " + spriteName);
-        return roomsTemplates.Where(s => s.name == spriteName).First();
-    }
+    //     var spriteName = $"{W}{D}{S}{A}_OPEN";
+    //    // print(" MUST HAVE => " + spriteName);
+    //     return roomsTemplates.Where(s => s.name == spriteName).First();
+    // }
+    
     #endregion
 }

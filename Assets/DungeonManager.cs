@@ -406,6 +406,7 @@ public class DungeonManager : MonoBehaviour
     [ContextMenu("Show minimap")]
     public void ShowMinimap()
     {
+       
         // one tile size 55x55 => zmiesci cala mape 9x9 pokoi
         minimapTiles.Values.ToList().ForEach(c=>Destroy(c.gameObject));
         minimapTiles.Clear();
@@ -450,6 +451,14 @@ public class DungeonManager : MonoBehaviour
                     }
                 }
             }
+
+        }
+
+        // WYŚRODKOWANIE WZGLĘDEM AKTUALNEJ POZYCJI
+
+        foreach(var tile in minimapTiles)
+        {
+            tile.Value.transform.localPosition = new Vector3((tile.Key.x-CurrentLocation.x) * size, (tile.Key.y-CurrentLocation.y) * size, 0);
         }
 
         void AddMinimapTile(int size, Vector2Int roomLocation, string doorsExitsCode = "", bool markAsRevealed = false)
@@ -462,7 +471,7 @@ public class DungeonManager : MonoBehaviour
                     return;
                 }
                 room_minimap= Instantiate(MinimapTilePrefab, MinimapSpawnContainer).GetComponent<Image>();
-                room_minimap.transform.localPosition = new Vector3(roomLocation.x * size, roomLocation.y * size, 0);
+               // room_minimap.transform.localPosition = new Vector3(roomLocation.x * size, roomLocation.y * size, 0);
                 room_minimap.name = roomLocation.ToString();
 
                 room_minimap.enabled = false;
@@ -480,7 +489,7 @@ public class DungeonManager : MonoBehaviour
                 }
                 
                 room_minimap = Instantiate(MinimapTilePrefab, MinimapSpawnContainer).GetComponent<Image>();;
-                room_minimap.transform.localPosition = new Vector3(roomLocation.x * size, roomLocation.y * size, 0);
+               // room_minimap.transform.localPosition = new Vector3(roomLocation.x * size, roomLocation.y * size, 0);
                 room_minimap.name = roomLocation.ToString();
                 
                 room_minimap.enabled = true;

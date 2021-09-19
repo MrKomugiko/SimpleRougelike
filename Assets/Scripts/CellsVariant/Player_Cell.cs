@@ -32,7 +32,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         }
     }
     public int MaxHealthPoints { get; private set; }
-    public float Damage { get; private set; } = UnityEngine.Random.Range(PlayerManager.instance.STATS.TotalDamage.min,PlayerManager.instance.STATS.TotalDamage.max);
+    public float Damage => UnityEngine.Random.Range(PlayerManager.instance.STATS.TotalDamage.min,PlayerManager.instance.STATS.TotalDamage.max);
     public bool IsHighlighted { get; set; }
     public bool IsAlive
     {

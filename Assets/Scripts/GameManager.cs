@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -229,6 +230,55 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField] TextMeshProUGUI DELETECONSOLELOGS;
+    [SerializeField] TextMeshProUGUI DELETECONSOLE_BTNTEXT;
+    public void BACKFROMCLEARINGGAMEDATA()
+    {
+        DELETECONSOLE_BTNTEXT.SetText("Clear game data");
+        DELETECONSOLELOGS.SetText("");
+    }
+    public void CLEARGAMEDATAFROMDEVICE()
+    {
+        var files = Directory.GetFiles(Application.persistentDataPath);
+        if(DELETECONSOLE_BTNTEXT.text == "Clear game data")
+        {
+            string logs = "";
+            foreach(var file in files)
+            {
+                logs += file.ToString().Replace(Application.persistentDataPath,"...")+"\n";
+            }
+            DELETECONSOLELOGS.SetText(logs);
+
+            DELETECONSOLE_BTNTEXT.SetText("Tap to confirm");
+            return;
+        }
+
+        if(DELETECONSOLE_BTNTEXT.text == "Tap to confirm")
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + $"/TrashFiles");
+            int count = Directory.GetFiles(Application.persistentDataPath+"/TrashFiles").Count();
+            foreach(var file in files)
+            {
+                count++;
+                File.Move(file, Application.persistentDataPath + $"/TrashFiles/_EMPTY_{count}.json");
+            }
+            DELETECONSOLE_BTNTEXT.SetText("Clear game data");
+            DELETECONSOLELOGS.SetText("");
+
+            HeroDataController.instance.CreateEmptyHeroCards();
+            HeroDataController.instance.LoadHeroesDataFromDevice();
+        }
+
+        //     PlayerProgressModel blank_emptyhero = new PlayerProgressModel("_EMPTY_", data.SlotID);
+        // storedHeroesCard[data.SlotID].ConfigureCard(blank_emptyhero, data.SlotID);
+        // string JSONresult = JsonConvert.SerializeObject(blank_emptyhero);
+        // if (File.Exists(Application.persistentDataPath + $"/[{data.SlotID}]_Hero_{data.NickName}.json"))
+        // {
+        //     //  print("podmianka pliku emptyy");
+        //     File.Move(Application.persistentDataPath + $"/[{data.SlotID}]_Hero_{data.NickName}.json", Application.persistentDataPath + $"/[{data.SlotID}]_Hero__EMPTY_.json");
+        // }
+        // File.WriteAllText(Application.persistentDataPath + $"/[{data.SlotID}]_Hero__EMPTY_.json", JSONresult);
+    }
     public void EndTurnLoopShowClearDungeonWindow()
     {
         Debug.Log("Map cleared");

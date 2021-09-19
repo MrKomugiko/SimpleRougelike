@@ -83,10 +83,10 @@ public class HeroLoadCard : MonoBehaviour
 
         GetComponent<Button>().onClick.RemoveAllListeners();
         GetComponent<Button>().onClick.AddListener(()=>{
-                if(data.isDead == false){
-                    MenuScript.instance.OpenCampScene();
-                    HeroDataController.instance.LoadPlayerDataInGame(data);
-                } 
-                });
+            if(data.isDead == false){
+                MenuScript.instance.OpenCampScene();
+                HeroDataController.instance.LoadPlayerDataInGame(data);
+            } 
+        });
     }
 }
