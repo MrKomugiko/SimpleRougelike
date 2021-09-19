@@ -46,4 +46,10 @@ public class Obstacle_Cell : ISpecialTile
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
       //  Debug.Log($"click scianę");
     }
+
+  
+    public object SaveAndGetCellProgressData()
+    {
+       return null;
+    }
 }

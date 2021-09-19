@@ -15,9 +15,12 @@ public class TreasureData : ScriptableObject
     public bool IsWalkable = true;
 
     [SerializeField] public List<ItemData> PossibleLootItems;
-    
+    public List<ItemPack> SavedContent = new List<ItemPack>();
+
     public  List<ItemPack> GetRandomizeLootPacks()
     {
+
+        Debug.Log("losowanie zawartosci");
         List<ItemPack> ListOfContainingItem = new List<ItemPack>();
         ListOfContainingItem = new List<ItemPack>();
         int itemInChest = Random.Range(0,PossibleLootItems.Count+1);
@@ -31,15 +34,16 @@ public class TreasureData : ScriptableObject
 
         foreach(var index in randomIndexes)
         {
+            var countitems = Random.Range(PossibleLootItems[index].DropSettings.minCount,PossibleLootItems[index].DropSettings.maxCount+1);
+            if(countitems == 0) continue;
             ListOfContainingItem.Add(
                 new ItemPack
                (
-                    count:Random.Range(PossibleLootItems[index].DropSettings.minCount,PossibleLootItems[index].DropSettings.maxCount+1),
-                    item:PossibleLootItems[index]
+                    count: countitems,
+                    item: PossibleLootItems[index]
                )
             );
         }
-
         return ListOfContainingItem;
     }
 }

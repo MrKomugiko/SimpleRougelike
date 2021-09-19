@@ -154,14 +154,6 @@ public class GameManager : MonoBehaviour
                     continue;
                 }
             }
-            if(tempCurrentCreatureList.Count == 0)
-            {
-                Debug.Log("Map cleared");
-                TurnPhaseBegin = false;
-                CurrentTurnPhase = TurnPhase.MapClear;
-                StartCoroutine(AddTurn());
-                yield break;
-            }
             
             yield return new WaitUntil(()=>tempCurrentCreatureList.Where(m=>m.ParentCell.IsCurrentlyMoving).Count()==0);
             MonstersMoved = true;
@@ -235,6 +227,24 @@ public class GameManager : MonoBehaviour
             print("end of loop");
             yield break;
         }
+    }
+
+    public void EndTurnLoopShowClearDungeonWindow()
+    {
+        Debug.Log("Map cleared");
+        TurnPhaseBegin = false;
+        CurrentTurnPhase = TurnPhase.MapClear;
+        StartCoroutine(AddTurn());
+    }
+
+       public void CloseClearWindowBackToDungeon()
+    {
+        Debug.Log("back to dungeon");
+        TurnPhaseBegin = false;
+        PlayerMoved = false;
+        PlayerAttacked = false;
+        CurrentTurnPhase = TurnPhase.PlayerMovement;
+        StartCoroutine(AddTurn());
     }
 
     public float turnPhaseDelay = 0f;

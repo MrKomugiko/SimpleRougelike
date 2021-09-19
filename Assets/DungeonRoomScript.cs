@@ -40,7 +40,7 @@ public class DungeonRoomScript : MonoBehaviour
     public static Dictionary<Vector2Int, Room> Dungeon = new Dictionary<Vector2Int, Room>();
     private static void CreateRoom(Vector2Int from, Vector2Int direction)
     {
-        print("create new room from " + from + " in direction:" + direction);
+//        print("create new room from " + from + " in direction:" + direction);
         var newLocation = from + direction;
         if (Dungeon.ContainsKey(newLocation))
             return;      
@@ -119,17 +119,20 @@ public class DungeonRoomScript : MonoBehaviour
             this.position = position;
             this.doorsNameCode = doorsNameCode;
             
-            Debug.Log("Room Created: "+position+" ["+doorsNameCode+"]");
+           // Debug.Log("Room Created: "+position+" ["+doorsNameCode+"]");
         }
     }
 
     public class RoomGridData
     {
-        public Dictionary<Vector2Int,MonsterData> Backup_Monsters = new Dictionary<Vector2Int, MonsterData>();
-        public Dictionary<Vector2Int,TreasureData> Backup_Treasures = new Dictionary<Vector2Int, TreasureData>();
+        public Dictionary<Vector2Int,MonsterBackupData> Backup_Monsters = new Dictionary<Vector2Int, MonsterBackupData>();
+        public Dictionary<Vector2Int,TreasureBackupData> Backup_Treasures = new Dictionary<Vector2Int,TreasureBackupData >();
         public Dictionary<Vector2Int,BombData> Backup_Bombs = new Dictionary<Vector2Int, BombData>();
         public HashSet<Vector2Int> WallPositions = new HashSet<Vector2Int>();
-        public RoomGridData(Dictionary<Vector2Int, MonsterData> backup_Monsters, Dictionary<Vector2Int, TreasureData> backup_Treasures, Dictionary<Vector2Int, BombData> backup_Bombs, HashSet<Vector2Int> wallPositions)
+        public RoomGridData(Dictionary<Vector2Int, MonsterBackupData> backup_Monsters, 
+                    Dictionary<Vector2Int, TreasureBackupData> backup_Treasures, 
+                    Dictionary<Vector2Int, BombData> backup_Bombs, 
+                    HashSet<Vector2Int> wallPositions)
         {
             Backup_Monsters = backup_Monsters;
             Backup_Treasures = backup_Treasures;
@@ -216,14 +219,14 @@ public class DungeonRoomScript : MonoBehaviour
     var avaiablenewroomDirections = room.GetComponent<SpriteRenderer>().sprite.name.Replace("_OPEN", "").ToCharArray();
     foreach (var dir in avaiablenewroomDirections)
     {
-        print($"dir check:[ {dir} ]");
+      //  print($"dir check:[ {dir} ]");
         CreateNewRoom_OLD(from: Location, directionsDict[dir.ToString()]);
     }
     }
     public void CreateNewRoom_OLD(Vector2Int from, Vector2Int direction)
     {
 
-        print("create new room from " + from + " in direction:" + direction);
+    //    print("create new room from " + from + " in direction:" + direction);
         var newLocation = from + direction;
         if (existingRooms.ContainsKey(newLocation))
         {
@@ -268,7 +271,7 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (existingRooms.ContainsKey(location + Vector2Int.up))
         {
-            print("jest sąsiad u góry" + existingRooms[location + Vector2Int.up].sprite.name.Replace("_OPEN", ""));
+          //  print("jest sąsiad u góry" + existingRooms[location + Vector2Int.up].sprite.name.Replace("_OPEN", ""));
 
             if (existingRooms[location + Vector2Int.up].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("S"))))
                 W = "W";
@@ -278,7 +281,7 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (existingRooms.ContainsKey(location + Vector2Int.right))
         {
-            print("jest sąsiad po prawej" + existingRooms[location + Vector2Int.right].sprite.name.Replace("_OPEN", ""));
+         //   print("jest sąsiad po prawej" + existingRooms[location + Vector2Int.right].sprite.name.Replace("_OPEN", ""));
 
             if (existingRooms[location + Vector2Int.right].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("A"))))
                 D = "D";
@@ -288,7 +291,7 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (existingRooms.ContainsKey(location + Vector2Int.down))
         {
-            print("jest sąsiad na dole" + existingRooms[location + Vector2Int.down].sprite.name.Replace("_OPEN", ""));
+        //    print("jest sąsiad na dole" + existingRooms[location + Vector2Int.down].sprite.name.Replace("_OPEN", ""));
 
             if (existingRooms[location + Vector2Int.down].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("W"))))
                 S = "S";
@@ -298,7 +301,7 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (existingRooms.ContainsKey(location + Vector2Int.left))
         {
-            print("jest sąsiad po lewej" + existingRooms[location + Vector2Int.left].sprite.name.Replace("_OPEN", ""));
+          //  print("jest sąsiad po lewej" + existingRooms[location + Vector2Int.left].sprite.name.Replace("_OPEN", ""));
 
             if (existingRooms[location + Vector2Int.left].sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("D"))))
                 A = "A";
@@ -307,7 +310,7 @@ public class DungeonRoomScript : MonoBehaviour
         }
 
         var spriteName = $"{W}{D}{S}{A}_OPEN";
-        print(" MUST HAVE => " + spriteName);
+       // print(" MUST HAVE => " + spriteName);
         return roomsTemplates.Where(s => s.name == spriteName).First();
     }
     #endregion

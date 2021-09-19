@@ -90,6 +90,11 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 
       //  NotificationManger.CreateNewNotificationElement(this);
     }
+
+    public object SaveAndGetCellProgressData()
+    {
+     return null;
+    }
     
     public void OnClick_MakeAction()
     {   
@@ -293,3 +298,5 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
         }
     }
 }
+
+  

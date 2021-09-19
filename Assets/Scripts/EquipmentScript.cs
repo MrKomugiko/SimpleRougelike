@@ -28,7 +28,7 @@ public class EquipmentScript : MonoBehaviour
     public void GenerateEquipment() 
     {
         
-        Debug.Log("Generate EQUIPMENT SCRIPT");
+      //  Debug.Log("Generate EQUIPMENT SCRIPT");
 
         if(PLAYER_EQUIPMENTSLOT == false) // poniewaz eq gracza jest juz na scenie nie trzeba go znowu generowac
         { 
@@ -40,11 +40,11 @@ public class EquipmentScript : MonoBehaviour
                     slot.ITEM = null;
                     slot.UpdateItemAmount(0);
                 }
-                   Debug.Log("zresetowano backpack");
+              //     Debug.Log("zresetowano backpack");
             }
             else
             {
-                Debug.Log("Create grid");
+            //    Debug.Log("Create grid");
                 for(int i = 0; i< MaxCapacity; i++)
                 {
                     StorageName = "Backpack";
@@ -62,14 +62,14 @@ public class EquipmentScript : MonoBehaviour
         if(PLAYER_EQUIPMENTSLOT)
         {   
             StorageName = "Player";
-            Debug.Log("ŁADOWANIE ITEMKOW ZALOZONEGO EQ GRACZA");
+        //    Debug.Log("ŁADOWANIE ITEMKOW ZALOZONEGO EQ GRACZA");
             ItemSlots.ForEach(slot=>slot.ParentStorage = this);
             ItemSlots.ForEach(slot=>slot.PLAYER_BACKPACK = true);
             PlayerManager.instance.LoadPlayerItensAndEq(GameManager.instance.PLAYER_PROGRESS_DATA,"PlayerEQ");
         }
         else
         {
-            Debug.Log("ŁADOWANIE ITEMKOW W PLECAKU");
+         //   Debug.Log("ŁADOWANIE ITEMKOW W PLECAKU");
             PlayerManager.instance.LoadPlayerItensAndEq(GameManager.instance.PLAYER_PROGRESS_DATA,"MainBackpack");
         }
     }
@@ -88,7 +88,7 @@ public class EquipmentScript : MonoBehaviour
 
     public static void AssignItemToActionSlot(int quickslotID) 
     {
-        print("AssignItemToActionSlot");
+      //  print("AssignItemToActionSlot");
         if(AssignationItemToQuickSlotIsActive) 
         {    
             PlayerManager.instance._actionController.actionButtonsList[quickslotID].Description_TMP.SetText("Tap to Add Item");
@@ -199,13 +199,13 @@ public class EquipmentScript : MonoBehaviour
             int matchEqSlotIndex = toEquipment.ItemSlots.Where(s=>s.ItemContentRestricion == equipmentItem.eqType).First().itemSlotID;
             if(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count == 0)
             {
-                print("nie masz tego rodzaju itemka zalozonego");
+            //    print("nie masz tego rodzaju itemka zalozonego");
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
                 toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
             }
             else
             {
-                print("posiadasz juz zalozony item tego typu");
+            //    print("posiadasz juz zalozony item tego typu");
                 ItemPack currentEquipedItemCopy = new ItemPack(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count,toEquipment.ItemSlots[matchEqSlotIndex].ITEM.item);
                 // ItemPack currentEquipedItemCopy = toEquipment.ItemSlots[matchEqSlotIndex].ITEM;
                 toEquipment.ItemSlots[matchEqSlotIndex].UpdateItemAmount(-1);
@@ -290,7 +290,7 @@ public class EquipmentScript : MonoBehaviour
                     return (false,false,-1);   
             }
 
-            Debug.Log("dodanie istniejacego slota z tym itemkiem");
+           // Debug.Log("dodanie istniejacego slota z tym itemkiem");
             Debug.Log(slot.ITEM.Count+"szt -> "+slot.ITEM.item.name);
     
             if(slot.IsEmpty == true)

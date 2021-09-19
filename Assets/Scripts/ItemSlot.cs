@@ -130,7 +130,7 @@ public class ItemSlot : MonoBehaviour
     TextMeshProUGUI _counterBox_TMP;
     public void AddNewItemToSlot(ItemPack _item)
     {
-        Debug.Log("ITEMPACK: "+_item.Count+"szt, "+_item.item.name);
+      //  Debug.Log("ITEMPACK: "+_item.Count+"szt, "+_item.item.name);
         ITEM = _item;
         // if(IsEmpty) return; 
 
@@ -153,7 +153,7 @@ public class ItemSlot : MonoBehaviour
         
         if(PLAYER_BACKPACK)
         {
-            Debug.Log(" _btn.onClick.AddListener(()=>ShowDetailsWindow());   ");
+         //   Debug.Log(" _btn.onClick.AddListener(()=>ShowDetailsWindow());   ");
             _btn.onClick.AddListener(()=>ShowDetailsWindow());   
         }
     }
@@ -170,7 +170,7 @@ public class ItemSlot : MonoBehaviour
     }
     public void PickAllGoldFromSlot()
     {
-        Debug.Log("pick all");
+      //  Debug.Log("pick all");
         _counterBox.SetActive(ITEM.Count>1?true:false);
 
         PlayerManager.instance.AddGold(ITEM.Count);
@@ -184,7 +184,7 @@ public class ItemSlot : MonoBehaviour
     }
     public void MoveSinglePieceTo_Backpack()
     {
-        Debug.Log("move one item to backpack");
+      //  Debug.Log("move one item to backpack");
         // extract one piece
         ItemPack SinglePieceItem = new ItemPack(0,null);
             SinglePieceItem.item = ITEM.item;
@@ -258,7 +258,7 @@ public class ItemSlot : MonoBehaviour
     {
         AssignedToQuickSlot = quickSlotID;
         IsInQuickSlot = true;
-        print("Assign to Quick Slot nr."+AssignedToQuickSlot);
+     //   print("Assign to Quick Slot nr."+AssignedToQuickSlot);
 
         PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ButtonIcon_IMG.sprite = ITEM.item.ItemCoreSettings.Item_Sprite;
         
@@ -269,7 +269,7 @@ public class ItemSlot : MonoBehaviour
     }
     public void RemoveFromQuickSlot(int quickSlotID)
     {
-        print("Remove from Quick Slot");
+     //   print("Remove from Quick Slot");
         if(AssignedToQuickSlot == null)
         {
             Debug.LogError("ERROR, proba usuniecia itemu z quick slota, mimo ze nic nie jest do niego przypięte");

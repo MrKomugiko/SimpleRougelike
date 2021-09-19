@@ -15,6 +15,9 @@ public class Monster_Cell :ICreature
 
     #region core
     public CellScript ParentCell { get; set; }
+
+    private int MonsterDataID;
+
     public TileTypes Type { get; set; } = TileTypes.monster;
     public GameObject Icon_Sprite { get; set; }
     public GameObject Corpse_Sprite { get; private set; }
@@ -83,15 +86,16 @@ public class Monster_Cell :ICreature
     public List<(Action action,string description,ActionIcon icon, bool singleAction)> AvaiableActions { get; private set;} = new List<(Action action, string description,ActionIcon icon, bool singleAction)>();
     public string Name { get; set; }
 
-    public MonsterData MonsterData_Backup_DATA;
-    public Monster_Cell(CellScript parent, MonsterData _data)
+    public MonsterBackupData MonsterData_Backup_DATA;
+    public Monster_Cell(CellScript parent, MonsterData _data, MonsterBackupData restoredData = null)
     {
-        MonsterData_Backup_DATA = _data;
-        this.ParentCell                   =       parent;       
+        this.ParentCell                   =       parent;      
+        this.MonsterDataID = _data.ID; 
         this.lootID                       =       _data.LootData;
         this.Name                         =       _data.MonsterName;
         this.MaxHealthPoints              =       _data.MaxHealthPoints;
-        this.HealthPoints                 =       _data.MaxHealthPoints;
+
+        this.HealthPoints                 =       restoredData==null?_data.CurrentHealthPoints:restoredData.HealthPoints;
         this.TurnsRequiredToMakeAction    =       _data.Speed;
         this.Damage                       =       _data.Damage;
         this.Type                         =       _data.Type;;
@@ -115,6 +119,15 @@ public class Monster_Cell :ICreature
         }
         CustomEventManager.instance.OnMonsterDieEvent += MonsterDie;
     }
+    
+    public object SaveAndGetCellProgressData()
+    {
+        Debug.Log("zapisanie aktualnehp hp potworka");
+        MonsterBackupData savedValues = new MonsterBackupData(this.MonsterDataID,this._healthPoints);
+        return savedValues;
+
+    }
+
     private void MonsterDie(object sender, string e)
     {
         Debug.LogError(e);
@@ -160,7 +173,7 @@ public class Monster_Cell :ICreature
              NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");
              return;
         }
-        TakeDamage((GameManager.Player_CELL.SpecialTile as Player_Cell).Damage + PlayerManager.instance.STATS.BaseDamage, "Attacked by player");
+        TakeDamage((GameManager.Player_CELL.SpecialTile as Player_Cell).Damage, "Attacked by player");
         PlayerManager.instance.CumulativeStageDamageTaken += (GameManager.Player_CELL.SpecialTile as Player_Cell).Damage;
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
@@ -231,4 +244,5 @@ public class Monster_Cell :ICreature
             GameObject.Destroy(Border.gameObject);
         }
     }
+
 }

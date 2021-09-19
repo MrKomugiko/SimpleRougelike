@@ -57,7 +57,7 @@ public class DungeonManager : MonoBehaviour
             }
         );
 
-        Debug.Log("DUNGEON CLEAR AND BACK TO CAMP");
+//        Debug.Log("DUNGEON CLEAR AND BACK TO CAMP");
         //  recentDungeonStage = dungeonData.stage;
         recentDungeonStage++; // tymczasowe
 
@@ -89,8 +89,8 @@ public class DungeonManager : MonoBehaviour
     {
         
         Debug.LogWarning("zrzut danych dla pokoju: "+_room.position);
-        Dictionary<Vector2Int, MonsterData> _backup_Monsters = new Dictionary<Vector2Int, MonsterData>();
-        Dictionary<Vector2Int, TreasureData> _backup_Treasures = new Dictionary<Vector2Int, TreasureData>();
+        Dictionary<Vector2Int, MonsterBackupData> _backup_Monsters = new Dictionary<Vector2Int, MonsterBackupData>();
+        Dictionary<Vector2Int, TreasureBackupData> _backup_Treasures = new Dictionary<Vector2Int, TreasureBackupData>();
         Dictionary<Vector2Int, BombData> _backup_Bombs = new Dictionary<Vector2Int, BombData>();
         HashSet<Vector2Int> _wallPositions = new HashSet<Vector2Int>();
         
@@ -98,13 +98,21 @@ public class DungeonManager : MonoBehaviour
         {
             if (cell.Value.SpecialTile is Monster_Cell)
             {
-                _backup_Monsters.Add(cell.Key, (cell.Value.SpecialTile as Monster_Cell).MonsterData_Backup_DATA);
+                var monster = (cell.Value.SpecialTile as Monster_Cell);
+
+                _backup_Monsters.Add(cell.Key, (monster.SaveAndGetCellProgressData()) as MonsterBackupData);
+               
                 continue;
             }
 
             if (cell.Value.SpecialTile is Treasure_Cell)
             {
-                _backup_Treasures.Add(cell.Key, (cell.Value.SpecialTile as Treasure_Cell).TreasureData_Backup_DATA);
+
+                var treasure = (cell.Value.SpecialTile as Treasure_Cell);
+
+                _backup_Treasures.Add(cell.Key, (treasure.SaveAndGetCellProgressData()) as TreasureBackupData);
+               
+                 Debug.LogWarning("make backup "+ ((cell.Value.SpecialTile as Treasure_Cell).SaveAndGetCellProgressData() as TreasureData)+" items stored");
                 continue;
             }
 
@@ -140,14 +148,16 @@ public class DungeonManager : MonoBehaviour
             {
                 if (_room.DATA.Backup_Monsters.ContainsKey(cell.Key))
                 {
-                    GridManager.CellGridTable[cell.Key].SpecialTile = new Monster_Cell(parent: cell.Value, _room.DATA.Backup_Monsters[cell.Key]);
+                    var monsterbackup =_room.DATA.Backup_Monsters[cell.Key];
+                    GridManager.CellGridTable[cell.Key].SpecialTile = new Monster_Cell(parent: cell.Value, GameManager.instance.GetMonsterData(monsterbackup.MonsterDataID),monsterbackup);
                     GridManager.CellGridTable[cell.Key].Type = TileTypes.monster;
                     cell.Value.SetCell(cell.Key, false);
                 }
 
                 if (_room.DATA.Backup_Treasures.ContainsKey(cell.Key))
                 {
-                    GridManager.CellGridTable[cell.Key].SpecialTile = new Treasure_Cell(parent: cell.Value, _room.DATA.Backup_Treasures[cell.Key]);
+                    var treasurebackup =_room.DATA.Backup_Treasures[cell.Key];
+                    GridManager.CellGridTable[cell.Key].SpecialTile = new Treasure_Cell(parent: cell.Value, GameManager.instance.GetTreasureData(treasurebackup.TreasureDataID),treasurebackup);
                     GridManager.CellGridTable[cell.Key].Type = TileTypes.treasure;
                     cell.Value.SetCell(cell.Key, false);
                 }
@@ -191,7 +201,7 @@ public class DungeonManager : MonoBehaviour
     [ContextMenu("generate new dung")]
     public void GenerateAndEnterDungeon()
     {
-        Debug.Log("generate dungeon rooms");
+     //   Debug.Log("generate dungeon rooms");
         DungeonRoomScript.GenerateDungeonRooms();
         OpenDungeon();
         CurrentLocation = Vector2Int.zero;
@@ -205,7 +215,7 @@ public class DungeonManager : MonoBehaviour
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
     
         var vector = Vector2Int.up;
-         Debug.LogWarning("Move up from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
+        // Debug.LogWarning("Move up from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
         if (DungeonRoomScript.Dungeon.ContainsKey(CurrentLocation + vector))
         {
 
@@ -229,6 +239,7 @@ public class DungeonManager : MonoBehaviour
             RestartTurnRoutine();
             ConfigureNextRoomButtons(newLocation: CurrentLocation);
             DungeonRoomScript.Dungeon[CurrentLocation].WasVisited = true;
+             ShowMinimap();
         }
     }
     [ContextMenu("move right")]
@@ -237,7 +248,7 @@ public class DungeonManager : MonoBehaviour
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
 
         var vector = Vector2Int.right;
-         Debug.LogWarning("Move right from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
+        // Debug.LogWarning("Move right from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
         if (DungeonRoomScript.Dungeon.ContainsKey(CurrentLocation + vector))
         {
 
@@ -261,6 +272,7 @@ public class DungeonManager : MonoBehaviour
             RestartTurnRoutine();
             ConfigureNextRoomButtons(newLocation: CurrentLocation);
             DungeonRoomScript.Dungeon[CurrentLocation].WasVisited = true;
+             ShowMinimap();
         }
     }
     [ContextMenu("move Down")]
@@ -269,7 +281,7 @@ public class DungeonManager : MonoBehaviour
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
 
         var vector = Vector2Int.down;
-         Debug.LogWarning("Move down from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
+       //  Debug.LogWarning("Move down from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
         if (DungeonRoomScript.Dungeon.ContainsKey(CurrentLocation + vector))
         {
 
@@ -293,6 +305,7 @@ public class DungeonManager : MonoBehaviour
             RestartTurnRoutine();
             ConfigureNextRoomButtons(newLocation: CurrentLocation);
             DungeonRoomScript.Dungeon[CurrentLocation].WasVisited = true;
+             ShowMinimap();
         }
     }
     [ContextMenu("move Left")]
@@ -301,7 +314,7 @@ public class DungeonManager : MonoBehaviour
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
 
         var vector = Vector2Int.left;
-        Debug.LogWarning("Move left from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
+     //   Debug.LogWarning("Move left from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
         if (DungeonRoomScript.Dungeon.ContainsKey(CurrentLocation + vector))
         {
 
@@ -325,6 +338,7 @@ public class DungeonManager : MonoBehaviour
             RestartTurnRoutine();
             ConfigureNextRoomButtons(newLocation: CurrentLocation);
             DungeonRoomScript.Dungeon[CurrentLocation].WasVisited = true;
+            ShowMinimap();
         }
     }
 
@@ -380,6 +394,103 @@ public class DungeonManager : MonoBehaviour
 
             if (exitDoor == Char.Parse("D"))
                 D_BTN.gameObject.SetActive(true);
+        }
+    }
+
+
+    public List<Sprite> minimapimageList = new List<Sprite>();
+    public Transform MinimapSpawnContainer;
+    public GameObject MinimapTilePrefab;
+    private Dictionary<Vector2Int,Image> minimapTiles = new Dictionary<Vector2Int,Image>();
+
+    [ContextMenu("Show minimap")]
+    public void ShowMinimap()
+    {
+        // one tile size 55x55 => zmiesci cala mape 9x9 pokoi
+        minimapTiles.Values.ToList().ForEach(c=>Destroy(c.gameObject));
+        minimapTiles.Clear();
+
+        int size = 55;
+        Color32 defaultColor = new Color32(164,130,176,255);
+        foreach(var room in Dungeon)
+        {
+            if(room.Value.WasVisited)
+            {
+                AddMinimapTile(size, room.Key, doorsExitsCode:room.Value.doorsNameCode);
+
+                // spawn "?" dla nieokrytych ale świadomych istnienia pomieszczeń
+                foreach(var directionExit in room.Value.doorsNameCode.ToCharArray())
+                {
+                    if(directionExit == Char.Parse("W"))
+                    {
+                        var vectorToSpottedRoom = Vector2Int.up;
+                        Vector2Int positiotn = room.Key + vectorToSpottedRoom;
+                        AddMinimapTile(size, positiotn, markAsRevealed:true);
+                    }
+
+                    if (directionExit == Char.Parse("D"))
+                    {
+                        var vectorToSpottedRoom = Vector2Int.right;
+                        Vector2Int positiotn = room.Key + vectorToSpottedRoom;
+                       AddMinimapTile(size, positiotn, markAsRevealed:true);
+                    }
+
+                    if(directionExit == Char.Parse("S"))
+                    {
+                        var vectorToSpottedRoom = Vector2Int.down;
+                        Vector2Int positiotn = room.Key + vectorToSpottedRoom;
+                        AddMinimapTile(size, positiotn, markAsRevealed:true);
+                    }
+
+                    if(directionExit == Char.Parse("A"))
+                    {
+                        var vectorToSpottedRoom = Vector2Int.left;
+                        Vector2Int positiotn = room.Key + vectorToSpottedRoom;
+                        AddMinimapTile(size, positiotn, markAsRevealed:true);
+                    }
+                }
+            }
+        }
+
+        void AddMinimapTile(int size, Vector2Int roomLocation, string doorsExitsCode = "", bool markAsRevealed = false)
+        {
+            Image room_minimap = null;
+            if(markAsRevealed)
+            {
+                if(minimapTiles.ContainsKey(roomLocation))
+                {
+                    return;
+                }
+                room_minimap= Instantiate(MinimapTilePrefab, MinimapSpawnContainer).GetComponent<Image>();
+                room_minimap.transform.localPosition = new Vector3(roomLocation.x * size, roomLocation.y * size, 0);
+                room_minimap.name = roomLocation.ToString();
+
+                room_minimap.enabled = false;
+                room_minimap.transform.GetChild(0).GetComponent<Image>().enabled = true;
+            }
+            else
+            {                
+                if(minimapTiles.ContainsKey(roomLocation))
+                {
+                    minimapTiles[roomLocation].enabled = true;
+                    minimapTiles[roomLocation].sprite = minimapimageList.Where(img=>img.name == doorsExitsCode+"_OPEN").First();
+                    minimapTiles[roomLocation].color = roomLocation==CurrentLocation?Color.green:defaultColor;
+                    minimapTiles[roomLocation].transform.GetChild(0).GetComponent<Image>().enabled = false;
+                    return;
+                }
+                
+                room_minimap = Instantiate(MinimapTilePrefab, MinimapSpawnContainer).GetComponent<Image>();;
+                room_minimap.transform.localPosition = new Vector3(roomLocation.x * size, roomLocation.y * size, 0);
+                room_minimap.name = roomLocation.ToString();
+                
+                room_minimap.enabled = true;
+                room_minimap.sprite = minimapimageList.Where(img=>img.name == doorsExitsCode+"_OPEN").First();
+                room_minimap.color = roomLocation==CurrentLocation?Color.green:defaultColor;
+                room_minimap.transform.GetChild(0).GetComponent<Image>().enabled = false;
+            }
+
+             minimapTiles.Add(roomLocation,room_minimap);
+           
         }
     }
 }

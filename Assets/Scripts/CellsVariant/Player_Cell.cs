@@ -65,7 +65,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         this.Icon_Sprite = _data.Icon_Sprite;
         this.Corpse_Sprite = _data.Corpse_Sprite;
 
-        this.Damage = 1 + PlayerManager.instance.STATS.BaseDamage;
+       // this.Damage = 1 + PlayerManager.instance.STATS.BaseDamage;
         this.MaxHealthPoints = Mathf.RoundToInt(PlayerManager.instance.STATS.HealthPoints);
         this.Name = PlayerManager.instance.NickName;
         this.HealthPoints = PlayerManager.instance.CurrentHealth;
@@ -87,6 +87,12 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         }
         GameObject.Find("PlayerManager").GetComponent<PlayerManager>().SetPlayerManager(this);
         NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
+    }
+   
+  
+    public object SaveAndGetCellProgressData()
+    {
+       return null;
     }
     public void ConfigurePathfinderComponent()
     {

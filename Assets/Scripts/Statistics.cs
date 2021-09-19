@@ -19,7 +19,7 @@ public class Statistics : MonoBehaviour
         get => _level;
         set
         {
-            Debug.Log("LEVEL UP!");
+          //  Debug.Log("LEVEL UP!");
             // w przypadku awansu o 2 poziomy , dostanie sie 12 punktow do rozdania
             AvailablePoints += (value-_level) * 6;
             _level = value;

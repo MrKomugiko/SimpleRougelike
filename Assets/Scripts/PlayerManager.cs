@@ -142,19 +142,19 @@ public class PlayerManager: MonoBehaviour
  
     public void LoadPlayerItensAndEq(PlayerProgressModel _progressData, string equipmentTypeTarget)
     {
-        Debug.Log("LOAD ITEMS");
+      //  Debug.Log("LOAD ITEMS");
 
        List<ItemData> itemsDatabase = Resources.LoadAll<ItemData>("Items").ToList();
        if(equipmentTypeTarget == "MainBackpack")
        {
-        Debug.Log("dodawanie itemkow z save'a do backpacka");
+     //   Debug.Log("dodawanie itemkow z save'a do backpacka");
         foreach(var data in _progressData.BagpackItems)
         {
             if(data.Count == 0) continue;
             var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
             
             ItemPack loadedItem = new ItemPack(data.Count, item);
-            Debug.Log(loadedItem.item.name);
+//            Debug.Log(loadedItem.item.name);
             _mainBackpack.ItemSlots[data.SlotID].AddNewItemToSlot(loadedItem);
         }
        }
@@ -168,7 +168,7 @@ public class PlayerManager: MonoBehaviour
                 if(data.Count == 0) continue;
                 var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
                 ItemPack loadedItem = new ItemPack(data.Count, item);
-                Debug.Log("equip => "+loadedItem.item.name);
+            //    Debug.Log("equip => "+loadedItem.item.name);
                 _EquipedItems.LoadItemInPlayerEq(data.SlotID, loadedItem);
             }
         }

@@ -56,7 +56,7 @@ public class HeroDataController : MonoBehaviour
     }
     public void LoadHeroesDataFromDevice()
     {
-        print("load heroes form device");
+       // print("load heroes form device");
         Dictionary<int,PlayerProgressModel> AllPlayersData = new Dictionary<int, PlayerProgressModel>();
         for (int slotID = 0; slotID < 6; slotID++)
         {

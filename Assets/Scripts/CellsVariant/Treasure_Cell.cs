@@ -22,32 +22,34 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
 
     private List<Chest.ItemPack> RandomGeneratedLoot = new List<Chest.ItemPack>();
 
-    public TreasureData TreasureData_Backup_DATA;
+    public TreasureBackupData TreasureData_Backup_DATA;
 
     public IChest chest {get;} = null;
-    public Treasure_Cell(CellScript parent, TreasureData _data)
+    public Treasure_Cell(CellScript parent, TreasureData _data, TreasureBackupData _restoredData = null)
     {
-        TreasureData_Backup_DATA = _data;
         this.ParentCell             =       parent;
         this.ID                     =       _data.ID;
         this.Name                   =       _data.TreasureName;
         this.Type                   =       _data.Type;
         this.Icon_Sprite            =       _data.Icon_Sprite;
         this.GoldValue              =       _data.GuarantedGoldReward;
-        this.RandomGeneratedLoot    =       _data.GetRandomizeLootPacks();
+        this.RandomGeneratedLoot    =       _restoredData==null?_data.GetRandomizeLootPacks():_restoredData.RestoredItemsContent;
 
-        var goldReward = RandomGeneratedLoot.Where(item=>item.item is GoldItem).FirstOrDefault();
-        if(goldReward == null)
+        if(_restoredData == null)
         {
-            RandomGeneratedLoot.Add(new ItemPack(GoldValue,_data.PossibleLootItems.Where(item=>item is GoldItem).First()));
-            // foreach(var item in RandomGeneratedLoot)
+            var goldReward = RandomGeneratedLoot.Where(item=>item.item is GoldItem).FirstOrDefault();
+            if(goldReward == null)
+            {
+                RandomGeneratedLoot.Add(new ItemPack(GoldValue,_data.PossibleLootItems.Where(item=>item is GoldItem).First()));
+                // foreach(var item in RandomGeneratedLoot)
+                // {
+                //     Debug.Log("* "+item.Count + " / "+ item.item.name);
+                // }
+            }
+            // else
             // {
-            //     Debug.Log("* "+item.Count + " / "+ item.item.name);
+            //     RandomGeneratedLoot.Where(item=>item.item is GoldItem).FirstOrDefault().Count = GoldValue;
             // }
-        }
-        else
-        {
-            RandomGeneratedLoot.Where(item=>item.item is GoldItem).FirstOrDefault().Count = GoldValue;
         }
 
         var treasureObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
@@ -57,12 +59,12 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
          //   Debug.Log("RandomGeneratedLoot.Count == 1");
             // przypadek tylko golda w środku
             treasureObject.GetComponent<SpriteRenderer>().sprite = RandomGeneratedLoot[0].item.ItemCoreSettings.Item_Sprite;
-            RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
+           // RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
         }
         else
         {
            // Debug.Log("RandomGeneratedLoot.Count > 1");
-            RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
+         //   RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
             treasureObject.GetComponent<SpriteRenderer>().sprite = this.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
             chest = new Chest(source:this,RandomGeneratedLoot);
         }
@@ -83,6 +85,19 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         ParentCell.Trash.Add(treasureObject);
         RemoveFromMapIfChesIsEmpty();
     }
+    
+    public object SaveAndGetCellProgressData()
+    {   
+        if(chest!= null)
+        {
+            Debug.Log("zapisanie aktualne wyposazenia skrzynki");
+            TreasureBackupData savedValues = new TreasureBackupData(this.ID, chest.ContentItems);
+            return savedValues;
+        }
+
+        return new TreasureBackupData(this.ID, RandomGeneratedLoot);
+    }
+
     public void OnClick_MakeAction()
     {
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;

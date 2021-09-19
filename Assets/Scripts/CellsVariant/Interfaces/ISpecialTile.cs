@@ -10,4 +10,5 @@ public interface ISpecialTile
     GameObject Icon_Sprite {get;set;}
     List<(Action action, string description, ActionIcon icon, bool singleAction)> AvaiableActions {get;}
     void OnClick_MakeAction();
+    object SaveAndGetCellProgressData();
 }
