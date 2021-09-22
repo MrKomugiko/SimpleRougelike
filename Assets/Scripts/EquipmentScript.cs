@@ -166,7 +166,7 @@ public class EquipmentScript : MonoBehaviour
         else
         {
             //ItemSlots[slotIndex].UpdateItemAmount(1);
-            Debug.LogError(("add item to backpack index -1 ?"));
+           // Debug.LogError(("add item to backpack index -1 ?"));
                 return false;
 
         }
@@ -291,7 +291,7 @@ public class EquipmentScript : MonoBehaviour
             }
 
            // Debug.Log("dodanie istniejacego slota z tym itemkiem");
-            Debug.Log(slot.ITEM.Count+"szt -> "+slot.ITEM.item.name);
+           // Debug.Log(slot.ITEM.Count+"szt -> "+slot.ITEM.item.name);
     
             if(slot.IsEmpty == true)
             {

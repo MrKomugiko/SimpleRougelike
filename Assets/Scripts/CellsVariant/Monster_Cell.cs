@@ -204,8 +204,8 @@ public class Monster_Cell :ICreature
     {
         HealthPoints -= Mathf.RoundToInt(damage);
      
-        // if(IsAlive)
-        //     Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");    
+        var IMPORTANTCHECKTOTRIGGERGETTER = IsAlive;
+            //Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");    
     }
     public bool TryAttack(CellScript _target)
     {

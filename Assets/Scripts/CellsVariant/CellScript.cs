@@ -205,7 +205,7 @@ public class CellScript : MonoBehaviour
             return;
         }
 
-        Debug.Log("click on cell "+CurrentPosition);
+      //  Debug.Log("click on cell "+CurrentPosition);
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
         {
             //print("trwa inna faza niz ruchu gracza");

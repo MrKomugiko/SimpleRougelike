@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
                 if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
                 {
                     // zablokowane miejsce na ruch, tylko atak bezposrednio niech sie aktywuje
-                    Debug.Log("skip player movement turn = "+PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter);
+                    //Debug.Log("skip player movement turn = "+PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter);
                     PlayerMoved = true;
                 }
             // }
@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
             {
                 // nie ma potworów na mapie =>uaktywnij teleporty
                 // 1. zapisanie stanu teleportow
-                Debug.Log("Room cleared!");
+               // Debug.Log("Room cleared!");
                 DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation].SetAllDoorsState(true);
             }
 

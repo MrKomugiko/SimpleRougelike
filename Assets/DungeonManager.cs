@@ -79,7 +79,7 @@ public class DungeonManager : MonoBehaviour
     [ContextMenu("1. create current map backup")]
     public void MakeCurrentMapBackup(Room _room)
     {
-        Debug.LogWarning("zrzut danych dla pokoju: "+_room.position);
+        //Debug.LogWarning("zrzut danych dla pokoju: "+_room.position);
         Dictionary<Vector2Int, MonsterBackupData> _backup_Monsters = new Dictionary<Vector2Int, MonsterBackupData>();
         Dictionary<Vector2Int, TreasureBackupData> _backup_Treasures = new Dictionary<Vector2Int, TreasureBackupData>();
         Dictionary<Vector2Int, BombData> _backup_Bombs = new Dictionary<Vector2Int, BombData>();
