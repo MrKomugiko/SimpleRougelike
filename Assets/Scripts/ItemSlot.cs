@@ -272,7 +272,7 @@ public class ItemSlot : MonoBehaviour
      //   print("Remove from Quick Slot");
         if(AssignedToQuickSlot == null)
         {
-            Debug.LogError("ERROR, proba usuniecia itemu z quick slota, mimo ze nic nie jest do niego przypięte");
+           // Debug.LogError("ERROR, proba usuniecia itemu z quick slota, mimo ze nic nie jest do niego przypięte");
             return;
         }
 

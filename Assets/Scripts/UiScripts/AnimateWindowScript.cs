@@ -30,7 +30,7 @@ public class AnimateWindowScript : MonoBehaviour
         }
         else
         {
-            print("trwa juz animacja ruchu okna");
+            //print("trwa juz animacja ruchu okna");
         }
     }
     public void HideTabWindow()

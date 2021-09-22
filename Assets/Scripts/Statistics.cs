@@ -370,7 +370,7 @@ public class Statistics : MonoBehaviour
 
     public void AddValue(string statname, float statisticChangeValue = 1)
     {
-        Debug.Log("add value +1 to "+statname);
+       // Debug.Log("add value +1 to "+statname);
         switch (statname)
         {
             case "INT":
@@ -408,21 +408,21 @@ public class Statistics : MonoBehaviour
 
     public void EquipItem_UpdateStatistics(EquipmentItem item)
     {
-        Debug.Log("Zalozenie ITEMKA - staty w gore");
+       // Debug.Log("Zalozenie ITEMKA - staty w gore");
         item.MainPerks.ForEach(perk=>AddValueByPerkData(perk));
         item.ExtraPerks.ForEach(perk=>AddValueByPerkData(perk));
     }
 
     public void UnequipItem_UpdateStatistics(EquipmentItem item)
     {
-        Debug.Log("Zdjęcie ITEMKA - staty w dol");
+       // Debug.Log("Zdjęcie ITEMKA - staty w dol");
         item.MainPerks.ForEach(perk=>SubtractValueByPerkData(perk));
         item.ExtraPerks.ForEach(perk=>SubtractValueByPerkData(perk));
     }
 
     private void AddValueByPerkData(Perk perk)
     {
-        Debug.Log("ADD: "+perk.type.ToString()+" "+perk.value.ToString());
+        //Debug.Log("ADD: "+perk.type.ToString()+" "+perk.value.ToString());
         switch(perk.type)
         {
             case PerkType.MinAttack:
@@ -476,7 +476,7 @@ public class Statistics : MonoBehaviour
     }
     private void SubtractValueByPerkData(Perk perk)
     {
-         Debug.Log("MINUS: "+perk.type.ToString()+" "+perk.value.ToString());
+        // Debug.Log("MINUS: "+perk.type.ToString()+" "+perk.value.ToString());
         switch(perk.type)
         {
             case PerkType.MinAttack:

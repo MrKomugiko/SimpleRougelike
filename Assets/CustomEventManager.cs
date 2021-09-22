@@ -31,8 +31,8 @@ public class CustomEventManager : MonoBehaviour
 
     private void DeathAnimation(object sender, string e)
     {
-        Debug.LogError(e);
-        Debug.LogError("animacja zgonu xd");
+        //Debug.LogError(e);
+        //Debug.LogError("animacja zgonu xd");
     }
 
     [SerializeField] GameObject floatingDamageTextPrefab;
@@ -86,7 +86,7 @@ public class CustomEventManager : MonoBehaviour
 
     internal void RegisterPlayerInEventManager(Player_Cell player_Cell)
     {
-        Debug.LogError("gracz zarejestrowany");
+        //Debug.LogError("gracz zarejestrowany");
         // playerManager.OnPlayerDieEvent += DeathAnimation;
         player_Cell.OnPlayerTakeDamageEvent += FloatingDamageValueAnimation;
     }

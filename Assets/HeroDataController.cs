@@ -135,7 +135,7 @@ public class HeroDataController : MonoBehaviour
             File.Move(Application.persistentDataPath + $"/[{slotID}]_Hero__DELETED_.json",Application.persistentDataPath + $"/[{slotID}]_Hero_{nickname}.json");
         }
 
-        print("zapisanie danych do pliku");
+        //print("zapisanie danych do pliku");
         File.WriteAllText(Application.persistentDataPath + $"/[{slotID}]_Hero_{nickname}.json", JSONresult);
 
         Debug.Log(JSONresult);
@@ -157,7 +157,7 @@ public class HeroDataController : MonoBehaviour
     }  
     public void RemoveHeroFromDevice(PlayerProgressModel data)
     {
-        print("usuwanie gracza z pamieci");
+        //print("usuwanie gracza z pamieci");
 
         if (GameManager.instance.PLAYER_PROGRESS_DATA.NickName == data.NickName)
         {

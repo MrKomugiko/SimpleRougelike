@@ -135,7 +135,7 @@ public class Monster_Cell :ICreature
     
     public object SaveAndGetCellProgressData()
     {
-        Debug.Log("zapisanie aktualnehp hp potworka");
+      //  Debug.Log("zapisanie aktualnehp hp potworka");
         MonsterBackupData savedValues = new MonsterBackupData(this.MonsterDataID,this._healthPoints);
         return savedValues;
 
@@ -204,8 +204,8 @@ public class Monster_Cell :ICreature
     {
         HealthPoints -= Mathf.RoundToInt(damage);
      
-        if(IsAlive)
-            Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");    
+        // if(IsAlive)
+        //     Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");    
     }
     public bool TryAttack(CellScript _target)
     {

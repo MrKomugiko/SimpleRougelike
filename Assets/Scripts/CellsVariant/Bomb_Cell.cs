@@ -98,7 +98,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     
     public void OnClick_MakeAction()
     {   
-        Debug.Log("bomb click");
+      //  Debug.Log("bomb click");
         if(GameManager.instance.TurnPhaseBegin == false) return;
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
 
@@ -124,7 +124,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             {
                 ParentCell.MoveTo();
             }       
-            Debug.Log("to nie tura ruchu");
+          //  Debug.Log("to nie tura ruchu");
 
         }   
 
@@ -157,7 +157,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             {
                 if((cell.SpecialTile as IUsable).IsUsed ==false)
                 {
-                    Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
+                   // Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
                     (cell.SpecialTile as IUsable).Use();
                 }
             } 
@@ -200,7 +200,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             {
                 if((cell.SpecialTile as IUsable).IsUsed ==false)
                 {
-                    Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
+                   // Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
                     result.AddRange(GetDestroyedCellsFromCascadeContinueExploding());
                 }
             } 
@@ -271,7 +271,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 
     public void SwitchHighlightImpactArea()
     {
-        Debug.Log($"switch impact area range from {IsImpactAreaHighlihted} to {!IsImpactAreaHighlihted}");
+       // Debug.Log($"switch impact area range from {IsImpactAreaHighlihted} to {!IsImpactAreaHighlihted}");
         if(IsImpactAreaHighlihted == false)
         {
             IsImpactAreaHighlihted = true;

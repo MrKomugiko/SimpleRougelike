@@ -59,7 +59,7 @@ public class PlayerManager: MonoBehaviour
         }
         if(playerCurrentlyMoving == true) 
         {
-            print("autopilot przerwany");
+            //print("autopilot przerwany");
             GameManager.instance.MovingRequestTriggered = false;
             yield break;
         }
@@ -93,7 +93,7 @@ public class PlayerManager: MonoBehaviour
             }
             else
             {
-                Debug.LogError("hola hola o co chodzi");
+               // Debug.LogError("hola hola o co chodzi");
             }
 
             i++;
@@ -115,9 +115,9 @@ public class PlayerManager: MonoBehaviour
         // wyczyszczenie dunga przed załądowaniem danych nowego gracza
         DungeonManager.instance.DungeonClearAndGoToCamp();
 
-        Debug.Log("Load data from player progress file");
+       // Debug.Log("Load data from player progress file");
         // progress & resources 
-         Debug.LogError("wczytanie expa:"+_progressData.Experience);
+        // Debug.LogError("wczytanie expa:"+_progressData.Experience);
         NickName         =  _progressData.NickName;             // TODO: aktualizuje sie w PlayerCell przy starcie - nowa mapa           
         STATS.Level            =  _progressData.Level;                        // OK - setter
         STATS.Experience       =  _progressData.Experience;                   // OK - setter
@@ -300,7 +300,7 @@ public class PlayerManager: MonoBehaviour
     [ContextMenu("Wykonaj zrzut danych gracza")]
     public void SavePlayerData()
     {
-        Debug.LogError("ZAPISANIE POSTEPOW GRACZA");
+      //  Debug.LogError("ZAPISANIE POSTEPOW GRACZA");
         PlayerProgressModel _updatedData = GameManager.instance.PLAYER_PROGRESS_DATA;
 
         // "zdjęcie statystyk z aktualnie zalozonych itemkow" zeby zapisac surowe staty samego gracza, 
@@ -318,7 +318,6 @@ public class PlayerManager: MonoBehaviour
    // -------------------
         _updatedData.Level =                    this.STATS.Level;
         _updatedData.Experience =               this.STATS.Experience;
-        Debug.LogError("zapisanie expa:"+_updatedData.Experience);
         _updatedData.MaxHealth=                 Mathf.RoundToInt(this.STATS.HealthPoints);
         _updatedData.CurrentHealth =            this.CurrentHealth;
         _updatedData.Power =                    this.Power;

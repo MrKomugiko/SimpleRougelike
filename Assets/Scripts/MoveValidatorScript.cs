@@ -45,7 +45,7 @@ public class MoveValidatorScript : MonoBehaviour
                 if(cell.Type == TileTypes.player)
                 {
                     validMovePosiitonsCounter ++;
-                    Debug.Log(validMovePosiitonsCounter);
+                   // Debug.Log(validMovePosiitonsCounter);
 
                     GridIndicators[index].color = Color.green;    
                 }
@@ -62,7 +62,7 @@ public class MoveValidatorScript : MonoBehaviour
             else
             {
                 validMovePosiitonsCounter ++;
-                Debug.Log(validMovePosiitonsCounter);
+//                Debug.Log(validMovePosiitonsCounter);
             }
             index++;
         }

@@ -37,7 +37,7 @@ public class Obstacle_Cell : ISpecialTile
     public void OnClick_MakeAction()
     {
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
-        Debug.Log(direction);
+      //  Debug.Log(direction);
         if(direction.x == 0)
             GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
         

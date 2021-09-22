@@ -72,12 +72,13 @@ public class GameManager : MonoBehaviour
             if(tempCurrentCreatureList.Count == 0)
             {
                 // nie ma potworów na mapie =>uaktywnij teleporty
-                foreach(var teleport in telerpotButtons)
+                DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation].SetAllDoorsState(true);
+                foreach(var roomDoor in DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation].DoorStatesList)
                 {
-                    Debug.Log("włączenie teleportu:"+teleport.name);
-                    teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
-                    teleport.GetComponent<Button>().interactable = true;
-                    teleport.GetComponent<Image>().raycastTarget = true;          
+                    if(roomDoor.Value == true)
+                    {
+                        DungeonManager.instance.EnableTeleportButton(roomDoor.Key);
+                    }
                 }
             }
 
@@ -95,15 +96,15 @@ public class GameManager : MonoBehaviour
             TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
 
             PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
-            if(teleporsEmergencySwitchUsed == false)
-            {
+            // if(teleporsEmergencySwitchUsed == false)
+            // {
                 if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
                 {
                     // zablokowane miejsce na ruch, tylko atak bezposrednio niech sie aktywuje
-                    Debug.Log("skit player movement turn = "+PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter);
+                    Debug.Log("skip player movement turn = "+PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter);
                     PlayerMoved = true;
                 }
-            }
+            // }
             yield return new WaitUntil(()=>PlayerMoved && PlayerManager.instance.playerCurrentlyMoving==false);
             instance.TurnInfo_TMP.SetText("PLAYER MOVE TURN ENDED");
             yield return new WaitForSeconds(turnPhaseDelay);
@@ -126,23 +127,23 @@ public class GameManager : MonoBehaviour
            int _monstersInRange = PlayerManager.instance.MovmentValidator.ShowValidAttackGrid();
            if(_monstersInRange == 0)
            {
-               Debug.Log("no monsters to attack");
-               if(teleporsEmergencySwitchUsed == false)
-               {
-                    PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
-                    if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
-                    {
-                        foreach(var teleport in telerpotButtons)
-                        {
-                            Debug.Log("włączenie teleportu:"+teleport.name);
-                            teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
-                            teleport.GetComponent<Button>().interactable = true;
-                            teleport.GetComponent<Image>().raycastTarget = true;          
-                        }
-                        teleporsEmergencySwitchUsed = true;
-                        Debug.LogError("Awaryjne odbezpieczenie teleportow na mapie spowodowane napotkaniem blokady zaraz po pojawieniu sie na mapie");
-                    }
-               }
+               //Debug.Log("no monsters to attack");
+            //    if(teleporsEmergencySwitchUsed == false)
+            //    {
+            //         PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
+            //         if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
+            //         {
+            //             foreach(var teleport in telerpotButtons)
+            //             {
+            //                 Debug.Log("włączenie teleportu:"+teleport.name);
+            //                 teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
+            //                 teleport.GetComponent<Button>().interactable = true;
+            //                 teleport.GetComponent<Image>().raycastTarget = true;          
+            //             }
+            //             teleporsEmergencySwitchUsed = true;
+            //             Debug.LogError("Awaryjne odbezpieczenie teleportow na mapie spowodowane napotkaniem blokady zaraz po pojawieniu sie na mapie");
+            //         }
+            //    }
 
                 PlayerManager.instance.MovmentValidator.HideGrid();
                 CurrentTurnPhase = TurnPhase.MonsterMovement;
@@ -197,13 +198,9 @@ public class GameManager : MonoBehaviour
             if(tempCurrentCreatureList.Count == 0)
             {
                 // nie ma potworów na mapie =>uaktywnij teleporty
-                foreach(var teleport in telerpotButtons)
-                {
-                    Debug.Log("włączenie teleportu:"+teleport.name);
-                    teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
-                    teleport.GetComponent<Button>().interactable = true;
-                    teleport.GetComponent<Image>().raycastTarget = true;          
-                }
+                // 1. zapisanie stanu teleportow
+                Debug.Log("Room cleared!");
+                DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation].SetAllDoorsState(true);
             }
 
             yield return new WaitUntil(()=>tempCurrentCreatureList.Where(m=>m.ParentCell.IsCurrentlyMoving).Count()==0);
@@ -273,11 +270,10 @@ public class GameManager : MonoBehaviour
             TurnPhaseBegin = true;
             GameManager.instance.ClearStageWindow.SetActive(true);
             PlayerManager.instance.SavePlayerData();
-            print("end of loop");
+            //print("end of loop");
             yield break;
         }
     }
-    [SerializeField] public List<GameObject> telerpotButtons = new List<GameObject>();
     [SerializeField] TextMeshProUGUI DELETECONSOLELOGS;
     [SerializeField] TextMeshProUGUI DELETECONSOLE_BTNTEXT;
     public void BACKFROMCLEARINGGAMEDATA()
@@ -316,20 +312,10 @@ public class GameManager : MonoBehaviour
             HeroDataController.instance.CreateEmptyHeroCards();
             HeroDataController.instance.LoadHeroesDataFromDevice();
         }
-
-        //     PlayerProgressModel blank_emptyhero = new PlayerProgressModel("_EMPTY_", data.SlotID);
-        // storedHeroesCard[data.SlotID].ConfigureCard(blank_emptyhero, data.SlotID);
-        // string JSONresult = JsonConvert.SerializeObject(blank_emptyhero);
-        // if (File.Exists(Application.persistentDataPath + $"/[{data.SlotID}]_Hero_{data.NickName}.json"))
-        // {
-        //     //  print("podmianka pliku emptyy");
-        //     File.Move(Application.persistentDataPath + $"/[{data.SlotID}]_Hero_{data.NickName}.json", Application.persistentDataPath + $"/[{data.SlotID}]_Hero__EMPTY_.json");
-        // }
-        // File.WriteAllText(Application.persistentDataPath + $"/[{data.SlotID}]_Hero__EMPTY_.json", JSONresult);
     }
     public void EndTurnLoopShowClearDungeonWindow()
     {
-        Debug.Log("Map cleared");
+        //Debug.Log("Map cleared");
         TurnPhaseBegin = false;
         CurrentTurnPhase = TurnPhase.MapClear;
         StartCoroutine(AddTurn());
@@ -337,7 +323,7 @@ public class GameManager : MonoBehaviour
 
        public void CloseClearWindowBackToDungeon()
     {
-        Debug.Log("back to dungeon");
+       // Debug.Log("back to dungeon");
         TurnPhaseBegin = false;
         PlayerMoved = false;
         PlayerAttacked = false;
@@ -360,47 +346,7 @@ public class GameManager : MonoBehaviour
         MonsterMovement,
         MonsterAttack
     }
-    internal static void NewGame()
-    {      
-
-        // // `REsetowanie widoku gry w czasie przełączania sie z konta na konto, 
-        // //  `lub po śmierci gracza w przypadku kontynuowania gry w ciągu 1 sesji 
-        // //  `ale dla innego konta
-
-        // GameManager.instance.CurrentTurnPhase = TurnPhase.StartGame;
-
-        // GameManager.instance.CurrentTurnNumber = 0;
-        // GameManager.instance.PlayerMoved = false;
-        // GameManager.instance.PlayerAttacked = false;
-        // GameManager.instance.MonstersMoved = false;
-        // GameManager.instance.MonsterAttack = false;
-
-        // instance._chestLootScript.Clear();
-
-        // NotificationManger.instance.NotificationList.ForEach(n=>Destroy(n.gameObject.transform.parent.gameObject));
-        // NotificationManger.instance.NotificationList.Clear();
-        
-        // //  niszczenie obiektór mapy
-        // foreach (var cell in GridManager.CellGridTable)
-        // {
-        //     Destroy(cell.Value.gameObject);
-        // }
-        // // kasowanie pamięci mapki
-        // GridManager.destroyedTilesPool.Clear();
-        // GridManager.CellGridTable.Clear();
-
-        // // gdyby gracz zostawil otwartą zakładke, zamknij ją
-        // GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
-
-
-        // GridManager.instance.CreateEmptyGrid();
-        // GridManager.instance.RandomizeDataOnGrid();
-
-        // GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
-        // GameManager.instance.StopAllCoroutines();
-        // GameManager.instance.StartCoroutine(GameManager.instance.AddTurn());
-    }
-    public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
+       public bool WybuchWTrakcieWykonywania { get => wybuchWTrakcieWykonywania; set {
 
         wybuchWTrakcieWykonywania = value; 
         }
@@ -576,15 +522,15 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("GameOver, create new account sorry xd");
+       // Debug.Log("GameOver, create new account sorry xd");
 
-        Debug.Log("wyczyszczenie danych mapy dunga i wyjscie do camp'u");
+       // Debug.Log("wyczyszczenie danych mapy dunga i wyjscie do camp'u");
         DungeonManager.instance.DungeonClearAndGoToCamp();
 
-        Debug.Log("zapisanie danych gracza");
+       // Debug.Log("zapisanie danych gracza");
         PlayerManager.instance.SavePlayerData();
 
-        Debug.Log("wyjscie do menu głownego");
+       // Debug.Log("wyjscie do menu głownego");
         MenuScript.instance.KickToMenuAfterDeath();
         
     }

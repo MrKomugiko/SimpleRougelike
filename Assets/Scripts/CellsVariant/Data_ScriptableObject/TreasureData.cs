@@ -20,7 +20,7 @@ public class TreasureData : ScriptableObject
     public  List<ItemPack> GetRandomizeLootPacks()
     {
 
-        Debug.Log("losowanie zawartosci");
+        //Debug.Log("losowanie zawartosci");
         List<ItemPack> ListOfContainingItem = new List<ItemPack>();
         ListOfContainingItem = new List<ItemPack>();
         int itemInChest = Random.Range(0,PossibleLootItems.Count+1);

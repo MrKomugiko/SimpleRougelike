@@ -11,7 +11,7 @@ public class Chest : IChest
     public bool ContentAlreadyGenerateed = false;
     public Chest(ISpecialTile source, List<ItemPack> contentItems )
     {
-        Debug.Log("utworzenie chest");
+        //Debug.Log("utworzenie chest");
         Parent = source;
         ContentItems = contentItems;
         

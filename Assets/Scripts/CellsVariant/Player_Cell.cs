@@ -44,7 +44,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             {
                 // TODO: Podmiana na kapliczke ;d
                 // TODO: otwarcie okna  GAMEOVER
-                Debug.Log("Player is DEAD");
+              //  Debug.Log("Player is DEAD");
                 HealthPoints = 0;
                 ChangeToPlayerCorpse();
 
@@ -111,17 +111,17 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     {
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
         {
-            Debug.Log("trwa inna faza niz ruchu gracza");
+            //Log("trwa inna faza niz ruchu gracza");
             return;
         }
 
         if(PlayerManager.instance.playerCurrentlyMoving == true)
         {
-            Debug.Log("player currenly moving");
+          //  Debug.Log("player currenly moving");
             return;
         }
 
-        Debug.Log("spokojnie pominąć ture klikajac na siebie");
+       // Debug.Log("spokojnie pominąć ture klikajac na siebie");
         PlayerManager.instance.MovmentValidator.HideGrid();
         PlayerManager.instance.playerCurrentlyMoving = false;
         GameManager.instance.PlayerMoved = true;
@@ -142,7 +142,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             bool _isCritical = false;
             bool _isDodged = (PlayerManager.instance.STATS.Evasion*100) > UnityEngine.Random.Range(0,1000)?true:false;
             bool _isBlocked = (PlayerManager.instance.STATS.BlockChance*100) > UnityEngine.Random.Range(0,1000)?true:false;
-            if(_isDodged) Debug.Log("gracz uniknął ataku");
+         //   if(_isDodged) Debug.Log("gracz uniknął ataku");
             if(_isBlocked) damage *= .5f;
             
 
@@ -151,15 +151,15 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             OnPlayerTakeDamageEvent?.Invoke(this,(parent:ParentCell,damageTaken:Int32.Parse(_damageAfterReduction.ToString()),criticalHit:_isCritical,blockedHit:_isBlocked,dodgedHit:_isDodged));
             if(_isDodged) return;
 
-            Debug.Log("aktualne hp "+HealthPoints);
+           // Debug.Log("aktualne hp "+HealthPoints);
             HealthPoints  -= _damageAfterReduction;
-            Debug.Log("otrzymałes :"+_damageAfterReduction);
-            Debug.Log("zaktualizowane hp "+HealthPoints);
+            //Debug.Log("otrzymałes :"+_damageAfterReduction);
+           // Debug.Log("zaktualizowane hp "+HealthPoints);
 
             PlayerManager.instance.CurrentHealth = HealthPoints;
             if (IsAlive)
             {
-                Debug.Log($"Player HP decerase from [{HealthPoints + _damageAfterReduction}] to [{HealthPoints}] by <{source}>");
+              //  Debug.Log($"Player HP decerase from [{HealthPoints + _damageAfterReduction}] to [{HealthPoints}] by <{source}>");
             }
             PlayerManager.instance.CumulativeStageDamageGained += _damageAfterReduction;
         }
@@ -167,7 +167,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         if(damage < 0)
         {
             // HEAL
-            Debug.Log("HEAL");
+          //  Debug.Log("HEAL");
             HealthPoints -= Mathf.RoundToInt(damage);
             PlayerManager.instance.CurrentHealth = HealthPoints;
         }

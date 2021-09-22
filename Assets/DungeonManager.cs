@@ -40,7 +40,6 @@ public class DungeonManager : MonoBehaviour
 
 
     }
-
     public void DungeonClearAndGoToCamp()
     {
         // poodpinanie zalozonych itemkow w quickslocie gracza
@@ -75,11 +74,8 @@ public class DungeonManager : MonoBehaviour
 
         maxDungeonStage = recentDungeonStage > maxDungeonStage ? recentDungeonStage : maxDungeonStage;
     }
-
     [SerializeField] Image RoomWallsSprite;
-    Vector2Int CurrentLocation;
-
-
+    public Vector2Int CurrentLocation;
     [ContextMenu("1. create current map backup")]
     public void MakeCurrentMapBackup(Room _room)
     {
@@ -184,16 +180,16 @@ public class DungeonManager : MonoBehaviour
 
         GridManager.CellGridTable[new Vector2Int(4, 8)].AssignType(TileTypes.grass);
         GridManager.CellGridTable[new Vector2Int(4, 8)].isWalkable = true;
-
-        // Player spawn
-      //  GameManager.instance.Init_PlacePlayerOnGrid(BackupPlayerPosition);
-        // PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
-
-        // start routine
-        //DungeonManager.instance.RestartTurnRoutine();
     }
 
-    [ContextMenu("generate new dung")]
+    public static void SetNeighourRoomsDoorsState(Room changesFromRoom, List<Vector2Int> listchangedDoors)
+    {
+        foreach(var changeddoordir in listchangedDoors)
+        {
+            DungeonRoomScript.Dungeon[changesFromRoom.position+changeddoordir].SetStateDoorByVector( (-changeddoordir), true);
+        }
+    }
+
     public void GenerateAndEnterDungeon()
     {
      //   Debug.Log("generate dungeon rooms");
@@ -204,60 +200,42 @@ public class DungeonManager : MonoBehaviour
         RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[Vector2Int.zero].doorsNameCode + "_OPEN").First();
         DungeonRoomScript.Dungeon[Vector2Int.zero].WasVisited = true;
     }
+ 
 
-    private void TurnOffTeleportButtons()
-    {
-        foreach(var teleport in GameManager.instance.telerpotButtons)
-        {
 
-            Debug.Log("wylaczenie teleportu:"+teleport.name);
-            teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = false;
-            teleport.GetComponent<Button>().interactable = false;
-            teleport.GetComponent<Image>().raycastTarget = false;
-        }
-    }
-
-    [ContextMenu("move up")]
     public void MoveNExtRoom_Up()
     {
-        TurnOffTeleportButtons();
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
         var vector = Vector2Int.up;
         Vector2Int newLocationCoord = CurrentLocation + vector;
         ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(4,0),newLocationCoord, moveFromDirection: vector);
     }
-    [ContextMenu("move right")]
     public void MoveNExtRoom_Right()
     {
-        TurnOffTeleportButtons();
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
         var vector = Vector2Int.right;
         Vector2Int newLocationCoord = CurrentLocation + vector;
         ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(0,4),newLocationCoord, moveFromDirection: vector);
     }
-    [ContextMenu("move Down")]
     public void MoveNExtRoom_Down()
     {
-        TurnOffTeleportButtons();
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
         var vector = Vector2Int.down;
         Vector2Int newLocationCoord = CurrentLocation + vector;
         ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(4,8),newLocationCoord, moveFromDirection: vector);
     }
-    [ContextMenu("move Left")]
     public void MoveNExtRoomLeftP()
     {
-        TurnOffTeleportButtons();
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
         var vector = Vector2Int.left;
         Vector2Int newLocationCoord = CurrentLocation + vector;
         ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(8, 4),newLocationCoord, moveFromDirection: vector);
     }
-
     private void ManageRoomDorsAndPlayerSpawn(Vector2Int playerPosition, Vector2Int newLocationCoord, Vector2Int moveFromDirection)
     {
         if (DungeonRoomScript.Dungeon.ContainsKey(newLocationCoord))
         {
+            CurrentLocation = newLocationCoord;
             RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[newLocationCoord].doorsNameCode + "_OPEN").First();
             if(DungeonRoomScript.Dungeon[newLocationCoord].WasVisited == false)
             {
@@ -282,12 +260,32 @@ public class DungeonManager : MonoBehaviour
             PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
             RestartTurnRoutine();
             ConfigureNextRoomButtons(newLocation: newLocationCoord);
-            Dungeon[newLocationCoord].UnlockDoor(-moveFromDirection) // <- w nowym pokoju będą odblokowane drzwi przeciwne do drzwi przez ktore sie weszło , wchodzisz z prawej, nowy pokoj, odblokowane z lewej
+
+           // Dungeon[newLocationCoord].SetStateDoorByVector(-moveFromDirection,true); // <- w nowym pokoju będą odblokowane drzwi przeciwne do drzwi przez ktore sie weszło , wchodzisz z prawej, nowy pokoj, odblokowane z lewej
             DungeonRoomScript.Dungeon[newLocationCoord].WasVisited = true;
             ShowMinimap();
         }
     }
+    [SerializeField] public List<GameObject> telerpotButtons = new List<GameObject>();
+    public void EnableTeleportButton(string direction)
+    {
+        var teleport = telerpotButtons.Where(n=>n.name == direction).First();
+        //Debug.Log("włączenie teleportu:"+teleport.name);
+        teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
+        teleport.GetComponent<Button>().interactable = true;
+        teleport.GetComponent<Image>().raycastTarget = true;       
+    }
 
+    private void DissableTeleportButtons()
+    {
+        foreach(var teleport in telerpotButtons)
+        {
+            //Debug.Log("wylaczenie teleportu:"+teleport.name);
+            teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = false;
+            teleport.GetComponent<Button>().interactable = false;
+            teleport.GetComponent<Image>().raycastTarget = false;
+        }
+    }
     public void RestartTurnRoutine()
     {
         GameManager.instance.StopAllCoroutines();
@@ -306,6 +304,9 @@ public class DungeonManager : MonoBehaviour
     }
     private void ConfigureNextRoomButtons(Vector2Int newLocation)
     {
+        DissableTeleportButtons(); // reset ustawienie wszystkich na OFF
+        DungeonRoomScript.Dungeon[newLocation].DoorStatesList.Where(d=>d.Value == true).ToList().ForEach(d=>EnableTeleportButton(d.Key));
+
         var availableExits = DungeonRoomScript.Dungeon[newLocation].doorsNameCode.ToCharArray().ToList();
 
         W_BTN.gameObject.SetActive(false);

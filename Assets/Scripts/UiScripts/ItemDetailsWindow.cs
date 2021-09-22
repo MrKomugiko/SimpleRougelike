@@ -47,7 +47,7 @@ public class ItemDetailsWindow : MonoBehaviour
         catch (System.Exception)
         {
             
-            Debug.LogError("nie znaleziono buttona?? dla ButtonsList.Where(b=>b.name == \"EquipButton\" ||b.name == \"ConsumeButton\").First() ");
+           // Debug.LogError("nie znaleziono buttona?? dla ButtonsList.Where(b=>b.name == \"EquipButton\" ||b.name == \"ConsumeButton\").First() ");
         }
        
     }

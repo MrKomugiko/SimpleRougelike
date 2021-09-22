@@ -23,7 +23,7 @@ public class ActionSwitchController : MonoBehaviour
         {
             if(EquipmentScript.AssignationItemToQuickSlotIsActive)
             {
-                Debug.Log("quit from AssignationItemToQuickSlotIsActive mode");
+                //Debug.Log("quit from AssignationItemToQuickSlotIsActive mode");
                 EquipmentScript.QuitFromQuickbarSelectionMode();
             }
 
@@ -50,7 +50,7 @@ public class ActionSwitchController : MonoBehaviour
     
     public void ConfigurePlayerButtons(ISpecialTile cell,string actionNameString="")
     {
-        Debug.LogWarning("Configure default-empty PlayerButtons"); 
+        //Debug.LogWarning("Configure default-empty PlayerButtons"); 
         int i =0;
         foreach(var button in actionButtonsList)
         {
@@ -73,7 +73,7 @@ public class ActionSwitchController : MonoBehaviour
     }       
     public void Configure(ISpecialTile cell)
     {
-        Debug.LogWarning("coonfig");
+       // Debug.LogWarning("coonfig");
         int i =0;
         ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
         actionButtonsList.CopyTo(temp);
@@ -108,7 +108,7 @@ public class ActionSwitchController : MonoBehaviour
     {
         if(cell is Player_Cell) return;
 
-        Debug.LogWarning("Refresh opened window in ACTION BUTTONS");
+        //Debug.LogWarning("Refresh opened window in ACTION BUTTONS");
         int i =0;
         ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
         actionButtonsList.CopyTo(temp);

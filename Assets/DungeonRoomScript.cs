@@ -160,13 +160,57 @@ public class DungeonRoomScript : MonoBehaviour
             this.doorsNameCode = doorsNameCode;
             
            // Debug.Log("Room Created: "+position+" ["+doorsNameCode+"]");
+            foreach(var doorCode in doorsNameCode.ToCharArray().ToList())
+            {
+                DoorStatesList.Add(doorCode.ToString(),false);
+            }
         }
 
-        public Dictionary<string,bool> ListOfUnflockedDoors = new Dictionary<string, bool>();
-        public void UnlockDoor(Vector2Int direction)
+        public Dictionary<string,bool> DoorStatesList = new Dictionary<string, bool>();
+        public void SetStateDoorByCode(string code, bool state)
         {
-            ListOfUnflockedDoors[directionsDict.Where(v=>v.Value == direction).First().Key] = true;
-            // TODO:
+            if(DoorStatesList[code] == true && state == true) return; 
+            if(DoorStatesList[code] == false && state == false) return; 
+
+
+            DoorStatesList[code] = state;
+            // and unlock door from next room side on opposite direction
+            DungeonManager.SetNeighourRoomsDoorsState(this, new List<Vector2Int>(){directionsDict[code]});
+        }
+        public void SetStateDoorByVector(Vector2Int direction, bool state)
+        {
+            string code = directionsDict.Where(v=>v.Value == direction).First().Key;
+
+            if(DoorStatesList[code] == true && state == true) return; 
+            if(DoorStatesList[code] == false && state == false) return; 
+
+            DoorStatesList[code] = state;
+            // and unlock door from next room side on opposite direction
+            DungeonManager.SetNeighourRoomsDoorsState(this, new List<Vector2Int>(){directionsDict[code]});
+        }
+        public void SetAllDoorsState(bool state = true)
+        {
+            if(DoorStatesList.Values.Where(v=>v == false).Count() == 0 && state == true) return; 
+            if(DoorStatesList.Values.Where(v=>v == true).Count() == 0 && state == false) return; 
+
+            List<Vector2Int> listchangedDoors = new List<Vector2Int>();
+            foreach(var doorCode in doorsNameCode.ToCharArray().ToList())
+            {
+                DoorStatesList[doorCode.ToString()] = state;
+                listchangedDoors.Add(directionsDict[doorCode.ToString()]);
+            }
+            
+            DungeonManager.SetNeighourRoomsDoorsState(this, listchangedDoors);
+        }
+
+        public List<Room> GetNeighbourRooms()
+        {
+            List<Room> neigbours = new List<Room>();
+            foreach(var doorcode in doorsNameCode)
+            {
+                neigbours.Add(Dungeon[position + directionsDict[doorcode.ToString()]]);
+            }
+            return neigbours;
         }
     }
     public class RoomGridData

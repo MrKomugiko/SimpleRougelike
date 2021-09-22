@@ -92,7 +92,7 @@ public partial class NotificationManger : MonoBehaviour
                     {
                         if(string.IsNullOrEmpty(quick_0.ScriptableObjectName) == false)
                         {
-                            Debug.LogError($"wrzucanie itemka z slotu [{quick_0.SlotID}] do quicslotu nr0");
+                           // Debug.LogError($"wrzucanie itemka z slotu [{quick_0.SlotID}] do quicslotu nr0");
                             PlayerManager.instance._mainBackpack.ItemSlots[quick_0.SlotID].AssignToQuickSlot(0);
                         }
                     }
@@ -100,7 +100,7 @@ public partial class NotificationManger : MonoBehaviour
                     {
                         if(string.IsNullOrEmpty(quick_1.ScriptableObjectName) == false)
                         {
-                            Debug.LogError($"wrzucanie itemka z slotu [{quick_1.SlotID}] do quicslotu nr1");
+                           // Debug.LogError($"wrzucanie itemka z slotu [{quick_1.SlotID}] do quicslotu nr1");
                             PlayerManager.instance._mainBackpack.ItemSlots[quick_1.SlotID].AssignToQuickSlot(1);
                         }
                     }
@@ -108,7 +108,7 @@ public partial class NotificationManger : MonoBehaviour
                     {
                         if(string.IsNullOrEmpty(quick_2.ScriptableObjectName) == false)
                         {
-                            Debug.LogError($"wrzucanie itemka z slotu [{quick_2.SlotID}] do quicslotu nr2");
+                           // Debug.LogError($"wrzucanie itemka z slotu [{quick_2.SlotID}] do quicslotu nr2");
                             PlayerManager.instance._mainBackpack.ItemSlots[quick_2.SlotID].AssignToQuickSlot(2);
                         }
                     }
@@ -116,7 +116,7 @@ public partial class NotificationManger : MonoBehaviour
                     {
                         if(string.IsNullOrEmpty(quick_3.ScriptableObjectName) == false)
                         {
-                            Debug.LogError($"wrzucanie itemka z slotu [{quick_3.SlotID}] do quicslotu nr3");
+                           // Debug.LogError($"wrzucanie itemka z slotu [{quick_3.SlotID}] do quicslotu nr3");
                             PlayerManager.instance._mainBackpack.ItemSlots[quick_3.SlotID].AssignToQuickSlot(3);
                         }
                     }
@@ -124,7 +124,7 @@ public partial class NotificationManger : MonoBehaviour
                     {
                         if(string.IsNullOrEmpty(quick_4.ScriptableObjectName) == false)
                         {
-                            Debug.LogError($"wrzucanie itemka z slotu [{quick_4.SlotID}] do quicslotu nr4");
+                           // Debug.LogError($"wrzucanie itemka z slotu [{quick_4.SlotID}] do quicslotu nr4");
                             PlayerManager.instance._mainBackpack.ItemSlots[quick_4.SlotID].AssignToQuickSlot(4);
                         }
                     }
@@ -141,7 +141,7 @@ public partial class NotificationManger : MonoBehaviour
             canvas.overrideSorting = true;
             canvas.sortingOrder = 21;}
             ));
-        Debug.LogError(canvas.gameObject.activeInHierarchy);
+        //Debug.LogError(canvas.gameObject.activeInHierarchy);
         existingnotification.gameObject.AddComponent<GraphicRaycaster>();
 
     }
@@ -179,7 +179,7 @@ public partial class NotificationManger : MonoBehaviour
                     if(notification.PossibleActions.activeSelf == true) 
                     {   
                         // print("reset to default, okno possible actions jest nieaktywne");
-                        print("click");
+                       // print("click");
                         notification.PossibleActions.GetComponent<ActionSwitchController>().ResetToDefault();
         
 
@@ -192,7 +192,7 @@ public partial class NotificationManger : MonoBehaviour
         catch (System.Exception ex)
         {
             
-            Debug.LogError("blad"+ex.Message);
+           // Debug.LogError("blad"+ex.Message);
         }
         
     }
@@ -364,7 +364,7 @@ public partial class NotificationManger : MonoBehaviour
     catch (System.Exception ex)
     {
         
-        Debug.LogError(ex.Message);
+       // Debug.LogError(ex.Message);
     }
        
     }
@@ -425,7 +425,7 @@ public partial class NotificationManger : MonoBehaviour
     }
     private static void Configure_PlayerAttack_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification)
     {
-        Debug.LogWarning("PLAYER NOTIFICATION");
+       // Debug.LogWarning("PLAYER NOTIFICATION");
         float damageValue =  (invoker_BaseCell as ILivingThing).Damage;
         Color32 color = Color.yellow;
 

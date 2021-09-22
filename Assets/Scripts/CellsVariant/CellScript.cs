@@ -201,20 +201,20 @@ public class CellScript : MonoBehaviour
     {
         if(this.gameObject.transform.Find("MarkSign(Clone)").gameObject.activeInHierarchy == false) 
         {
-            Debug.LogError("yr not allowed to move this spot");
+            //Debug.LogError("yr not allowed to move this spot");
             return;
         }
 
         Debug.Log("click on cell "+CurrentPosition);
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
         {
-            print("trwa inna faza niz ruchu gracza");
+            //print("trwa inna faza niz ruchu gracza");
             return;
         }
 
         if(PlayerManager.instance.playerCurrentlyMoving == true)
         {
-            Debug.Log("player currenly moving");
+            //Debug.Log("player currenly moving");
             return;
         }
 
