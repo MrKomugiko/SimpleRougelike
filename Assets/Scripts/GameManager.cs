@@ -59,12 +59,28 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    public bool teleporsEmergencySwitchUsed;
     public bool TurnPhaseBegin = true;
     [SerializeField] private List<Image> TurnImageIndicators = new List<Image>();
     public IEnumerator AddTurn()
     {   
         if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
+            //----------------------------------------------------------------------------------
+            List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
+            tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
+            if(tempCurrentCreatureList.Count == 0)
+            {
+                // nie ma potworów na mapie =>uaktywnij teleporty
+                foreach(var teleport in telerpotButtons)
+                {
+                    Debug.Log("włączenie teleportu:"+teleport.name);
+                    teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
+                    teleport.GetComponent<Button>().interactable = true;
+                    teleport.GetComponent<Image>().raycastTarget = true;          
+                }
+            }
+
            // Debug.LogWarning("Player move - start");
 
             TurnImageIndicators[0].color = Color.yellow;
@@ -79,7 +95,15 @@ public class GameManager : MonoBehaviour
             TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
 
             PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
-
+            if(teleporsEmergencySwitchUsed == false)
+            {
+                if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
+                {
+                    // zablokowane miejsce na ruch, tylko atak bezposrednio niech sie aktywuje
+                    Debug.Log("skit player movement turn = "+PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter);
+                    PlayerMoved = true;
+                }
+            }
             yield return new WaitUntil(()=>PlayerMoved && PlayerManager.instance.playerCurrentlyMoving==false);
             instance.TurnInfo_TMP.SetText("PLAYER MOVE TURN ENDED");
             yield return new WaitForSeconds(turnPhaseDelay);
@@ -87,9 +111,6 @@ public class GameManager : MonoBehaviour
             PlayerMoved = false;
             TurnPhaseBegin = false;
             CurrentTurnPhase = TurnPhase.PlayerAttack;
-            TurnImageIndicators[0].color = Color.green;
-            TurnImageIndicators[1].color = Color.yellow;
-            //Debug.LogWarning("Player move - end");
 
             yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
@@ -106,6 +127,23 @@ public class GameManager : MonoBehaviour
            if(_monstersInRange == 0)
            {
                Debug.Log("no monsters to attack");
+               if(teleporsEmergencySwitchUsed == false)
+               {
+                    PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
+                    if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
+                    {
+                        foreach(var teleport in telerpotButtons)
+                        {
+                            Debug.Log("włączenie teleportu:"+teleport.name);
+                            teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
+                            teleport.GetComponent<Button>().interactable = true;
+                            teleport.GetComponent<Image>().raycastTarget = true;          
+                        }
+                        teleporsEmergencySwitchUsed = true;
+                        Debug.LogError("Awaryjne odbezpieczenie teleportow na mapie spowodowane napotkaniem blokady zaraz po pojawieniu sie na mapie");
+                    }
+               }
+
                 PlayerManager.instance.MovmentValidator.HideGrid();
                 CurrentTurnPhase = TurnPhase.MonsterMovement;
                 TurnImageIndicators[1].color = Color.green;
@@ -155,7 +193,19 @@ public class GameManager : MonoBehaviour
                     continue;
                 }
             }
-            
+
+            if(tempCurrentCreatureList.Count == 0)
+            {
+                // nie ma potworów na mapie =>uaktywnij teleporty
+                foreach(var teleport in telerpotButtons)
+                {
+                    Debug.Log("włączenie teleportu:"+teleport.name);
+                    teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
+                    teleport.GetComponent<Button>().interactable = true;
+                    teleport.GetComponent<Image>().raycastTarget = true;          
+                }
+            }
+
             yield return new WaitUntil(()=>tempCurrentCreatureList.Where(m=>m.ParentCell.IsCurrentlyMoving).Count()==0);
             MonstersMoved = true;
 
@@ -214,8 +264,6 @@ public class GameManager : MonoBehaviour
             TurnImageIndicators[3].color = Color.green;
             CurrentTurnPhase = TurnPhase.PlayerMovement;
           //  Debug.LogWarning("Monster attack - end");
-
-            if(tempCurrentCreatureList.Count > 0) yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
             yield break;
         }
@@ -229,7 +277,7 @@ public class GameManager : MonoBehaviour
             yield break;
         }
     }
-
+    [SerializeField] public List<GameObject> telerpotButtons = new List<GameObject>();
     [SerializeField] TextMeshProUGUI DELETECONSOLELOGS;
     [SerializeField] TextMeshProUGUI DELETECONSOLE_BTNTEXT;
     public void BACKFROMCLEARINGGAMEDATA()

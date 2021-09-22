@@ -34,14 +34,13 @@ public class Monster_Cell :ICreature
         get => _healthPoints; 
         set 
         {
-            OnMonsterTakeDamageEvent?.Invoke(this,(ParentCell,value-_healthPoints));
             _healthPoints = value;
             
             if(value>MaxHealthPoints)
                 _healthPoints = MaxHealthPoints;
         }
     }
-    public event EventHandler<(CellScript ParticleSystemEmissionType, int damageTaken)> OnMonsterTakeDamageEvent;
+    public event EventHandler<(CellScript parent, int damageTaken, bool criticalHit,bool blockedHit, bool dodgedHit)> OnMonsterTakeDamageEvent;
     public event EventHandler<string> OnMonsterDieEvent;
     public bool IsAlive
     {
@@ -119,6 +118,20 @@ public class Monster_Cell :ICreature
         }
         CustomEventManager.instance.OnMonsterDieEvent += MonsterDie;
     }
+    public void AdjustByMapDificultyLevel(int lvl)
+    {
+        float atackMultip = .1f;
+        float healthMultip = .1f;
+        float expMultip = .50f;
+
+        
+        Damage = Mathf.RoundToInt(Damage+(Damage*lvl*atackMultip));
+        
+        MaxHealthPoints = Mathf.RoundToInt(MaxHealthPoints+(MaxHealthPoints*lvl*healthMultip));
+        HealthPoints = MaxHealthPoints;
+
+        ExperiencePoints = Mathf.RoundToInt(ExperiencePoints+(ExperiencePoints*lvl*expMultip));
+    }
     
     public object SaveAndGetCellProgressData()
     {
@@ -173,7 +186,12 @@ public class Monster_Cell :ICreature
              NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");
              return;
         }
-        TakeDamage((GameManager.Player_CELL.SpecialTile as Player_Cell).Damage, "Attacked by player");
+
+        int _damage; bool _isCritical;
+        PlayerManager.instance.CalculateAttackHit(out _damage, out _isCritical);
+        OnMonsterTakeDamageEvent?.Invoke(this,(ParentCell,Int32.Parse(_damage.ToString()),_isCritical,false,false));
+
+        TakeDamage(_damage, "Attacked by player");
         PlayerManager.instance.CumulativeStageDamageTaken += (GameManager.Player_CELL.SpecialTile as Player_Cell).Damage;
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
@@ -184,7 +202,6 @@ public class Monster_Cell :ICreature
     }
     public void TakeDamage(float damage, string source)
     {
-    
         HealthPoints -= Mathf.RoundToInt(damage);
      
         if(IsAlive)

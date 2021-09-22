@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2830f37d3fc36846bc09ef240db0d67, type: 3}
+  m_Name: Equipment_7_Dagger 5
+  m_EditorClassIdentifier: 
+  ItemCoreSettings:
+    Item_Sprite: {fileID: -1589186304, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+    ItemID: 7
+    Name: Dagger 5
+    GoldValue: 1000
+    Description: Looks like small sword. But isnt should be sharp?
+    Rarity: 3
+    Type: 2
+  DropSettings:
+    minCount: 1
+    maxCount: 1
+  StackSettings:
+    IsStackable: 0
+    StackSize: 5
+  RequirmentsSettings:
+    Level: 0
+    Strength: 0
+    Inteligence: 0
+    Dexterity: 0
+  CanBeAssignToQuickActions: 0
+  eqType: 6
+  MainPerks:
+  - type: 0
+    value: 4
+  - type: 3
+    value: 6
+  ExtraPerks:
+  - type: 9
+    value: 5
+  - type: 12
+    value: 25
+  FrontSprite: {fileID: 0}
+  BackSprite: {fileID: 0}
+  LeftSprite: {fileID: 0}
+  RightSprite: {fileID: 0}

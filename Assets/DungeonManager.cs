@@ -18,13 +18,7 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] GameObject DungeonSelectionWindow;
     public int maxDungeonStage = 0;
     public int recentDungeonStage = 0;
-    /* DungeonData dungeondata */
-    /* private DungeonData ConfigureDungeonLevel(configurationdata)
-    {
 
-        return dungeondata;
-    } 
-    */
     [SerializeField] private GameObject DungeonCanvas;
     public void OpenDungeon(/* dungeondata */ )
     {
@@ -43,6 +37,8 @@ public class DungeonManager : MonoBehaviour
         GameManager.instance.MonsterAttack = false;
 
         StartCoroutine(GameManager.instance.AddTurn());
+
+
     }
 
     public void DungeonClearAndGoToCamp()
@@ -87,7 +83,6 @@ public class DungeonManager : MonoBehaviour
     [ContextMenu("1. create current map backup")]
     public void MakeCurrentMapBackup(Room _room)
     {
-        
         Debug.LogWarning("zrzut danych dla pokoju: "+_room.position);
         Dictionary<Vector2Int, MonsterBackupData> _backup_Monsters = new Dictionary<Vector2Int, MonsterBackupData>();
         Dictionary<Vector2Int, TreasureBackupData> _backup_Treasures = new Dictionary<Vector2Int, TreasureBackupData>();
@@ -112,7 +107,7 @@ public class DungeonManager : MonoBehaviour
 
                 _backup_Treasures.Add(cell.Key, (treasure.SaveAndGetCellProgressData()) as TreasureBackupData);
                
-                 Debug.LogWarning("make backup "+ ((cell.Value.SpecialTile as Treasure_Cell).SaveAndGetCellProgressData() as TreasureData)+" items stored");
+                // Debug.LogWarning("make backup "+ ((cell.Value.SpecialTile as Treasure_Cell).SaveAndGetCellProgressData() as TreasureData).SavedContent.Count+" items stored");
                 continue;
             }
 
@@ -209,118 +204,62 @@ public class DungeonManager : MonoBehaviour
         RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[Vector2Int.zero].doorsNameCode + "_OPEN").First();
         DungeonRoomScript.Dungeon[Vector2Int.zero].WasVisited = true;
     }
+
+    private void TurnOffTeleportButtons()
+    {
+        foreach(var teleport in GameManager.instance.telerpotButtons)
+        {
+
+            Debug.Log("wylaczenie teleportu:"+teleport.name);
+            teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = false;
+            teleport.GetComponent<Button>().interactable = false;
+            teleport.GetComponent<Image>().raycastTarget = false;
+        }
+    }
+
     [ContextMenu("move up")]
     public void MoveNExtRoom_Up()
     {
+        TurnOffTeleportButtons();
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
-    
         var vector = Vector2Int.up;
-        // Debug.LogWarning("Move up from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
-        if (DungeonRoomScript.Dungeon.ContainsKey(CurrentLocation + vector))
-        {
-
-            CurrentLocation += vector;
-            RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[CurrentLocation].doorsNameCode + "_OPEN").First();
-            if(DungeonRoomScript.Dungeon[CurrentLocation].WasVisited == false)
-            {
-                // PIERWSZE WEJSCIE DO TEGO POKOJU W DUNGEONIE
-                GridManager.instance.ResetGridToDefault();
-                GridManager.instance.RandomizeDataOnGrid();
-            }
-            else
-            {
-                // KOLEJNE WEJSCIE DO TEGO SAMEGO POKOJU, RAZ JUZ ODWIEDZONEGO
-                GridManager.instance.ResetGridToDefault();
-                LoadGridForRoomData(DungeonRoomScript.Dungeon[CurrentLocation]);
-            }
-
-            GameManager.instance.Init_PlacePlayerOnGrid(new Vector2Int(4, 0));
-            PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
-            RestartTurnRoutine();
-            ConfigureNextRoomButtons(newLocation: CurrentLocation);
-            DungeonRoomScript.Dungeon[CurrentLocation].WasVisited = true;
-             ShowMinimap();
-        }
+        Vector2Int newLocationCoord = CurrentLocation + vector;
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(4,0),newLocationCoord, moveFromDirection: vector);
     }
     [ContextMenu("move right")]
     public void MoveNExtRoom_Right()
     {
+        TurnOffTeleportButtons();
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
-
         var vector = Vector2Int.right;
-        // Debug.LogWarning("Move right from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
-        if (DungeonRoomScript.Dungeon.ContainsKey(CurrentLocation + vector))
-        {
-
-            CurrentLocation += vector;
-            RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[CurrentLocation].doorsNameCode + "_OPEN").First();
-            if(DungeonRoomScript.Dungeon[CurrentLocation].WasVisited == false)
-            {
-                // PIERWSZE WEJSCIE DO TEGO POKOJU W DUNGEONIE
-                GridManager.instance.ResetGridToDefault();
-                GridManager.instance.RandomizeDataOnGrid();
-            }
-            else
-            {
-                // KOLEJNE WEJSCIE DO TEGO SAMEGO POKOJU, RAZ JUZ ODWIEDZONEGO
-                GridManager.instance.ResetGridToDefault();
-                LoadGridForRoomData(DungeonRoomScript.Dungeon[CurrentLocation]);
-            }
-
-            GameManager.instance.Init_PlacePlayerOnGrid(new Vector2Int(0, 4));
-            PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
-            RestartTurnRoutine();
-            ConfigureNextRoomButtons(newLocation: CurrentLocation);
-            DungeonRoomScript.Dungeon[CurrentLocation].WasVisited = true;
-             ShowMinimap();
-        }
+        Vector2Int newLocationCoord = CurrentLocation + vector;
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(0,4),newLocationCoord, moveFromDirection: vector);
     }
     [ContextMenu("move Down")]
     public void MoveNExtRoom_Down()
     {
+        TurnOffTeleportButtons();
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
-
         var vector = Vector2Int.down;
-       //  Debug.LogWarning("Move down from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
-        if (DungeonRoomScript.Dungeon.ContainsKey(CurrentLocation + vector))
-        {
-
-            CurrentLocation += vector;
-            RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[CurrentLocation].doorsNameCode + "_OPEN").First();
-            if(DungeonRoomScript.Dungeon[CurrentLocation].WasVisited == false)
-            {
-                // PIERWSZE WEJSCIE DO TEGO POKOJU W DUNGEONIE
-                GridManager.instance.ResetGridToDefault();
-                GridManager.instance.RandomizeDataOnGrid();
-            }
-            else
-            {
-                // KOLEJNE WEJSCIE DO TEGO SAMEGO POKOJU, RAZ JUZ ODWIEDZONEGO
-                 GridManager.instance.ResetGridToDefault();
-                LoadGridForRoomData(DungeonRoomScript.Dungeon[CurrentLocation]);
-            }
-
-            GameManager.instance.Init_PlacePlayerOnGrid(new Vector2Int(4, 8));
-            PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
-            RestartTurnRoutine();
-            ConfigureNextRoomButtons(newLocation: CurrentLocation);
-            DungeonRoomScript.Dungeon[CurrentLocation].WasVisited = true;
-             ShowMinimap();
-        }
+        Vector2Int newLocationCoord = CurrentLocation + vector;
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(4,8),newLocationCoord, moveFromDirection: vector);
     }
     [ContextMenu("move Left")]
     public void MoveNExtRoomLeftP()
     {
+        TurnOffTeleportButtons();
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
-
         var vector = Vector2Int.left;
-     //   Debug.LogWarning("Move left from:"+CurrentLocation.ToString()+" to "+(CurrentLocation+vector));
-        if (DungeonRoomScript.Dungeon.ContainsKey(CurrentLocation + vector))
-        {
+        Vector2Int newLocationCoord = CurrentLocation + vector;
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(8, 4),newLocationCoord, moveFromDirection: vector);
+    }
 
-            CurrentLocation += vector;
-            RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[CurrentLocation].doorsNameCode + "_OPEN").First();
-            if(DungeonRoomScript.Dungeon[CurrentLocation].WasVisited == false)
+    private void ManageRoomDorsAndPlayerSpawn(Vector2Int playerPosition, Vector2Int newLocationCoord, Vector2Int moveFromDirection)
+    {
+        if (DungeonRoomScript.Dungeon.ContainsKey(newLocationCoord))
+        {
+            RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[newLocationCoord].doorsNameCode + "_OPEN").First();
+            if(DungeonRoomScript.Dungeon[newLocationCoord].WasVisited == false)
             {
                 // PIERWSZE WEJSCIE DO TEGO POKOJU W DUNGEONIE
                 GridManager.instance.ResetGridToDefault();
@@ -330,33 +269,25 @@ public class DungeonManager : MonoBehaviour
             {
                 // KOLEJNE WEJSCIE DO TEGO SAMEGO POKOJU, RAZ JUZ ODWIEDZONEGO
                 GridManager.instance.ResetGridToDefault();
-                LoadGridForRoomData(DungeonRoomScript.Dungeon[CurrentLocation]);
+                LoadGridForRoomData(DungeonRoomScript.Dungeon[newLocationCoord]);
             }
 
-            GameManager.instance.Init_PlacePlayerOnGrid(new Vector2Int(8, 4));
+            foreach(var monsterCell in GridManager.CellGridTable.Where(c=>c.Value.SpecialTile is Monster_Cell))
+            {
+                (monsterCell.Value.SpecialTile as Monster_Cell).AdjustByMapDificultyLevel(Dungeon[newLocationCoord].DistanceFromCenter);
+            }
+
+            GameManager.instance.teleporsEmergencySwitchUsed = false;
+            GameManager.instance.Init_PlacePlayerOnGrid(playerPosition);
             PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
             RestartTurnRoutine();
-            ConfigureNextRoomButtons(newLocation: CurrentLocation);
-            DungeonRoomScript.Dungeon[CurrentLocation].WasVisited = true;
+            ConfigureNextRoomButtons(newLocation: newLocationCoord);
+            Dungeon[newLocationCoord].UnlockDoor(-moveFromDirection) // <- w nowym pokoju będą odblokowane drzwi przeciwne do drzwi przez ktore sie weszło , wchodzisz z prawej, nowy pokoj, odblokowane z lewej
+            DungeonRoomScript.Dungeon[newLocationCoord].WasVisited = true;
             ShowMinimap();
         }
     }
 
-    // private void RemoveRoomGrid()
-    // {
-    //     GameManager.instance._chestLootScript.Clear();
-    //     if (NotificationManger.instance != null)
-    //     {
-    //         NotificationManger.instance.NotificationList.ForEach(n => Destroy(n.gameObject.transform.parent.gameObject));
-    //         NotificationManger.instance.NotificationList.Clear();
-    //     }
-    //     foreach (var cell in GridManager.CellGridTable)
-    //     {
-    //         Destroy(cell.Value.gameObject);
-    //     }
-    //     GridManager.destroyedTilesPool.Clear();
-    //     GridManager.CellGridTable.Clear();
-    // }
     public void RestartTurnRoutine()
     {
         GameManager.instance.StopAllCoroutines();
@@ -371,6 +302,7 @@ public class DungeonManager : MonoBehaviour
         GameManager.instance.MonsterAttack = false;
 
         StartCoroutine(GameManager.instance.AddTurn());
+        
     }
     private void ConfigureNextRoomButtons(Vector2Int newLocation)
     {
@@ -452,6 +384,7 @@ public class DungeonManager : MonoBehaviour
                 }
             }
 
+
         }
 
         // WYŚRODKOWANIE WZGLĘDEM AKTUALNEJ POZYCJI
@@ -460,6 +393,9 @@ public class DungeonManager : MonoBehaviour
         {
             tile.Value.transform.localPosition = new Vector3((tile.Key.x-CurrentLocation.x) * size, (tile.Key.y-CurrentLocation.y) * size, 0);
         }
+
+        MinimapSpawnContainer.parent.transform.GetComponent<RectTransform>().localPosition = new Vector3(244.74f,-247.55f,0);
+       
 
         void AddMinimapTile(int size, Vector2Int roomLocation, string doorsExitsCode = "", bool markAsRevealed = false)
         {
@@ -500,6 +436,19 @@ public class DungeonManager : MonoBehaviour
 
              minimapTiles.Add(roomLocation,room_minimap);
            
+        }
+    }
+
+    public void ColorRevealedMinimap()
+    {
+        int longestdistance = Dungeon.ToList().OrderByDescending(v=>v.Value.DistanceFromCenter).First().Value.DistanceFromCenter;
+        foreach(var tile in minimapTiles)
+        {
+            if(Dungeon[tile.Key].WasVisited)
+            {
+                float progressfillcolor = ((float)Dungeon[tile.Key].DistanceFromCenter / (float)longestdistance);
+                tile.Value.color = Color32.Lerp(Color.white,Color.red,progressfillcolor);
+            }
         }
     }
 }

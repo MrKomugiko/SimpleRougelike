@@ -57,6 +57,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     public Pathfinding _pathfinder;
     private int _healthPoints;
     public GameObject playerSpriteObject;
+    public event EventHandler<(CellScript parent, int damageTaken, bool criticalHit, bool blockedHit, bool dodgedHit)> OnPlayerTakeDamageEvent;
     public Player_Cell(CellScript parent, MonsterData _data)
     {
         this.ParentCell = parent;
@@ -87,6 +88,8 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         }
         GameObject.Find("PlayerManager").GetComponent<PlayerManager>().SetPlayerManager(this);
         NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
+
+        CustomEventManager.instance.RegisterPlayerInEventManager(this);
     }
    
   
@@ -134,13 +137,42 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     }
     public void TakeDamage(float damage, string source)
     {
-        HealthPoints -= Mathf.RoundToInt(damage);
-        PlayerManager.instance.CurrentHealth = HealthPoints;
-        if (IsAlive)
-        {
-            Debug.Log($"Player HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");
+        if(damage >0){
+            // redukcja obrazen lub unik
+            bool _isCritical = false;
+            bool _isDodged = (PlayerManager.instance.STATS.Evasion*100) > UnityEngine.Random.Range(0,1000)?true:false;
+            bool _isBlocked = (PlayerManager.instance.STATS.BlockChance*100) > UnityEngine.Random.Range(0,1000)?true:false;
+            if(_isDodged) Debug.Log("gracz uniknął ataku");
+            if(_isBlocked) damage *= .5f;
+            
+
+            int _damageAfterReduction = Mathf.RoundToInt(damage-(damage*(PlayerManager.instance.STATS.DamageReduction/100)));
+
+            OnPlayerTakeDamageEvent?.Invoke(this,(parent:ParentCell,damageTaken:Int32.Parse(_damageAfterReduction.ToString()),criticalHit:_isCritical,blockedHit:_isBlocked,dodgedHit:_isDodged));
+            if(_isDodged) return;
+
+            Debug.Log("aktualne hp "+HealthPoints);
+            HealthPoints  -= _damageAfterReduction;
+            Debug.Log("otrzymałes :"+_damageAfterReduction);
+            Debug.Log("zaktualizowane hp "+HealthPoints);
+
+            PlayerManager.instance.CurrentHealth = HealthPoints;
+            if (IsAlive)
+            {
+                Debug.Log($"Player HP decerase from [{HealthPoints + _damageAfterReduction}] to [{HealthPoints}] by <{source}>");
+            }
+            PlayerManager.instance.CumulativeStageDamageGained += _damageAfterReduction;
         }
-        PlayerManager.instance.CumulativeStageDamageGained += damage;
+
+        if(damage < 0)
+        {
+            // HEAL
+            Debug.Log("HEAL");
+            HealthPoints -= Mathf.RoundToInt(damage);
+            PlayerManager.instance.CurrentHealth = HealthPoints;
+        }
+
+
     }
     public void ChangeToPlayerCorpse()
     {

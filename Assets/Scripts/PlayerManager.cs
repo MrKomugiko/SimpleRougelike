@@ -125,7 +125,8 @@ public class PlayerManager: MonoBehaviour
         STATS.Strength         =  _progressData.Strength;             // TODO: aktualizacja przy starcie gracza                                         
         STATS.Inteligence      =  _progressData.Inteligence;          // TODO: aktualizacja przy starcie gracza                             
         STATS.Dexterity  =  _progressData.Dexterity;            // TODO: aktualizacja przy starcie gracza                                     
-        STATS.Vitality         =  _progressData.Vitality;             // TODO: aktualizacja przy starcie gracza                                     
+        STATS.Vitality         =  _progressData.Vitality;             // TODO: aktualizacja przy starcie gracza                                              
+
         AttackRange      =  _progressData.AttackRange;                                                      
         MoveRange        =  _progressData.MoveRange;                            
         Gold             =  _progressData.Gold;
@@ -173,6 +174,19 @@ public class PlayerManager: MonoBehaviour
                 _EquipedItems.LoadItemInPlayerEq(data.SlotID, loadedItem);
             }
         }
+    }
+
+    internal void CalculateAttackHit(out int damage, out bool isCritical)
+    {
+        float dmg = UnityEngine.Random.Range(PlayerManager.instance.STATS.TotalDamage.min,PlayerManager.instance.STATS.TotalDamage.max);
+         //critical hit chance 
+         isCritical = STATS.Critical_Hit_Rate*10>= UnityEngine.Random.Range(0,1000);
+         if(isCritical)
+         {
+             damage = Mathf.RoundToInt(dmg*(STATS.Critical_Hit_Damage/100f));
+             return;
+         }
+        damage = Mathf.RoundToInt(dmg);
     }
 
     private void Awake() {
@@ -237,7 +251,7 @@ public class PlayerManager: MonoBehaviour
     public float CumulativeStageDamageGained;
     public int CumulativeMonsterKilled;
     private int _currentHealth;
-
+   
     public IEnumerator PerformRegularAttackAnimation(CellScript attacker, CellScript target, int _aniamtionFrames)
     {
         AtackAnimationInProgress = true;
@@ -288,6 +302,18 @@ public class PlayerManager: MonoBehaviour
     {
         Debug.LogError("ZAPISANIE POSTEPOW GRACZA");
         PlayerProgressModel _updatedData = GameManager.instance.PLAYER_PROGRESS_DATA;
+
+        // "zdjęcie statystyk z aktualnie zalozonych itemkow" zeby zapisac surowe staty samego gracza, 
+        //      wartosci z itemkow są osobno ładowane przy starcie i ładownianiu sie eq
+        foreach(var data in PlayerManager.instance._EquipedItems.ItemSlots)
+        {           
+            if(data.ITEM.Count != 0)
+            {
+                EquipmentItem itemEq = data.ITEM.item as EquipmentItem;
+                PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(itemEq);
+            }
+        }
+        
         _updatedData.LastVisitedDate = DateTime.Now;
    // -------------------
         _updatedData.Level =                    this.STATS.Level;
@@ -322,6 +348,16 @@ public class PlayerManager: MonoBehaviour
         _updatedData.BagpackItems = (PlayerManager.instance._mainBackpack.GetBackupListOfItemsAndSlots());
 
         HeroDataController.instance.UpdatePlayerDataFileOnDevice(_updatedData);
+
+         // ponowne zalozenie itemkow bo po zapisie gry nadal mozna grac dalej
+        foreach(var data in PlayerManager.instance._EquipedItems.ItemSlots)
+        {           
+            if(data.ITEM.Count != 0)
+            {
+                EquipmentItem itemEq = data.ITEM.item as EquipmentItem;
+                PlayerManager.instance.STATS.EquipItem_UpdateStatistics(itemEq);
+            }
+        }
     }
 
 

@@ -8,7 +8,7 @@ public class MoveValidatorScript : MonoBehaviour
     [SerializeField] GameObject Mark;
     [SerializeField] List<SpriteRenderer> GridIndicators = new List<SpriteRenderer>();
     public Pathfinding ParentPathfinder;
-
+    public int validMovePosiitonsCounter = 0;
     public void SpawnMarksOnGrid()
     {
         
@@ -23,47 +23,55 @@ public class MoveValidatorScript : MonoBehaviour
     }
     [ContextMenu("showGrid")]
     public void ShowValidMoveGrid(){
-    
-    SpawnMarksOnGrid();
+        validMovePosiitonsCounter = 0;
+        SpawnMarksOnGrid();
 
-    foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
-    {
-        monster.Value.IsWalkable = false;
-    }
-
-    NodeGrid.UpdateMapObstacleData();
-
-    int index = 0;
-    foreach(var cell in GridManager.CellGridTable.Values)
-    {
-        ParentPathfinder.FindPath(cell);
-
-       // print(ParentPathfinder.FinalPath.Count);
-
-        if(ParentPathfinder.FinalPath.Count == 0 && ParentPathfinder.FinalPath.Count < PlayerManager.instance.MoveRange)
+        foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
         {
-            if(cell.Type == TileTypes.player)
+            monster.Value.IsWalkable = false;
+        }
+
+        NodeGrid.UpdateMapObstacleData();
+
+        int index = 0;
+        foreach(var cell in GridManager.CellGridTable.Values)
+        {
+            ParentPathfinder.FindPath(cell);
+
+        // print(ParentPathfinder.FinalPath.Count);
+
+            if(ParentPathfinder.FinalPath.Count == 0 && ParentPathfinder.FinalPath.Count < PlayerManager.instance.MoveRange)
             {
-                GridIndicators[index].color = Color.green;    
+                if(cell.Type == TileTypes.player)
+                {
+                    validMovePosiitonsCounter ++;
+                    Debug.Log(validMovePosiitonsCounter);
+
+                    GridIndicators[index].color = Color.green;    
+                }
+                else
+                {
+                    GridIndicators[index].gameObject.SetActive(false);
+                }
+
             }
-            else
+            else if(ParentPathfinder.FinalPath.Count > 2)
             {
                 GridIndicators[index].gameObject.SetActive(false);
             }
-
+            else
+            {
+                validMovePosiitonsCounter ++;
+                Debug.Log(validMovePosiitonsCounter);
+            }
+            index++;
         }
-         else if(ParentPathfinder.FinalPath.Count > 2)
+
+        foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
         {
-            GridIndicators[index].gameObject.SetActive(false);
+            monster.Value.IsWalkable = true;
         }
-        index++;
-    }
-
-    foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
-    {
-        monster.Value.IsWalkable = true;
-    }
-
+    
     }
 
     public void HideGrid()

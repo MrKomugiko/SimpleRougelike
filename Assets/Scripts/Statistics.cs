@@ -173,7 +173,7 @@ public class Statistics : MonoBehaviour
         get => _evasion; 
         private set 
         {
-            float _Evasion_base = 0 + (Dexterity * 1);
+            float _Evasion_base = 0 + (Dexterity * .01f);
             _evasion = _Evasion_base + Extra_Evasion;
             Evasion_TMP.SetText(Evasion.ToString() + "%");
         }
@@ -398,11 +398,11 @@ public class Statistics : MonoBehaviour
         Extra_Critical_Hit_Damage = 0;
         Extra_Critical_Hit_Rate = 0;
         Extra_Damage = (0,0);
+        Armor = 0;
         Extra_DamageReduction = 0;
         Extra_HealthPoints = 0;
         Extra_StaminaPoints = 0;
-        Extra_EnergyPoints = 0;
-        
+        Extra_EnergyPoints = 0;    
     }
     
 
@@ -422,6 +422,7 @@ public class Statistics : MonoBehaviour
 
     private void AddValueByPerkData(Perk perk)
     {
+        Debug.Log("ADD: "+perk.type.ToString()+" "+perk.value.ToString());
         switch(perk.type)
         {
             case PerkType.MinAttack:
@@ -475,6 +476,7 @@ public class Statistics : MonoBehaviour
     }
     private void SubtractValueByPerkData(Perk perk)
     {
+         Debug.Log("MINUS: "+perk.type.ToString()+" "+perk.value.ToString());
         switch(perk.type)
         {
             case PerkType.MinAttack:

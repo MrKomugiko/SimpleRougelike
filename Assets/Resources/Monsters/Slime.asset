@@ -16,8 +16,8 @@ MonoBehaviour:
   MonsterName: Slime
   Icon_Sprite: {fileID: 179587530871585500, guid: 022311eee0e165f46b50e156d4b3ff3e, type: 3}
   Corpse_Sprite: {fileID: 179587530871585500, guid: 928158b7cdd87d143b06c7e9ad4654be, type: 3}
-  MaxHealthPoints: 5
-  CurrentHealthPoints: 5
+  MaxHealthPoints: 4
+  CurrentHealthPoints: 4
   Speed: 1
   LootData: {fileID: 11400000, guid: aed84e02a3a97d645a25a925f1d3284e, type: 2}
   Damage: 1
