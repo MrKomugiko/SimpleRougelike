@@ -1,0 +1,904 @@
+fileFormatVersion: 2
+guid: 4655ec12d08c6214387b981f837e6ca5
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: atak-test2-downside1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 825
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.46666667, y: 0.3866667}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05a8dbaad42cb4f4d8ca4160ca4c128c
+      internalID: 1571799944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: atak-test2-downside1_1
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 825
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.46666667, y: 0.38666666}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: adeb5c36aa20fc74f8155a3b133b5937
+      internalID: -530718630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: atak-test2-downside1_2
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 825
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.46666667, y: 0.38666666}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 379f9f20efeceff4f9ea44accdc96e4a
+      internalID: 587459550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: atak-test2-downside1_3
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 825
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.46666667, y: 0.38666666}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9124a020c091f8b47b44f2f3498487d4
+      internalID: -61041778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: atak-test2-downside1_4
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 825
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.46666667, y: 0.38666666}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0621e5ce9d23b504e90e8a38e0699d97
+      internalID: 1895358257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: atak-test2-downside1_5
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 825
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.46666667, y: 0.38666666}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6adeb5c8089502c4c829ab466c92b736
+      internalID: 1338820884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: atak-test2-downside1_6
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 825
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.46666667, y: 0.38666666}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 644cc3f8b47567c4cb5b1c3159d0e027
+      internalID: 112401932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: atak-test2-downside1_7
+      rect:
+        serializedVersion: 2
+        x: 1050
+        y: 825
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.46666667, y: 0.38666666}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e050e0129b5830b4281c4b35dfad7a3e
+      internalID: -2044349264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: atak-test2-downside1_8
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 825
+        width: 150
+        height: 150
+      alignment: 9
+      pivot: {x: 0.46666667, y: 0.38666666}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d23238f54de567e4ca46bc2145d0e34f
+      internalID: -604405627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6146bc1e840224f4f9dbc101d36c2849
+      internalID: 1013938032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_2
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1bc72d3de0a86194d9ec9570fdefe72d
+      internalID: 1302556573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_5
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 466c9a57bfc6bcd41a7ed3cb3572ec7e
+      internalID: -1879236535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_3
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9daa355e7cc0a2b468a0375a85355c71
+      internalID: 938520692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_4
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1046b90347bde9043bac84407de60587
+      internalID: 2078940233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_6
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 082ec4f5bd79d2d42afa93eab5a44269
+      internalID: -1718199742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_7
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21702835c616edc49ad8db51ceb60856
+      internalID: 1491485015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_10
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d1497cb3d104cc48896cf199adc22c3
+      internalID: -681268896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_9
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 198d97f9f45ed8840b6b8f31919dfeae
+      internalID: -689642997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_8
+      rect:
+        serializedVersion: 2
+        x: 1400
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35a429f38cc1a38409dd9eae58febbcf
+      internalID: -706712830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_atack_up_11
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 568
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1895446bc9db1be499944fdf418604de
+      internalID: 378635872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_IDLE_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 314
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ab3faf90f2959148a17023e19d8f7d6
+      internalID: -822751927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_IDLE_2
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 314
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1d681619b9b8fd4389348346080110c
+      internalID: -2139215754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_IDLE_3
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 314
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a654c0ed2502ee942a2e955b147973fc
+      internalID: 1340181995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_IDLE_4
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 314
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e293483c17366d4c854f0644e678c0f
+      internalID: 1110628900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_IDLE_5
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 314
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.5, y: 0.225}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8027d7498c9111b4f921b430f7ee1780
+      internalID: 990221132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c394f20ef9efaa749a7bcbc47e0717e3
+      internalID: 1954752801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_2
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d762bb38c8c65d4286a47fc8c2b29b9
+      internalID: 71101695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_3
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4ecefe913ca1e1459dc969e8ab0b2b9
+      internalID: 2071342113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_4
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2575d21837818cb46b171ae3ecf443ae
+      internalID: 1649817945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_5
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be8fe18b88a642740a8fbfc6d785d249
+      internalID: 1314815010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_6
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3cb4788b775daa4f9aaae7bb350532f
+      internalID: -1892503532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_7
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f59a64196037c245ab59df7ca50f942
+      internalID: -687091820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_8
+      rect:
+        serializedVersion: 2
+        x: 1400
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd74a1a89d369854eb3b5b052621aafc
+      internalID: 1125537249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_9
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cf37cc510a760a46a486a55f8f78d6e
+      internalID: -664324118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_Attack_left_10
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 109
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.675, y: 0.255}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4052721c640c7b944bf327e0457e8072
+      internalID: 970367026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Player_IDLE_1: -822751927
+      atak-test2-downside1_4: 1895358257
+      player_atack_up_8: -706712830
+      player_atack_up_10: -681268896
+      player_atack_up_11: 378635872
+      atak-test2-downside1_1: -530718630
+      player_atack_up_9: -689642997
+      Player_IDLE_2: -2139215754
+      Player_Attack_left_4: 1649817945
+      player_atack_up_1: 1013938032
+      player_atack_up_4: 2078940233
+      player_atack_up_6: -1718199742
+      Player_IDLE_4: 1110628900
+      Player_Attack_left_1: 1954752801
+      Player_Attack_left_5: 1314815010
+      player_atack_up_5: -1879236535
+      atak-test2-downside1_8: -604405627
+      Player_Attack_left_3: 2071342113
+      atak-test2-downside1_5: 1338820884
+      atak-test2-downside1_2: 587459550
+      atak-test2-downside1_3: -61041778
+      Player_IDLE_3: 1340181995
+      atak-test2-downside1_0: 1571799944
+      atak-test2-downside1_6: 112401932
+      Player_Attack_left_10: 970367026
+      Player_Attack_left_9: -664324118
+      Player_IDLE_5: 990221132
+      player_atack_up_2: 1302556573
+      Player_Attack_left_2: 71101695
+      Player_Attack_left_7: -687091820
+      player_atack_up_7: 1491485015
+      Player_Attack_left_6: -1892503532
+      player_atack_up_3: 938520692
+      Player_Attack_left_8: 1125537249
+      atak-test2-downside1_7: -2044349264
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

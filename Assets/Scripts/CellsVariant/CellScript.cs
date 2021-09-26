@@ -186,22 +186,50 @@ public class CellScript : MonoBehaviour
     }
     private IEnumerator SlideAnimation(Vector3 startingPosition, Vector3 endPosition)
     {
-        IsCurrentlyMoving = true;
-        for (int i = 1; i <= 8+1; i++)
+        Debug.Log("slide");
+        if(SpecialTile is Player_Cell)
         {
-            float progress = i / 8.0f;
+            Vector2Int direction = Vector2Int.CeilToInt(startingPosition-endPosition);
+            if (direction.y == 0)
+                {
+                    GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
+
+                    CustomEventManager.PlayerAnimator.Play($"Player_Walk_{(direction.x<0?"Right":"Left")}");
+                }
+            if(direction.x == 0)
+            {
+                GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
+
+                CustomEventManager.PlayerAnimator.Play($"Player_Walk_{(direction.y<0?"Up":"Down")}");
+            }
+        }
+         
+        IsCurrentlyMoving = true;
+        for (int i = 1; i <= 12+1; i++)
+        {
+            float progress = i / 12.0f;
             yield return new WaitForFixedUpdate();
             this._recTransform.localPosition = Vector3.Lerp(startingPosition, endPosition, progress);
         }
         IsCurrentlyMoving = false;;
+        
         yield return null;
     }
     
     public void MoveTo()
     {
-        if(this.gameObject.transform.Find("MarkSign(Clone)").gameObject.activeInHierarchy == false) 
+        try
         {
-            //Debug.LogError("yr not allowed to move this spot");
+            if(this.gameObject.transform.Find("MarkSign(Clone)").gameObject.activeInHierarchy == false) 
+            {
+                //Debug.LogError("yr not allowed to move this spot");
+                return;
+            }
+             
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError("error?");
             return;
         }
 

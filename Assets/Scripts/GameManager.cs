@@ -147,8 +147,8 @@ public class GameManager : MonoBehaviour
 
                 PlayerManager.instance.MovmentValidator.HideGrid();
                 CurrentTurnPhase = TurnPhase.MonsterMovement;
-                TurnImageIndicators[1].color = Color.green;
-                TurnImageIndicators[2].color = Color.yellow;
+                // TurnImageIndicators[1].color = Color.green;
+                // TurnImageIndicators[2].color = Color.yellow;
                 PlayerAttacked = false;
                 TurnPhaseBegin = false;
                // Debug.LogWarning("Player attack - end - no monsters to attack");
@@ -161,8 +161,8 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForSeconds(turnPhaseDelay);
             CurrentTurnPhase = TurnPhase.MonsterMovement;
-            TurnImageIndicators[1].color = Color.green;
-            TurnImageIndicators[2].color = Color.yellow;
+            // TurnImageIndicators[1].color = Color.green;
+            // TurnImageIndicators[2].color = Color.yellow;
             PlayerManager.instance.MovmentValidator.HideGrid();
             PlayerAttacked = false;
             TurnPhaseBegin = false;
@@ -212,8 +212,8 @@ public class GameManager : MonoBehaviour
             MonstersMoved = false;
             TurnPhaseBegin = false;
             CurrentTurnPhase = TurnPhase.MonsterAttack;
-            TurnImageIndicators[2].color = Color.green;
-            TurnImageIndicators[3].color = Color.yellow;
+            // TurnImageIndicators[2].color = Color.green;
+            // TurnImageIndicators[3].color = Color.yellow;
             //Debug.LogWarning("Monster move - end");
 
             if(tempCurrentCreatureList.Count > 0) yield return new WaitForSeconds(.05f);
@@ -258,7 +258,7 @@ public class GameManager : MonoBehaviour
             MonsterAttack = false;
             TurnPhaseBegin = false;
 
-            TurnImageIndicators[3].color = Color.green;
+            // TurnImageIndicators[3].color = Color.green;
             CurrentTurnPhase = TurnPhase.PlayerMovement;
           //  Debug.LogWarning("Monster attack - end");
             StartCoroutine(AddTurn());

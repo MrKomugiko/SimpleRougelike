@@ -122,7 +122,10 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     {
         bool status;
         Pick(out status);
-        ParentCell.MoveTo();
+        if(status == true)
+        {
+            ParentCell.MoveTo();
+        }
     }
     public void RemoveFromMapIfChesIsEmpty()
     {

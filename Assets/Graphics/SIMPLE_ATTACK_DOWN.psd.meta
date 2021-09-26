@@ -1,0 +1,1278 @@
+fileFormatVersion: 2
+guid: 71354d3f2f1e3a445949b662c1cde6fb
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 860
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dab20513351204f468c570066b251641
+      internalID: 815654002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 860
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38cef1b4661bea64db155004515e540e
+      internalID: 1101472165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 860
+        width: 80
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26b798fc28ce98e46860007d7eb97f0d
+      internalID: 29592801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_3
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 840
+        width: 32
+        height: 84
+      alignment: 9
+      pivot: {x: 0.5, y: 0.33333334}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 960b31a7271781242aecee1f88b54051
+      internalID: 109870733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_4
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 860
+        width: 90
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5ce97d1a80dc6943bd1d6a241d4ad0a
+      internalID: -1533217490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_5
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 860
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db1a418235f58924da1df1e4bb66486c
+      internalID: 533956760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_6
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 860
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 589be70f5e16523428d1f60bec2f0e17
+      internalID: -2098328048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_7
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 860
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 166430bcb1969b249a95258ac6664b40
+      internalID: -87002489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 776
+        width: 42
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac4e8eaf472fe5645ad4b942f4e5166b
+      internalID: -1169414512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_9
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 776
+        width: 40
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbfba4544148f824dad92afb06c422b5
+      internalID: 100977108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_10
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 776
+        width: 46
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16b1966faf7b6c749a3331e2cfb59a97
+      internalID: -1037725850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_11
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 776
+        width: 108
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25d6eaf42aeb49241b58f3056cb4bb65
+      internalID: 190206147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_12
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 776
+        width: 60
+        height: 73
+      alignment: 9
+      pivot: {x: 0.6527389, y: 0.106195316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a04c9cfd1261cc9468c3516f3953819a
+      internalID: -1983785890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_13
+      rect:
+        serializedVersion: 2
+        x: 296
+        y: 776
+        width: 45
+        height: 64
+      alignment: 9
+      pivot: {x: 0.51111114, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a008c33ebbe1d6468a8adf7257ac78a
+      internalID: 1394185493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_14
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 776
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93f59e27d9024d5429553d1fb63cab19
+      internalID: 1744003817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_15
+      rect:
+        serializedVersion: 2
+        x: 373
+        y: 776
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f72ea8b11d754b6489e54466f0a9c417
+      internalID: 205227445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 703
+        width: 42
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce472c36a2e7eca42a58b77238306dab
+      internalID: -1638667057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_17
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 703
+        width: 40
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 863817d6d847f4c42a5227868c71cc90
+      internalID: -375850609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_18
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 703
+        width: 46
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6e332b7d2e5ae7478132974e5c76a41
+      internalID: -1010076310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_19
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 703
+        width: 108
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee3eb9ac2cd6cbb42bc0e940d2b09161
+      internalID: -1338307373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_20
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 703
+        width: 64
+        height: 73
+      alignment: 9
+      pivot: {x: 0.33337116, y: 0.10613178}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bda74d3c934740c4bb8e6ad9aa77f284
+      internalID: 389013499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_21
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 703
+        width: 45
+        height: 64
+      alignment: 9
+      pivot: {x: 0.4888889, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26f89923487b9a54ca555eccf2ab51cb
+      internalID: -901299091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_22
+      rect:
+        serializedVersion: 2
+        x: 345
+        y: 703
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18e53a47329fd0b45b417cc7c629126f
+      internalID: 580058219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_23
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 703
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.45454547, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b487267f11cd28940a4e29314b014889
+      internalID: -42496102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 639
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af6e89ede32877f4f9f93bb33ef17209
+      internalID: -573804092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_25
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 639
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24ca4db11056a274e9df21c8f2a9a105
+      internalID: 635896610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_26
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 639
+        width: 86
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b517a5bd7436bd47ac32339a5106f78
+      internalID: 1047877734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_27
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 621
+        width: 46
+        height: 82
+      alignment: 9
+      pivot: {x: 0.5, y: 0.09756097}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0df624206416ff34a8e2d4b19e548d74
+      internalID: 1425037997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_28
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 639
+        width: 92
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cef08d8032db24c40b8764b70a3f670c
+      internalID: -27281369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_29
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 639
+        width: 42
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ab0f5edecfbd0d4785bbb5d97c35ecf
+      internalID: -996399998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_30
+      rect:
+        serializedVersion: 2
+        x: 330
+        y: 639
+        width: 42
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ebdf12ff3f187d40b840dbd739fd33a
+      internalID: 1863155327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_31
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 639
+        width: 36
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d072982eac07fc6449fb9d031d56a013
+      internalID: -1638057434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_32
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 546
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ab97114424688149923125be80fb336
+      internalID: -693182063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_33
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 546
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b936c5f8be262545a881eb5cb12d1c9
+      internalID: 472873388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_34
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 546
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 557a4e2dd989ee543800a4eaf067152e
+      internalID: -316167076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SIMPLE_ATTACK_DOWN_35
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 546
+        width: 32
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5879598c229ceac4bb6b127a78735659
+      internalID: 782542731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_left_1
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 406
+        width: 18
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.14035088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 633ce49604edf0f4084c48bd45c6d5c6
+      internalID: -1781477510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_left_2
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 406
+        width: 28
+        height: 57
+      alignment: 9
+      pivot: {x: 0.46296296, y: 0.14035088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2eb819808a5bc6d448a563a5940ac8b6
+      internalID: 1085415967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_left_3
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 406
+        width: 15
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.14035088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d56a8e695834064da0a22c1b11b7641
+      internalID: 503880804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_left_4
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 406
+        width: 21
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.14035088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7c60dce2f3e4c64ea0fd8d9700c6779
+      internalID: -1749619163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_right_1
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 406
+        width: 15
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.14035088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cbce7d165590874ab14f58a36c4936f
+      internalID: -824473150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_right_2
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 406
+        width: 25
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.14035088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a7837ce84ebbea4487af2793328c738
+      internalID: 497745192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_right_3
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 406
+        width: 20
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.14035088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea927dae9c6effc4e9133d2bde4eb125
+      internalID: -1856630972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_right_4
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 406
+        width: 25
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.14035088}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39cf40c5df4a6824cbaed9b8acdb8765
+      internalID: -256017940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_down_1
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 349
+        width: 23
+        height: 52
+      alignment: 9
+      pivot: {x: 0.5, y: 0.15384616}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40d14872cd8c56a4795a769cd4b2c3a0
+      internalID: -1872227042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_down_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 349
+        width: 23
+        height: 52
+      alignment: 9
+      pivot: {x: 0.5, y: 0.15384616}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c73a5e6a8c440b4ab4df455c9d245d8
+      internalID: -356738711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_down_3
+      rect:
+        serializedVersion: 2
+        x: 58
+        y: 349
+        width: 23
+        height: 52
+      alignment: 9
+      pivot: {x: 0.5, y: 0.15384616}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e50b136ae9316ce459a34b590a32cf60
+      internalID: 1176613929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_down_4
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 349
+        width: 23
+        height: 52
+      alignment: 9
+      pivot: {x: 0.5, y: 0.15384616}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 720023f9dfd89f0449f2ac0fef93d195
+      internalID: 1722231660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_up_1
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 349
+        width: 23
+        height: 51
+      alignment: 9
+      pivot: {x: 0.5, y: 0.15686275}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3813c314f48aca7469fbb67322ad7d4b
+      internalID: -1306745756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_up_2
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 349
+        width: 24
+        height: 51
+      alignment: 9
+      pivot: {x: 0.5, y: 0.15686275}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f91682e39e3856249b1c5aaba30fe306
+      internalID: -541330507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_up_3
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 349
+        width: 23
+        height: 50
+      alignment: 9
+      pivot: {x: 0.5, y: 0.16}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cd0365357a7da14e91b44e1b3777894
+      internalID: 225475795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_walk_up_4
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 349
+        width: 23
+        height: 52
+      alignment: 9
+      pivot: {x: 0.5, y: 0.15384616}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd70da4f294270e41825c1370e443df5
+      internalID: 774039356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      SIMPLE_ATTACK_DOWN_4: -1533217490
+      SIMPLE_ATTACK_DOWN_27: 1425037997
+      SIMPLE_ATTACK_DOWN_28: -27281369
+      simple_walk_down_1: -1872227042
+      simple_walk_down_4: 1722231660
+      SIMPLE_ATTACK_DOWN_32: -693182063
+      SIMPLE_ATTACK_DOWN_8: -1169414512
+      SIMPLE_ATTACK_DOWN_31: -1638057434
+      simple_walk_left_1: -1781477510
+      SIMPLE_ATTACK_DOWN_6: -2098328048
+      simple_walk_up_3: 225475795
+      simple_walk_right_2: 497745192
+      SIMPLE_ATTACK_DOWN_26: 1047877734
+      SIMPLE_ATTACK_DOWN_29: -996399998
+      SIMPLE_ATTACK_DOWN_11: 190206147
+      SIMPLE_ATTACK_DOWN_15: 1744003817
+      simple_walk_up_4: 774039356
+      SIMPLE_ATTACK_DOWN_3: 109870733
+      SIMPLE_ATTACK_DOWN_18: -375850609
+      SIMPLE_ATTACK_DOWN_12: 1938782768
+      SIMPLE_ATTACK_DOWN_1: 1101472165
+      simple_walk_left_2: 1085415967
+      simple_walk_down_3: 1176613929
+      SIMPLE_ATTACK_DOWN_0: 815654002
+      SIMPLE_ATTACK_DOWN_2: 29592801
+      SIMPLE_ATTACK_DOWN_9: 100977108
+      SIMPLE_ATTACK_DOWN_14: 1394185493
+      SIMPLE_ATTACK_DOWN_19: -1010076310
+      SIMPLE_ATTACK_DOWN_7: -87002489
+      SIMPLE_ATTACK_DOWN_20: -1338307373
+      simple_walk_right_1: -824473150
+      SIMPLE_ATTACK_DOWN_5: 533956760
+      SIMPLE_ATTACK_DOWN_16: 1965614006
+      SIMPLE_ATTACK_DOWN_30: 1863155327
+      simple_walk_left_4: -1749619163
+      SIMPLE_ATTACK_DOWN_23: 580058219
+      simple_walk_left_3: 503880804
+      SIMPLE_ATTACK_DOWN_24: -573804092
+      SIMPLE_ATTACK_DOWN_35: 782542731
+      simple_walk_right_3: -1856630972
+      simple_walk_up_1: -1306745756
+      simple_walk_down_2: -356738711
+      SIMPLE_ATTACK_DOWN_34: -316167076
+      SIMPLE_ATTACK_DOWN_13: -1983785890
+      SIMPLE_ATTACK_DOWN_33: 472873388
+      simple_walk_up_2: -541330507
+      SIMPLE_ATTACK_DOWN_21: 389013499
+      simple_walk_right_4: -256017940
+      SIMPLE_ATTACK_DOWN_22: -901299091
+      SIMPLE_ATTACK_DOWN_17: -1638667057
+      SIMPLE_ATTACK_DOWN_25: 635896610
+      SIMPLE_ATTACK_DOWN_10: -1037725850
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

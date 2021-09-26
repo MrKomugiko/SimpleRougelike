@@ -1,0 +1,406 @@
+fileFormatVersion: 2
+guid: 2bd1e1e439b93004ab21da7dc05395a6
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: downattackv2-sketched_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 244
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44, y: 0.365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      physicsShape:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ebbb64aba0f18549a25571414fe6b2f
+      internalID: 1142621975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: downattackv2-sketched_1
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 244
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44, y: 0.365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      physicsShape:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91ded09da85a4364dbd7f45641744180
+      internalID: -1939330510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: downattackv2-sketched_2
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 244
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44, y: 0.365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      physicsShape:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47262828846b97047918accab2f69511
+      internalID: -1151212156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: downattackv2-sketched_4
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 244
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44, y: 0.365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      physicsShape:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0e122182460372c429f208a63adf5fd8
+      internalID: 1598014413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: downattackv2-sketched_5
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 244
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44, y: 0.365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      physicsShape:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2c9d3fac1176614d8740d9d199c5472
+      internalID: -973216936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: downattackv2-sketched_6
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 244
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44, y: 0.365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      physicsShape:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: bed21414fa3864b42855cccb02bb51cc
+      internalID: -707310726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: downattackv2-sketched_7
+      rect:
+        serializedVersion: 2
+        x: 1400
+        y: 244
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44, y: 0.365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      physicsShape:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: df7862c26a74fc24eb70462b532fa4a9
+      internalID: -512440356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: downattackv2-sketched_8
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 243
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44, y: 0.365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      physicsShape:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70b7779a91ffff64c888a2baba659c7f
+      internalID: -986109451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: downattackv2-sketched_3
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 244
+        width: 200
+        height: 200
+      alignment: 9
+      pivot: {x: 0.44, y: 0.365}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      physicsShape:
+      - - {x: 0, y: -100}
+        - {x: 100, y: 0}
+        - {x: 0, y: 100}
+        - {x: -100, y: 0}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 138c20b1000000000800000000000000
+      internalID: 453167153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      downattackv2-sketched_5: -973216936
+      downattackv2-sketched_2: -1151212156
+      downattackv2-sketched_7: -512440356
+      downattackv2-sketched_1: -1939330510
+      downattackv2-sketched_6: -707310726
+      downattackv2-sketched_3: 453167153
+      downattackv2-sketched_8: -986109451
+      downattackv2-sketched_10: -804900511
+      downattackv2-sketched_9: -1880442761
+      downattackv2-sketched_0: 1142621975
+      downattackv2-sketched_4: 1598014413
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,442 @@
+fileFormatVersion: 2
+guid: 3a460145bbc5a214e95a54b648729414
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: attack_down_1
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 771
+        width: 33
+        height: 55
+      alignment: 9
+      pivot: {x: 0.5180346, y: 0.10511031}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b82bab662b113b42ba1407027ee9cfa
+      internalID: 1264577827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_down_2
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 771
+        width: 28
+        height: 55
+      alignment: 9
+      pivot: {x: 0.4918322, y: 0.13916792}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75e6c72cd16fa8542b3fafc696d7f7ec
+      internalID: 356615477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_down_3
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 771
+        width: 56
+        height: 54
+      alignment: 9
+      pivot: {x: 0.25834534, y: 0.19830436}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a84393b8418e61d44ba11dc81970e5e2
+      internalID: -578903501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_down_4
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 750
+        width: 32
+        height: 75
+      alignment: 9
+      pivot: {x: 0.6134944, y: 0.41996095}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82611da23cf02c544a869f8a047510b6
+      internalID: -1724531281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_down_5
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 771
+        width: 62
+        height: 53
+      alignment: 9
+      pivot: {x: 0.7206517, y: 0.21785751}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8dc50391e2a342c489beeca211998744
+      internalID: 553080223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_down_6
+      rect:
+        serializedVersion: 2
+        x: 220
+        y: 773
+        width: 36
+        height: 53
+      alignment: 9
+      pivot: {x: 0.52726746, y: 0.17952052}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: baf82c32c640ef6439f8f15f6c624cf5
+      internalID: 844862754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_down_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 710
+        width: 39
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5269043, y: 0.120962046}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be74ac53736d1b54b8174441cdb0c7bf
+      internalID: -1643530485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: attack_down_8
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 712
+        width: 32
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5035776, y: 0.08373488}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4468d56e58b4dcd48973a6592b33d706
+      internalID: 506299603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tirukissu_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 587
+        width: 67
+        height: 51
+      alignment: 9
+      pivot: {x: 0.857996, y: 0.0786815}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 556989b26eb267744901a30516de23d8
+      internalID: 1950816690
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tirukissu_1
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 570
+        width: 32
+        height: 71
+      alignment: 9
+      pivot: {x: 0.7810824, y: 0.05660108}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56c123cd67b6f5c488995be2ddd316c8
+      internalID: 1013707994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tirukissu_2
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 635
+        width: 42
+        height: 54
+      alignment: 9
+      pivot: {x: 0.8212371, y: 0.07432613}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70d7dc0b42633cb41b97af00d61a6e61
+      internalID: 1123396791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tirukissu_3
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 584
+        width: 23
+        height: 57
+      alignment: 9
+      pivot: {x: 0.7389895, y: 0.07919686}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd3b7229c922e214e8954377da61b5bc
+      internalID: 2075502136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tirukissu_4
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 577
+        width: 24
+        height: 58
+      alignment: 9
+      pivot: {x: 0.6665675, y: 0.069221236}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f66f4c93cf72df4886a152ae7f5b5eb
+      internalID: -1707810515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tirukissu_5
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 637
+        width: 32
+        height: 54
+      alignment: 9
+      pivot: {x: 0.484385, y: 0.09283447}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55706bc6466c2f744b0009e1207f0e5b
+      internalID: 1491165379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Tirukissu_1: 1013707994
+      attack_down_3: -578903501
+      attack_down_8: 506299603
+      Tirukissu_0: 1950816690
+      Tirukissu_4: -1707810515
+      attack_down_1: 1264577827
+      attack_down_2: 356615477
+      attack_down_6: 844862754
+      Tirukissu_5: 1491165379
+      Tirukissu_2: 1123396791
+      Tirukissu_3: 2075502136
+      attack_down_4: -1724531281
+      attack_down_7: -1643530485
+      attack_down_5: 553080223
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

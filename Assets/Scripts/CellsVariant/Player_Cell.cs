@@ -168,6 +168,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         {
             // HEAL
           //  Debug.Log("HEAL");
+         // PlayerManager.instance.PlayerAnimator.RunHealAnimation();
             HealthPoints -= Mathf.RoundToInt(damage);
             PlayerManager.instance.CurrentHealth = HealthPoints;
         }

@@ -16,6 +16,8 @@ public class PlayerManager: MonoBehaviour
     public Image ArmorIMG;
     [SerializeField] GameObject GraphicSwitchPrefab;
     [SerializeField] public PlayerEquipmentVisualSwitchScript GraphicSwitch;
+    // [SerializeField] GameObject AnimatorControllerPrefab; 
+    //     [SerializeField] public PlayerAnimatorController PlayerAnimator;
     [SerializeField] public MoveValidatorScript MovmentValidator;
 
    
@@ -66,19 +68,13 @@ public class PlayerManager: MonoBehaviour
        // print("wystartowanie autopilota");
         playerCurrentlyMoving = true;
         PlayerManager.instance.MovmentValidator.HideGrid();
+        yield return new WaitUntil(()=>GameManager.instance.TurnPhaseBegin );
         foreach(var path in  PlayerManager.instance._playerCell._pathfinder.FinalPath)
         {
            
-            Vector2Int direction = GameManager.Player_CELL.CurrentPosition-path.Coordination;
-            if(direction.x == 0)
-                GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
-            if(direction.y == 0)
-                GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
-
             PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
-            yield return new WaitUntil(()=>GameManager.instance.TurnPhaseBegin );
-            
+
             if(i < PlayerManager.instance._playerCell._pathfinder.FinalPath.Count)
             {
                 if(GameManager.instance.SwapTilesAsDefault)
@@ -91,13 +87,13 @@ public class PlayerManager: MonoBehaviour
                     GridManager.CascadeMoveTo(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
                 }         
             }
-            else
-            {
-               // Debug.LogError("hola hola o co chodzi");
-            }
+            yield return new WaitUntil(()=>_playerCell.ParentCell.IsCurrentlyMoving == false);
 
             i++;
         }
+       //  yield return new WaitUntil(()=>_playerCell.ParentCell.IsCurrentlyMoving == false);
+        CustomEventManager.PlayerAnimator.Play($"Player_IDLEanim");      
+        Debug.Log("turn on iddle animation");  
         currentAutopilot = null;
  
         playerCurrentlyMoving = false;
@@ -199,7 +195,9 @@ public class PlayerManager: MonoBehaviour
         //_mainBackpack = GameObject.Find("Content_EquipmentTab").GetComponent<EquipmentScript>();
 
         var uicontroller = Instantiate(GraphicSwitchPrefab,_playerCell.playerSpriteObject.transform);
+       // var playerAnimatorController = Instantiate(AnimatorControllerPrefab,_playerCell.playerSpriteObject.transform);
         GraphicSwitch = uicontroller.GetComponent<PlayerEquipmentVisualSwitchScript>();
+       // PlayerAnimator = playerAnimatorController.GetComponent<PlayerAnimatorController>();
         
         MovmentValidator = GetComponentInChildren<MoveValidatorScript>();
         MovmentValidator.ParentPathfinder = parentCell._pathfinder;
@@ -254,6 +252,16 @@ public class PlayerManager: MonoBehaviour
    
     public IEnumerator PerformRegularAttackAnimation(CellScript attacker, CellScript target, int _aniamtionFrames)
     {
+        
+
+        if(attacker.SpecialTile is Player_Cell)
+        {
+            AtackAnimationInProgress = true;
+            yield return new WaitUntil(()=>CustomEventManager.PlayerAnimator.GetComponent<AnimationsEventsScript>().AttackAnimationsFinished);
+            yield return new WaitForEndOfFrame();
+            AtackAnimationInProgress = false;
+            yield break;
+        }
         AtackAnimationInProgress = true;
 
         Vector2Int direction = target.CurrentPosition - attacker.CurrentPosition;

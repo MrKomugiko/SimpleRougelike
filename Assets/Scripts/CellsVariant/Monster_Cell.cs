@@ -196,8 +196,25 @@ public class Monster_Cell :ICreature
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !
 
-        PlayerManager.instance.StartCoroutine(PlayerManager.instance.PerformRegularAttackAnimation(PlayerManager.instance._playerCell.ParentCell,this.ParentCell,GameManager.instance.attackAnimationFrames));
+        if(direction.y < 0)
+        {
+            CustomEventManager.PlayerAnimator.Play("Player_Attack_upanim");
+        }
+        else if(direction.y > 0)
+        {
+            CustomEventManager.PlayerAnimator.Play("Player_Attack_downanim");
+        }
+        else if(direction.x > 0)
+        {
+            CustomEventManager.PlayerAnimator.Play("Player_Attack_leftanim");
+        }
+        else if(direction.x < 0)
+        {
+            CustomEventManager.PlayerAnimator.Play("Player_Attack_rightanim");
+        }
 
+
+        PlayerManager.instance.StartCoroutine(PlayerManager.instance.PerformRegularAttackAnimation(PlayerManager.instance._playerCell.ParentCell,this.ParentCell,GameManager.instance.attackAnimationFrames));
         GameManager.instance.PlayerAttacked = true;        
     }
     public void TakeDamage(float damage, string source)

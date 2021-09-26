@@ -47,7 +47,7 @@ public class MoveValidatorScript : MonoBehaviour
                     validMovePosiitonsCounter ++;
                    // Debug.Log(validMovePosiitonsCounter);
 
-                    GridIndicators[index].color = Color.green;    
+                    GridIndicators[index].color = new Color32(128,255,0,200);    
                 }
                 else
                 {
