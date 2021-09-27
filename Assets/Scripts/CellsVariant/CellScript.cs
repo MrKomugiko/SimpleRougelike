@@ -186,7 +186,7 @@ public class CellScript : MonoBehaviour
     }
     private IEnumerator SlideAnimation(Vector3 startingPosition, Vector3 endPosition)
     {
-        Debug.Log("slide");
+       // Debug.Log("slide");
         if(SpecialTile is Player_Cell)
         {
             Vector2Int direction = Vector2Int.CeilToInt(startingPosition-endPosition);

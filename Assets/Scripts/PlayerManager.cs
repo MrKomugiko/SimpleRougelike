@@ -94,7 +94,7 @@ public class PlayerManager: MonoBehaviour
        //  yield return new WaitUntil(()=>_playerCell.ParentCell.IsCurrentlyMoving == false);
 
         CustomEventManager.PlayerAnimator.Play($"Player_IDLEanim");      
-        Debug.Log("turn on iddle animation");  
+      //  Debug.Log("turn on iddle animation");  
         currentAutopilot = null;
  
         playerCurrentlyMoving = false;
@@ -110,6 +110,7 @@ public class PlayerManager: MonoBehaviour
         STATS.ResetExtraValues(); 
 
         // wyczyszczenie dunga przed załądowaniem danych nowego gracza
+        DungeonManager.instance.maxDungeonTraveledDistance = _progressData.maxDungeonTraveledDistance;      
         DungeonManager.instance.DungeonClearAndGoToCamp();
 
        // Debug.Log("Load data from player progress file");
@@ -135,7 +136,9 @@ public class PlayerManager: MonoBehaviour
             UIManager.instance.Health_Bar.UpdateBar(CurrentHealth,Mathf.RoundToInt(STATS.HealthPoints));   // TODO:
       //  BaseDamage       =  _progressData.BaseDamage;
 
-        STATS.dataLoaded = true;                 
+        STATS.dataLoaded = true;         
+
+        
         _mainBackpack.GenerateEquipment();
         _EquipedItems.GenerateEquipment();
     }
@@ -356,6 +359,8 @@ public class PlayerManager: MonoBehaviour
         _updatedData.EquipedItems = (PlayerManager.instance._EquipedItems.GetBackupListOfItemsAndSlots());
         _updatedData.BagpackItems = (PlayerManager.instance._mainBackpack.GetBackupListOfItemsAndSlots());
 
+    // zapisanie aktualnego stanu poziomu trudnosci mapy
+        _updatedData.maxDungeonTraveledDistance = DungeonManager.instance.maxDungeonTraveledDistance;
         HeroDataController.instance.UpdatePlayerDataFileOnDevice(_updatedData);
 
          // ponowne zalozenie itemkow bo po zapisie gry nadal mozna grac dalej

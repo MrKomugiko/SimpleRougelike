@@ -87,10 +87,7 @@ public class CustomEventManager : MonoBehaviour
     public static Animator PlayerAnimator;
     internal void RegisterPlayerInEventManager(Player_Cell player_Cell)
     {
-        //Debug.LogError("gracz zarejestrowany");
-        // playerManager.OnPlayerDieEvent += DeathAnimation;
         player_Cell.OnPlayerTakeDamageEvent += FloatingDamageValueAnimation;
         PlayerAnimator = player_Cell.playerSpriteObject.GetComponentInChildren<Animator>();
-        Debug.Log(PlayerAnimator.name);
     }
 }

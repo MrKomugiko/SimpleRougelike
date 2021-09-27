@@ -36,7 +36,7 @@ using static EquipmentScript;
    // ----------------------------- LOCATION AND PROGRESS  --------
     public string CurrentLocation = "Home";
     public int HighestDungeonStage = 0;
-    public int RecentDungeonStage = 0;
+    public int maxDungeonTraveledDistance = 0;
     public int MoveRange = 2;
     public int AttackRange = 1;
     public int AvailablePoints = 0;
@@ -58,7 +58,6 @@ using static EquipmentScript;
     // ----------------------------- ARCHIVMENTS PROGRES ----------
     // ----------------------------- UNLOCKED THINGS --------------
     // ----------------------------- ITEMS IN QUICKSLOT -----------
-
     public ItemBackupData ItemAssignedToAuicslot_0;
     public ItemBackupData ItemAssignedToAuicslot_1;
     public ItemBackupData ItemAssignedToAuicslot_2;

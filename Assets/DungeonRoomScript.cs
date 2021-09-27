@@ -28,6 +28,7 @@ public class DungeonRoomScript : MonoBehaviour
     public static void GenerateDungeonRooms()
     {
         // create init center room
+       
         Room MainRoom = new Room(Vector2Int.zero,"WDSA");
         Dungeon.Clear();
         Dungeon.Add(Vector2Int.zero,MainRoom);
@@ -35,10 +36,11 @@ public class DungeonRoomScript : MonoBehaviour
         {
             CreateRoom(from: MainRoom.position, directionsDict[dirChar.ToString()]);
         }
+        Dungeon[Vector2Int.zero].DistanceFromCenter = DungeonManager.instance.maxDungeonTraveledDistance;
+        Debug.LogWarning("przypisanie początkowej wartości 'trudnosci' dla dungeona maksylanie uzyskana wartoscia:"+DungeonManager.instance.maxDungeonTraveledDistance);
 
         // checking distances
        
-        Dungeon[Vector2Int.zero].DistanceFromCenter = 0;
         var parentloc = Vector2Int.zero;
 
         var avaiablenewroomDirections = Dungeon[Vector2Int.zero].doorsNameCode.ToCharArray();

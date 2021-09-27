@@ -15,12 +15,14 @@ public class DungeonManager : MonoBehaviour
         instance = this;
     }
     [SerializeField] GameObject DungeonSelectionWindow;
-    public int maxDungeonStage = 0;
-    public int recentDungeonStage = 0;
+    public int maxDungeonTraveledDistance = 0;
+    public int currentDungeonDistance = 0;
 
     [SerializeField] private GameObject DungeonCanvas;
     public void OpenDungeon(/* dungeondata */ )
     {
+        currentDungeonDistance = DungeonManager.instance.maxDungeonTraveledDistance;
+        
         DungeonSelectionWindow.SetActive(false);
         DungeonCanvas.SetActive(true);
         GridManager.instance.CreateEmptyGrid();
@@ -36,9 +38,9 @@ public class DungeonManager : MonoBehaviour
         GameManager.instance.MonsterAttack = false;
 
         StartCoroutine(GameManager.instance.AddTurn());
-
-
     }
+
+    
     public void DungeonClearAndGoToCamp()
     {
         // poodpinanie zalozonych itemkow w quickslocie gracza
@@ -53,7 +55,7 @@ public class DungeonManager : MonoBehaviour
 
 //        Debug.Log("DUNGEON CLEAR AND BACK TO CAMP");
         //  recentDungeonStage = dungeonData.stage;
-        recentDungeonStage++; // tymczasowe
+        //recentDungeonStage++; // tymczasowe
 
         GameManager.instance._chestLootScript.Clear();
         if (NotificationManger.instance != null)
@@ -71,7 +73,8 @@ public class DungeonManager : MonoBehaviour
         GameObject.Find("BottomSection").GetComponent<AnimateWindowScript>().HideTabWindow();
         DungeonCanvas.SetActive(false);
 
-        maxDungeonStage = recentDungeonStage > maxDungeonStage ? recentDungeonStage : maxDungeonStage;
+        maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
+        GameManager.instance.PLAYER_PROGRESS_DATA.maxDungeonTraveledDistance = maxDungeonTraveledDistance; // updated
     }
     [SerializeField] Image RoomWallsSprite;
     public Vector2Int CurrentLocation;
@@ -198,6 +201,14 @@ public class DungeonManager : MonoBehaviour
 
         RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[Vector2Int.zero].doorsNameCode + "_OPEN").First();
         DungeonRoomScript.Dungeon[Vector2Int.zero].WasVisited = true;
+
+        currentDungeonDistance = DungeonRoomScript.Dungeon[Vector2Int.zero].DistanceFromCenter;
+        maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
+
+        foreach(var monsterCell in GridManager.CellGridTable.Where(c=>c.Value.SpecialTile is Monster_Cell))
+        {
+            (monsterCell.Value.SpecialTile as Monster_Cell).AdjustByMapDificultyLevel(Dungeon[Vector2Int.zero].DistanceFromCenter);
+        }
     }
  
 
@@ -234,6 +245,11 @@ public class DungeonManager : MonoBehaviour
     {
         if (DungeonRoomScript.Dungeon.ContainsKey(newLocationCoord))
         {
+                    
+            currentDungeonDistance = DungeonRoomScript.Dungeon[newLocationCoord].DistanceFromCenter;
+          //  maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
+            Debug.Log("currentDungeonDistance' "+currentDungeonDistance+"/ Max saved distance: "+maxDungeonTraveledDistance);
+
             CurrentLocation = newLocationCoord;
             RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[newLocationCoord].doorsNameCode + "_OPEN").First();
             if(DungeonRoomScript.Dungeon[newLocationCoord].WasVisited == false)
@@ -264,6 +280,8 @@ public class DungeonManager : MonoBehaviour
             DungeonRoomScript.Dungeon[newLocationCoord].WasVisited = true;
             ShowMinimap();
         }
+
+
     }
     [SerializeField] public List<GameObject> telerpotButtons = new List<GameObject>();
     public void EnableTeleportButton(string direction)

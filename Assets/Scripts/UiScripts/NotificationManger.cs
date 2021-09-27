@@ -112,7 +112,7 @@ public partial class NotificationManger : MonoBehaviour
                             PlayerManager.instance._mainBackpack.ItemSlots[quick_2.SlotID].AssignToQuickSlot(2);
                         }
                     }
-                    if(quick_0 != null)
+                    if(quick_3 != null)
                     {
                         if(string.IsNullOrEmpty(quick_3.ScriptableObjectName) == false)
                         {
