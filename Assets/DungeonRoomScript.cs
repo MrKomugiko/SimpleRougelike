@@ -165,7 +165,6 @@ public class DungeonRoomScript : MonoBehaviour
                 DoorStatesList.Add(doorCode.ToString(),false);
             }
         }
-
         public Dictionary<string,bool> DoorStatesList = new Dictionary<string, bool>();
         public void SetStateDoorByCode(string code, bool state)
         {
@@ -202,7 +201,6 @@ public class DungeonRoomScript : MonoBehaviour
             
             DungeonManager.SetNeighourRoomsDoorsState(this, listchangedDoors);
         }
-
         public List<Room> GetNeighbourRooms()
         {
             List<Room> neigbours = new List<Room>();

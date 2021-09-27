@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,7 +29,7 @@ public class DungeonManager : MonoBehaviour
 
         GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
 
-        GameManager.instance.CurrentTurnNumber = 1;
+        //GameManager.instance.CurrentTurnNumber = 1;
         GameManager.instance.PlayerMoved = false;
         GameManager.instance.PlayerAttacked = false;
         GameManager.instance.MonstersMoved = false;
@@ -293,7 +292,7 @@ public class DungeonManager : MonoBehaviour
 
         GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
 
-        GameManager.instance.CurrentTurnNumber = 1;
+        //GameManager.instance.CurrentTurnNumber = 1;
         GameManager.instance.PlayerMoved = false;
         GameManager.instance.PlayerAttacked = false;
         GameManager.instance.MonstersMoved = false;

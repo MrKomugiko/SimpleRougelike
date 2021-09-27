@@ -205,9 +205,9 @@ public class CellScript : MonoBehaviour
         }
          
         IsCurrentlyMoving = true;
-        for (int i = 1; i <= 12+1; i++)
+        for (int i = 1; i <= 8+1; i++)
         {
-            float progress = i / 12.0f;
+            float progress = i / 8.0f;
             yield return new WaitForFixedUpdate();
             this._recTransform.localPosition = Vector3.Lerp(startingPosition, endPosition, progress);
         }

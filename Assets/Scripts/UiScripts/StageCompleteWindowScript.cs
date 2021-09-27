@@ -17,7 +17,7 @@ public class StageCompleteWindowScript : MonoBehaviour
         $"  <b>Gold Earned:</b> \t\t{PlayerManager.instance.CumulativeStageGoldEarned}\n"+
         $"  <b>Damage taken:</b> \t{PlayerManager.instance.CumulativeStageDamageTaken}\n"+
         $"  <b>Damage gained:</b> \t{PlayerManager.instance.CumulativeStageDamageGained}\n"+
-        $"  <b>Elapsed Turns:</b> \t{GameManager.instance.CurrentTurnNumber}\n"+
+       // $"  <b>Elapsed Turns:</b> \t{GameManager.instance.CurrentTurnNumber}\n"+
         $"  <b>Revievals used:</b>\t{0}";
         ContentDetailedInto_TMP.SetText(contentText);
     }

@@ -15,7 +15,6 @@ public class Statistics : MonoBehaviour
         _extra_BlockChance, _extra_DamageReductione, _damageReductione,_extra_EnergyPoints,_extra_StaminaPoints,
         _extra_HealthPoints,_extra_DamageReduction;
     [SerializeField] public (float min, float max) _extraDamage;
-
     public int Level {
         get => _level;
         set
@@ -25,6 +24,12 @@ public class Statistics : MonoBehaviour
             AvailablePoints += (value-_level) * 6;
             _level = value;
             UIManager.instance.Level_TMP.SetText(Level.ToString());
+
+            if(dataLoaded == true)
+            {
+                CustomEventManager.PlayerAnimator.Play("Level_Up",1);    
+                GameObject.FindObjectOfType<TabsSectionScript>().ShowNotificationOnTab(TabNames.CharacterTab);
+            }
         }
     }
     public int Strength { 
@@ -367,6 +372,7 @@ public class Statistics : MonoBehaviour
         HealthRegeneration_TMP, EnergyPoints_TMP, EnergyRegeneration_TMP, BlockChance_TMP,TotalDamage_TMP,Armor_TMP,
         DamageReduction_TMP;
     [SerializeField] List<Button> CoreStatButtonsList = new List<Button>();
+    internal bool dataLoaded = false;
 
     public void AddValue(string statname, float statisticChangeValue = 1)
     {

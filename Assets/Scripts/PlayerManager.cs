@@ -92,6 +92,7 @@ public class PlayerManager: MonoBehaviour
             i++;
         }
        //  yield return new WaitUntil(()=>_playerCell.ParentCell.IsCurrentlyMoving == false);
+
         CustomEventManager.PlayerAnimator.Play($"Player_IDLEanim");      
         Debug.Log("turn on iddle animation");  
         currentAutopilot = null;
@@ -114,14 +115,14 @@ public class PlayerManager: MonoBehaviour
        // Debug.Log("Load data from player progress file");
         // progress & resources 
         // Debug.LogError("wczytanie expa:"+_progressData.Experience);
-        NickName         =  _progressData.NickName;             // TODO: aktualizuje sie w PlayerCell przy starcie - nowa mapa           
-        STATS.Level            =  _progressData.Level;                        // OK - setter
-        STATS.Experience       =  _progressData.Experience;                   // OK - setter
-        STATS.AvailablePoints  =  _progressData.AvailablePoints;              // OK - setter
-        STATS.Strength         =  _progressData.Strength;             // TODO: aktualizacja przy starcie gracza                                         
-        STATS.Inteligence      =  _progressData.Inteligence;          // TODO: aktualizacja przy starcie gracza                             
-        STATS.Dexterity  =  _progressData.Dexterity;            // TODO: aktualizacja przy starcie gracza                                     
-        STATS.Vitality         =  _progressData.Vitality;             // TODO: aktualizacja przy starcie gracza                                              
+        NickName         =  _progressData.NickName;                    
+        STATS.Level            =  _progressData.Level;       
+        STATS.Experience       =  _progressData.Experience;                 
+        STATS.AvailablePoints  =  _progressData.AvailablePoints;           
+        STATS.Strength         =  _progressData.Strength;                                                    
+        STATS.Inteligence      =  _progressData.Inteligence;                                
+        STATS.Dexterity  =  _progressData.Dexterity;                                           
+        STATS.Vitality         =  _progressData.Vitality;                                                
 
         AttackRange      =  _progressData.AttackRange;                                                      
         MoveRange        =  _progressData.MoveRange;                            
@@ -134,6 +135,7 @@ public class PlayerManager: MonoBehaviour
             UIManager.instance.Health_Bar.UpdateBar(CurrentHealth,Mathf.RoundToInt(STATS.HealthPoints));   // TODO:
       //  BaseDamage       =  _progressData.BaseDamage;
 
+        STATS.dataLoaded = true;                 
         _mainBackpack.GenerateEquipment();
         _EquipedItems.GenerateEquipment();
     }

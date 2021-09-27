@@ -189,7 +189,7 @@ public partial class NotificationManger : MonoBehaviour
             );
              
         }
-        catch (System.Exception ex)
+        catch (System.Exception)
         {
             
            // Debug.LogError("blad"+ex.Message);
@@ -361,7 +361,7 @@ public partial class NotificationManger : MonoBehaviour
                 break;
         }
     }
-    catch (System.Exception ex)
+    catch (System.Exception)
     {
         
        // Debug.LogError(ex.Message);

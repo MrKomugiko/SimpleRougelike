@@ -12,9 +12,6 @@ public class GameManager : MonoBehaviour
     public int CurrentStageLevel = 1;
     public int CurrentStageFloor = 1;
     [SerializeField] GameObject ClearStageWindow;
-    [SerializeField] public TextMeshProUGUI TurnInfo_TMP;
-    [SerializeField] public TextMeshProUGUI TurnCounter_TMP;    
-    [SerializeField] public Vector2Int StartingPlayerPosition;
     [SerializeField] private GameObject TickCounterPrefab;
     [SerializeField] public GameObject SelectionBorderPrefab;
     public static CellScript Player_CELL;
@@ -25,6 +22,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private bool wybuchWTrakcieWykonywania = false;
     private int _currentTurnNumber = 0;
+    private int TurnCounter;
     public TurnPhase CurrentTurnPhase = TurnPhase.StartGame;
     public int CurrentTurnNumber
     {
@@ -66,12 +64,10 @@ public class GameManager : MonoBehaviour
     {   
         if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
-            //----------------------------------------------------------------------------------
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
             tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
             if(tempCurrentCreatureList.Count == 0)
             {
-                // nie ma potworów na mapie =>uaktywnij teleporty
                 DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation].SetAllDoorsState(true);
                 foreach(var roomDoor in DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation].DoorStatesList)
                 {
@@ -82,31 +78,18 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-           // Debug.LogWarning("Player move - start");
-
-            TurnImageIndicators[0].color = Color.yellow;
-            TurnImageIndicators[1].color = Color.red;
-            TurnImageIndicators[2].color = Color.red;
-            TurnImageIndicators[3].color = Color.red;
 
             TurnPhaseBegin = true;
-            instance.TurnInfo_TMP.SetText("PLAYER MOVE TURN BEGIN");
 
-            _currentTurnNumber = Int32.Parse(TurnCounter_TMP.text);
-            TurnCounter_TMP.SetText((CurrentTurnNumber += 1).ToString());
+            _currentTurnNumber = GameManager.instance.TurnCounter;
+            GameManager.instance.TurnCounter = CurrentTurnNumber += 1;
 
             PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
-            // if(teleporsEmergencySwitchUsed == false)
-            // {
                 if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
                 {
-                    // zablokowane miejsce na ruch, tylko atak bezposrednio niech sie aktywuje
-                    //Debug.Log("skip player movement turn = "+PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter);
                     PlayerMoved = true;
                 }
-            // }
             yield return new WaitUntil(()=>PlayerMoved && PlayerManager.instance.playerCurrentlyMoving==false);
-            instance.TurnInfo_TMP.SetText("PLAYER MOVE TURN ENDED");
             yield return new WaitForSeconds(turnPhaseDelay);
            
             PlayerMoved = false;
@@ -120,53 +103,27 @@ public class GameManager : MonoBehaviour
        
         if(CurrentTurnPhase == TurnPhase.PlayerAttack && PlayerAttacked == false)
         {
-            //Debug.LogWarning("Player attack - start");
-
             TurnPhaseBegin = true;
 
            int _monstersInRange = PlayerManager.instance.MovmentValidator.ShowValidAttackGrid();
            if(_monstersInRange == 0)
            {
-               //Debug.Log("no monsters to attack");
-            //    if(teleporsEmergencySwitchUsed == false)
-            //    {
-            //         PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
-            //         if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
-            //         {
-            //             foreach(var teleport in telerpotButtons)
-            //             {
-            //                 Debug.Log("włączenie teleportu:"+teleport.name);
-            //                 teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
-            //                 teleport.GetComponent<Button>().interactable = true;
-            //                 teleport.GetComponent<Image>().raycastTarget = true;          
-            //             }
-            //             teleporsEmergencySwitchUsed = true;
-            //             Debug.LogError("Awaryjne odbezpieczenie teleportow na mapie spowodowane napotkaniem blokady zaraz po pojawieniu sie na mapie");
-            //         }
-            //    }
 
                 PlayerManager.instance.MovmentValidator.HideGrid();
                 CurrentTurnPhase = TurnPhase.MonsterMovement;
-                // TurnImageIndicators[1].color = Color.green;
-                // TurnImageIndicators[2].color = Color.yellow;
                 PlayerAttacked = false;
                 TurnPhaseBegin = false;
-               // Debug.LogWarning("Player attack - end - no monsters to attack");
                 StartCoroutine(AddTurn());
                 yield break;
            }
             yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
             yield return new WaitUntil(()=>GameManager.instance.PlayerAttacked);
-            instance.TurnInfo_TMP.SetText("PLAYER ATTACK TURN ENDED");
 
             yield return new WaitForSeconds(turnPhaseDelay);
             CurrentTurnPhase = TurnPhase.MonsterMovement;
-            // TurnImageIndicators[1].color = Color.green;
-            // TurnImageIndicators[2].color = Color.yellow;
             PlayerManager.instance.MovmentValidator.HideGrid();
             PlayerAttacked = false;
             TurnPhaseBegin = false;
-          //  Debug.LogWarning("Player attack - end");
             yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
             yield break;
@@ -174,7 +131,6 @@ public class GameManager : MonoBehaviour
 
         if(CurrentTurnPhase == TurnPhase.MonsterMovement && MonstersMoved == false)
         {
-           // Debug.LogWarning("Monster move - start");
             TurnPhaseBegin = true;
 
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
@@ -189,33 +145,22 @@ public class GameManager : MonoBehaviour
                 if(creature.TryMove(GameManager.Player_CELL))
                 {
                     NotificationManger.TriggerActionNotification(creature, NotificationManger.AlertCategory.Info, "Moved.");
-                    // yield return new WaitForSeconds(.05f);
                     countMonsterMoveThisTurn++;
                     continue;
                 }
             }
 
             if(tempCurrentCreatureList.Count == 0)
-            {
-                // nie ma potworów na mapie =>uaktywnij teleporty
-                // 1. zapisanie stanu teleportow
-               // Debug.Log("Room cleared!");
                 DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation].SetAllDoorsState(true);
-            }
 
             yield return new WaitUntil(()=>tempCurrentCreatureList.Where(m=>m.ParentCell.IsCurrentlyMoving).Count()==0);
             MonstersMoved = true;
 
             yield return new WaitUntil(()=>GameManager.instance.MonstersMoved);
-            instance.TurnInfo_TMP.SetText("MONSTER MOVEMENT TURN ENDED");
 
             MonstersMoved = false;
             TurnPhaseBegin = false;
             CurrentTurnPhase = TurnPhase.MonsterAttack;
-            // TurnImageIndicators[2].color = Color.green;
-            // TurnImageIndicators[3].color = Color.yellow;
-            //Debug.LogWarning("Monster move - end");
-
             if(tempCurrentCreatureList.Count > 0) yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
             yield break;
@@ -223,21 +168,16 @@ public class GameManager : MonoBehaviour
 
         if(CurrentTurnPhase == TurnPhase.MonsterAttack && MonsterAttack == false)
         {
-           // Debug.LogWarning("Monster attack - start");
             TurnPhaseBegin = true;
-
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
             tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
 
             foreach (var creature in tempCurrentCreatureList)
             {
-              //  creature.TurnsElapsedCounter ++;
 
                 if(creature.ISReadyToMakeAction == false) continue;
-
                 if(creature.TryAttack(GameManager.Player_CELL))
                 {
-                  //  yield return new WaitForSeconds(.05f);
                    PlayerManager.instance.StartCoroutine(
                        PlayerManager.instance.PerformRegularAttackAnimation(
                            creature.ParentCell,
@@ -253,14 +193,11 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
             yield return new WaitUntil(()=>GameManager.instance.MonsterAttack);
-            instance.TurnInfo_TMP.SetText("MONSTER ATTACKS TURN ENDED");
 
             MonsterAttack = false;
             TurnPhaseBegin = false;
 
-            // TurnImageIndicators[3].color = Color.green;
             CurrentTurnPhase = TurnPhase.PlayerMovement;
-          //  Debug.LogWarning("Monster attack - end");
             StartCoroutine(AddTurn());
             yield break;
         }
@@ -270,7 +207,6 @@ public class GameManager : MonoBehaviour
             TurnPhaseBegin = true;
             GameManager.instance.ClearStageWindow.SetActive(true);
             PlayerManager.instance.SavePlayerData();
-            //print("end of loop");
             yield break;
         }
     }
@@ -315,7 +251,6 @@ public class GameManager : MonoBehaviour
     }
     public void EndTurnLoopShowClearDungeonWindow()
     {
-        //Debug.Log("Map cleared");
         TurnPhaseBegin = false;
         CurrentTurnPhase = TurnPhase.MapClear;
         StartCoroutine(AddTurn());
@@ -323,7 +258,6 @@ public class GameManager : MonoBehaviour
 
        public void CloseClearWindowBackToDungeon()
     {
-       // Debug.Log("back to dungeon");
         TurnPhaseBegin = false;
         PlayerMoved = false;
         PlayerAttacked = false;
@@ -335,7 +269,6 @@ public class GameManager : MonoBehaviour
     public int attackAnimationFrames = 16;   
 
     [SerializeField] public ChestLootWindowScript _chestLootScript;
-    // [SerializeField] public EquipmentScript _playerBackpackequipmentScript;
     public enum TurnPhase
     {
         StartGame,
@@ -383,10 +316,9 @@ public class GameManager : MonoBehaviour
         {
             if (cell.SpecialTile is Player_Cell) 
             {
-               // print("gracz oberawał");
                 cellsToDestroy.Remove(cell);
                 DamagedCells.Remove(cell);
-                continue; //TODO: wyodrębnoć klase player, dodać/zmienic IEnemy na coś uniwersalnego ? IEntity ? zawierac bedzie hp, exp , funkcja ataku obranonu nvm
+                continue; 
             }
 
             if(cell.SpecialTile is ICreature) 
@@ -522,16 +454,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-       // Debug.Log("GameOver, create new account sorry xd");
-
-       // Debug.Log("wyczyszczenie danych mapy dunga i wyjscie do camp'u");
         DungeonManager.instance.DungeonClearAndGoToCamp();
-
-       // Debug.Log("zapisanie danych gracza");
         PlayerManager.instance.SavePlayerData();
-
-       // Debug.Log("wyjscie do menu głownego");
-        MenuScript.instance.KickToMenuAfterDeath();
-        
+        MenuScript.instance.KickToMenuAfterDeath(); 
     }
 }
