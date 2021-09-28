@@ -14,7 +14,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     public GameObject Corpse_Sprite { get; private set; }
     public List<(Action action, string description, ActionIcon icon, bool singleAction)> AvaiableActions { get; private set; } = new List<(Action action, string description, ActionIcon icon, bool singleAction)>();
     public string Name { get; set; }
-    public int HealthPoints 
+    public float HealthPoints 
     { 
         get => _healthPoints; 
         set
@@ -55,7 +55,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         }
     }
     public Pathfinding _pathfinder;
-    private int _healthPoints;
+    private float _healthPoints;
     public GameObject playerSpriteObject;
     public event EventHandler<(CellScript parent, int damageTaken, bool criticalHit, bool blockedHit, bool dodgedHit)> OnPlayerTakeDamageEvent;
     public Player_Cell(CellScript parent, MonsterData _data)
@@ -67,7 +67,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         this.Corpse_Sprite = _data.Corpse_Sprite;
 
        // this.Damage = 1 + PlayerManager.instance.STATS.BaseDamage;
-        this.MaxHealthPoints = Mathf.RoundToInt(PlayerManager.instance.STATS.HealthPoints);
+        this.MaxHealthPoints = Mathf.RoundToInt(PlayerManager.instance.STATS.MaxHealthPoints);
         this.Name = PlayerManager.instance.NickName;
         this.HealthPoints = PlayerManager.instance.CurrentHealth;
 

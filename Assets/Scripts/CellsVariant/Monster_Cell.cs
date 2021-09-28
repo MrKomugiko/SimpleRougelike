@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Monster_Cell :ICreature
 {
     
-    private int _healthPoints;
+    private float _healthPoints;
     private int _turnsElapsedCounter;
     public Pathfinding _pathfinder;
     
@@ -29,7 +29,7 @@ public class Monster_Cell :ICreature
     public int MaxHealthPoints {get; private set;}
     public float Damage {get; private set;}
     string Corpse_Url {get;set;} = "monster_bones";
-    public int HealthPoints 
+    public float HealthPoints 
     { 
         get => _healthPoints; 
         set 
@@ -136,7 +136,7 @@ public class Monster_Cell :ICreature
     public object SaveAndGetCellProgressData()
     {
       //  Debug.Log("zapisanie aktualnehp hp potworka");
-        MonsterBackupData savedValues = new MonsterBackupData(this.MonsterDataID,this._healthPoints);
+        MonsterBackupData savedValues = new MonsterBackupData(this.MonsterDataID,Mathf.RoundToInt(this._healthPoints));
         return savedValues;
 
     }

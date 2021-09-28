@@ -74,7 +74,8 @@ public class DungeonManager : MonoBehaviour
         DungeonCanvas.SetActive(false);
 
         maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
-        GameManager.instance.PLAYER_PROGRESS_DATA.maxDungeonTraveledDistance = maxDungeonTraveledDistance; // updated
+        Debug.LogError("refreshed max distance :"+maxDungeonTraveledDistance);
+        //maxDungeonTraveledDistance = maxDungeonTraveledDistance; // updated
     }
     [SerializeField] Image RoomWallsSprite;
     public Vector2Int CurrentLocation;
@@ -191,7 +192,6 @@ public class DungeonManager : MonoBehaviour
             DungeonRoomScript.Dungeon[changesFromRoom.position+changeddoordir].SetStateDoorByVector( (-changeddoordir), true);
         }
     }
-
     public void GenerateAndEnterDungeon()
     {
      //   Debug.Log("generate dungeon rooms");
@@ -210,9 +210,6 @@ public class DungeonManager : MonoBehaviour
             (monsterCell.Value.SpecialTile as Monster_Cell).AdjustByMapDificultyLevel(Dungeon[Vector2Int.zero].DistanceFromCenter);
         }
     }
- 
-
-
     public void MoveNExtRoom_Up()
     {
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
@@ -247,7 +244,8 @@ public class DungeonManager : MonoBehaviour
         {
                     
             currentDungeonDistance = DungeonRoomScript.Dungeon[newLocationCoord].DistanceFromCenter;
-          //  maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
+            maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
+          
             Debug.Log("currentDungeonDistance' "+currentDungeonDistance+"/ Max saved distance: "+maxDungeonTraveledDistance);
 
             CurrentLocation = newLocationCoord;

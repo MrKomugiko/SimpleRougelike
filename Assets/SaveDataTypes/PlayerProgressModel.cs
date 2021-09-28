@@ -19,7 +19,8 @@ using static EquipmentScript;
     public int Level = 1;
     public int Experience = 1;
     public int MaxHealth=25;
-    public int CurrentHealth = 25;
+    public float CurrentHealth = 25;
+    public float CurrentStamina = 3;
     public int Power = 100;
     public float BaseDamage = 1;
 

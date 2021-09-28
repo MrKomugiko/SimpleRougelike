@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface ILivingThing
 {
-    int HealthPoints { get; set; }
+    float HealthPoints { get; set; }
     bool IsAlive { get; }
     float Damage { get; }
     GameObject Corpse_Sprite { get; }

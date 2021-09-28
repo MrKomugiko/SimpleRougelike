@@ -22,11 +22,11 @@ public class MoveValidatorScript : MonoBehaviour
             All_GridIndicators.Add(cell.CurrentPosition,mark.GetComponent<SpriteRenderer>());
             All_GridIndicators[cell.CurrentPosition].color = Color.clear;
         }
-        Debug.LogError("spawn siatki");
+        //Debug.LogError("spawn siatki");
     }
     public void HighlightValidMoveGrid(){
        // SpawnMarksOnGrid();
-        Debug.LogError("highlight move grid");
+       // Debug.LogError("highlight move grid");
 
         foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
         {
@@ -127,6 +127,7 @@ public class MoveValidatorScript : MonoBehaviour
     {
         foreach (var grid in All_GridIndicators.Values)
         {
+            if(grid == null) continue;
             Destroy(grid.gameObject);
         }
         All_GridIndicators.Clear();

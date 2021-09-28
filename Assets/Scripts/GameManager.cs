@@ -62,10 +62,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Image> TurnImageIndicators = new List<Image>();
     internal Action NextTarget;
     internal Action NextMoveLocation;
+
+    
     public IEnumerator AddTurn()
-    {   
+    {      
         if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
+
+            PlayerManager.instance.RegenerateResourcesAtTurnStart();
             PlayerManager.instance.MovmentValidator.ShowValidAttackAndMoveCombinedGrid();
 
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
@@ -88,13 +92,13 @@ public class GameManager : MonoBehaviour
             GameManager.instance.TurnCounter = CurrentTurnNumber += 1;
 
             // PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid();
-                if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
-                {
-                    PlayerMoved = true;
-                }
+            if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
+            {
+                PlayerMoved = true;
+            }
             yield return new WaitUntil(()=>PlayerMoved && PlayerManager.instance.playerCurrentlyMoving==false);
             yield return new WaitForSeconds(turnPhaseDelay);
-           PlayerManager.instance.MovmentValidator.HideMoveGrid();
+            PlayerManager.instance.MovmentValidator.HideMoveGrid();
             PlayerMoved = false;
             TurnPhaseBegin = false;
             CurrentTurnPhase = TurnPhase.PlayerAttack;

@@ -35,12 +35,31 @@ public class PlayerManager: MonoBehaviour
  
 
     public int Power { get; private set; }
-    public int CurrentHealth { 
-        get => _currentHealth; 
+    public float CurrentHealth { 
+        get => Mathf.RoundToInt(_currentHealth); 
         set 
         {
+             var maxHP = Mathf.RoundToInt(PlayerManager.instance.STATS.MaxHealthPoints);
+            if(value > maxHP)
+            {
+                value = maxHP;
+            }
+
             _currentHealth = value; 
-            UIManager.instance.Health_Bar.UpdateBar(_currentHealth,Mathf.RoundToInt(STATS.HealthPoints));
+            UIManager.instance.Health_Bar.UpdateBar(_currentHealth,Mathf.RoundToInt(STATS.MaxHealthPoints));
+        }
+    } 
+    public float CurrentStamina { 
+        get => _currentStamina; 
+        set 
+        {
+            var maxStamina = Mathf.RoundToInt(PlayerManager.instance.STATS.MaxStaminaPoints);
+            if(value > maxStamina)
+            {
+                value = maxStamina;
+            }
+            _currentStamina = value; 
+            UIManager.instance.Stamina_Bar.UpdateBar(_currentStamina,Mathf.RoundToInt(STATS.MaxStaminaPoints));
         }
     } 
 
@@ -104,6 +123,13 @@ public class PlayerManager: MonoBehaviour
 
         yield return null;
     }
+
+    internal void RegenerateResourcesAtTurnStart()
+    {
+        CurrentHealth+=STATS.HealthRegeneration;
+        CurrentStamina+=STATS.StaminaRegeneration;
+    }
+
     public void LoadPlayerData(PlayerProgressModel _progressData)
     {
         // clear extra data from items and perks before load new data from saveFile
@@ -111,30 +137,32 @@ public class PlayerManager: MonoBehaviour
 
         // wyczyszczenie dunga przed załądowaniem danych nowego gracza
         DungeonManager.instance.maxDungeonTraveledDistance = _progressData.maxDungeonTraveledDistance;      
+        Debug.LogError("load dungeon level =" + _progressData.maxDungeonTraveledDistance);
         DungeonManager.instance.DungeonClearAndGoToCamp();
 
        // Debug.Log("Load data from player progress file");
         // progress & resources 
         // Debug.LogError("wczytanie expa:"+_progressData.Experience);
-        NickName         =  _progressData.NickName;                    
-        STATS.Level            =  _progressData.Level;       
-        STATS.Experience       =  _progressData.Experience;                 
-        STATS.AvailablePoints  =  _progressData.AvailablePoints;           
-        STATS.Strength         =  _progressData.Strength;                                                    
-        STATS.Inteligence      =  _progressData.Inteligence;                                
-        STATS.Dexterity  =  _progressData.Dexterity;                                           
-        STATS.Vitality         =  _progressData.Vitality;                                                
+        NickName                  =  _progressData.NickName;                    
+        STATS.Level               =  _progressData.Level;       
+        STATS.Experience          =  _progressData.Experience;                 
+        STATS.AvailablePoints     =  _progressData.AvailablePoints;           
+        STATS.Strength            =  _progressData.Strength;                                                    
+        STATS.Inteligence         =  _progressData.Inteligence;                                
+        STATS.Dexterity           =  _progressData.Dexterity;                                           
+        STATS.Vitality            =  _progressData.Vitality;                                                
 
-        AttackRange      =  _progressData.AttackRange;                                                      
-        MoveRange        =  _progressData.MoveRange;                            
-        Gold             =  _progressData.Gold;
-            UIManager.instance.Gold_TMP.SetText(Gold.ToString());   // TODO:
-        Cristals         =  _progressData.Cristals;
-            UIManager.instance.Diamonds_TMP.SetText(Cristals.ToString());   // TODO:
-        STATS.HealthPoints        =  _progressData.MaxHealth;
-        CurrentHealth    =  _progressData.CurrentHealth;                        // TODO wyniesc z playercell do managera i wstawic do settera
-            UIManager.instance.Health_Bar.UpdateBar(CurrentHealth,Mathf.RoundToInt(STATS.HealthPoints));   // TODO:
-      //  BaseDamage       =  _progressData.BaseDamage;
+        AttackRange               =  _progressData.AttackRange;                                                      
+        MoveRange                 =  _progressData.MoveRange;                            
+        Gold                      =  _progressData.Gold;
+            UIManager.instance.Gold_TMP.SetText(Gold.ToString());  
+        Cristals                  =  _progressData.Cristals;
+            UIManager.instance.Diamonds_TMP.SetText(Cristals.ToString());  
+        STATS.MaxHealthPoints        =  _progressData.MaxHealth;
+        CurrentHealth             =  _progressData.CurrentHealth;  
+        CurrentStamina            =  _progressData.CurrentStamina;                  
+            //UIManager.instance.Health_Bar.UpdateBar(CurrentHealth,Mathf.RoundToInt(STATS.HealthPoints));   // TODO:
+    
 
         STATS.dataLoaded = true;         
 
@@ -253,8 +281,9 @@ public class PlayerManager: MonoBehaviour
     public float CumulativeStageDamageTaken;
     public float CumulativeStageDamageGained;
     public int CumulativeMonsterKilled;
-    private int _currentHealth;
-   
+    private float _currentHealth;
+    private float _currentStamina;
+
     public IEnumerator PerformRegularAttackAnimation(CellScript attacker, CellScript target, int _aniamtionFrames)
     {
         
@@ -331,8 +360,10 @@ public class PlayerManager: MonoBehaviour
    // -------------------
         _updatedData.Level =                    this.STATS.Level;
         _updatedData.Experience =               this.STATS.Experience;
-        _updatedData.MaxHealth=                 Mathf.RoundToInt(this.STATS.HealthPoints);
+        _updatedData.MaxHealth=                 Mathf.RoundToInt(this.STATS.MaxHealthPoints);
         _updatedData.CurrentHealth =            this.CurrentHealth;
+        _updatedData.CurrentStamina =           this.CurrentStamina;
+
         _updatedData.Power =                    this.Power;
         _updatedData.BaseDamage =               this.STATS.BaseDamage;
     // -------------------
@@ -361,6 +392,7 @@ public class PlayerManager: MonoBehaviour
 
     // zapisanie aktualnego stanu poziomu trudnosci mapy
         _updatedData.maxDungeonTraveledDistance = DungeonManager.instance.maxDungeonTraveledDistance;
+        Debug.LogError("save  dungeon level ="+DungeonManager.instance.maxDungeonTraveledDistance);
         HeroDataController.instance.UpdatePlayerDataFileOnDevice(_updatedData);
 
          // ponowne zalozenie itemkow bo po zapisie gry nadal mozna grac dalej

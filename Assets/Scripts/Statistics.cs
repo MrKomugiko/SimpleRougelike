@@ -10,8 +10,8 @@ public class Statistics : MonoBehaviour
 {
     [SerializeField] private int _experience, _level, _availablePoints, _dexterity, _strength, _inteligence, _vitality, _armor;
     [SerializeField] private float _extra_Critical_Hit_Rate, _extra_Critical_Hit_Damage, _critical_Hit_Rate, 
-        _critical_Hit_Damage, _extra_Accuracy, _extra_Evasion,_accuracy,_evasion,_baseDamage, _staminaPoints, 
-        _staminaRegeneration, _energyPoints, _energyRegeneration, _healthPoints, _healthRegeneration, _blockChance,
+        _critical_Hit_Damage, _extra_Accuracy, _extra_Evasion,_accuracy,_evasion,_baseDamage, _maxStaminaPoints, 
+        _staminaRegeneration, _maxEnergyPoints, _energyRegeneration, _maxHealthPoints, _healthRegeneration, _blockChance,
         _extra_BlockChance, _extra_DamageReductione, _damageReductione,_extra_EnergyPoints,_extra_StaminaPoints,
         _extra_HealthPoints,_extra_DamageReduction;
     [SerializeField] public (float min, float max) _extraDamage;
@@ -25,7 +25,7 @@ public class Statistics : MonoBehaviour
             _level = value;
             UIManager.instance.Level_TMP.SetText(Level.ToString());
 
-            if(dataLoaded == true)
+            if(dataLoaded == true && CustomEventManager.PlayerAnimator != null)
             {
                 CustomEventManager.PlayerAnimator.Play("Level_Up",1);    
                 GameObject.FindObjectOfType<TabsSectionScript>().ShowNotificationOnTab(TabNames.CharacterTab);
@@ -44,7 +44,7 @@ public class Statistics : MonoBehaviour
 
             // refresh
             Critical_Hit_Damage = Critical_Hit_Damage;
-            StaminaPoints = StaminaPoints;
+            MaxStaminaPoints = MaxStaminaPoints;
             StaminaRegeneration = StaminaRegeneration;
             BaseDamage = BaseDamage;
         } 
@@ -83,7 +83,7 @@ public class Statistics : MonoBehaviour
             // refresh
             Critical_Hit_Damage = Critical_Hit_Damage;
             Critical_Hit_Rate = Critical_Hit_Rate;
-            EnergyPoints = EnergyPoints;
+            MaxEnergyPoints = MaxEnergyPoints;
             EnergyRegeneration = EnergyRegeneration;
         }
     }
@@ -100,9 +100,9 @@ public class Statistics : MonoBehaviour
 
             // refresh
             BlockChance = BlockChance;
-            HealthPoints = HealthPoints;
+            MaxHealthPoints = MaxHealthPoints;
             HealthRegeneration = HealthRegeneration;
-            StaminaPoints = StaminaPoints;
+            MaxStaminaPoints = MaxStaminaPoints;
             StaminaRegeneration = StaminaRegeneration;
         }
     }
@@ -200,12 +200,13 @@ public class Statistics : MonoBehaviour
             TotalDamage = TotalDamage;
         } 
     }
-    public float StaminaPoints { 
-        get => _staminaPoints; 
+    public float MaxStaminaPoints { 
+        get => _maxStaminaPoints; 
         set 
         {
-            _staminaPoints = 4 + Mathf.RoundToInt((Strength * .5f) + (Vitality * .2f)) + Extra_StaminaPoints; 
-            StaminaPoints_TMP.SetText(_staminaPoints.ToString());
+            _maxStaminaPoints = 4 + Mathf.RoundToInt((Strength * .5f) + (Vitality * .2f)) + Extra_StaminaPoints; 
+            StaminaPoints_TMP.SetText(_maxStaminaPoints.ToString());
+            UIManager.instance.Stamina_Bar.UpdateBar(PlayerManager.instance.CurrentStamina, Mathf.RoundToInt(_maxStaminaPoints));
         } 
     }
     public float StaminaRegeneration { 
@@ -215,12 +216,12 @@ public class Statistics : MonoBehaviour
             StaminaRegeneration_TMP.SetText(_staminaRegeneration.ToString());
         } 
     }   
-    public float EnergyPoints { 
-        get => _energyPoints; 
+    public float MaxEnergyPoints { 
+        get => _maxEnergyPoints; 
         set 
         {
-            _energyPoints = 4 + Inteligence * 1f + Extra_EnergyPoints;
-            EnergyPoints_TMP.SetText(_energyPoints.ToString());
+            _maxEnergyPoints = 4 + Inteligence * 1f + Extra_EnergyPoints;
+            EnergyPoints_TMP.SetText(_maxEnergyPoints.ToString());
         } 
     }
     public float EnergyRegeneration { 
@@ -230,20 +231,20 @@ public class Statistics : MonoBehaviour
             EnergyRegeneration_TMP.SetText(_energyRegeneration.ToString());
         } 
     }
-    public float HealthPoints { 
-        get => _healthPoints; 
+    public float MaxHealthPoints { 
+        get => _maxHealthPoints; 
         set 
         {
-            _healthPoints = 25 + Mathf.RoundToInt(Vitality * 1f) + Extra_HealthPoints;
-            HealthPoints_TMP.SetText(_healthPoints.ToString());
-            UIManager.instance.Health_Bar.UpdateBar(PlayerManager.instance.CurrentHealth,Mathf.RoundToInt(_healthPoints));
+            _maxHealthPoints = 25 + Mathf.RoundToInt(Vitality * 1f) + Extra_HealthPoints;
+            HealthPoints_TMP.SetText(_maxHealthPoints.ToString());
+            UIManager.instance.Health_Bar.UpdateBar(PlayerManager.instance.CurrentHealth,Mathf.RoundToInt(_maxHealthPoints));
         } 
     }
     public float HealthRegeneration { 
         get => _healthRegeneration; 
         set {
-            _healthRegeneration = 0 + Mathf.RoundToInt(Vitality * .1f);
-            HealthRegeneration_TMP.SetText(_healthRegeneration.ToString());
+            _healthRegeneration = 0 + (Vitality * .1f);
+            HealthRegeneration_TMP.SetText(_healthRegeneration.ToString("N2")+"/turn");
         } 
     }
     public float BlockChance { 
@@ -291,7 +292,7 @@ public class Statistics : MonoBehaviour
     {
         _extra_HealthPoints = value; 
         //refresh
-        HealthPoints = HealthPoints;
+        MaxHealthPoints = MaxHealthPoints;
     } 
 }
     public float Extra_StaminaPoints { 
@@ -300,7 +301,7 @@ public class Statistics : MonoBehaviour
         {
             _extra_StaminaPoints = value; 
             //refresh
-            StaminaPoints = StaminaPoints;
+            MaxStaminaPoints = MaxStaminaPoints;
         } 
     }
     public float Extra_EnergyPoints { 
@@ -309,7 +310,7 @@ public class Statistics : MonoBehaviour
         {
             _extra_EnergyPoints = value; 
             //refresh
-            EnergyPoints = EnergyPoints;
+            MaxEnergyPoints = MaxEnergyPoints;
         } 
     }
     public float Extra_Critical_Hit_Rate { 

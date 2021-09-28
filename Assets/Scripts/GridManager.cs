@@ -57,7 +57,18 @@ public class GridManager : MonoBehaviour
                 cell.Value.isWalkable = false;
             }
             else
-                cell.Value.AssignType(GetRandomType());
+            {
+                var randomCelltype = GetRandomType();
+                if(cell.Key.x == GridManager.instance._gridSize.x/2 || cell.Key.y == GridManager.instance._gridSize.y/2)
+                {
+                    // krzyz na srodku bez szansy na spawn sciany/kamienia
+                    cell.Value.AssignType(randomCelltype==TileTypes.wall?TileTypes.grass:randomCelltype);
+                }
+                else
+                {
+                    cell.Value.AssignType(randomCelltype);
+                }
+            }
         }
         
         CellGridTable[new Vector2Int(0,4)].AssignType(TileTypes.grass);

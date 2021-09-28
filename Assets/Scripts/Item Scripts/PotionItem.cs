@@ -22,13 +22,8 @@ public class PotionItem : ItemData, IConsumable
         }
         else
         {
-            var maxHP = Mathf.RoundToInt(PlayerManager.instance.STATS.HealthPoints);
+           
             PlayerManager.instance.CurrentHealth += HealthRegenerationValue;
-            if(PlayerManager.instance.CurrentHealth > maxHP)
-            {
-                PlayerManager.instance.CurrentHealth = maxHP;
-            }
-            UIManager.instance.Health_Bar.UpdateBar(PlayerManager.instance.CurrentHealth,maxHP);
         }
         PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].UpdateItemAmount(-1);
 

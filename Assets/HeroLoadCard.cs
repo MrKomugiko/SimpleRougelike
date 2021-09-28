@@ -79,7 +79,7 @@ public class HeroLoadCard : MonoBehaviour
         Gold.SetText($"Gold: {data.Gold}");
         Cristals.SetText($"Cristals: {data.Cristals}");
         Power.SetText($"Power: {data.Power}");
-        //TODO:MaxDungeon.SetText($"Top Dungeon: {data.HighestDungeonStage}");
+        MaxDungeon.SetText($"Top Dungeon: {data.maxDungeonTraveledDistance}");
 
         GetComponent<Button>().onClick.RemoveAllListeners();
         GetComponent<Button>().onClick.AddListener(()=>{
