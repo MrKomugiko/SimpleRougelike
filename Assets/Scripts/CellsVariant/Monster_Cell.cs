@@ -164,6 +164,23 @@ public class Monster_Cell :ICreature
     }
     public void OnClick_MakeAction()
     {
+
+        if(GameManager.instance.CurrentTurnPhase == GameManager.TurnPhase.PlayerMovement)
+        {
+            // 1 . upewnienie sie czy klikniete pole jest w zasięgu ("czy jest podswietlone na czerwono)
+            if(PlayerManager.instance.MovmentValidator.Attack_Indicators.ContainsKey(ParentCell.CurrentPosition))
+            {
+                GameManager.instance.NextTarget = this.OnClick_MakeAction; 
+
+                //gracz ma w tej turze ( ruchu ) ropzpoczac ruch do pola -1 od wybranego celu
+                _pathfinder.FindPath(GameManager.Player_CELL);
+
+                GridManager.CellGridTable[_pathfinder.FinalPath[0].Coordination].MoveTo();
+            }
+
+
+            return;
+        }
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerAttack)
         {
             Debug.Log($"trwa innna tura({GameManager.instance.CurrentTurnPhase.ToString()}) niż tura ataku");

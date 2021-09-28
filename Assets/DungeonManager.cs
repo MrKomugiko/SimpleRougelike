@@ -22,7 +22,7 @@ public class DungeonManager : MonoBehaviour
     public void OpenDungeon(/* dungeondata */ )
     {
         currentDungeonDistance = DungeonManager.instance.maxDungeonTraveledDistance;
-        
+
         DungeonSelectionWindow.SetActive(false);
         DungeonCanvas.SetActive(true);
         GridManager.instance.CreateEmptyGrid();
@@ -272,7 +272,7 @@ public class DungeonManager : MonoBehaviour
 
             GameManager.instance.teleporsEmergencySwitchUsed = false;
             GameManager.instance.Init_PlacePlayerOnGrid(playerPosition);
-            PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
+            PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid();
             RestartTurnRoutine();
             ConfigureNextRoomButtons(newLocation: newLocationCoord);
 

@@ -122,7 +122,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         }
 
        // Debug.Log("spokojnie pominąć ture klikajac na siebie");
-        PlayerManager.instance.MovmentValidator.HideGrid();
+        PlayerManager.instance.MovmentValidator.HideAllGrid();
         PlayerManager.instance.playerCurrentlyMoving = false;
         GameManager.instance.PlayerMoved = true;
 

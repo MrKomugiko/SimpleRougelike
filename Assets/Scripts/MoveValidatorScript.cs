@@ -6,25 +6,27 @@ using UnityEngine;
 public class MoveValidatorScript : MonoBehaviour
 {
     [SerializeField] GameObject Mark;
-    [SerializeField] List<SpriteRenderer> GridIndicators = new List<SpriteRenderer>();
+    [SerializeField] Dictionary<Vector2Int,SpriteRenderer> All_GridIndicators = new Dictionary<Vector2Int,SpriteRenderer>();
+
+    [SerializeField] public Dictionary<Vector2Int,SpriteRenderer> Move_Indicators = new Dictionary<Vector2Int,SpriteRenderer>();
+    [SerializeField] public Dictionary<Vector2Int,SpriteRenderer> Attack_Indicators = new Dictionary<Vector2Int,SpriteRenderer>();
+
     public Pathfinding ParentPathfinder;
     public int validMovePosiitonsCounter = 0;
     public void SpawnMarksOnGrid()
     {
-        
-        GridIndicators.ForEach(g=>{if(g!=null){Destroy(g.gameObject);}});
-        GridIndicators.Clear();
+        DestroyAllGridObjects();
         foreach(var cell in GridManager.CellGridTable.Values)
         {
             var mark = Instantiate(Mark,cell.transform);
-            GridIndicators.Add(mark.GetComponent<SpriteRenderer>());
+            All_GridIndicators.Add(cell.CurrentPosition,mark.GetComponent<SpriteRenderer>());
+            All_GridIndicators[cell.CurrentPosition].color = Color.clear;
         }
-        
+        Debug.LogError("spawn siatki");
     }
-    [ContextMenu("showGrid")]
-    public void ShowValidMoveGrid(){
-        validMovePosiitonsCounter = 0;
-        SpawnMarksOnGrid();
+    public void HighlightValidMoveGrid(){
+       // SpawnMarksOnGrid();
+        Debug.LogError("highlight move grid");
 
         foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
         {
@@ -33,38 +35,29 @@ public class MoveValidatorScript : MonoBehaviour
 
         NodeGrid.UpdateMapObstacleData();
 
-        int index = 0;
         foreach(var cell in GridManager.CellGridTable.Values)
         {
             ParentPathfinder.FindPath(cell);
-
-        // print(ParentPathfinder.FinalPath.Count);
-
             if(ParentPathfinder.FinalPath.Count == 0 && ParentPathfinder.FinalPath.Count < PlayerManager.instance.MoveRange)
             {
                 if(cell.Type == TileTypes.player)
                 {
-                    validMovePosiitonsCounter ++;
-                   // Debug.Log(validMovePosiitonsCounter);
-
-                    GridIndicators[index].color = new Color32(128,255,0,200);    
+                    if(Move_Indicators.ContainsKey(cell.CurrentPosition) == false)
+                    {
+                        Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
+                    }                        
+                    Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,200);    
                 }
-                else
+                
+            }
+            else if (ParentPathfinder.FinalPath.Count <= 2)
+            {
+                if(Move_Indicators.ContainsKey(cell.CurrentPosition) == false)
                 {
-                    GridIndicators[index].gameObject.SetActive(false);
+                    Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
                 }
-
+                Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,200);    
             }
-            else if(ParentPathfinder.FinalPath.Count > 2)
-            {
-                GridIndicators[index].gameObject.SetActive(false);
-            }
-            else
-            {
-                validMovePosiitonsCounter ++;
-//                Debug.Log(validMovePosiitonsCounter);
-            }
-            index++;
         }
 
         foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
@@ -73,26 +66,17 @@ public class MoveValidatorScript : MonoBehaviour
         }
     
     }
-
-    public void HideGrid()
-    {
-        GridIndicators.ForEach(g=>g.gameObject.SetActive(false));
-    }
-
-    [ContextMenu("showAttackGrid")]
-    public int ShowValidAttackGrid()
+    public int HighlightValidAttackGrid(int? overteDistanceCheck = null)
     {
         int _monstersInRange = 0;
-        GridIndicators.ForEach(g=>Destroy(g.gameObject));
-        GridIndicators.Clear();
         var monsterList = GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster).ToList();
         foreach(var monster in monsterList)
         {
-            var mark = Instantiate(Mark,monster.Value.transform);
-            GridIndicators.Add(mark.GetComponent<SpriteRenderer>());
-        }
+            if(Attack_Indicators.ContainsKey(monster.Key))
+                continue;
 
-        int index = 0;
+            Attack_Indicators.Add(monster.Key, All_GridIndicators[monster.Key]);
+        }
         foreach(var checkedMonster in monsterList)
         {
             monsterList.ForEach(m=>m.Value.IsWalkable = false);
@@ -101,22 +85,62 @@ public class MoveValidatorScript : MonoBehaviour
             NodeGrid.UpdateMapObstacleData();
 
             ParentPathfinder.FindPath(checkedMonster.Value);
-//            print(ParentPathfinder.FinalPath.Count);
-            if(ParentPathfinder.FinalPath.Count >0 && ParentPathfinder.FinalPath.Count<=PlayerManager.instance.AttackRange)
+            if(ParentPathfinder.FinalPath.Count >0 && ParentPathfinder.FinalPath.Count<=(overteDistanceCheck==null?PlayerManager.instance.AttackRange:(int)overteDistanceCheck))
             {
-            //    print("in attack range");
                 _monstersInRange++;
-                GridIndicators[index].color = Color.red; 
-                GridIndicators[index].gameObject.SetActive(true);
+                Attack_Indicators[checkedMonster.Key].color = Color.red; 
+                Attack_Indicators[checkedMonster.Key].gameObject.SetActive(true);
             }
             else
             {
-              //  print("too far");
-                GridIndicators[index].gameObject.SetActive(false);          
+                Attack_Indicators[checkedMonster.Key].gameObject.SetActive(false);          
             }        
-            index++;
         }
 
         return _monstersInRange;   
+    }
+
+    public void HideAllGrid()
+    {
+        foreach (var grid in All_GridIndicators.Values)
+        {
+            grid.gameObject.SetActive(false);
+        }
+    }
+    public void HideMoveGrid()
+    {
+        foreach (var grid in Move_Indicators.Values)
+        {
+            if(grid == null) continue;
+            
+            grid.gameObject.SetActive(false);
+        }
+    }
+    public void HideAttackGrid()
+    {
+        foreach (var grid in Attack_Indicators.Values)
+        {
+            grid.gameObject.SetActive(false);
+        }
+    }
+    public void DestroyAllGridObjects()
+    {
+        foreach (var grid in All_GridIndicators.Values)
+        {
+            Destroy(grid.gameObject);
+        }
+        All_GridIndicators.Clear();
+        Attack_Indicators.Clear();
+        Move_Indicators.Clear();
+    }
+
+    [ContextMenu("Show combined grid")]
+    public void ShowValidAttackAndMoveCombinedGrid()
+    {
+        DestroyAllGridObjects();
+        SpawnMarksOnGrid();
+        HighlightValidMoveGrid();
+        
+        HighlightValidAttackGrid(PlayerManager.instance.AttackRange+PlayerManager.instance.MoveRange);
     }
 }

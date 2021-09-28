@@ -67,7 +67,7 @@ public class PlayerManager: MonoBehaviour
         }
        // print("wystartowanie autopilota");
         playerCurrentlyMoving = true;
-        PlayerManager.instance.MovmentValidator.HideGrid();
+        PlayerManager.instance.MovmentValidator.HideAllGrid();
         yield return new WaitUntil(()=>GameManager.instance.TurnPhaseBegin );
         foreach(var path in  PlayerManager.instance._playerCell._pathfinder.FinalPath)
         {
@@ -99,7 +99,7 @@ public class PlayerManager: MonoBehaviour
  
         playerCurrentlyMoving = false;
         GameManager.instance.PlayerMoved = true;
-        PlayerManager.instance.MovmentValidator.HideGrid();
+        PlayerManager.instance.MovmentValidator.HideAllGrid();
         GameManager.instance.MovingRequestTriggered = false;
 
         yield return null;

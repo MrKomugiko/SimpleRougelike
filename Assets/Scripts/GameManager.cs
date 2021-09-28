@@ -60,10 +60,14 @@ public class GameManager : MonoBehaviour
     public bool teleporsEmergencySwitchUsed;
     public bool TurnPhaseBegin = true;
     [SerializeField] private List<Image> TurnImageIndicators = new List<Image>();
+    internal Action NextTarget;
+    internal Action NextMoveLocation;
     public IEnumerator AddTurn()
     {   
         if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
+            PlayerManager.instance.MovmentValidator.ShowValidAttackAndMoveCombinedGrid();
+
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
             tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
             if(tempCurrentCreatureList.Count == 0)
@@ -78,20 +82,19 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-
             TurnPhaseBegin = true;
 
             _currentTurnNumber = GameManager.instance.TurnCounter;
             GameManager.instance.TurnCounter = CurrentTurnNumber += 1;
 
-            PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
+            // PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid();
                 if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
                 {
                     PlayerMoved = true;
                 }
             yield return new WaitUntil(()=>PlayerMoved && PlayerManager.instance.playerCurrentlyMoving==false);
             yield return new WaitForSeconds(turnPhaseDelay);
-           
+           PlayerManager.instance.MovmentValidator.HideMoveGrid();
             PlayerMoved = false;
             TurnPhaseBegin = false;
             CurrentTurnPhase = TurnPhase.PlayerAttack;
@@ -105,23 +108,34 @@ public class GameManager : MonoBehaviour
         {
             TurnPhaseBegin = true;
 
-           int _monstersInRange = PlayerManager.instance.MovmentValidator.ShowValidAttackGrid();
-           if(_monstersInRange == 0)
-           {
+            if(NextTarget != null)
+            {
+                NextTarget();
+                NextTarget = null;
+                
+            }
+            else
+            {
+                int _monstersInRange = PlayerManager.instance.MovmentValidator.HighlightValidAttackGrid();
+                if(_monstersInRange == 0)
+                {
 
-                PlayerManager.instance.MovmentValidator.HideGrid();
-                CurrentTurnPhase = TurnPhase.MonsterMovement;
-                PlayerAttacked = false;
-                TurnPhaseBegin = false;
-                StartCoroutine(AddTurn());
-                yield break;
-           }
-            yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
-            yield return new WaitUntil(()=>GameManager.instance.PlayerAttacked);
+                        PlayerManager.instance.MovmentValidator.HideAllGrid();
+                        CurrentTurnPhase = TurnPhase.MonsterMovement;
+                        PlayerAttacked = false;
+                        TurnPhaseBegin = false;
+                        StartCoroutine(AddTurn());
+                        yield break;
+                }
+                yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
+                yield return new WaitUntil(()=>GameManager.instance.PlayerAttacked);
+
+                PlayerManager.instance.MovmentValidator.HideAttackGrid();
+            }
 
             yield return new WaitForSeconds(turnPhaseDelay);
             CurrentTurnPhase = TurnPhase.MonsterMovement;
-            PlayerManager.instance.MovmentValidator.HideGrid();
+            PlayerManager.instance.MovmentValidator.DestroyAllGridObjects();
             PlayerAttacked = false;
             TurnPhaseBegin = false;
             yield return new WaitForSeconds(.05f);
@@ -356,11 +370,11 @@ public class GameManager : MonoBehaviour
         GridManager.FillGaps();
         if(GameManager.instance.CurrentTurnPhase == TurnPhase.PlayerMovement)
         {
-            PlayerManager.instance.MovmentValidator.ShowValidMoveGrid();
+            PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid();
         }
         else if (GameManager.instance.CurrentTurnPhase == TurnPhase.PlayerAttack)
         {
-            PlayerManager.instance.MovmentValidator.ShowValidAttackGrid();
+            PlayerManager.instance.MovmentValidator.HighlightValidAttackGrid();
         }
         yield return null;
     }
@@ -414,6 +428,7 @@ public class GameManager : MonoBehaviour
     private int countMonsterAttackThisTurn;
     public bool MovingRequestTriggered = false;
     [SerializeField] public PlayerProgressModel PLAYER_PROGRESS_DATA;
+
 
     internal MonsterData GetMonsterData(int MonsterID = -1)
     {
