@@ -19,8 +19,13 @@ using static EquipmentScript;
     public int Level = 1;
     public int Experience = 1;
     public int MaxHealth=25;
-    public float CurrentHealth = 25;
-    public float CurrentStamina = 3;
+    public int MaxStamina=5;
+    public int MaxEnergy=5;
+
+    public float CurrentHealth;
+    public float CurrentStamina;
+    public float CurrentEnergy;
+
     public int Power = 100;
     public float BaseDamage = 1;
 
@@ -52,6 +57,9 @@ using static EquipmentScript;
         SlotID = _slotId;
         CreatedDate = DateTime.Now;
         LastVisitedDate = CreatedDate;
+        CurrentHealth = MaxHealth;
+        CurrentStamina = MaxStamina;
+        CurrentEnergy = MaxEnergy;
 
        // Debug.Log("Created PPMData with nick: "+_nickname);
     }

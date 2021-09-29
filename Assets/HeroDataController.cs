@@ -148,12 +148,12 @@ public class HeroDataController : MonoBehaviour
     }
     public void LoadPlayerDataInGame(PlayerProgressModel heroData)
     {
-
         if(heroData.NickName != GameManager.instance.PLAYER_PROGRESS_DATA.NickName)
         {
             GameManager.instance.PLAYER_PROGRESS_DATA = heroData;
             PlayerManager.instance.LoadPlayerData(heroData);
         }
+
     }  
     public void RemoveHeroFromDevice(PlayerProgressModel data)
     {
@@ -179,7 +179,6 @@ public class HeroDataController : MonoBehaviour
         RemovePlayerDataSwapWithEmpty(data);
 
         LoadHeroesDataFromDevice();
-
     }
 
     private void RemovePlayerDataSwapWithEmpty(PlayerProgressModel data)
@@ -193,6 +192,8 @@ public class HeroDataController : MonoBehaviour
             File.Move(Application.persistentDataPath + $"/[{data.SlotID}]_Hero_{data.NickName}.json", Application.persistentDataPath + $"/[{data.SlotID}]_Hero__EMPTY_.json");
         }
         File.WriteAllText(Application.persistentDataPath + $"/[{data.SlotID}]_Hero__EMPTY_.json", JSONresult);
+
+        GameManager.instance.PLAYER_PROGRESS_DATA = blank_emptyhero;
     }
 
     public void UpdatePlayerDataFileOnDevice(PlayerProgressModel _updatedData)

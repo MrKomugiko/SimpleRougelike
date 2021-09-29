@@ -37,6 +37,8 @@ public class DungeonManager : MonoBehaviour
         GameManager.instance.MonstersMoved = false;
         GameManager.instance.MonsterAttack = false;
 
+        PlayerManager.instance.RegenerateFullStamina();
+
         StartCoroutine(GameManager.instance.AddTurn());
     }
 
@@ -270,7 +272,7 @@ public class DungeonManager : MonoBehaviour
 
             GameManager.instance.teleporsEmergencySwitchUsed = false;
             GameManager.instance.Init_PlacePlayerOnGrid(playerPosition);
-            PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid();
+            PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid(_restrictedByStaminavalue:true);
             RestartTurnRoutine();
             ConfigureNextRoomButtons(newLocation: newLocationCoord);
 

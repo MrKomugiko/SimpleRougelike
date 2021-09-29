@@ -36,7 +36,7 @@ public class PlayerManager: MonoBehaviour
 
     public int Power { get; private set; }
     public float CurrentHealth { 
-        get => Mathf.RoundToInt(_currentHealth); 
+        get => _currentHealth; 
         set 
         {
              var maxHP = Mathf.RoundToInt(PlayerManager.instance.STATS.MaxHealthPoints);
@@ -48,16 +48,31 @@ public class PlayerManager: MonoBehaviour
             _currentHealth = value; 
             UIManager.instance.Health_Bar.UpdateBar(_currentHealth,Mathf.RoundToInt(STATS.MaxHealthPoints));
         }
-    } 
+    }
+
+    internal void RegenerateFullStamina()
+    {
+        PlayerManager.instance.StaminaConsumeEnabled = true;
+        CurrentStamina = PlayerManager.instance.STATS.MaxStaminaPoints;
+    }
+
+    public bool StaminaConsumeEnabled = false;
     public float CurrentStamina { 
         get => _currentStamina; 
         set 
         {
             var maxStamina = Mathf.RoundToInt(PlayerManager.instance.STATS.MaxStaminaPoints);
             if(value > maxStamina)
-            {
                 value = maxStamina;
+            if(value < 0)
+                value = 0;
+            
+            if(StaminaConsumeEnabled == false) 
+            {
+                Debug.Log("stamina nie została zużyta");
+                return;
             }
+
             _currentStamina = value; 
             UIManager.instance.Stamina_Bar.UpdateBar(_currentStamina,Mathf.RoundToInt(STATS.MaxStaminaPoints));
         }
@@ -72,12 +87,12 @@ public class PlayerManager: MonoBehaviour
         int i = 0;
         NodeGrid.UpdateMapObstacleData();
         PlayerManager.instance._playerCell._pathfinder.FindPath(target);
-        if(PlayerManager.instance._playerCell._pathfinder.FinalPath.Count > PlayerManager.instance.MoveRange) 
-        {
-          //  print("point is too far");
-            GameManager.instance.MovingRequestTriggered = false;
-            yield break;
-        }
+        // if(PlayerManager.instance._playerCell._pathfinder.FinalPath.Count > PlayerManager.instance.MoveRange) 
+        // {
+        //     print("point is too far");
+        //     GameManager.instance.MovingRequestTriggered = false;
+        //     yield break;
+        // }
         if(playerCurrentlyMoving == true) 
         {
             //print("autopilot przerwany");
@@ -93,7 +108,6 @@ public class PlayerManager: MonoBehaviour
            
             PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
-
             if(i < PlayerManager.instance._playerCell._pathfinder.FinalPath.Count)
             {
                 if(GameManager.instance.SwapTilesAsDefault)
@@ -106,6 +120,7 @@ public class PlayerManager: MonoBehaviour
                     GridManager.CascadeMoveTo(_playerCell.ParentCell,PlayerManager.instance._playerCell._pathfinder.FinalPath[i].Coordination);
                 }         
             }
+            PlayerManager.instance.CurrentStamina--;
             yield return new WaitUntil(()=>_playerCell.ParentCell.IsCurrentlyMoving == false);
 
             i++;

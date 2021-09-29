@@ -81,7 +81,8 @@ public class CustomEventManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
   
         }
-        Destroy(damageTextObject);
+        if(damageTextObject != null)
+            Destroy(damageTextObject);
     }
 
     public static Animator PlayerAnimator;

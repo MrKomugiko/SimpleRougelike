@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,7 @@ public class MoveValidatorScript : MonoBehaviour
         }
         //Debug.LogError("spawn siatki");
     }
-    public void HighlightValidMoveGrid(){
-       // SpawnMarksOnGrid();
-       // Debug.LogError("highlight move grid");
+    public void HighlightValidMoveGrid(bool _restrictedByStaminavalue){
 
         foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
         {
@@ -38,7 +37,7 @@ public class MoveValidatorScript : MonoBehaviour
         foreach(var cell in GridManager.CellGridTable.Values)
         {
             ParentPathfinder.FindPath(cell);
-            if(ParentPathfinder.FinalPath.Count == 0 && ParentPathfinder.FinalPath.Count < PlayerManager.instance.MoveRange)
+            if(ParentPathfinder.FinalPath.Count == 0 && ParentPathfinder.FinalPath.Count < (_restrictedByStaminavalue?PlayerManager.instance.CurrentStamina:PlayerManager.instance.MoveRange))
             {
                 if(cell.Type == TileTypes.player)
                 {
@@ -46,17 +45,17 @@ public class MoveValidatorScript : MonoBehaviour
                     {
                         Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
                     }                        
-                    Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,200);    
+                    Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);    
                 }
                 
             }
-            else if (ParentPathfinder.FinalPath.Count <= 2)
+            else if (ParentPathfinder.FinalPath.Count <= (_restrictedByStaminavalue?PlayerManager.instance.CurrentStamina:PlayerManager.instance.MoveRange))
             {
                 if(Move_Indicators.ContainsKey(cell.CurrentPosition) == false)
                 {
                     Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
-                }
-                Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,200);    
+                }   
+                Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);    
             }
         }
 
@@ -80,23 +79,25 @@ public class MoveValidatorScript : MonoBehaviour
         foreach(var checkedMonster in monsterList)
         {
             monsterList.ForEach(m=>m.Value.IsWalkable = false);
-            monsterList.Where(m=>m.Value==checkedMonster.Value).First().Value.IsWalkable = true;
+            checkedMonster.Value.IsWalkable = true;
             
             NodeGrid.UpdateMapObstacleData();
-
             ParentPathfinder.FindPath(checkedMonster.Value);
             if(ParentPathfinder.FinalPath.Count >0 && ParentPathfinder.FinalPath.Count<=(overteDistanceCheck==null?PlayerManager.instance.AttackRange:(int)overteDistanceCheck))
             {
                 _monstersInRange++;
+            Debug.LogWarning("ZAZNACZONO monster z pozycji"+checkedMonster.Key+" dystans do gracza = "+ParentPathfinder.FinalPath.Count);
                 Attack_Indicators[checkedMonster.Key].color = Color.red; 
                 Attack_Indicators[checkedMonster.Key].gameObject.SetActive(true);
             }
             else
             {
+                Debug.LogWarning("NIE ZAZNACZONO monster z pozycji"+checkedMonster.Key+" dystans do gracza = "+ParentPathfinder.FinalPath.Count);
                 Attack_Indicators[checkedMonster.Key].gameObject.SetActive(false);          
             }        
         }
-
+        monsterList.ForEach(m=>m.Value.IsWalkable = false);
+        Debug.LogError("_monstersinrange = "+_monstersInRange);
         return _monstersInRange;   
     }
 
@@ -136,12 +137,15 @@ public class MoveValidatorScript : MonoBehaviour
     }
 
     [ContextMenu("Show combined grid")]
-    public void ShowValidAttackAndMoveCombinedGrid()
+    public void ShowValidAttackAndMoveCombinedGrid(bool staminaRestriction)
     {
         DestroyAllGridObjects();
         SpawnMarksOnGrid();
-        HighlightValidMoveGrid();
         
-        HighlightValidAttackGrid(PlayerManager.instance.AttackRange+PlayerManager.instance.MoveRange);
+        // POPRAWKA NA AKTUALNIE POSIADANE ZASOBY (STAMINE)
+        HighlightValidMoveGrid(_restrictedByStaminavalue: staminaRestriction);
+
+        int intStaminaValue = Mathf.FloorToInt(PlayerManager.instance.CurrentStamina);
+        HighlightValidAttackGrid(intStaminaValue);
     }
 }

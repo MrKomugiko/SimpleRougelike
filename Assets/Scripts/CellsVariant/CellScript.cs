@@ -218,20 +218,20 @@ public class CellScript : MonoBehaviour
     
     public void MoveTo()
     {
-        try
-        {
-            if(this.gameObject.transform.Find("MarkSign(Clone)").gameObject.activeInHierarchy == false) 
+      //  try
+      //  {
+            if(this.gameObject.transform.Find("MarkSign(Clone)").GetComponent<SpriteRenderer>().color == Color.clear) 
             {
-                //Debug.LogError("yr not allowed to move this spot");
+                Debug.LogError("yr not allowed to move this spot");
                 return;
             }
              
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError("error?");
-            return;
-        }
+       // }
+      //  catch (System.Exception)
+      //  {
+      //      Debug.LogError("error?");
+      //      return;
+      //  }
 
       //  Debug.Log("click on cell "+CurrentPosition);
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 

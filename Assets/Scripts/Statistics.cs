@@ -205,14 +205,14 @@ public class Statistics : MonoBehaviour
         set 
         {
             _maxStaminaPoints = 4 + Mathf.RoundToInt((Strength * .5f) + (Vitality * .2f)) + Extra_StaminaPoints; 
-            StaminaPoints_TMP.SetText(_maxStaminaPoints.ToString());
+            StaminaPoints_TMP.SetText(Mathf.RoundToInt(_maxStaminaPoints).ToString());
             UIManager.instance.Stamina_Bar.UpdateBar(PlayerManager.instance.CurrentStamina, Mathf.RoundToInt(_maxStaminaPoints));
         } 
     }
     public float StaminaRegeneration { 
         get => _staminaRegeneration; 
         set {
-            _staminaRegeneration = (Strength * .1f) + (Vitality * .05f); 
+            _staminaRegeneration = 1+(Strength * .1f) + (Vitality * .05f); 
             StaminaRegeneration_TMP.SetText(_staminaRegeneration.ToString());
         } 
     }   
@@ -221,7 +221,7 @@ public class Statistics : MonoBehaviour
         set 
         {
             _maxEnergyPoints = 4 + Inteligence * 1f + Extra_EnergyPoints;
-            EnergyPoints_TMP.SetText(_maxEnergyPoints.ToString());
+            EnergyPoints_TMP.SetText(Mathf.RoundToInt(_maxEnergyPoints).ToString("N2"));
         } 
     }
     public float EnergyRegeneration { 
@@ -236,7 +236,7 @@ public class Statistics : MonoBehaviour
         set 
         {
             _maxHealthPoints = 25 + Mathf.RoundToInt(Vitality * 1f) + Extra_HealthPoints;
-            HealthPoints_TMP.SetText(_maxHealthPoints.ToString());
+            HealthPoints_TMP.SetText(Mathf.RoundToInt(_maxHealthPoints).ToString());
             UIManager.instance.Health_Bar.UpdateBar(PlayerManager.instance.CurrentHealth,Mathf.RoundToInt(_maxHealthPoints));
         } 
     }

@@ -209,6 +209,7 @@ public class Monster_Cell :ICreature
         OnMonsterTakeDamageEvent?.Invoke(this,(ParentCell,Int32.Parse(_damage.ToString()),_isCritical,false,false));
 
         TakeDamage(_damage, "Attacked by player");
+        PlayerManager.instance.CurrentStamina--;
         PlayerManager.instance.CumulativeStageDamageTaken += (GameManager.Player_CELL.SpecialTile as Player_Cell).Damage;
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
         // delay !

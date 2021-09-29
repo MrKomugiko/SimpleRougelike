@@ -69,9 +69,6 @@ public class GameManager : MonoBehaviour
         if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
 
-            PlayerManager.instance.RegenerateResourcesAtTurnStart();
-            PlayerManager.instance.MovmentValidator.ShowValidAttackAndMoveCombinedGrid();
-
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
             tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
             if(tempCurrentCreatureList.Count == 0)
@@ -86,16 +83,22 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+            PlayerManager.instance.RegenerateResourcesAtTurnStart();
+            PlayerManager.instance.StaminaConsumeEnabled = true;
+
+
+            PlayerManager.instance.MovmentValidator.ShowValidAttackAndMoveCombinedGrid(PlayerManager.instance.StaminaConsumeEnabled);
+
             TurnPhaseBegin = true;
 
             _currentTurnNumber = GameManager.instance.TurnCounter;
             GameManager.instance.TurnCounter = CurrentTurnNumber += 1;
 
             // PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid();
-            if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
-            {
-                PlayerMoved = true;
-            }
+            // if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
+            // {
+            //     PlayerMoved = true;
+            // }
             yield return new WaitUntil(()=>PlayerMoved && PlayerManager.instance.playerCurrentlyMoving==false);
             yield return new WaitForSeconds(turnPhaseDelay);
             PlayerManager.instance.MovmentValidator.HideMoveGrid();
@@ -118,12 +121,11 @@ public class GameManager : MonoBehaviour
                 NextTarget = null;
                 
             }
-            else
+            else if(PlayerManager.instance.CurrentStamina >= 1) 
             {
                 int _monstersInRange = PlayerManager.instance.MovmentValidator.HighlightValidAttackGrid();
                 if(_monstersInRange == 0)
                 {
-
                         PlayerManager.instance.MovmentValidator.HideAllGrid();
                         CurrentTurnPhase = TurnPhase.MonsterMovement;
                         PlayerAttacked = false;
@@ -134,7 +136,7 @@ public class GameManager : MonoBehaviour
                 yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
                 yield return new WaitUntil(()=>GameManager.instance.PlayerAttacked);
 
-                PlayerManager.instance.MovmentValidator.HideAttackGrid();
+            PlayerManager.instance.MovmentValidator.HideAttackGrid();
             }
 
             yield return new WaitForSeconds(turnPhaseDelay);
@@ -374,7 +376,7 @@ public class GameManager : MonoBehaviour
         GridManager.FillGaps();
         if(GameManager.instance.CurrentTurnPhase == TurnPhase.PlayerMovement)
         {
-            PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid();
+            PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid(_restrictedByStaminavalue:true);
         }
         else if (GameManager.instance.CurrentTurnPhase == TurnPhase.PlayerAttack)
         {
