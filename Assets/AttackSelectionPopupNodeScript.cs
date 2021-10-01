@@ -52,19 +52,24 @@ public class AttackSelectionPopupNodeScript : MonoBehaviour
         node_data = selectionPopupNode;
         AdjustImageRotation();
         gameObject.name = node_data.Node_Name;
+
+        if(selectionPopupNode.Childs.Count > 0)
+            HideProgressBar();
+
         if(node_data.Node_ID == 0) // back / exit button
         {
             CircleMainColor.color = Color.gray;
-            HideProgressBar();
-            if(selectionPopupNode.Childs!=null)
+            if(selectionPopupNode.Childs.Count == 0)
             {
-                Content.GetComponentInChildren<TextMeshProUGUI>().SetText("EXIT");
-                Content.GetComponent<Button>().onClick.AddListener(()=>Destroy(this.transform.parent.gameObject));
-            }
-            else
-            {
+                 HideProgressBar();
                 Content.GetComponentInChildren<TextMeshProUGUI>().SetText("BACK");
                 Content.GetComponent<Button>().onClick.AddListener(()=>GetComponentInParent<AttackSelectionPopupController>().RebuildTree_BackButton(node_data.Parent));
+            }
+
+            if(selectionPopupNode.Parent == null)
+            {
+                Content.GetComponentInChildren<TextMeshProUGUI>().SetText("EXIT");
+                Content.GetComponent<Button>().onClick.AddListener(()=>this.transform.parent.gameObject.SetActive(false));
             }
             return;
         }
