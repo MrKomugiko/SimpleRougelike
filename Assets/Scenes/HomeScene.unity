@@ -6896,8 +6896,9 @@ Transform:
   m_LocalScale: {x: 0.0049019605, y: 0.0049019605, z: 0.0049019605}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 693224097}
   - {fileID: 1644944049}
+  - {fileID: 693224097}
+  - {fileID: 1190103410}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15285,6 +15286,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1190103409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1190103410}
+  - component: {fileID: 1190103411}
+  m_Layer: 0
+  m_Name: SkillsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1190103410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190103409}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 543199077}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1190103411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190103409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 727845b7cb7dc6644a7fb7c83c908c49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllSkills:
+  - {fileID: 11400000, guid: f637cc69265d8864da206a54ed694ebf, type: 2}
+  - {fileID: 11400000, guid: 0f7fe620155beb14dbf2073948a924f5, type: 2}
+  - {fileID: 11400000, guid: 37ef383a2b1d5d54592ffaabf8b5dd42, type: 2}
+  - {fileID: 11400000, guid: 5e2f459c4ec1f3145a6b71b7fe29479e, type: 2}
+  - {fileID: 11400000, guid: 50a8f1cb9cfec474fb1f3795e6abc488, type: 2}
 --- !u!1 &1190129454
 GameObject:
   m_ObjectHideFlags: 0
@@ -22144,7 +22195,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 543199077}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1659096408
 GameObject:

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c6402639b5196f4d900d180c76e9d65, type: 3}
+  m_Name: Skill_4_DeathTouch
+  m_EditorClassIdentifier: 
+  Name: DeathTouch
+  DamageMultiplifer: 20
+  StaminaCost: 30
+  Cooldown: 10
+  Range: 1
+  ParentName: ROOT/SWORD
+  SkillIcon: {fileID: 718156112, guid: 114226b8d549f4d4ca871770c06d7eee, type: 3}
