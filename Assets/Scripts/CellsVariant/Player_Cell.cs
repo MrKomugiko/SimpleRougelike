@@ -135,11 +135,10 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             GameObject.Destroy(Border.gameObject);
         }
     }
-    public void TakeDamage(float damage, string source)
+    public void TakeDamage(float damage, string source, bool _isCritical = false)
     {
         if(damage >0){
             // redukcja obrazen lub unik
-            bool _isCritical = false;
             bool _isDodged = (PlayerManager.instance.STATS.Evasion*100) > UnityEngine.Random.Range(0,1000)?true:false;
             bool _isBlocked = (PlayerManager.instance.STATS.BlockChance*100) > UnityEngine.Random.Range(0,1000)?true:false;
          //   if(_isDodged) Debug.Log("gracz uniknął ataku");
@@ -169,7 +168,8 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             // HEAL
           //  Debug.Log("HEAL");
          // PlayerManager.instance.PlayerAnimator.RunHealAnimation();
-            HealthPoints -= Mathf.RoundToInt(damage);
+            Debug.Log("healing vlaue "+damage);
+            HealthPoints += Mathf.RoundToInt(-damage);
             PlayerManager.instance.CurrentHealth = HealthPoints;
         }
 

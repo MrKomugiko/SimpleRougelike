@@ -26,7 +26,8 @@ public class MoveValidatorScript : MonoBehaviour
         //Debug.LogError("spawn siatki");
     }
     public void HighlightValidMoveGrid(bool _restrictedByStaminavalue){
-
+        validMovePosiitonsCounter = 0;
+        Debug.LogError("HighlightValidMoveGrid"+_restrictedByStaminavalue);
         foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
         {
             monster.Value.IsWalkable = false;
@@ -45,7 +46,8 @@ public class MoveValidatorScript : MonoBehaviour
                     {
                         Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
                     }                        
-                    Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);    
+                    Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);   
+                    validMovePosiitonsCounter++; 
                 }
                 
             }
@@ -56,6 +58,7 @@ public class MoveValidatorScript : MonoBehaviour
                     Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
                 }   
                 Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);    
+                validMovePosiitonsCounter++;
             }
         }
 

@@ -1,0 +1,154 @@
+Date : 2021-10-02 18:00:44
+Directory : d:\Programowanie\Unity\SimpleRougelike
+Total : 107 files,  22695 codes, 733 comments, 2487 blanks, all 25915 lines
+
+Languages
++-----------+------------+------------+------------+------------+------------+
+| language  | files      | code       | comment    | blank      | total      |
++-----------+------------+------------+------------+------------+------------+
+| Log       |         12 |     11,675 |          0 |        554 |     12,229 |
+| C#        |         74 |      7,150 |        644 |      1,284 |      9,078 |
+| ShaderLab |         13 |      2,015 |         61 |        557 |      2,633 |
+| XML       |          1 |        870 |          7 |          1 |        878 |
+| JSON      |          3 |        662 |          0 |          4 |        666 |
+| HLSL      |          4 |        323 |         21 |         87 |        431 |
++-----------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                     | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                        |        107 |     22,695 |        733 |      2,487 |     25,915 |
+| Assets                                                                                                   |         92 |      9,643 |        726 |      1,930 |     12,299 |
+| Assets\SaveDataTypes                                                                                     |          1 |         54 |         10 |         14 |         78 |
+| Assets\Scripts                                                                                           |         59 |      5,828 |        567 |      1,009 |      7,404 |
+| Assets\Scripts\AStar                                                                                     |          4 |        279 |         14 |         57 |        350 |
+| Assets\Scripts\CellsVariant                                                                              |         18 |      1,271 |        104 |        228 |      1,603 |
+| Assets\Scripts\CellsVariant\Data_ScriptableObject                                                        |          3 |        139 |         25 |         25 |        189 |
+| Assets\Scripts\CellsVariant\Interfaces                                                                   |          8 |         76 |          2 |         18 |         96 |
+| Assets\Scripts\Item Scripts                                                                              |          5 |        184 |          0 |         25 |        209 |
+| Assets\Scripts\Skills                                                                                    |          8 |        408 |         72 |         86 |        566 |
+| Assets\Scripts\Skills\SkillScripts                                                                       |          4 |         70 |          0 |         14 |         84 |
+| Assets\Scripts\Skills\SkillSelection                                                                     |          3 |        288 |         19 |         54 |        361 |
+| Assets\Scripts\UiScripts                                                                                 |         15 |      1,473 |        184 |        272 |      1,929 |
+| Assets\TextMesh Pro                                                                                      |         18 |      2,493 |         82 |        646 |      3,221 |
+| Assets\TextMesh Pro\Shaders                                                                              |         17 |      2,338 |         82 |        644 |      3,064 |
+| Assets\TextMesh Pro\Sprites                                                                              |          1 |        155 |          0 |          2 |        157 |
+| Assets\enums                                                                                             |          4 |         46 |          0 |          4 |         50 |
+| Logs                                                                                                     |         12 |     11,675 |          0 |        554 |     12,229 |
+| Packages                                                                                                 |          2 |        507 |          0 |          2 |        509 |
++----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------+-----------+------------+------------+------------+------------+
+| filename                                                                                                 | language  | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------+-----------+------------+------------+------------+------------+
+| d:\Programowanie\Unity\SimpleRougelike\Assembly-CSharp.csproj                                            | XML       |        870 |          7 |          1 |        878 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\AnimationsEventsScript.cs                                  | C#        |         21 |          2 |          7 |         30 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\CustomEventManager.cs                                      | C#        |         75 |          5 |         15 |         95 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\DungeonManager.cs                                          | C#        |        377 |         21 |         74 |        472 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\DungeonRoomScript.cs                                       | C#        |        394 |         17 |         87 |        498 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\DungeonWindowScript.cs                                     | C#        |         11 |          0 |          3 |         14 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\FloatingDamageText.cs                                      | C#        |         42 |          0 |          9 |         51 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\HeroDataController.cs                                      | C#        |        164 |         21 |         31 |        216 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\HeroLoadCard.cs                                            | C#        |         75 |          1 |         17 |         93 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\SaveDataTypes\PlayerProgressModel.cs                       | C#        |         54 |         10 |         14 |         78 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\Heap.cs                                      | C#        |         85 |          0 |         19 |        104 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\Node.cs                                      | C#        |         40 |          0 |          4 |         44 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\NodeGrid.cs                                  | C#        |         67 |          4 |         13 |         84 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\Pathfinding.cs                               | C#        |         87 |         10 |         21 |        118 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Bomb_Cell.cs                          | C#        |        227 |         12 |         31 |        270 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\CellScript.cs                         | C#        |        246 |         15 |         33 |        294 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Data_ScriptableObject\BombData.cs     | C#        |         78 |         24 |         13 |        115 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Data_ScriptableObject\MonsterData.cs  | C#        |         19 |          0 |          2 |         21 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Data_ScriptableObject\TreasureData.cs | C#        |         42 |          1 |         10 |         53 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\IChest.cs                  | C#        |         10 |          0 |          2 |         12 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\ICreature.cs               | C#        |         13 |          0 |          1 |         14 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\IFragile.cs                | C#        |          5 |          0 |          1 |          6 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\ILivingThing.cs            | C#        |         10 |          0 |          4 |         14 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\ISelectable.cs             | C#        |          7 |          1 |          5 |         13 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\ISpecialTile.cs            | C#        |         13 |          0 |          1 |         14 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\IUsable.cs                 | C#        |          9 |          1 |          2 |         12 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\IValuable.cs               | C#        |          9 |          0 |          2 |         11 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\MonsterBackupData.cs                  | C#        |         21 |          0 |          3 |         24 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Monster_Cell.cs                       | C#        |        239 |         15 |         46 |        300 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Obstacle_Cell.cs                      | C#        |         39 |          3 |         14 |         56 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Player_Cell.cs                        | C#        |        150 |         16 |         33 |        199 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Treasure_Cell.cs                      | C#        |        134 |         16 |         25 |        175 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Chest.cs                                           | C#        |         58 |          8 |         12 |         78 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\EquipmentScript.cs                                 | C#        |        306 |         24 |         52 |        382 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\GameManager.cs                                     | C#        |        421 |         19 |         58 |        498 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\GridManager.cs                                     | C#        |        263 |          3 |         24 |        290 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\DefaultItem.cs                        | C#        |         11 |          0 |          3 |         14 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\EquipmentItem.cs                      | C#        |         55 |          0 |          7 |         62 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\GoldItem.cs                           | C#        |         11 |          0 |          2 |         13 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\ItemData.cs                           | C#        |         77 |          0 |          6 |         83 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\PotionItem.cs                         | C#        |         30 |          0 |          7 |         37 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\ItemSlot.cs                                        | C#        |        226 |         20 |         40 |        286 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\MoveValidatorScript.cs                             | C#        |        133 |          2 |         17 |        152 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\PlayerEquipmentVisualSwitchScript.cs               | C#        |         26 |         46 |         13 |         85 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\PlayerManager.cs                                   | C#        |        316 |         42 |         75 |        433 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillScripts\ISkill.cs                      | C#        |          6 |          0 |          1 |          7 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillScripts\SkillBase.cs                   | C#        |         28 |          0 |          4 |         32 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillScripts\SkillData.cs                   | C#        |         16 |          0 |          3 |         19 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillScripts\Skill_Punch.cs                 | C#        |         20 |          0 |          6 |         26 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillSelection\SelectionPopupController.cs  | C#        |        156 |         16 |         31 |        203 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillSelection\SelectionPopupNodeScript.cs  | C#        |         95 |          3 |         18 |        116 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillSelection\SkillNode.cs                 | C#        |         37 |          0 |          5 |         42 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillsManager.cs                            | C#        |         50 |         53 |         18 |        121 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Statistics.cs                                      | C#        |        464 |         29 |         50 |        543 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ActionButtonScript.cs                    | C#        |        128 |         17 |         13 |        158 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ActionSwitchController.cs                | C#        |        184 |         13 |         22 |        219 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\AlertScript.cs                           | C#        |         31 |          6 |          7 |         44 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\AnimateWindowScript.cs                   | C#        |        152 |         12 |         26 |        190 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\AutoDestroyScript.cs                     | C#        |         11 |          0 |          2 |         13 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ChestLootWindowScript.cs                 | C#        |         89 |          2 |         12 |        103 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ItemDetailsWindow.cs                     | C#        |        171 |         11 |         34 |        216 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\MenuScript.cs                            | C#        |        136 |          4 |         30 |        170 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\NewBehaviourScript.cs                    | C#        |         12 |          2 |          5 |         19 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\NotificationManger.cs                    | C#        |        378 |        100 |         74 |        552 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\NotificationScript.cs                    | C#        |         88 |          1 |         18 |        107 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\OptionsWindowScript.cs                   | C#        |         20 |         15 |         18 |         53 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ResourceBarScript.cs                     | C#        |         17 |          0 |          3 |         20 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\StageCompleteWindowScript.cs             | C#        |         20 |          1 |          5 |         26 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\TickScript.cs                            | C#        |         36 |          0 |          3 |         39 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TabsSectionScript.cs                                       | C#        |         45 |          0 |         11 |         56 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader        | ShaderLab |        109 |          2 |         33 |        144 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader              | ShaderLab |        112 |          3 |         31 |        146 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader                     | ShaderLab |        109 |          2 |         33 |        144 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader                | ShaderLab |        243 |          4 |         71 |        318 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader                    | ShaderLab |        241 |          4 |         66 |        311 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader         | ShaderLab |        188 |         10 |         50 |        248 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader         | ShaderLab |        183 |          8 |         50 |        241 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader             | ShaderLab |         82 |          4 |         21 |        107 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader                 | ShaderLab |        183 |          8 |         50 |        241 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader         | ShaderLab |        103 |          8 |         28 |        139 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader                | ShaderLab |        122 |          4 |         33 |        159 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF.shader                        | ShaderLab |        243 |          4 |         71 |        318 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Sprite.shader                     | ShaderLab |         97 |          0 |         20 |        117 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro.cginc                           | HLSL      |         63 |          2 |         20 |         85 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc                    | HLSL      |        122 |          2 |         34 |        158 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc                | HLSL      |         62 |         10 |         14 |         86 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc                   | HLSL      |         76 |          7 |         19 |        102 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Sprites\EmojiOne.json                         | JSON      |        155 |          0 |          2 |        157 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\UIManager.cs                                               | C#        |         18 |          0 |          3 |         21 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\enums\ActionIcon.cs                                        | C#        |         12 |          0 |          1 |         13 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\enums\AlertCategory.cs                                     | C#        |         17 |          0 |          2 |         19 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\enums\ResourceType.cs                                      | C#        |          7 |          0 |          0 |          7 |
+| d:\Programowanie\Unity\SimpleRougelike\Assets\enums\TileTypes.cs                                         | C#        |         10 |          0 |          1 |         11 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker0-prev.log                                  | Log       |      8,672 |          0 |        388 |      9,060 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker0.log                                       | Log       |      2,937 |          0 |        144 |      3,081 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\Packages-Update.log                                          | Log       |         48 |          0 |          4 |         52 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-AssetImportWorker0.log                        | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe0.log                  | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe1.log                  | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe2.log                  | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe3.log                  | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe4.log                  | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe5.log                  | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe6.log                  | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe7.log                  | Log       |          2 |          0 |          2 |          4 |
+| d:\Programowanie\Unity\SimpleRougelike\Packages\manifest.json                                            | JSON      |         51 |          0 |          1 |         52 |
+| d:\Programowanie\Unity\SimpleRougelike\Packages\packages-lock.json                                       | JSON      |        456 |          0 |          1 |        457 |
+| Total                                                                                                    |           |     22,695 |        733 |      2,487 |     25,915 |
++----------------------------------------------------------------------------------------------------------+-----------+------------+------------+------------+------------+

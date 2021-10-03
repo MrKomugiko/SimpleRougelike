@@ -8,7 +8,7 @@ public interface ILivingThing
     GameObject Corpse_Sprite { get; }
     int MaxHealthPoints { get; }
 
-    void TakeDamage(float value, string source);
+    void TakeDamage(float value, string source, bool isCritical = false);
     
     
 }

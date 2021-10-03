@@ -17,6 +17,7 @@ public class PotionItem : ItemData, IConsumable
 
         if(GameManager.Player_CELL != null)
         {
+            Debug.Log("LEczenie:"+HealthRegenerationValue+" HP");
             (GameManager.Player_CELL.SpecialTile as ILivingThing).TakeDamage(-HealthRegenerationValue, ItemCoreSettings.Name);
             NotificationManger.AddValueTo_Health_Notification(HealthRegenerationValue);
         }

@@ -12,5 +12,7 @@ public abstract class SkillData : ScriptableObject
     public int Range = 1;
     public string ParentName = null;
     public Sprite SkillIcon;
-
+    public bool isCategoryType  = false;
+    public bool isLocked = true;
+    public bool isObtained = true;
 }

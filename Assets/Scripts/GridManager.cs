@@ -10,6 +10,7 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] GameObject _cellPrefab;
     [SerializeField] public Vector2Int _gridSize;
+    
     public static List<CellScript> destroyedTilesPool = new List<CellScript>();
     public static Dictionary<Vector2Int,CellScript> CellGridTable = new Dictionary<Vector2Int, CellScript>();
     public static GridManager instance;

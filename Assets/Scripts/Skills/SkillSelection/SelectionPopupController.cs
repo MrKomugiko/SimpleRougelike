@@ -4,10 +4,10 @@ using TMPro;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using System;
 
 public class SelectionPopupController : MonoBehaviour
 {   
-    public List<Sprite> SkillIconsList = new List<Sprite>();
     [SerializeField] private GameObject PopupNodeObjectPrefab;
     private int CurrentDisplayedNodeElements;
     
@@ -93,15 +93,25 @@ public class SelectionPopupController : MonoBehaviour
             //node.transform.GetComponentInParent<RectTransform>().SetPositionAndRotation(new Vector3(0, -50,0), _quaternion);
         }
     }
+
+    internal void ClearCenteredNode()
+    {
+        if(CenterTreeObject.transform.childCount == 1 )
+        {
+            Debug.Log("clear center");
+            Destroy(CenterTreeObject.transform.GetChild(0).gameObject);
+        }
+        _selectedNode = null;
+    }
+
     public void RebuildTree_BackButton(SkillNode parentNode)
     {
         if(parentNode == null)
         {
             this.gameObject.SetActive(false);
-            Debug.Log("parentnode == null, hide and quit");
             return;
         }
-     // REmove existing nodes objects
+
         foreach (var node in AttackOptionsNodes)
         {
             DestroyImmediate(node.gameObject);
@@ -110,49 +120,32 @@ public class SelectionPopupController : MonoBehaviour
 
         //---------------------------------------------------------------------------------
         if(parentNode.Parent == null)
-        {
-            Debug.Log("obiekt do ktorego sie cofamy pochodzi z głównego roota, nie ma rodzica, zostanie wygenerowany standardowy rozklad"); 
             CurrentOpenedNodeslist = SkillsManager.ROOT_SKILLTREE.Childs;
-        }
         else
-        {
             CurrentOpenedNodeslist = parentNode.Parent.Childs;
-        }
 
         //-------------------------------------------------------------------------------------------
         // sprawdzenie czy rodzic do ktorego sie cofnelismy jest dzieckiem innego node'a, zeby wstawic go odrazu na srodku
         var currentCenterNode = CenterTreeObject.GetComponentInChildren<SelectionPopupNodeScript>();
         if(parentNode.Parent != null)
         {
-            Debug.Log("wrzucenei na srodek dziadka xd");
-            // podstaw nowy
             if(currentCenterNode != null)
                 Destroy(currentCenterNode.gameObject);
 
             var GrandpaNode = Instantiate(PopupNodeObjectPrefab, CenterTreeObject.transform);
-            Debug.Log("stwozenie nowego obiektu kolka");
-
             GrandpaNode.GetComponent<SelectionPopupNodeScript>().SelfConfigure(parentNode.Parent);
-            Debug.Log("skonfigurowanie kolka, nazwy/koloru");
-
             GrandpaNode.GetComponent<SelectionPopupNodeScript>().ConfigureNodeForCenterPosition();
-            Debug.Log("skonfigurowanie go na srodek - wysrodkowanie itp");
-
             _selectedNode =  GrandpaNode.GetComponent<SelectionPopupNodeScript>();
-            Debug.Log("przypisanie wartosci do selectednode");
         }
         else
         {
-            // zostaw pusty srodek
             if(currentCenterNode != null)
                 Destroy(currentCenterNode.gameObject);
         }
 
         RebuildTree(_nodeElements:CurrentOpenedNodeslist.Count);    
     }
-    
 
-    [ContextMenu("Fix rotations")]
     public void FixRotations()
     {
         foreach (var node in AttackOptionsNodes)
@@ -161,9 +154,9 @@ public class SelectionPopupController : MonoBehaviour
         }
     }
 
-    [ContextMenu("Spawn 5 nodes + 1 back-exit dla 180\"")]
     public void OPENandSpawnInitNodesTree()
     {
+        Debug.Log("open");
         this.gameObject.SetActive(true);
         // REmove existing nodes objects
         foreach (var node in AttackOptionsNodes)
@@ -188,5 +181,4 @@ public class SelectionPopupController : MonoBehaviour
             nodeScript.SelfConfigure(CurrentOpenedNodeslist[i]);
         }
     }
-
 }

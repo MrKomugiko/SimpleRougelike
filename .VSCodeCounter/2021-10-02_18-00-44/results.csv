@@ -1,0 +1,109 @@
+"filename", "language", "JSON", "C#", "ShaderLab", "XML", "HLSL", "Log", "comment", "blank", "total"
+"d:\Programowanie\Unity\SimpleRougelike\Assembly-CSharp.csproj", "XML", 0, 0, 0, 870, 0, 0, 7, 1, 878
+"d:\Programowanie\Unity\SimpleRougelike\Assets\AnimationsEventsScript.cs", "C#", 0, 21, 0, 0, 0, 0, 2, 7, 30
+"d:\Programowanie\Unity\SimpleRougelike\Assets\CustomEventManager.cs", "C#", 0, 75, 0, 0, 0, 0, 5, 15, 95
+"d:\Programowanie\Unity\SimpleRougelike\Assets\DungeonManager.cs", "C#", 0, 377, 0, 0, 0, 0, 21, 74, 472
+"d:\Programowanie\Unity\SimpleRougelike\Assets\DungeonRoomScript.cs", "C#", 0, 394, 0, 0, 0, 0, 17, 87, 498
+"d:\Programowanie\Unity\SimpleRougelike\Assets\DungeonWindowScript.cs", "C#", 0, 11, 0, 0, 0, 0, 0, 3, 14
+"d:\Programowanie\Unity\SimpleRougelike\Assets\FloatingDamageText.cs", "C#", 0, 42, 0, 0, 0, 0, 0, 9, 51
+"d:\Programowanie\Unity\SimpleRougelike\Assets\HeroDataController.cs", "C#", 0, 164, 0, 0, 0, 0, 21, 31, 216
+"d:\Programowanie\Unity\SimpleRougelike\Assets\HeroLoadCard.cs", "C#", 0, 75, 0, 0, 0, 0, 1, 17, 93
+"d:\Programowanie\Unity\SimpleRougelike\Assets\SaveDataTypes\PlayerProgressModel.cs", "C#", 0, 54, 0, 0, 0, 0, 10, 14, 78
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\Heap.cs", "C#", 0, 85, 0, 0, 0, 0, 0, 19, 104
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\Node.cs", "C#", 0, 40, 0, 0, 0, 0, 0, 4, 44
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\NodeGrid.cs", "C#", 0, 67, 0, 0, 0, 0, 4, 13, 84
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\AStar\Pathfinding.cs", "C#", 0, 87, 0, 0, 0, 0, 10, 21, 118
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Bomb_Cell.cs", "C#", 0, 227, 0, 0, 0, 0, 12, 31, 270
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\CellScript.cs", "C#", 0, 246, 0, 0, 0, 0, 15, 33, 294
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Data_ScriptableObject\BombData.cs", "C#", 0, 78, 0, 0, 0, 0, 24, 13, 115
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Data_ScriptableObject\MonsterData.cs", "C#", 0, 19, 0, 0, 0, 0, 0, 2, 21
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Data_ScriptableObject\TreasureData.cs", "C#", 0, 42, 0, 0, 0, 0, 1, 10, 53
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\IChest.cs", "C#", 0, 10, 0, 0, 0, 0, 0, 2, 12
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\ICreature.cs", "C#", 0, 13, 0, 0, 0, 0, 0, 1, 14
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\IFragile.cs", "C#", 0, 5, 0, 0, 0, 0, 0, 1, 6
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\ILivingThing.cs", "C#", 0, 10, 0, 0, 0, 0, 0, 4, 14
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\ISelectable.cs", "C#", 0, 7, 0, 0, 0, 0, 1, 5, 13
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\ISpecialTile.cs", "C#", 0, 13, 0, 0, 0, 0, 0, 1, 14
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\IUsable.cs", "C#", 0, 9, 0, 0, 0, 0, 1, 2, 12
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Interfaces\IValuable.cs", "C#", 0, 9, 0, 0, 0, 0, 0, 2, 11
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\MonsterBackupData.cs", "C#", 0, 21, 0, 0, 0, 0, 0, 3, 24
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Monster_Cell.cs", "C#", 0, 239, 0, 0, 0, 0, 15, 46, 300
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Obstacle_Cell.cs", "C#", 0, 39, 0, 0, 0, 0, 3, 14, 56
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Player_Cell.cs", "C#", 0, 150, 0, 0, 0, 0, 16, 33, 199
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\CellsVariant\Treasure_Cell.cs", "C#", 0, 134, 0, 0, 0, 0, 16, 25, 175
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Chest.cs", "C#", 0, 58, 0, 0, 0, 0, 8, 12, 78
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\EquipmentScript.cs", "C#", 0, 306, 0, 0, 0, 0, 24, 52, 382
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\GameManager.cs", "C#", 0, 421, 0, 0, 0, 0, 19, 58, 498
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\GridManager.cs", "C#", 0, 263, 0, 0, 0, 0, 3, 24, 290
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\DefaultItem.cs", "C#", 0, 11, 0, 0, 0, 0, 0, 3, 14
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\EquipmentItem.cs", "C#", 0, 55, 0, 0, 0, 0, 0, 7, 62
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\GoldItem.cs", "C#", 0, 11, 0, 0, 0, 0, 0, 2, 13
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\ItemData.cs", "C#", 0, 77, 0, 0, 0, 0, 0, 6, 83
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Item Scripts\PotionItem.cs", "C#", 0, 30, 0, 0, 0, 0, 0, 7, 37
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\ItemSlot.cs", "C#", 0, 226, 0, 0, 0, 0, 20, 40, 286
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\MoveValidatorScript.cs", "C#", 0, 133, 0, 0, 0, 0, 2, 17, 152
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\PlayerEquipmentVisualSwitchScript.cs", "C#", 0, 26, 0, 0, 0, 0, 46, 13, 85
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\PlayerManager.cs", "C#", 0, 316, 0, 0, 0, 0, 42, 75, 433
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillScripts\ISkill.cs", "C#", 0, 6, 0, 0, 0, 0, 0, 1, 7
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillScripts\SkillBase.cs", "C#", 0, 28, 0, 0, 0, 0, 0, 4, 32
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillScripts\SkillData.cs", "C#", 0, 16, 0, 0, 0, 0, 0, 3, 19
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillScripts\Skill_Punch.cs", "C#", 0, 20, 0, 0, 0, 0, 0, 6, 26
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillSelection\SelectionPopupController.cs", "C#", 0, 156, 0, 0, 0, 0, 16, 31, 203
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillSelection\SelectionPopupNodeScript.cs", "C#", 0, 95, 0, 0, 0, 0, 3, 18, 116
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillSelection\SkillNode.cs", "C#", 0, 37, 0, 0, 0, 0, 0, 5, 42
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Skills\SkillsManager.cs", "C#", 0, 50, 0, 0, 0, 0, 53, 18, 121
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\Statistics.cs", "C#", 0, 464, 0, 0, 0, 0, 29, 50, 543
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ActionButtonScript.cs", "C#", 0, 128, 0, 0, 0, 0, 17, 13, 158
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ActionSwitchController.cs", "C#", 0, 184, 0, 0, 0, 0, 13, 22, 219
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\AlertScript.cs", "C#", 0, 31, 0, 0, 0, 0, 6, 7, 44
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\AnimateWindowScript.cs", "C#", 0, 152, 0, 0, 0, 0, 12, 26, 190
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\AutoDestroyScript.cs", "C#", 0, 11, 0, 0, 0, 0, 0, 2, 13
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ChestLootWindowScript.cs", "C#", 0, 89, 0, 0, 0, 0, 2, 12, 103
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ItemDetailsWindow.cs", "C#", 0, 171, 0, 0, 0, 0, 11, 34, 216
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\MenuScript.cs", "C#", 0, 136, 0, 0, 0, 0, 4, 30, 170
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\NewBehaviourScript.cs", "C#", 0, 12, 0, 0, 0, 0, 2, 5, 19
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\NotificationManger.cs", "C#", 0, 378, 0, 0, 0, 0, 100, 74, 552
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\NotificationScript.cs", "C#", 0, 88, 0, 0, 0, 0, 1, 18, 107
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\OptionsWindowScript.cs", "C#", 0, 20, 0, 0, 0, 0, 15, 18, 53
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\ResourceBarScript.cs", "C#", 0, 17, 0, 0, 0, 0, 0, 3, 20
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\StageCompleteWindowScript.cs", "C#", 0, 20, 0, 0, 0, 0, 1, 5, 26
+"d:\Programowanie\Unity\SimpleRougelike\Assets\Scripts\UiScripts\TickScript.cs", "C#", 0, 36, 0, 0, 0, 0, 0, 3, 39
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TabsSectionScript.cs", "C#", 0, 45, 0, 0, 0, 0, 0, 11, 56
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader", "ShaderLab", 0, 0, 109, 0, 0, 0, 2, 33, 144
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader", "ShaderLab", 0, 0, 112, 0, 0, 0, 3, 31, 146
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader", "ShaderLab", 0, 0, 109, 0, 0, 0, 2, 33, 144
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader", "ShaderLab", 0, 0, 243, 0, 0, 0, 4, 71, 318
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader", "ShaderLab", 0, 0, 241, 0, 0, 0, 4, 66, 311
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader", "ShaderLab", 0, 0, 188, 0, 0, 0, 10, 50, 248
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader", "ShaderLab", 0, 0, 183, 0, 0, 0, 8, 50, 241
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader", "ShaderLab", 0, 0, 82, 0, 0, 0, 4, 21, 107
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader", "ShaderLab", 0, 0, 183, 0, 0, 0, 8, 50, 241
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader", "ShaderLab", 0, 0, 103, 0, 0, 0, 8, 28, 139
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader", "ShaderLab", 0, 0, 122, 0, 0, 0, 4, 33, 159
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_SDF.shader", "ShaderLab", 0, 0, 243, 0, 0, 0, 4, 71, 318
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMP_Sprite.shader", "ShaderLab", 0, 0, 97, 0, 0, 0, 0, 20, 117
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro.cginc", "HLSL", 0, 0, 0, 0, 63, 0, 2, 20, 85
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc", "HLSL", 0, 0, 0, 0, 122, 0, 2, 34, 158
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc", "HLSL", 0, 0, 0, 0, 62, 0, 10, 14, 86
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc", "HLSL", 0, 0, 0, 0, 76, 0, 7, 19, 102
+"d:\Programowanie\Unity\SimpleRougelike\Assets\TextMesh Pro\Sprites\EmojiOne.json", "JSON", 155, 0, 0, 0, 0, 0, 0, 2, 157
+"d:\Programowanie\Unity\SimpleRougelike\Assets\UIManager.cs", "C#", 0, 18, 0, 0, 0, 0, 0, 3, 21
+"d:\Programowanie\Unity\SimpleRougelike\Assets\enums\ActionIcon.cs", "C#", 0, 12, 0, 0, 0, 0, 0, 1, 13
+"d:\Programowanie\Unity\SimpleRougelike\Assets\enums\AlertCategory.cs", "C#", 0, 17, 0, 0, 0, 0, 0, 2, 19
+"d:\Programowanie\Unity\SimpleRougelike\Assets\enums\ResourceType.cs", "C#", 0, 7, 0, 0, 0, 0, 0, 0, 7
+"d:\Programowanie\Unity\SimpleRougelike\Assets\enums\TileTypes.cs", "C#", 0, 10, 0, 0, 0, 0, 0, 1, 11
+"d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker0-prev.log", "Log", 0, 0, 0, 0, 0, 8672, 0, 388, 9060
+"d:\Programowanie\Unity\SimpleRougelike\Logs\AssetImportWorker0.log", "Log", 0, 0, 0, 0, 0, 2937, 0, 144, 3081
+"d:\Programowanie\Unity\SimpleRougelike\Logs\Packages-Update.log", "Log", 0, 0, 0, 0, 0, 48, 0, 4, 52
+"d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-AssetImportWorker0.log", "Log", 0, 0, 0, 0, 0, 2, 0, 2, 4
+"d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe0.log", "Log", 0, 0, 0, 0, 0, 2, 0, 2, 4
+"d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe1.log", "Log", 0, 0, 0, 0, 0, 2, 0, 2, 4
+"d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe2.log", "Log", 0, 0, 0, 0, 0, 2, 0, 2, 4
+"d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe3.log", "Log", 0, 0, 0, 0, 0, 2, 0, 2, 4
+"d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe4.log", "Log", 0, 0, 0, 0, 0, 2, 0, 2, 4
+"d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe5.log", "Log", 0, 0, 0, 0, 0, 2, 0, 2, 4
+"d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe6.log", "Log", 0, 0, 0, 0, 0, 2, 0, 2, 4
+"d:\Programowanie\Unity\SimpleRougelike\Logs\shadercompiler-UnityShaderCompiler.exe7.log", "Log", 0, 0, 0, 0, 0, 2, 0, 2, 4
+"d:\Programowanie\Unity\SimpleRougelike\Packages\manifest.json", "JSON", 51, 0, 0, 0, 0, 0, 0, 1, 52
+"d:\Programowanie\Unity\SimpleRougelike\Packages\packages-lock.json", "JSON", 456, 0, 0, 0, 0, 0, 0, 1, 457
+"Total", "-", 662, 7150, 2015, 870, 323, 11675, 733, 2487, 25915

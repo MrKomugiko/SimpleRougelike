@@ -9,13 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c6402639b5196f4d900d180c76e9d65, type: 3}
-  m_Name: Skill_1_Slash
+  m_Script: {fileID: 11500000, guid: 929a3438657f02b4b8192526f53e79d4, type: 3}
+  m_Name: Skill_2_Slash
   m_EditorClassIdentifier: 
   Name: Slash
-  DamageMultiplifer: 1
-  StaminaCost: 1
-  Cooldown: 1
+  DamageMultiplifer: 2
+  StaminaCost: 3
+  Cooldown: 3
   Range: 1
   ParentName: ROOT
   SkillIcon: {fileID: -1685602112, guid: 114226b8d549f4d4ca871770c06d7eee, type: 3}
+  isCategoryType: 0
+  isLocked: 0
+  isObtained: 1
+  _cooldownLeftToBeReady: 3
+  _isEnoughtResourcesToUse: 1
+  SkillAnimationLayer: 2

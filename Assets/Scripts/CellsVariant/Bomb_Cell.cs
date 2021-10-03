@@ -143,7 +143,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             cell.AddEffectImage(sprite: Effect_Sprite);
             if(cell.SpecialTile is ILivingThing)
             {
-                (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion");
+                (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion", false);
                 NotificationManger.TriggerActionNotification
                 (
                     INVOKER:this,
@@ -187,7 +187,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             cell.AddEffectImage(sprite: Effect_Sprite);
             if(cell.SpecialTile is ILivingThing)
             {
-                (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion");
+                (cell.SpecialTile as ILivingThing).TakeDamage(BombDamage, "Bomb Explosion",false);
                 NotificationManger.TriggerActionNotification(
                     INVOKER:this, 
                     CATEGORY: NotificationManger.AlertCategory.ExplosionDamage,

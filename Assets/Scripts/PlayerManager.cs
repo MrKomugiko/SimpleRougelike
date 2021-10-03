@@ -105,7 +105,6 @@ public class PlayerManager: MonoBehaviour
         yield return new WaitUntil(()=>GameManager.instance.TurnPhaseBegin );
         foreach(var path in  PlayerManager.instance._playerCell._pathfinder.FinalPath)
         {
-           
             PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
             if(i < PlayerManager.instance._playerCell._pathfinder.FinalPath.Count)
@@ -125,10 +124,9 @@ public class PlayerManager: MonoBehaviour
 
             i++;
         }
-       //  yield return new WaitUntil(()=>_playerCell.ParentCell.IsCurrentlyMoving == false);
 
         CustomEventManager.PlayerAnimator.Play($"Player_IDLEanim");      
-      //  Debug.Log("turn on iddle animation");  
+      
         currentAutopilot = null;
  
         playerCurrentlyMoving = false;
@@ -301,8 +299,6 @@ public class PlayerManager: MonoBehaviour
 
     public IEnumerator PerformRegularAttackAnimation(CellScript attacker, CellScript target, int _aniamtionFrames)
     {
-        
-
         if(attacker.SpecialTile is Player_Cell)
         {
             AtackAnimationInProgress = true;

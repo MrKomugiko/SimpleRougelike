@@ -106,7 +106,7 @@ public class Monster_Cell :ICreature
         CustomEventManager.instance.RegisterMonsterInEventManager(this);
 
         AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword, true));
-        NotificationManger.CreateNewNotificationElement(this);
+        //NotificationManger.CreateNewNotificationElement(this);
        
         var monsterObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
         ParentCell.Trash.Add(monsterObject);
@@ -164,7 +164,6 @@ public class Monster_Cell :ICreature
     }
     public void OnClick_MakeAction()
     {
-
         if(GameManager.instance.CurrentTurnPhase == GameManager.TurnPhase.PlayerMovement)
         {
             // 1 . upewnienie sie czy klikniete pole jest w zasięgu ("czy jest podswietlone na czerwono)
@@ -187,56 +186,28 @@ public class Monster_Cell :ICreature
             return;
         }
         if(GameManager.instance.TurnPhaseBegin == false) return;
-                // Debug.Log("Gracz kliknął na siebie samego");
+          
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
 
-//        Debug.Log(direction);
-        if(direction.x == 0)
-            GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
-        
-        if(direction.y == 0)
-            GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
+        if(direction.x == 0)  GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
+        if(direction.y == 0)  GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
         if(GridManager.DistanceCheck(this) == false) {
-            // out of range
              NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");
              return;
         }
 
-        int _damage; bool _isCritical;
-        PlayerManager.instance.CalculateAttackHit(out _damage, out _isCritical);
-        OnMonsterTakeDamageEvent?.Invoke(this,(ParentCell,Int32.Parse(_damage.ToString()),_isCritical,false,false));
+        SkillsManager.SelectedAttackSkill(this);
 
-        TakeDamage(_damage, "Attacked by player");
-        PlayerManager.instance.CurrentStamina--;
-        PlayerManager.instance.CumulativeStageDamageTaken += (GameManager.Player_CELL.SpecialTile as Player_Cell).Damage;
         NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
-        // delay !
 
-        if(direction.y < 0)
-        {
-            CustomEventManager.PlayerAnimator.Play("Player_Attack_upanim");
-        }
-        else if(direction.y > 0)
-        {
-            CustomEventManager.PlayerAnimator.Play("Player_Attack_downanim");
-        }
-        else if(direction.x > 0)
-        {
-            CustomEventManager.PlayerAnimator.Play("Player_Attack_leftanim");
-        }
-        else if(direction.x < 0)
-        {
-            CustomEventManager.PlayerAnimator.Play("Player_Attack_rightanim");
-        }
-
-
-        PlayerManager.instance.StartCoroutine(PlayerManager.instance.PerformRegularAttackAnimation(PlayerManager.instance._playerCell.ParentCell,this.ParentCell,GameManager.instance.attackAnimationFrames));
-        GameManager.instance.PlayerAttacked = true;        
+       // PlayerManager.instance.StartCoroutine(PlayerManager.instance.PerformRegularAttackAnimation(PlayerManager.instance._playerCell.ParentCell,this.ParentCell,GameManager.instance.attackAnimationFrames));     
     }
-    public void TakeDamage(float damage, string source)
+    public void TakeDamage(float damage, string source, bool _idCritical = false)
     {
+        OnMonsterTakeDamageEvent?.Invoke(this,(ParentCell,Int32.Parse(damage.ToString()),_idCritical,false,false));
+
         HealthPoints -= Mathf.RoundToInt(damage);
      
         var IMPORTANTCHECKTOTRIGGERGETTER = IsAlive;

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     public int CurrentStageLevel = 1;
     public int CurrentStageFloor = 1;
+    [SerializeField] public SkillsManager _SkillsManager;
     [SerializeField] GameObject ClearStageWindow;
     [SerializeField] private GameObject TickCounterPrefab;
     [SerializeField] public GameObject SelectionBorderPrefab;
@@ -63,16 +64,35 @@ public class GameManager : MonoBehaviour
     internal Action NextTarget;
     internal Action NextMoveLocation;
 
-    
+    [SerializeField] SelectionPopupController attackSelectorPopup;
     public IEnumerator AddTurn()
     {      
         if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
+            roomIsCleared = false;
+            
+            PlayerManager.instance.MovmentValidator.DestroyAllGridObjects();
+            PlayerManager.instance.MovmentValidator.SpawnMarksOnGrid();
+            PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid(true);  
 
+             if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
+            {
+                PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid(true);
+                Debug.Log("tylko 1 pole na ruch, opcja wyboru pozycji jest pominięta");
+                PlayerMoved = true;
+                TurnPhaseBegin = true;
+                roomIsCleared = false;
+                CurrentTurnPhase = TurnPhase.PlayerAttack;
+                PlayerManager.instance.MovmentValidator.HideMoveGrid();
+                yield return new WaitForSeconds(.05f);
+                StartCoroutine(AddTurn());
+                yield break;
+            }
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
             tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
             if(tempCurrentCreatureList.Count == 0)
             {
+                roomIsCleared = true;
                 DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation].SetAllDoorsState(true);
                 foreach(var roomDoor in DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation].DoorStatesList)
                 {
@@ -81,24 +101,28 @@ public class GameManager : MonoBehaviour
                         DungeonManager.instance.EnableTeleportButton(roomDoor.Key);
                     }
                 }
+                PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid(false);
             }
+            else
+            {
+                if(roomIsCleared == false)
+                     _SkillsManager.TickSkillsCooldowns();
 
-            PlayerManager.instance.RegenerateResourcesAtTurnStart();
-            PlayerManager.instance.StaminaConsumeEnabled = true;
-
-
-            PlayerManager.instance.MovmentValidator.ShowValidAttackAndMoveCombinedGrid(PlayerManager.instance.StaminaConsumeEnabled);
+                
+            }
+        
+       
+            if(roomIsCleared == false)
+            {
+                PlayerManager.instance.RegenerateResourcesAtTurnStart();
+                PlayerManager.instance.StaminaConsumeEnabled = true;
+            }
 
             TurnPhaseBegin = true;
 
             _currentTurnNumber = GameManager.instance.TurnCounter;
             GameManager.instance.TurnCounter = CurrentTurnNumber += 1;
-
-            // PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid();
-            // if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
-            // {
-            //     PlayerMoved = true;
-            // }
+            
             yield return new WaitUntil(()=>PlayerMoved && PlayerManager.instance.playerCurrentlyMoving==false);
             yield return new WaitForSeconds(turnPhaseDelay);
             PlayerManager.instance.MovmentValidator.HideMoveGrid();
@@ -114,37 +138,40 @@ public class GameManager : MonoBehaviour
         if(CurrentTurnPhase == TurnPhase.PlayerAttack && PlayerAttacked == false)
         {
             TurnPhaseBegin = true;
-
-            if(NextTarget != null)
+            if(roomIsCleared)
             {
-                NextTarget();
-                NextTarget = null;
-                
+                // skip attack turn;
+                Debug.Log("room is cleared");
+                EndPlayerAttackTurn();
+                yield break;
             }
-            else if(PlayerManager.instance.CurrentStamina >= 1) 
+
+
+            if(PlayerManager.instance.CurrentStamina >= 1) 
             {
-                int _monstersInRange = PlayerManager.instance.MovmentValidator.HighlightValidAttackGrid();
-                if(_monstersInRange == 0)
-                {
-                        PlayerManager.instance.MovmentValidator.HideAllGrid();
-                        CurrentTurnPhase = TurnPhase.MonsterMovement;
-                        PlayerAttacked = false;
-                        TurnPhaseBegin = false;
-                        StartCoroutine(AddTurn());
-                        yield break;
-                }
-                yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
+                Debug.Log("attack turn - current stamina >=1");
+                attackSelectorPopup.OPENandSpawnInitNodesTree();
+
+               // yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
                 yield return new WaitUntil(()=>GameManager.instance.PlayerAttacked);
+                Debug.Log("czekam za koncem animacji ataku");
+
+                yield return new WaitUntil(()=>SkillsManager.SkillAnimationFinished);
+                Debug.Log("koniec animacji ataku, przejscie do tury ruchu mobkow");
+            }
+            else
+            {
+                // brak staminy na cokolwiek
+                Debug.Log("brak staminy end of attack turn");
+                EndPlayerAttackTurn();
+                yield break;
+            }
 
             PlayerManager.instance.MovmentValidator.HideAttackGrid();
-            }
-
-            yield return new WaitForSeconds(turnPhaseDelay);
+          
             CurrentTurnPhase = TurnPhase.MonsterMovement;
-            PlayerManager.instance.MovmentValidator.DestroyAllGridObjects();
             PlayerAttacked = false;
             TurnPhaseBegin = false;
-            yield return new WaitForSeconds(.05f);
             StartCoroutine(AddTurn());
             yield break;
         }
@@ -188,7 +215,7 @@ public class GameManager : MonoBehaviour
 
         if(CurrentTurnPhase == TurnPhase.MonsterAttack && MonsterAttack == false)
         {
-            TurnPhaseBegin = true;
+           TurnPhaseBegin = true;
             List<ICreature> tempCurrentCreatureList  = new List<ICreature>();
             tempCurrentCreatureList = GridManager.CellGridTable.Where(c => (c.Value.SpecialTile is ICreature)).Select(c=>c.Value.SpecialTile as ICreature).ToList();
 
@@ -230,6 +257,16 @@ public class GameManager : MonoBehaviour
             yield break;
         }
     }
+
+    public void EndPlayerAttackTurn()
+    {
+        PlayerManager.instance.MovmentValidator.HideAllGrid();
+        CurrentTurnPhase = TurnPhase.MonsterMovement;
+        PlayerAttacked = false;
+        TurnPhaseBegin = false;
+        StartCoroutine(AddTurn());
+    }
+
     [SerializeField] TextMeshProUGUI DELETECONSOLELOGS;
     [SerializeField] TextMeshProUGUI DELETECONSOLE_BTNTEXT;
     public void BACKFROMCLEARINGGAMEDATA()
@@ -273,6 +310,7 @@ public class GameManager : MonoBehaviour
     {
         TurnPhaseBegin = false;
         CurrentTurnPhase = TurnPhase.MapClear;
+        StopAllCoroutines();
         StartCoroutine(AddTurn());
     }
 
@@ -282,6 +320,7 @@ public class GameManager : MonoBehaviour
         PlayerMoved = false;
         PlayerAttacked = false;
         CurrentTurnPhase = TurnPhase.PlayerMovement;
+        StopAllCoroutines();
         StartCoroutine(AddTurn());
     }
 
@@ -434,7 +473,7 @@ public class GameManager : MonoBehaviour
     private int countMonsterAttackThisTurn;
     public bool MovingRequestTriggered = false;
     [SerializeField] public PlayerProgressModel PLAYER_PROGRESS_DATA;
-
+    private bool roomIsCleared;
 
     internal MonsterData GetMonsterData(int MonsterID = -1)
     {
