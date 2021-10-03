@@ -1207,6 +1207,552 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_1
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 863
+        width: 16
+        height: 56
+      alignment: 9
+      pivot: {x: 0.61621857, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aeec15e747608d645add4e8eb92e403d
+      internalID: -1890957084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_2
+      rect:
+        serializedVersion: 2
+        x: 503
+        y: 863
+        width: 21
+        height: 56
+      alignment: 9
+      pivot: {x: 0.48735118, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: daaeae5eb405c104d9dadc40e26633a5
+      internalID: -963746955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_3
+      rect:
+        serializedVersion: 2
+        x: 525
+        y: 862
+        width: 37
+        height: 57
+      alignment: 9
+      pivot: {x: 0.49641046, y: 0.07017544}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21a80819ae62050419a834c031caddfc
+      internalID: -2038202930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_4
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 863
+        width: 31
+        height: 56
+      alignment: 9
+      pivot: {x: 0.3200526, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19786400678ee98418af6e937250ef78
+      internalID: 263682801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_5
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 863
+        width: 29
+        height: 55
+      alignment: 9
+      pivot: {x: 0.26642266, y: 0.07272727}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdf9a50238f305c439f114b445051a0c
+      internalID: -667566553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_6
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 863
+        width: 41
+        height: 57
+      alignment: 9
+      pivot: {x: 0.2343616, y: 0.07017544}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 747d24d2015bdb14f86405ccd6818a33
+      internalID: 804818413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_7
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 863
+        width: 36
+        height: 56
+      alignment: 9
+      pivot: {x: 0.2417416, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6720355410ce287439fa7cd668a43637
+      internalID: -1384744474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_8
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 863
+        width: 30
+        height: 56
+      alignment: 9
+      pivot: {x: 0.088260904, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fd3bfabcf9021e4884e66fdcb777f06
+      internalID: -1704071550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_9
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 863
+        width: 33
+        height: 56
+      alignment: 9
+      pivot: {x: 0.254487, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1f1ea93c1c6fdc45a354a1566c84fd3
+      internalID: -400130863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_10
+      rect:
+        serializedVersion: 2
+        x: 776
+        y: 863
+        width: 32
+        height: 56
+      alignment: 9
+      pivot: {x: 0.27171707, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27de0a655a3ec1644aec78e8c88c24aa
+      internalID: -448706089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_11
+      rect:
+        serializedVersion: 2
+        x: 811
+        y: 863
+        width: 27
+        height: 55
+      alignment: 9
+      pivot: {x: 0.33274785, y: 0.07272727}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c0ebd0b468e4bfd46b1886ecaf95eedb
+      internalID: 52200814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_12
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 863
+        width: 26
+        height: 56
+      alignment: 9
+      pivot: {x: 0.29566368, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3eded37b766def049a114958c8cfdaa1
+      internalID: -351849543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_right_13
+      rect:
+        serializedVersion: 2
+        x: 868
+        y: 863
+        width: 23
+        height: 56
+      alignment: 9
+      pivot: {x: 0.50577444, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7f88789acadfda4c837c827e89f2632
+      internalID: 1404598999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_1
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 791
+        width: 20
+        height: 55
+      alignment: 9
+      pivot: {x: 0.5, y: 0.07272727}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e095cfcc160c2ae43afaf7e7aac6f512
+      internalID: -2000549246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_2
+      rect:
+        serializedVersion: 2
+        x: 503
+        y: 791
+        width: 18
+        height: 55
+      alignment: 9
+      pivot: {x: 0.5, y: 0.07272727}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4be4984907142ce429df07be1b20483a
+      internalID: -1660612497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_3
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 791
+        width: 24
+        height: 55
+      alignment: 9
+      pivot: {x: 0.75, y: 0.07272727}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e16a0912237213c4e93929c8e80d371c
+      internalID: 1172287996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_4
+      rect:
+        serializedVersion: 2
+        x: 551
+        y: 791
+        width: 25
+        height: 56
+      alignment: 9
+      pivot: {x: 0.79999995, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5d5ce75bc584af449d64844631442ee
+      internalID: -1393125841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_5
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 791
+        width: 24
+        height: 52
+      alignment: 9
+      pivot: {x: 0.7916667, y: 0.07692308}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b38b6654195a10f459e5b105bccd996f
+      internalID: 2058564844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_6
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 791
+        width: 35
+        height: 53
+      alignment: 9
+      pivot: {x: 0.85714287, y: 0.0754717}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5f5bea9811ec55459bb04b7183e78e2
+      internalID: 81866236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_7
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 791
+        width: 34
+        height: 53
+      alignment: 9
+      pivot: {x: 0.85294116, y: 0.0754717}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93b2bd15e51639d46808d28a660849c3
+      internalID: 1629091651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_8
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 791
+        width: 27
+        height: 53
+      alignment: 9
+      pivot: {x: 0.8888889, y: 0.0754717}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fab7ce95a3d4154aa02d9ff984db0fc
+      internalID: -1962070075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_9
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 791
+        width: 28
+        height: 55
+      alignment: 9
+      pivot: {x: 0.8214286, y: 0.07272727}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b863c057e2aa2c941ab5bb618ded0a05
+      internalID: -1647656124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_10
+      rect:
+        serializedVersion: 2
+        x: 764
+        y: 791
+        width: 26
+        height: 54
+      alignment: 9
+      pivot: {x: 0.80769235, y: 0.074074075}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e392a46f51019aa40be9bdc40ff44150
+      internalID: -151628021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_11
+      rect:
+        serializedVersion: 2
+        x: 799
+        y: 791
+        width: 28
+        height: 53
+      alignment: 9
+      pivot: {x: 0.75000006, y: 0.0754717}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb2c4c6d83fb74348ae0588197e4e75e
+      internalID: -152337819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_12
+      rect:
+        serializedVersion: 2
+        x: 831
+        y: 791
+        width: 27
+        height: 56
+      alignment: 9
+      pivot: {x: 0.7037037, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0f9ff164ef23ac4a95832fc704a8660
+      internalID: 557938256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_left_13
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 791
+        width: 24
+        height: 55
+      alignment: 9
+      pivot: {x: 0.5833334, y: 0.07272727}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 896ea6526138ad44e975ca5c0ba1a991
+      internalID: 802737432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1222,6 +1768,8 @@ TextureImporter:
       SIMPLE_ATTACK_DOWN_27: 1425037997
       SIMPLE_ATTACK_DOWN_28: -27281369
       simple_walk_down_1: -1872227042
+      simple_punch_left_12: 557938256
+      simple_punch_left_9: -1647656124
       simple_walk_down_4: 1722231660
       SIMPLE_ATTACK_DOWN_32: -693182063
       SIMPLE_ATTACK_DOWN_8: -1169414512
@@ -1231,21 +1779,35 @@ TextureImporter:
       simple_walk_up_3: 225475795
       simple_walk_right_2: 497745192
       SIMPLE_ATTACK_DOWN_26: 1047877734
+      simple_punch_right_2: -2038202930
       SIMPLE_ATTACK_DOWN_29: -996399998
+      simple_punch_right_4: 263682801
       SIMPLE_ATTACK_DOWN_11: 190206147
       SIMPLE_ATTACK_DOWN_15: 1744003817
       simple_walk_up_4: 774039356
+      simple_punch_right_6: 804818413
       SIMPLE_ATTACK_DOWN_3: 109870733
+      simple_punch_right_5: -667566553
       SIMPLE_ATTACK_DOWN_18: -375850609
+      simple_punch_right_8: -1704071550
       SIMPLE_ATTACK_DOWN_12: 1938782768
+      simple_punch_left_3: 1172287996
+      simple_punch_left_10: -151628021
       SIMPLE_ATTACK_DOWN_1: 1101472165
       simple_walk_left_2: 1085415967
       simple_walk_down_3: 1176613929
+      simple_punch_left_8: -1962070075
+      simple_punch_left_6: 81866236
       SIMPLE_ATTACK_DOWN_0: 815654002
       SIMPLE_ATTACK_DOWN_2: 29592801
       SIMPLE_ATTACK_DOWN_9: 100977108
+      simple_punch_right_7: -1384744474
       SIMPLE_ATTACK_DOWN_14: 1394185493
+      simple_punch_right_11: 52200814
       SIMPLE_ATTACK_DOWN_19: -1010076310
+      simple_punch_left_4: -1393125841
+      simple_punch_right_13: 1404598999
+      simple_punch_right_1: -963746955
       SIMPLE_ATTACK_DOWN_7: -87002489
       SIMPLE_ATTACK_DOWN_20: -1338307373
       simple_walk_right_1: -824473150
@@ -1256,20 +1818,30 @@ TextureImporter:
       SIMPLE_ATTACK_DOWN_23: 580058219
       simple_walk_left_3: 503880804
       SIMPLE_ATTACK_DOWN_24: -573804092
+      simple_punch_left_13: 802737432
       SIMPLE_ATTACK_DOWN_35: 782542731
       simple_walk_right_3: -1856630972
+      simple_punch_left_1: -2000549246
+      simple_punch_right_10: -448706089
+      simple_punch_left_11: -152337819
       simple_walk_up_1: -1306745756
+      simple_punch_right_9: -400130863
       simple_walk_down_2: -356738711
       SIMPLE_ATTACK_DOWN_34: -316167076
       SIMPLE_ATTACK_DOWN_13: -1983785890
       SIMPLE_ATTACK_DOWN_33: 472873388
-      simple_walk_up_2: -541330507
-      SIMPLE_ATTACK_DOWN_21: 389013499
-      simple_walk_right_4: -256017940
-      SIMPLE_ATTACK_DOWN_22: -901299091
-      SIMPLE_ATTACK_DOWN_17: -1638667057
-      SIMPLE_ATTACK_DOWN_25: 635896610
-      SIMPLE_ATTACK_DOWN_10: -1037725850
+      simple_punch_right_12: -351849543
+      simple_punch_left_7: 1629091651
+      simple_walk_up_2: 389013499
+      simple_punch_right_3: -2038202930
+      simple_punch_left_2: -1660612497
+      SIMPLE_ATTACK_DOWN_21: -256017940
+      simple_punch_left_5: 2058564844
+      simple_walk_right_4: -901299091
+      SIMPLE_ATTACK_DOWN_22: -1638667057
+      SIMPLE_ATTACK_DOWN_17: 635896610
+      SIMPLE_ATTACK_DOWN_25: -1037725850
+      SIMPLE_ATTACK_DOWN_10: -1890957084
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 1

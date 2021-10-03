@@ -13,6 +13,9 @@ public class SkillsManager : MonoBehaviour
 
     public List<SkillBase> AllSkills = new List<SkillBase>();
 
+    public static bool Hit1ImpactTrigger;
+    public static bool Hit2ImpactTrigger;
+
     private void Start() {
         // GenerateExampleSkillTree();
         

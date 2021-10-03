@@ -70,6 +70,11 @@ public class GameManager : MonoBehaviour
         if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)
         {
             roomIsCleared = false;
+            if(roomIsCleared == false)
+            {
+                PlayerManager.instance.RegenerateResourcesAtTurnStart();
+                PlayerManager.instance.StaminaConsumeEnabled = true;
+            }
             
             PlayerManager.instance.MovmentValidator.DestroyAllGridObjects();
             PlayerManager.instance.MovmentValidator.SpawnMarksOnGrid();
@@ -112,11 +117,7 @@ public class GameManager : MonoBehaviour
             }
         
        
-            if(roomIsCleared == false)
-            {
-                PlayerManager.instance.RegenerateResourcesAtTurnStart();
-                PlayerManager.instance.StaminaConsumeEnabled = true;
-            }
+       
 
             TurnPhaseBegin = true;
 

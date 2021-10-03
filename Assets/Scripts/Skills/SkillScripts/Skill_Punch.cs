@@ -27,6 +27,9 @@ public class Skill_Punch : SkillBase, ISkill
 
     public void Execute(Monster_Cell target)
     {
+        SkillsManager.Hit1ImpactTrigger = false;
+        SkillsManager.Hit2ImpactTrigger = false;
+
         AssignSkillAnimations(target.ParentCell.CurrentPosition);
         Debug.Log("prepare for EXECUTE SKILL");
         //lock turn routine
@@ -44,55 +47,27 @@ public class Skill_Punch : SkillBase, ISkill
     }
 
     private void AssignSkillAnimations(Vector2Int targetCoord)
-    {
-    //     Animator anim = CustomEventManager.PlayerAnimator;
-    //     AnimatorOverrideController aoc = new AnimatorOverrideController(anim.runtimeAnimatorController);
-    //     var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-        
-    //     foreach (var a in aoc.animationClips)
-    //     {
-    //             Debug.Log(a.name);
-
-    //            //  anims.Add(new KeyValuePair<AnimationClip, AnimationClip>(a, anim));
-    //     }
-        
-    //    // aoc.ApplyOverrides(anims);
-
-    //    anim.runtimeAnimatorController = aoc;
-             
+    { 
         Vector2Int direction = PlayerManager.instance._playerCell.ParentCell.CurrentPosition - targetCoord;
 
         if(direction.y < 0)
-        {
             CustomEventManager.PlayerAnimator.Play("Player_Attack_upanim",base.SkillAnimationLayer);
-        }
         else if(direction.y > 0)
-        {
             CustomEventManager.PlayerAnimator.Play("Player_Attack_downanim",base.SkillAnimationLayer);
-        }
         else if(direction.x > 0)
-        {
             CustomEventManager.PlayerAnimator.Play("Player_Attack_leftanim",base.SkillAnimationLayer);
-        }
         else if(direction.x < 0)
-        {
             CustomEventManager.PlayerAnimator.Play("Player_Attack_rightanim",base.SkillAnimationLayer);
-        }
-
     }
 
     private IEnumerator ProcessSkillRoutine(Monster_Cell target)
     {
-        Debug.Log(".5s delay");
-        // TODO:
-        // zakonczenie animacji ma miec dodane do siebie ta kontrole == false
-        // prawidlowe uzycie -< trigger na animacji SkillsManager.SkillAnimationEnded();
-        yield return new WaitForSeconds(.5f);
          int _damage; bool _isCritical;
         PlayerManager.instance.CalculateAttackHit(out _damage, out _isCritical);
         _damage = Mathf.RoundToInt(base.DamageMultiplifer*_damage);
 
-        target.TakeDamage(_damage, "Attacked by player",_isCritical);
+        yield return new WaitUntil(()=>SkillsManager.Hit1ImpactTrigger == true);
+            target.TakeDamage(_damage, "Attacked by player",_isCritical);
 
         PlayerManager.instance.AtackAnimationInProgress = false;
         SkillsManager.SelectedAttackSkill = null;;

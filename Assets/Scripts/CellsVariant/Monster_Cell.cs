@@ -206,6 +206,7 @@ public class Monster_Cell :ICreature
     }
     public void TakeDamage(float damage, string source, bool _idCritical = false)
     {
+        Debug.Log("monster otrzymal obrazenia");
         OnMonsterTakeDamageEvent?.Invoke(this,(ParentCell,Int32.Parse(damage.ToString()),_idCritical,false,false));
 
         HealthPoints -= Mathf.RoundToInt(damage);
