@@ -15,6 +15,7 @@ public class PlayerManager: MonoBehaviour
     public Image HelmetIMG;
     public Image ArmorIMG;
     [SerializeField] GameObject GraphicSwitchPrefab;
+
     [SerializeField] public PlayerEquipmentVisualSwitchScript GraphicSwitch;
     // [SerializeField] GameObject AnimatorControllerPrefab; 
     //     [SerializeField] public PlayerAnimatorController PlayerAnimator;
@@ -76,7 +77,29 @@ public class PlayerManager: MonoBehaviour
             _currentStamina = value; 
             UIManager.instance.Stamina_Bar.UpdateBar(_currentStamina,Mathf.RoundToInt(STATS.MaxStaminaPoints));
         }
-    } 
+    }
+
+    public int CurrentEnergy {
+          get => _currentEnergy; 
+        set 
+        {
+            var maxEnergy = Mathf.RoundToInt(PlayerManager.instance.STATS.MaxEnergyPoints);
+
+            if(value > maxEnergy)
+                value = maxEnergy;
+            if(value < 0)
+                value = 0;
+            
+            // if(EnergyConsumeEnabled == false) 
+            // {
+            //     Debug.Log("energia nie została zużyta");
+            //     return;
+            // }
+
+            _currentEnergy = value; 
+            UIManager.instance.Energy_Bar.UpdateBar(_currentEnergy,Mathf.RoundToInt(STATS.MaxEnergyPoints));
+        }
+     }
 
     public Coroutine currentAutopilot = null;
     public bool playerCurrentlyMoving = false;
@@ -135,6 +158,26 @@ public class PlayerManager: MonoBehaviour
         GameManager.instance.MovingRequestTriggered = false;
 
         yield return null;
+    }
+
+    internal void RefreshWearedEquipmentUIonMap()
+    {
+        Sprite weaponSprite;
+        if(PlayerManager.instance._EquipedItems.GetEquipmentItemFromSlotType(EquipmentType.PrimaryWeapon) != null)
+        {
+             weaponSprite = _EquipedItems.GetEquipmentItemFromSlotType(EquipmentType.PrimaryWeapon).ItemCoreSettings.Item_Sprite;
+        }
+        else
+        {
+            weaponSprite = null;
+        }
+        if(GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite != null) 
+            print("current weapon sprite: "+GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite.name);
+        else
+            print("brak widocznej broni");
+
+        GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = weaponSprite==null?null:weaponSprite;
+        
     }
 
     internal void RegenerateResourcesAtTurnStart()
@@ -247,6 +290,9 @@ public class PlayerManager: MonoBehaviour
         
         MovmentValidator = GetComponentInChildren<MoveValidatorScript>();
         MovmentValidator.ParentPathfinder = parentCell._pathfinder;
+
+        Invoke("RefreshWearedEquipmentUIonMap",0.1f);
+       
     }
     public void Reset_QuickSlotToDefault(int quickslotID)
     {
@@ -296,6 +342,7 @@ public class PlayerManager: MonoBehaviour
     public int CumulativeMonsterKilled;
     private float _currentHealth;
     private float _currentStamina;
+    private int _currentEnergy;
 
     public IEnumerator PerformRegularAttackAnimation(CellScript attacker, CellScript target, int _aniamtionFrames)
     {

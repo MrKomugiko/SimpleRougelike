@@ -33,6 +33,7 @@ public class AnimationsEventsScript : MonoBehaviour
         Debug.Log("IMPACK POINT 1st hit");
         SkillsManager.Hit1ImpactTrigger = true;
     }
+
     
     public void Attack_Hit_2()
     {

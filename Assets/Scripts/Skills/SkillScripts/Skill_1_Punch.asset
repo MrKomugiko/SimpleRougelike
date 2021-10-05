@@ -16,12 +16,14 @@ MonoBehaviour:
   DamageMultiplifer: 0.75
   StaminaCost: 0
   Cooldown: 0
-  Range: 1
   ParentName: ROOT
   SkillIcon: {fileID: 917661587, guid: 114226b8d549f4d4ca871770c06d7eee, type: 3}
   isCategoryType: 0
   isLocked: 0
   isObtained: 1
-  _cooldownLeftToBeReady: 0
+  Range: 1
+  MinPlayerLevel: 0
+  RestrictedByPrimaryWeaponType: 0
   _isEnoughtResourcesToUse: 1
+  _cooldownLeftToBeReady: 0
   SkillAnimationLayer: 0

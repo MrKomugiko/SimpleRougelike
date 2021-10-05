@@ -155,12 +155,15 @@ public class SelectionPopupNodeScript : MonoBehaviour
     }
 
     public void CheckIfSkillIsLocked()
-    {
+    {   
+        node_data.Skill.SetLockedStatusBasedOnPlayerLevel();
+        
         if(node_data.Skill.isLocked == true)
         {
             Content.GetComponent<Button>().onClick.RemoveAllListeners();
         }
         LockedOverlay.gameObject.SetActive(node_data.Skill.isLocked); 
+        
     }
     public void EnableSelectionDarkOverlay(bool value)
     {

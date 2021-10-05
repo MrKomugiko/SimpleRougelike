@@ -38,7 +38,7 @@ public class DungeonManager : MonoBehaviour
         GameManager.instance.MonsterAttack = false;
 
         PlayerManager.instance.RegenerateFullStamina();
-
+        
         StartCoroutine(GameManager.instance.AddTurn());
     }
 
@@ -243,8 +243,7 @@ public class DungeonManager : MonoBehaviour
     private void ManageRoomDorsAndPlayerSpawn(Vector2Int playerPosition, Vector2Int newLocationCoord, Vector2Int moveFromDirection)
     {
         if (DungeonRoomScript.Dungeon.ContainsKey(newLocationCoord))
-        {
-                    
+        {             
             currentDungeonDistance = DungeonRoomScript.Dungeon[newLocationCoord].DistanceFromCenter;
             maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
           

@@ -24,5 +24,5 @@ MonoBehaviour:
   Level: 1
   ExperiencePoints: 20
   Type: 6
-  IsWalkable: 1
+  IsWalkable: 0
   IsPathfinderRequired: 1

@@ -323,41 +323,41 @@ public partial class NotificationManger : MonoBehaviour
         switch(CATEGORY)
         {
             case AlertCategory.Attack:
-                Configure_Attack_Notification(
-                    invoker_BaseCell:INVOKER_BaseCell, 
-                    invoker_Notification:Invoker_BaseCell_Notification
-                );
+             //   Configure_Attack_Notification(
+             //       invoker_BaseCell:INVOKER_BaseCell, 
+             //       invoker_Notification:Invoker_BaseCell_Notification
+             //   );
                 break;
 
             case AlertCategory.Loot:
-                Configure_Loot_Notification(
-                    invoker_BaseCell:INVOKER_BaseCell, 
-                    invoker_Notification:Invoker_BaseCell_Notification
-                );
+                // Configure_Loot_Notification(
+                //     invoker_BaseCell:INVOKER_BaseCell, 
+                //     invoker_Notification:Invoker_BaseCell_Notification
+                // );
                 break;
 
             case AlertCategory.PlayerAttack:
-                Configure_PlayerAttack_Notification(
-                    invoker_BaseCell:INVOKER_BaseCell, 
-                    invoker_Notification:Invoker_BaseCell_Notification
-                ); 
+             //   Configure_PlayerAttack_Notification(
+             //       invoker_BaseCell:INVOKER_BaseCell, 
+              //      invoker_Notification:Invoker_BaseCell_Notification
+              //  ); 
                 break;
 
             case AlertCategory.ExplosionDamage:
-                Configure_ExplosionDamage_Notification(
-                    invoker_BaseCell:INVOKER_BaseCell,                      // <- zeb ypobrać siłe wybuchu i ją potem wpisac na powiadomieniu
-                    invoker_Notification:Invoker_BaseCell_Notification,     // TODO: <- raczej nie przyda sie dla bomby
-                    target_BaseCell:TARGET_BaseCEll, 
-                    target_Notification:Target_BaseCell_Notification        // <- target czyli player,monster w tym przypadku
-                    ); 
+              //  Configure_ExplosionDamage_Notification(
+              //      invoker_BaseCell:INVOKER_BaseCell,                      // <- zeb ypobrać siłe wybuchu i ją potem wpisac na powiadomieniu
+              //      invoker_Notification:Invoker_BaseCell_Notification,     // TODO: <- raczej nie przyda sie dla bomby
+               //     target_BaseCell:TARGET_BaseCEll, 
+              //      target_Notification:Target_BaseCell_Notification        // <- target czyli player,monster w tym przypadku
+              //      ); 
                 break;
 
              case AlertCategory.Info:
-                Configure_Info_Notification(
-                    invoker_BaseCell:INVOKER_BaseCell, 
-                    invoker_Notification:Invoker_BaseCell_Notification, 
-                    message
-                );
+                // Configure_Info_Notification(
+                //     invoker_BaseCell:INVOKER_BaseCell, 
+                //     invoker_Notification:Invoker_BaseCell_Notification, 
+                //     message
+                // );
                 break;
         }
     }

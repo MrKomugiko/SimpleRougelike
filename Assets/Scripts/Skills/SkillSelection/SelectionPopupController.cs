@@ -39,12 +39,22 @@ public class SelectionPopupController : MonoBehaviour
                 if(value.node_data.Childs.Count > 0)
                 {
                     Debug.Log("wybrany node - parent");
-                    CurrentOpenedNodeslist = value.node_data.Childs;
+                    //---------------------------------------------------------------------------------
+                    // Sprawdzenie wymagan, i policzenie ile skili zostanie pokazanych 
+                    List<SkillNode> enabledSkillsList = new List<SkillNode>();
+                    foreach(var skill in value.node_data.Childs)
+                    {
+                        if(skill.Skill.CheckRequirmentsToEnableSkill())
+                            enabledSkillsList.Add(skill);
+                    }
+                    //---------------------------------------------------------------------------------
+                    CurrentOpenedNodeslist = enabledSkillsList;
+
                     foreach(var node in AttackOptionsNodes)
                     {
                         Destroy(node.gameObject);
                     }
-                    RebuildTree(_nodeElements: SelectedNode.node_data.Childs.Count);
+                    RebuildTree(CurrentOpenedNodeslist);
                     return;
                 }
             }
@@ -64,7 +74,7 @@ public class SelectionPopupController : MonoBehaviour
         _selectedNode.ConfigureNodeForCenterPosition();
     }
 
-    public void RebuildTree(int _nodeElements)
+    public void RebuildTree(List<SkillNode> skillList)
     {
         Debug.Log("rebuld");
        // if new selected node is parent of any other nodes, rebuild tree
@@ -77,20 +87,20 @@ public class SelectionPopupController : MonoBehaviour
 
         // Midddle = przeznaczony dla quit, back,exit ?
     
-        CurrentDisplayedNodeElements = _nodeElements;
-        int backnodeIndex = CurrentDisplayedNodeElements / 2;
+        int backnodeIndex = skillList.Count / 2;
 
-        for (int i = 0; i < CurrentDisplayedNodeElements; i++)
+        int index = 0;
+        foreach(var skill in skillList)
         {
             var node = Instantiate(PopupNodeObjectPrefab,this.transform);
             var nodeScript = node.GetComponent<SelectionPopupNodeScript>();
            
             AttackOptionsNodes.Add(nodeScript);
             node.transform.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2Int(0, -50);
-            nodeScript.transform.Rotate(0,0,(i == 0)?180:(180 + (AngleChangeValue * i)));
-            nodeScript.SelfConfigure(CurrentOpenedNodeslist[i]);
+            nodeScript.transform.Rotate(0,0,(index == 0)?180:(180 + ((360/skillList.Count) * index)));
+            nodeScript.SelfConfigure(skill);
          
-            //node.transform.GetComponentInParent<RectTransform>().SetPositionAndRotation(new Vector3(0, -50,0), _quaternion);
+            index++;
         }
     }
 
@@ -119,10 +129,24 @@ public class SelectionPopupController : MonoBehaviour
         AttackOptionsNodes.Clear();
 
         //---------------------------------------------------------------------------------
+        List<SkillNode> enabledSkillsList = new List<SkillNode>();
         if(parentNode.Parent == null)
-            CurrentOpenedNodeslist = SkillsManager.ROOT_SKILLTREE.Childs;
+        {
+            foreach(var skill in SkillsManager.ROOT_SKILLTREE.Childs)
+            {
+                if(skill.Skill.CheckRequirmentsToEnableSkill())
+                    enabledSkillsList.Add(skill);
+            }
+        }
         else
-            CurrentOpenedNodeslist = parentNode.Parent.Childs;
+        {  
+            foreach(var skill in parentNode.Parent.Childs)
+            {
+                if(skill.Skill.CheckRequirmentsToEnableSkill())
+                    enabledSkillsList.Add(skill);
+            }
+        }
+        CurrentOpenedNodeslist = enabledSkillsList;
 
         //-------------------------------------------------------------------------------------------
         // sprawdzenie czy rodzic do ktorego sie cofnelismy jest dzieckiem innego node'a, zeby wstawic go odrazu na srodku
@@ -143,7 +167,7 @@ public class SelectionPopupController : MonoBehaviour
                 Destroy(currentCenterNode.gameObject);
         }
 
-        RebuildTree(_nodeElements:CurrentOpenedNodeslist.Count);    
+        RebuildTree(CurrentOpenedNodeslist);    
     }
 
     public void FixRotations()
@@ -165,20 +189,33 @@ public class SelectionPopupController : MonoBehaviour
         }
         AttackOptionsNodes.Clear();
         //---------------------------------------------------------------------------------
-        CurrentOpenedNodeslist = SkillsManager.ROOT_SKILLTREE.Childs;
+        // Sprawdzenie wymagan, i policzenie ile skili zostanie pokazanych 
+        List<SkillNode> enabledSkillsList = new List<SkillNode>();
+        foreach(var skill in SkillsManager.ROOT_SKILLTREE.Childs)
+        {
+            if(skill.Skill == null) {
+                // kategorie i eexit bez przypisanego skila
+                 enabledSkillsList.Add(skill);
+                 continue;
+            }
+            if(skill.Skill.CheckRequirmentsToEnableSkill())
+                enabledSkillsList.Add(skill);
+        }
         //---------------------------------------------------------------------------------
-        CurrentDisplayedNodeElements = CurrentOpenedNodeslist.Count;
-        // Midddle = przeznaczony dla quit, back,exit ?
-        int backnodeIndex = CurrentOpenedNodeslist.Count / 2;
-        for (int i = 0; i < CurrentOpenedNodeslist.Count; i++)
+        CurrentOpenedNodeslist = enabledSkillsList;
+        //---------------------------------------------------------------------------------
+        int backnodeIndex = enabledSkillsList.Count / 2;
+        int index = 0;
+        foreach(var skill in enabledSkillsList)
         {
             var node = Instantiate(PopupNodeObjectPrefab, this.transform);
             var nodeScript = node.GetComponent<SelectionPopupNodeScript>();
 
             AttackOptionsNodes.Add(nodeScript);
             node.transform.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2Int(0, -50);
-            nodeScript.transform.Rotate(0,0,(i == 0)?180:(180 + (AngleChangeValue * i)));
-            nodeScript.SelfConfigure(CurrentOpenedNodeslist[i]);
+            nodeScript.transform.Rotate(0,0,(index == 0)?180:(180 + ((360/enabledSkillsList.Count) * index)));
+            nodeScript.SelfConfigure(skill);
+            index++;
         }
     }
 }

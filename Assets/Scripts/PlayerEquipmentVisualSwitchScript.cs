@@ -27,6 +27,7 @@ public class PlayerEquipmentVisualSwitchScript : MonoBehaviour
 
     public void UpdatePlayerGraphics()
     {
+
         // try
         // {
 

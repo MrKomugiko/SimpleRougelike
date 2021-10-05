@@ -6,6 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName="New Equipment Item",menuName="GameData/Item/Equipment")]
 public class EquipmentItem : ItemData
 {
+
+    public EquipmentSpecifiedType EquipmentSpecificType = EquipmentSpecifiedType.Sword;
     public EquipmentType eqType = EquipmentType.Helmet;
     public List<Perk> MainPerks  = new List<Perk>();
     public List<Perk> ExtraPerks = new List<Perk>();
@@ -28,11 +30,27 @@ public class EquipmentItem : ItemData
 
             if(result == true)
             {
-                if(MoveItemTo == PlayerManager.instance._EquipedItems )  //  item wyciągany z założonych == UNEQUIP
+                if(MoveItemTo == PlayerManager.instance._EquipedItems ) 
+                {
                     {PlayerManager.instance.STATS.EquipItem_UpdateStatistics(this);}
+                    PlayerManager.instance.RefreshWearedEquipmentUIonMap();
+                    // Sprite Weapon_Sprite = PlayerManager.instance._EquipedItems.GetEquipmentItemFromSlotName(EquipmentType.PrimaryWeapon).ItemCoreSettings.Item_Sprite;
+                    // GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = Weapon_Sprite==null?null:Weapon_Sprite;
+                    Debug.Log("załozenie - podmiana sprite'a [eqitemscript]");
+                }
                
-               if(MoveItemTo == PlayerManager.instance._mainBackpack )  // item wyciągany z plecaka == EQUIP
+               if(MoveItemTo == PlayerManager.instance._mainBackpack ) 
+               {
                     {PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(this);}
+                    PlayerManager.instance.RefreshWearedEquipmentUIonMap();
+
+                    //   Sprite Weapon_Sprite = PlayerManager.instance._EquipedItems.GetEquipmentItemFromSlotName(EquipmentType.PrimaryWeapon).ItemCoreSettings.Item_Sprite;
+                    // GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = Weapon_Sprite==null?null:Weapon_Sprite;
+                    Debug.Log("zdjęcie - podmiana sprite'a [eqitemscript]");
+
+               }
+
+
             }
         return result;
     }
@@ -58,4 +76,20 @@ public class EquipmentItem : ItemData
         Armor,                  SecondaryWeapon,    Helmet,
         Shoulders,              Shoes,              Belt,
         PrimaryWeapon,          Gloves,
+    }
+
+    public enum EquipmentSpecifiedType
+    {
+        NoRestriction,
+        Sword,
+        LongSword,
+        Bow,
+        Crossbow, // kusza
+        Wand,   // rozdzka
+        Shield,
+        Dagger,
+        Axe,
+        Grimoire, // księga czarów
+        Quiver // kołczan
+
     }

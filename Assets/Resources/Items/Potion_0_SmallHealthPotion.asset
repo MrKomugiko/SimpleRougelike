@@ -32,4 +32,5 @@ MonoBehaviour:
     Inteligence: 1
     Dexterity: 1
   CanBeAssignToQuickActions: 1
-  HealthRegenerationValue: 5
+  TypeOfPotion: 0
+  ResourceRegenerationValue: 10

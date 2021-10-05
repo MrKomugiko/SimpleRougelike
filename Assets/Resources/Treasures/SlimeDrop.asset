@@ -21,3 +21,5 @@ MonoBehaviour:
   PossibleLootItems:
   - {fileID: 11400000, guid: 66f8a0c9355120a4e8521b80b14db7b7, type: 2}
   - {fileID: 11400000, guid: f58baac47246f234b96fa090de803624, type: 2}
+  - {fileID: 11400000, guid: 1c43101961a34b24baeeed1d6f5850c5, type: 2}
+  SavedContent: []

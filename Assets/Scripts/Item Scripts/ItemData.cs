@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class ItemData : ScriptableObject
 {
+    
     public ItemCoreSettingsData ItemCoreSettings;
     public DropSettingsData DropSettings;
     public StackSettingsData StackSettings;

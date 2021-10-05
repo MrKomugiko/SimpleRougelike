@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 685bfd14427387142811d97cff20f0f1, type: 3}
-  m_Name: Potion_1_ExtraLargeHealthPotion
+  m_Name: Potion_3_LargeStaminaPotion
   m_EditorClassIdentifier: 
   ItemCoreSettings:
-    Item_Sprite: {fileID: -1428663084, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
-    ItemID: 1
-    Name: Large potion
+    Item_Sprite: {fileID: 609181156, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+    ItemID: 3
+    Name: Large stamina  potion
     GoldValue: 1000
     Description: Any other drink can compare to, self made by grandpa' basement.
-    Rarity: 3
+    Rarity: 2
     Type: 1
   DropSettings:
     minCount: 1
@@ -32,5 +32,5 @@ MonoBehaviour:
     Inteligence: 0
     Dexterity: 0
   CanBeAssignToQuickActions: 1
-  TypeOfPotion: 0
-  ResourceRegenerationValue: 100
+  TypeOfPotion: 1
+  ResourceRegenerationValue: 50

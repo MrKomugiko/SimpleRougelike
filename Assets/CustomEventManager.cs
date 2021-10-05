@@ -89,6 +89,7 @@ public class CustomEventManager : MonoBehaviour
     internal void RegisterPlayerInEventManager(Player_Cell player_Cell)
     {
         player_Cell.OnPlayerTakeDamageEvent += FloatingDamageValueAnimation;
-        PlayerAnimator = player_Cell.playerSpriteObject.GetComponentInChildren<Animator>();
+        PlayerAnimator = player_Cell.playerSpriteObject.GetComponentInChildren<Animator>();       
+         
     }
 }

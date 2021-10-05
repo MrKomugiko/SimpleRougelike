@@ -1753,6 +1753,468 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_1
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 714
+        width: 21
+        height: 56
+      alignment: 9
+      pivot: {x: 0.6666667, y: 0.071428575}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff3a5815ec5dbc346874afcaa40cf656
+      internalID: -486649383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_2
+      rect:
+        serializedVersion: 2
+        x: 509
+        y: 707
+        width: 22
+        height: 60
+      alignment: 9
+      pivot: {x: 0.5909091, y: 0.18333334}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4dbba89619261a46b7f7c2aa161ae62
+      internalID: -1753765436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_3
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 706
+        width: 24
+        height: 59
+      alignment: 9
+      pivot: {x: 0.5833334, y: 0.18644068}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbbce4c094d6ff2408556d3236151d2d
+      internalID: -821129234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_4
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 707
+        width: 25
+        height: 59
+      alignment: 9
+      pivot: {x: 0.59999996, y: 0.16949153}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9eaeff21e00fecc45a8a78202f64ae42
+      internalID: -415583616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_5
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 708
+        width: 24
+        height: 60
+      alignment: 9
+      pivot: {x: 0.5416667, y: 0.15}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ba3a447a08d19640bebef5c50e4e62c
+      internalID: -1796292750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_6
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 709
+        width: 23
+        height: 57
+      alignment: 9
+      pivot: {x: 0.6086957, y: 0.15789473}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ccb67e2134dc464193364e239b3c56d
+      internalID: 843477648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_7
+      rect:
+        serializedVersion: 2
+        x: 647
+        y: 709
+        width: 28
+        height: 56
+      alignment: 9
+      pivot: {x: 0.35714287, y: 0.14285715}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2b141cf4b6b51b458c185c7521ad3fe
+      internalID: -1555000649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_8
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 708
+        width: 25
+        height: 57
+      alignment: 9
+      pivot: {x: 0.56, y: 0.15789473}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b734a2e6a4765e40bee3edc5ac7234c
+      internalID: 1511833678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_9
+      rect:
+        serializedVersion: 2
+        x: 703
+        y: 711
+        width: 26
+        height: 56
+      alignment: 9
+      pivot: {x: 0.6923077, y: 0.125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 684746aed5686e8469e1bd778122223d
+      internalID: 553138805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_10
+      rect:
+        serializedVersion: 2
+        x: 732
+        y: 714
+        width: 22
+        height: 58
+      alignment: 9
+      pivot: {x: 0.6818182, y: 0.06896552}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd88ff07cc86f8d4d99e7b0e730e89ae
+      internalID: -170721333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_down_11
+      rect:
+        serializedVersion: 2
+        x: 761
+        y: 714
+        width: 21
+        height: 58
+      alignment: 9
+      pivot: {x: 0.71428573, y: 0.06896552}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ec1ab2125b0e37478ad6e655690676a
+      internalID: 481390651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_1
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 639
+        width: 21
+        height: 58
+      alignment: 9
+      pivot: {x: 0.2857143, y: 0.051724136}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f33250ad633f562449f09c98369bd3c6
+      internalID: 632847666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_2
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 639
+        width: 22
+        height: 58
+      alignment: 9
+      pivot: {x: 0.22727273, y: 0.051724136}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41b6e5f911b8c1a4f80742ce6dda5e1f
+      internalID: -716626352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_3
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 639
+        width: 22
+        height: 57
+      alignment: 9
+      pivot: {x: 0.22727273, y: 0.07017544}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e24c584a09d8da24380157f77eb51aa1
+      internalID: -1065345970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_4
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 639
+        width: 19
+        height: 56
+      alignment: 9
+      pivot: {x: 0.36842105, y: 0.054545455}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05053de1597bce144807f333b081f544
+      internalID: -1880042870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_5
+      rect:
+        serializedVersion: 2
+        x: 584
+        y: 639
+        width: 19
+        height: 56
+      alignment: 9
+      pivot: {x: 0.42105263, y: 0.053571433}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e01c343345d19843bf5805d529c52f7
+      internalID: -400798530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_6
+      rect:
+        serializedVersion: 2
+        x: 605
+        y: 639
+        width: 18
+        height: 56
+      alignment: 9
+      pivot: {x: 0.33333334, y: 0.053571433}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b1088308fb45f24fb35c6803779f2f1
+      internalID: -1758178565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_7
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 639
+        width: 24
+        height: 56
+      alignment: 9
+      pivot: {x: 0.5833334, y: 0.053571433}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ceec9ec50d236cf4da411a9a97b4a19e
+      internalID: -2041439580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_8
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 639
+        width: 19
+        height: 56
+      alignment: 9
+      pivot: {x: 0.42105263, y: 0.053571433}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 895d6b8de58654d41ad7fbc817b72cbc
+      internalID: 132649778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_9
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 639
+        width: 22
+        height: 57
+      alignment: 9
+      pivot: {x: 0.36363637, y: 0.05263158}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56ec29577b24a1248935695a98ac7d20
+      internalID: -2069957049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_10
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 639
+        width: 17
+        height: 56
+      alignment: 9
+      pivot: {x: 0.23529412, y: 0.053571433}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3700b20ec7f1424b89aa43401d7270e
+      internalID: 1287927437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: simple_punch_up_11
+      rect:
+        serializedVersion: 2
+        x: 727
+        y: 639
+        width: 21
+        height: 55
+      alignment: 9
+      pivot: {x: 0.2857143, y: 0.054545455}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3de45c6dfdef704b9a358ed00ba682d
+      internalID: 697468408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1766,80 +2228,102 @@ TextureImporter:
     nameFileIdTable:
       SIMPLE_ATTACK_DOWN_4: -1533217490
       SIMPLE_ATTACK_DOWN_27: 1425037997
-      SIMPLE_ATTACK_DOWN_28: -27281369
-      simple_walk_down_1: -1872227042
-      simple_punch_left_12: 557938256
-      simple_punch_left_9: -1647656124
+      simple_punch_right_13: 1404598999
       simple_walk_down_4: 1722231660
-      SIMPLE_ATTACK_DOWN_32: -693182063
       SIMPLE_ATTACK_DOWN_8: -1169414512
-      SIMPLE_ATTACK_DOWN_31: -1638057434
-      simple_walk_left_1: -1781477510
       SIMPLE_ATTACK_DOWN_6: -2098328048
-      simple_walk_up_3: 225475795
-      simple_walk_right_2: 497745192
-      SIMPLE_ATTACK_DOWN_26: 1047877734
       simple_punch_right_2: -2038202930
-      SIMPLE_ATTACK_DOWN_29: -996399998
-      simple_punch_right_4: 263682801
-      SIMPLE_ATTACK_DOWN_11: 190206147
       SIMPLE_ATTACK_DOWN_15: 1744003817
-      simple_walk_up_4: 774039356
-      simple_punch_right_6: 804818413
-      SIMPLE_ATTACK_DOWN_3: 109870733
       simple_punch_right_5: -667566553
+      simple_walk_up_4: 774039356
+      SIMPLE_ATTACK_DOWN_3: 109870733
       SIMPLE_ATTACK_DOWN_18: -375850609
-      simple_punch_right_8: -1704071550
-      SIMPLE_ATTACK_DOWN_12: 1938782768
       simple_punch_left_3: 1172287996
       simple_punch_left_10: -151628021
-      SIMPLE_ATTACK_DOWN_1: 1101472165
       simple_walk_left_2: 1085415967
       simple_walk_down_3: 1176613929
-      simple_punch_left_8: -1962070075
-      simple_punch_left_6: 81866236
       SIMPLE_ATTACK_DOWN_0: 815654002
       SIMPLE_ATTACK_DOWN_2: 29592801
       SIMPLE_ATTACK_DOWN_9: 100977108
-      simple_punch_right_7: -1384744474
-      SIMPLE_ATTACK_DOWN_14: 1394185493
       simple_punch_right_11: 52200814
-      SIMPLE_ATTACK_DOWN_19: -1010076310
+      simple_punch_up_1: 632847666
+      simple_punch_up_10: 1287927437
+      simple_punch_up_11: 697468408
       simple_punch_left_4: -1393125841
-      simple_punch_right_13: 1404598999
       simple_punch_right_1: -963746955
+      simple_punch_down_10: -170721333
       SIMPLE_ATTACK_DOWN_7: -87002489
       SIMPLE_ATTACK_DOWN_20: -1338307373
-      simple_walk_right_1: -824473150
-      SIMPLE_ATTACK_DOWN_5: 533956760
-      SIMPLE_ATTACK_DOWN_16: 1965614006
+      simple_punch_down_4: -415583616
       SIMPLE_ATTACK_DOWN_30: 1863155327
-      simple_walk_left_4: -1749619163
-      SIMPLE_ATTACK_DOWN_23: 580058219
-      simple_walk_left_3: 503880804
-      SIMPLE_ATTACK_DOWN_24: -573804092
+      SIMPLE_ATTACK_DOWN_16: 1965614006
       simple_punch_left_13: 802737432
-      SIMPLE_ATTACK_DOWN_35: 782542731
-      simple_walk_right_3: -1856630972
+      simple_walk_left_3: 503880804
       simple_punch_left_1: -2000549246
-      simple_punch_right_10: -448706089
+      simple_punch_up_8: 132649778
       simple_punch_left_11: -152337819
-      simple_walk_up_1: -1306745756
       simple_punch_right_9: -400130863
-      simple_walk_down_2: -356738711
       SIMPLE_ATTACK_DOWN_34: -316167076
-      SIMPLE_ATTACK_DOWN_13: -1983785890
-      SIMPLE_ATTACK_DOWN_33: 472873388
       simple_punch_right_12: -351849543
       simple_punch_left_7: 1629091651
-      simple_walk_up_2: 389013499
+      simple_punch_down_11: 481390651
       simple_punch_right_3: -2038202930
-      simple_punch_left_2: -1660612497
+      simple_punch_up_7: -2041439580
       SIMPLE_ATTACK_DOWN_21: -256017940
-      simple_punch_left_5: 2058564844
       simple_walk_right_4: -901299091
-      SIMPLE_ATTACK_DOWN_22: -1638667057
       SIMPLE_ATTACK_DOWN_17: 635896610
+      simple_punch_down_3: -821129234
+      simple_punch_up_2: -716626352
+      simple_punch_up_9: -2069957049
+      simple_walk_down_1: -1872227042
+      SIMPLE_ATTACK_DOWN_28: -27281369
+      simple_punch_left_12: 557938256
+      simple_punch_left_9: -1647656124
+      SIMPLE_ATTACK_DOWN_32: -693182063
+      simple_walk_left_1: -1781477510
+      SIMPLE_ATTACK_DOWN_31: -1638057434
+      simple_walk_right_2: 497745192
+      simple_walk_up_3: 225475795
+      simple_punch_right_4: 263682801
+      simple_punch_up_4: -1880042870
+      SIMPLE_ATTACK_DOWN_29: -996399998
+      SIMPLE_ATTACK_DOWN_11: 190206147
+      simple_punch_up_3: -1065345970
+      simple_punch_down_5: -1796292750
+      simple_punch_right_6: 804818413
+      SIMPLE_ATTACK_DOWN_26: 1047877734
+      simple_punch_right_8: -1704071550
+      SIMPLE_ATTACK_DOWN_12: 1938782768
+      SIMPLE_ATTACK_DOWN_1: 1101472165
+      simple_punch_left_8: -1962070075
+      simple_punch_left_6: 81866236
+      SIMPLE_ATTACK_DOWN_14: 1394185493
+      simple_punch_right_7: -1384744474
+      simple_punch_down_7: -1555000649
+      SIMPLE_ATTACK_DOWN_19: -1010076310
+      simple_punch_down_2: -1753765436
+      simple_walk_right_1: -824473150
+      SIMPLE_ATTACK_DOWN_5: 533956760
+      simple_walk_left_4: -1749619163
+      SIMPLE_ATTACK_DOWN_23: 580058219
+      SIMPLE_ATTACK_DOWN_24: -573804092
+      SIMPLE_ATTACK_DOWN_35: 782542731
+      simple_walk_right_3: -1856630972
+      simple_punch_down_6: 843477648
+      simple_punch_right_10: -448706089
+      simple_punch_up_5: -400798530
+      simple_walk_up_1: -1306745756
+      simple_punch_down_8: 1511833678
+      simple_walk_down_2: -356738711
+      SIMPLE_ATTACK_DOWN_13: -1983785890
+      SIMPLE_ATTACK_DOWN_33: 472873388
+      simple_walk_up_2: 389013499
+      simple_punch_up_6: -1758178565
+      simple_punch_left_2: -1660612497
+      simple_punch_left_5: 2058564844
+      simple_punch_down_1: -486649383
+      simple_punch_down_9: 553138805
+      SIMPLE_ATTACK_DOWN_22: -1638667057
       SIMPLE_ATTACK_DOWN_25: -1037725850
       SIMPLE_ATTACK_DOWN_10: -1890957084
   spritePackingTag: 

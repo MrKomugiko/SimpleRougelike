@@ -4,13 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName="Skill_Punch",menuName="GameData/Skill/Punch")]
-public class Skill_Punch : SkillBase, ISkill
+[CreateAssetMenu(fileName="Skill_RoundSlash",menuName="GameData/Skill/RoundSlash")]
+public class Skill_RoundSlash : SkillBase, ISkill
 {
-    
-    public Skill_Punch()
+    public List<Vector2Int> AreaTargetsCheckVectors = new List<Vector2Int>()
     {
-        Debug.Log("przypisanie logiki skila Punch");
+        Vector2Int.up,
+        Vector2Int.right,
+        Vector2Int.down,
+        Vector2Int.left
+    };
+
+    public Skill_RoundSlash()
+    {
+        Debug.Log("przypisanie logiki skila round slash");
         base.SkillLogic = this;
     }
 
@@ -18,7 +25,7 @@ public class Skill_Punch : SkillBase, ISkill
     {
         if(base.isCategoryType) return;
 
-        Debug.Log($"Select skill to execute: {base.Name}");
+        Debug.Log($"Select skill to execute: {this.GetType()}");
         ShowAvailableTargets();
         SkillsManager.SelectedAttackSkill = Execute;
     }
@@ -26,14 +33,13 @@ public class Skill_Punch : SkillBase, ISkill
     public void Execute(Monster_Cell target)
     {
         SkillsManager.Hit1ImpactTrigger = false;
-        SkillsManager.Hit2ImpactTrigger = false;
 
         AssignSkillAnimations(target.ParentCell.CurrentPosition);
         Debug.Log("prepare for EXECUTE SKILL");
         //lock turn routine
         SkillsManager.SkillAnimationFinished = false;
 
-        GameManager.instance.StartCoroutine(ProcessSkillRoutine(target));
+        GameManager.instance.StartCoroutine(ProcessSkillRoutine());
 
         // after select skill - hide popup and reset centered skill
         GameObject.Find("ActionsPopUp").GetComponent<SelectionPopupController>().ClearCenteredNode();
@@ -46,6 +52,8 @@ public class Skill_Punch : SkillBase, ISkill
 
     private void AssignSkillAnimations(Vector2Int targetCoord)
     { 
+
+        // Ten skil bedzie mial 1 animacja obrotu, kierunek to tylko kolejnosc od ktorego zacznie atakowac, do rozkminki TODO:
         Vector2Int direction = PlayerManager.instance._playerCell.ParentCell.CurrentPosition - targetCoord;
 
         if(direction.y < 0)
@@ -58,14 +66,25 @@ public class Skill_Punch : SkillBase, ISkill
             CustomEventManager.PlayerAnimator.Play("Player_Attack_rightanim",base.SkillAnimationLayer);
     }
 
-    private IEnumerator ProcessSkillRoutine(Monster_Cell target)
+    private IEnumerator ProcessSkillRoutine()
     {
          int _damage; bool _isCritical;
         PlayerManager.instance.CalculateAttackHit(out _damage, out _isCritical);
         _damage = Mathf.RoundToInt(base.DamageMultiplifer*_damage);
 
-        yield return new WaitUntil(()=>SkillsManager.Hit1ImpactTrigger == true);
-            target.TakeDamage(_damage, "Attacked by player",_isCritical);
+        int currentTargetIndex = 0;
+        while(true)
+        {
+            yield return new WaitUntil(()=>SkillsManager.Hit1ImpactTrigger == true);
+            if(Targets[currentTargetIndex] != null)
+                (Targets[currentTargetIndex].SpecialTile as Monster_Cell).TakeDamage(_damage, "Attacked by player",_isCritical);
+            
+            SkillsManager.Hit1ImpactTrigger = false;
+
+            currentTargetIndex++;
+
+            if(currentTargetIndex>=Targets.Count) break;
+        }
 
         PlayerManager.instance.AtackAnimationInProgress = false;
         SkillsManager.SelectedAttackSkill = null;;
@@ -73,10 +92,14 @@ public class Skill_Punch : SkillBase, ISkill
         GameManager.instance.PlayerAttacked = true;
         yield break;
     }
+
+    private List<CellScript> Targets = new List<CellScript>();
     private void ShowAvailableTargets()
     {
         PlayerManager.instance.MovmentValidator.DestroyAllGridObjects();
         PlayerManager.instance.MovmentValidator.SpawnMarksOnGrid();
-        PlayerManager.instance.MovmentValidator.HighlightValidAttackGridGlobal(base.Range);
+        
+        Targets = PlayerManager.instance.MovmentValidator.HighlightValidAttackGridNearPlayer(AreaTargetsCheckVectors).targets;
+        Debug.Log("roudskill attack, mobs in skill attack range"+ Targets.Count);
     }
 }

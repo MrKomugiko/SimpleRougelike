@@ -28,7 +28,7 @@ public class EquipmentScript : MonoBehaviour
     public void GenerateEquipment() 
     {
         
-      //  Debug.Log("Generate EQUIPMENT SCRIPT");
+      Debug.Log("Generate EQUIPMENT SCRIPT");
 
         if(PLAYER_EQUIPMENTSLOT == false) // poniewaz eq gracza jest juz na scenie nie trzeba go znowu generowac
         { 
@@ -175,6 +175,7 @@ public class EquipmentScript : MonoBehaviour
     
     public void LoadItemInPlayerEq( int asociatedSlotId, ItemPack _item )
     {
+        Debug.Log("load equiped items");
         EquipmentItem itemEq = _item.item as EquipmentItem;
         PlayerManager.instance.STATS.EquipItem_UpdateStatistics(itemEq);
         this.ItemSlots[asociatedSlotId].AddNewItemToSlot(_item);
@@ -186,6 +187,12 @@ public class EquipmentScript : MonoBehaviour
             PlayerManager.instance.ArmorIMG.enabled = true;
         
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
+    }
+    public EquipmentItem GetEquipmentItemFromSlotType(EquipmentType eqType)
+    {
+         int slotIndex  = this.ItemSlots.Where(s=>s.ItemContentRestricion == eqType).First().itemSlotID;
+         var equipmentItem = ItemSlots[slotIndex].ITEM.item as EquipmentItem;
+        return equipmentItem;
     }
     public bool EquipItemFromSlot(ItemSlot fromSlot, EquipmentScript toEquipment)
     {

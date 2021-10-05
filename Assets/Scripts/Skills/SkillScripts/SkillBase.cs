@@ -1,10 +1,13 @@
 
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName="New Skill",menuName="GameData/Skill")]
 public class SkillBase : SkillData
 {   
     public ISkill SkillLogic;
+    
+    [SerializeField] private bool _isEnoughtResourcesToUse;
     [SerializeField] private int _cooldownLeftToBeReady;
     public int CooldownLeftToBeReady 
     { 
@@ -14,17 +17,9 @@ public class SkillBase : SkillData
             _cooldownLeftToBeReady = value<0?0:value; 
         }
     }
-    public bool ReadyToUse => CooldownLeftToBeReady==0?true:false;
-    [SerializeField] private bool _isEnoughtResourcesToUse;
-    public bool IsEnoughtResourcesToUse
-    {
-        get
-        {
-           return _isEnoughtResourcesToUse = (PlayerManager.instance.CurrentStamina >= this.StaminaCost);
-        }
-    }
-
     public int SkillAnimationLayer;
+    public bool IsEnoughtResourcesToUse =>  _isEnoughtResourcesToUse = (PlayerManager.instance.CurrentStamina >= this.StaminaCost);
+    public bool ReadyToUse => CooldownLeftToBeReady==0?true:false;
 
     public void TickCooldown(int timeReduction = 1)
     {

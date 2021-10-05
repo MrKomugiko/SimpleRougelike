@@ -68,7 +68,7 @@ public class MoveValidatorScript : MonoBehaviour
         }
     
     }
-    public int HighlightValidAttackGrid(int? overteDistanceCheck = null)
+    public int HighlightValidAttackGridGlobal(int? overteDistanceCheck = null)
     {
         int _monstersInRange = 0;
         var monsterList = GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster).ToList();
@@ -81,10 +81,10 @@ public class MoveValidatorScript : MonoBehaviour
         }
         foreach(var checkedMonster in monsterList)
         {
-            monsterList.ForEach(m=>m.Value.IsWalkable = false);
+            // monsterList.ForEach(m=>m.Value.IsWalkable = false);
+            NodeGrid.UpdateMapObstacleData();
             checkedMonster.Value.IsWalkable = true;
             
-            NodeGrid.UpdateMapObstacleData();
             ParentPathfinder.FindPath(checkedMonster.Value);
             if(ParentPathfinder.FinalPath.Count >0 && ParentPathfinder.FinalPath.Count<=(overteDistanceCheck==null?PlayerManager.instance.AttackRange:(int)overteDistanceCheck))
             {
@@ -102,6 +102,37 @@ public class MoveValidatorScript : MonoBehaviour
         monsterList.ForEach(m=>m.Value.IsWalkable = false);
         Debug.LogError("_monstersinrange = "+_monstersInRange);
         return _monstersInRange;   
+    }
+    public (int count,List<CellScript> targets) HighlightValidAttackGridNearPlayer(List<Vector2Int> vectorsforpossibleattackCheck)
+    {
+        var monsterList = new List<CellScript>();
+        var PlayerPosition = PlayerManager.instance._playerCell.ParentCell.CurrentPosition;
+
+        foreach(var vector in vectorsforpossibleattackCheck)
+        {
+            if(GridManager.CellGridTable.ContainsKey(PlayerPosition+vector) == false) continue;
+            if(GridManager.CellGridTable[PlayerPosition+vector].SpecialTile is Monster_Cell)
+            {
+                monsterList.Add(GridManager.CellGridTable[PlayerPosition+vector]);
+            }
+            else
+            {
+                monsterList.Add(null);
+            }
+            
+        }
+        int _validTargets = monsterList.Count();
+
+        foreach(var monster in monsterList)
+        {
+            if(monster == null) continue;
+            if(Attack_Indicators.ContainsKey(monster.CurrentPosition)) continue;
+
+            Attack_Indicators.Add(monster.CurrentPosition, All_GridIndicators[monster.CurrentPosition]);
+            Attack_Indicators.Last().Value.gameObject.SetActive(true);
+            Attack_Indicators.Last().Value.color = Color.red; 
+        }
+        return (_validTargets,monsterList);   
     }
 
     public void HideAllGrid()
@@ -149,6 +180,6 @@ public class MoveValidatorScript : MonoBehaviour
         HighlightValidMoveGrid(_restrictedByStaminavalue: staminaRestriction);
 
         int intStaminaValue = Mathf.FloorToInt(PlayerManager.instance.CurrentStamina);
-        HighlightValidAttackGrid(intStaminaValue);
+        HighlightValidAttackGridGlobal(intStaminaValue);
     }
 }

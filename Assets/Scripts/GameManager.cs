@@ -420,7 +420,7 @@ public class GameManager : MonoBehaviour
         }
         else if (GameManager.instance.CurrentTurnPhase == TurnPhase.PlayerAttack)
         {
-            PlayerManager.instance.MovmentValidator.HighlightValidAttackGrid();
+            PlayerManager.instance.MovmentValidator.HighlightValidAttackGridGlobal();
         }
         yield return null;
     }

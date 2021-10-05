@@ -226,7 +226,13 @@ public class Monster_Cell :ICreature
         return true;
     }
     public bool TryMove(CellScript _targetCell)
-    {;
+    {
+        foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
+        {
+            monster.Value.IsWalkable = false;
+        }
+        this.ParentCell.isWalkable = true;
+        
         NodeGrid.UpdateMapObstacleData();
         _pathfinder.FindPath(_targetCell);
         if (_pathfinder.FinalPath.Count > 1)
@@ -257,7 +263,7 @@ public class Monster_Cell :ICreature
             Border = null;
         }
 
-        NotificationManger.TriggerActionNotification(ParentCell.SpecialTile as ISelectable,NotificationManger.AlertCategory.Loot);
+     //   NotificationManger.TriggerActionNotification(ParentCell.SpecialTile as ISelectable,NotificationManger.AlertCategory.Loot);
     }
 
     public void RemoveBorder()

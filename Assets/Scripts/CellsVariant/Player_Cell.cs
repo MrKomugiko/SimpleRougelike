@@ -90,11 +90,13 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
 
         CustomEventManager.instance.RegisterPlayerInEventManager(this);
+        Debug.Log("spawn gracza");
     }
    
   
     public object SaveAndGetCellProgressData()
     {
+        // nie dotyczny player_cell
        return null;
     }
     public void ConfigurePathfinderComponent()

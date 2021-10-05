@@ -16,14 +16,12 @@ public class SkillsManager : MonoBehaviour
     public static bool Hit1ImpactTrigger;
     public static bool Hit2ImpactTrigger;
 
-    private void Start() {
-        // GenerateExampleSkillTree();
-        
-        GenerateSkillTree();
+    private void Start() 
+    {
+        GenerateFullSkillTree();
     }
 
-
-    public  List<SkillNode> GenerateSkillTree()
+    public  List<SkillNode> GenerateFullSkillTree()
     {        
         ROOT_SKILLTREE = new SkillNode(0,"ROOT",parent:null,null);
 
