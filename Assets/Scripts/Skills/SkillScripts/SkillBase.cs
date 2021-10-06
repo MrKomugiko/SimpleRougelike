@@ -6,7 +6,6 @@ using UnityEngine;
 public class SkillBase : SkillData
 {   
     public ISkill SkillLogic;
-    
     [SerializeField] private bool _isEnoughtResourcesToUse;
     [SerializeField] private int _cooldownLeftToBeReady;
     public int CooldownLeftToBeReady 

@@ -130,10 +130,7 @@ public class ItemSlot : MonoBehaviour
     TextMeshProUGUI _counterBox_TMP;
     public void AddNewItemToSlot(ItemPack _item)
     {
-      //  Debug.Log("ITEMPACK: "+_item.Count+"szt, "+_item.item.name);
         ITEM = _item;
-        // if(IsEmpty) return; 
-
         _counterBox.SetActive(_item.Count>1?true:false);
         _counterBox_TMP = _counterBox.GetComponentInChildren<TextMeshProUGUI>();
         _counterBox_TMP.SetText(_item.Count.ToString());    
@@ -153,7 +150,6 @@ public class ItemSlot : MonoBehaviour
         
         if(PLAYER_BACKPACK)
         {
-         //   Debug.Log(" _btn.onClick.AddListener(()=>ShowDetailsWindow());   ");
             _btn.onClick.AddListener(()=>ShowDetailsWindow());   
         }
     }
@@ -170,22 +166,16 @@ public class ItemSlot : MonoBehaviour
     }
     public void PickAllGoldFromSlot()
     {
-      //  Debug.Log("pick all");
         _counterBox.SetActive(ITEM.Count>1?true:false);
 
         PlayerManager.instance.AddGold(ITEM.Count);
         this.UpdateItemAmount(-ITEM.Count);
         
-        // UPDATE VALUE IN SOURCE CHEST TO PREVEENT RESPAWN CONTENT ALL OVER AGAIN
         chest.LootChest.SynchronizeItemDataWithParentCell();
-        
-        // CLOSE CHEST IF LEFT EMPTY
         chest.IfEmptyRemoveEmptyChestFromMap();
     }
     public void MoveSinglePieceTo_Backpack()
     {
-      //  Debug.Log("move one item to backpack");
-        // extract one piece
         ItemPack SinglePieceItem = new ItemPack(0,null);
             SinglePieceItem.item = ITEM.item;
             SinglePieceItem.Count = 1;
@@ -198,7 +188,6 @@ public class ItemSlot : MonoBehaviour
         {
             if(slotInBackpack.update)
             {
-                
                 PlayerManager.instance._mainBackpack.ItemSlots[slotInBackpack.index].UpdateItemAmount(1);
                 this.UpdateItemAmount(-1);
             }
@@ -210,10 +199,8 @@ public class ItemSlot : MonoBehaviour
                 }
             }
         }
-        // UPDATE VALUE IN SOURCE CHEST TO PREVEENT RESPAWN CONTENT ALL OVER AGAIN
         chest.LootChest.SynchronizeItemDataWithParentCell();
         
-        // CLOSE CHEST IF LEFT EMPTY
         chest.IfEmptyRemoveEmptyChestFromMap();
     }
     public void UpdateItemAmount(int value)
@@ -226,22 +213,16 @@ public class ItemSlot : MonoBehaviour
 
         if(IsEmpty)
         {         
-             // usuwanie obrazka ze slotu
-         //   print("itemek jest pusty");
             if(IsInQuickSlot)
             {
-               // print("item jest podpięty pod quickslot, zostanie od niego usunięty");
                 _counterBox.SetActive(false);
                 RemoveFromQuickSlot((int)AssignedToQuickSlot);
-                
                 return;
-
             }
         }
 
         if(ITEM.Count <= 1)
         {
-            // ukrycie counterboxa
             _counterBox.SetActive(false);
         }
         if(ITEM.Count > 1)
@@ -249,7 +230,6 @@ public class ItemSlot : MonoBehaviour
             _counterBox.SetActive(true);
             string countLeft = ITEM.Count.ToString();
             _counterBox_TMP.SetText(countLeft); 
-     
         }
     }
     public bool IsInQuickSlot = false;
@@ -258,21 +238,17 @@ public class ItemSlot : MonoBehaviour
     {
         AssignedToQuickSlot = quickSlotID;
         IsInQuickSlot = true;
-     //   print("Assign to Quick Slot nr."+AssignedToQuickSlot);
 
         PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ButtonIcon_IMG.sprite = ITEM.item.ItemCoreSettings.Item_Sprite;
         
         PlayerManager.instance._actionController.actionButtonsList[quickSlotID].ConfigureDescriptionButtonClick(()=>(this.ITEM.item as IConsumable).Use(itemSlotID),$"{ITEM.item.ItemCoreSettings.Name}",false);
         PlayerManager.instance._actionController.actionButtonsList[quickSlotID].UpdateItemCounter(ITEM.Count.ToString());
-        // przywróć eq do stanu przed wyboru tego itemka do slotu
         EquipmentScript.QuitFromQuickbarSelectionMode();
     }
     public void RemoveFromQuickSlot(int quickSlotID)
     {
-     //   print("Remove from Quick Slot");
         if(AssignedToQuickSlot == null)
         {
-           // Debug.LogError("ERROR, proba usuniecia itemu z quick slota, mimo ze nic nie jest do niego przypięte");
             return;
         }
 

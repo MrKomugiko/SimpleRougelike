@@ -44,7 +44,7 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
             {
                 // TODO: Podmiana na kapliczke ;d
                 // TODO: otwarcie okna  GAMEOVER
-              //  Debug.Log("Player is DEAD");
+              //  "Player is DEAD");
                 HealthPoints = 0;
                 ChangeToPlayerCorpse();
 
@@ -66,7 +66,6 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         this.Icon_Sprite = _data.Icon_Sprite;
         this.Corpse_Sprite = _data.Corpse_Sprite;
 
-       // this.Damage = 1 + PlayerManager.instance.STATS.BaseDamage;
         this.MaxHealthPoints = Mathf.RoundToInt(PlayerManager.instance.STATS.MaxHealthPoints);
         this.Name = PlayerManager.instance.NickName;
         this.HealthPoints = PlayerManager.instance.CurrentHealth;
@@ -90,13 +89,11 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         NotificationManger.CreatePlayerNotificationElement(PlayerManager.instance._playerCell);
 
         CustomEventManager.instance.RegisterPlayerInEventManager(this);
-        Debug.Log("spawn gracza");
     }
    
   
     public object SaveAndGetCellProgressData()
     {
-        // nie dotyczny player_cell
        return null;
     }
     public void ConfigurePathfinderComponent()
@@ -113,17 +110,14 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     {
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
         {
-            //Log("trwa inna faza niz ruchu gracza");
             return;
         }
 
         if(PlayerManager.instance.playerCurrentlyMoving == true)
         {
-          //  Debug.Log("player currenly moving");
             return;
         }
 
-       // Debug.Log("spokojnie pominąć ture klikajac na siebie");
         PlayerManager.instance.MovmentValidator.HideAllGrid();
         PlayerManager.instance.playerCurrentlyMoving = false;
         GameManager.instance.PlayerMoved = true;
@@ -140,23 +134,14 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
     public void TakeDamage(float damage, string source, bool _isCritical = false)
     {
         if(damage >0){
-            // redukcja obrazen lub unik
             bool _isDodged = (PlayerManager.instance.STATS.Evasion*100) > UnityEngine.Random.Range(0,1000)?true:false;
             bool _isBlocked = (PlayerManager.instance.STATS.BlockChance*100) > UnityEngine.Random.Range(0,1000)?true:false;
-         //   if(_isDodged) Debug.Log("gracz uniknął ataku");
             if(_isBlocked) damage *= .5f;
-            
-
             int _damageAfterReduction = Mathf.RoundToInt(damage-(damage*(PlayerManager.instance.STATS.DamageReduction/100)));
 
             OnPlayerTakeDamageEvent?.Invoke(this,(parent:ParentCell,damageTaken:Int32.Parse(_damageAfterReduction.ToString()),criticalHit:_isCritical,blockedHit:_isBlocked,dodgedHit:_isDodged));
             if(_isDodged) return;
-
-           // Debug.Log("aktualne hp "+HealthPoints);
             HealthPoints  -= _damageAfterReduction;
-            //Debug.Log("otrzymałes :"+_damageAfterReduction);
-           // Debug.Log("zaktualizowane hp "+HealthPoints);
-
             PlayerManager.instance.CurrentHealth = HealthPoints;
             if (IsAlive)
             {
@@ -167,15 +152,10 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
 
         if(damage < 0)
         {
-            // HEAL
-          //  Debug.Log("HEAL");
-         // PlayerManager.instance.PlayerAnimator.RunHealAnimation();
             Debug.Log("healing vlaue "+damage);
             HealthPoints += Mathf.RoundToInt(-damage);
             PlayerManager.instance.CurrentHealth = HealthPoints;
         }
-
-
     }
     public void ChangeToPlayerCorpse()
     {
@@ -196,5 +176,4 @@ public class Player_Cell : ISpecialTile, ILivingThing, ISelectable
         GameManager.instance.GameOverScreen.SetActive(true);
         PlayerManager.instance.SavePlayerData();
     }
-    
 }

@@ -71,7 +71,6 @@ public class Monster_Cell :ICreature
         _turnsElapsedCounter = value;
         if(value >= TurnsRequiredToMakeAction)
         {
-            // reset licznika
             _turnsElapsedCounter = 0;
             ISReadyToMakeAction = true;
             return;
@@ -106,7 +105,6 @@ public class Monster_Cell :ICreature
         CustomEventManager.instance.RegisterMonsterInEventManager(this);
 
         AvaiableActions.Add((()=>OnClick_MakeAction(),"Attack", ActionIcon.Sword, true));
-        //NotificationManger.CreateNewNotificationElement(this);
        
         var monsterObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
         ParentCell.Trash.Add(monsterObject);
@@ -135,7 +133,7 @@ public class Monster_Cell :ICreature
     
     public object SaveAndGetCellProgressData()
     {
-      //  Debug.Log("zapisanie aktualnehp hp potworka");
+      //  "zapisanie aktualnehp hp potworka");
         MonsterBackupData savedValues = new MonsterBackupData(this.MonsterDataID,Mathf.RoundToInt(this._healthPoints));
         return savedValues;
 
@@ -149,11 +147,9 @@ public class Monster_Cell :ICreature
     {
         if (_pathfinder == null)
         {
-          //  Debug.Log("proba załadowania pathfindera z obiektu monster");
             ParentCell.Trash.Where(t => t.name == (Icon_Sprite.name + "(Clone)")).FirstOrDefault().TryGetComponent<Pathfinding>(out _pathfinder);
             if (_pathfinder == null)
             {
-                //Debug.LogError("nieudane ładowanie pathfindera");
                 return;
             }
             _pathfinder._cellData = ParentCell;
@@ -166,19 +162,14 @@ public class Monster_Cell :ICreature
     {
         if(GameManager.instance.CurrentTurnPhase == GameManager.TurnPhase.PlayerMovement)
         {
-            // 1 . upewnienie sie czy klikniete pole jest w zasięgu ("czy jest podswietlone na czerwono)
             if(PlayerManager.instance.MovmentValidator.Attack_Indicators.ContainsKey(ParentCell.CurrentPosition))
             {
                 if(PlayerManager.instance.MovmentValidator.Attack_Indicators[ParentCell.CurrentPosition].color == Color.clear)
                 {
-                 //   Debug.Log("nie mozna zaatakowac - pole nie jest czerwone ;d?");
                     return;
                 }
                 GameManager.instance.NextTarget = this.OnClick_MakeAction; 
-
-                //gracz ma w tej turze ( ruchu ) ropzpoczac ruch do pola -1 od wybranego celu
                 _pathfinder.FindPath(GameManager.Player_CELL);
-
                 GridManager.CellGridTable[_pathfinder.FinalPath[0].Coordination].MoveTo();
             }
             return;
@@ -186,8 +177,6 @@ public class Monster_Cell :ICreature
 
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerAttack)
         {
-            
-           // Debug.Log($"trwa innna tura({GameManager.instance.CurrentTurnPhase.ToString()}) niż tura ataku");
             return;
         }
 
@@ -195,13 +184,11 @@ public class Monster_Cell :ICreature
         {
             if(PlayerManager.instance.MovmentValidator.Attack_Indicators[ParentCell.CurrentPosition].color == Color.clear)
             {
-              //  Debug.Log("nie mozna zaatakowac - pole nie jest czerwone ;d?");
                 return;
             }
         }
         else
         {
-          //  Debug.Log("nie mozna zaatakowac, brak znaczika celu na mapie pod wybranym mobem");
             return;
         }
         if(GameManager.instance.TurnPhaseBegin == false) return;
@@ -212,28 +199,15 @@ public class Monster_Cell :ICreature
         if(direction.y == 0)  GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
-        // if(GridManager.DistanceCheck(this) == false) {
-        //      NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");
-        //      return;
-        // }
 
         SkillsManager.SelectedAttackSkill(this);
-
-        // NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
-
-       // PlayerManager.instance.StartCoroutine(PlayerManager.instance.PerformRegularAttackAnimation(PlayerManager.instance._playerCell.ParentCell,this.ParentCell,GameManager.instance.attackAnimationFrames));     
     }
     public void TakeDamage(float damage, string source, bool _idCritical = false)
     {
-       // Debug.Log("monster otrzymal obrazenia");
         OnMonsterTakeDamageEvent?.Invoke(this,(ParentCell,Int32.Parse(damage.ToString()),_idCritical,false,false));
-
         HealthPoints -= Mathf.RoundToInt(damage);
-     
         var IMPORTANTCHECKTOTRIGGERGETTER = IsAlive;
-
         SkillsManager.Hit1ImpactTrigger = false;
-            //Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");    
     }
     public bool TryAttack(CellScript _target)
     {
@@ -258,8 +232,6 @@ public class Monster_Cell :ICreature
         _pathfinder.FindPath(_targetCell);
         if (_pathfinder.FinalPath.Count > 1)
         {
-           // Debug.LogError("RUCH STWORKA");
-            //Debug.Log($"Monster wykonuje krok w strone celu [ komórki {_targetCell.name} ]");
             GridManager.SwapTiles(ParentCell, _pathfinder.FinalPath[0].Coordination);
             return true;
         }
@@ -276,17 +248,13 @@ public class Monster_Cell :ICreature
         ParentCell.IsWalkable = true;
         ParentCell.SpecialTile = new Treasure_Cell(ParentCell, _data);
 ;       (ParentCell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
-        //4. assign LootID related reward to this object
         if (Border != null)
         {
             Border.GetComponent<Image>().color = Color.yellow;
             GameObject.Destroy(Border, .5f);
             Border = null;
         }
-
-     //   NotificationManger.TriggerActionNotification(ParentCell.SpecialTile as ISelectable,NotificationManger.AlertCategory.Loot);
     }
-
     public void RemoveBorder()
     {
         IsHighlighted = false;
@@ -295,5 +263,4 @@ public class Monster_Cell :ICreature
             GameObject.Destroy(Border.gameObject);
         }
     }
-
 }

@@ -31,7 +31,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             }
             else
             {
-                /// jezeli nie ma licznika ZAWSZE bedzie gotowa do uzycia
                 return true;
             }
         } 
@@ -86,9 +85,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 
         AvaiableActions.Add((()=>Use(),"Detonate", ActionIcon.Bomb, true));
         AvaiableActions.Add((()=>SwitchHighlightImpactArea(),"Show Inpact Area",ActionIcon.Flag, false));
-        // AvaiableActions.Add((null,"WIP: Disarm",ActionIcon.Delete));
-
-      //  NotificationManger.CreateNewNotificationElement(this);
     }
 
     public object SaveAndGetCellProgressData()
@@ -98,11 +94,9 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
     
     public void OnClick_MakeAction()
     {   
-      //  Debug.Log("bomb click");
+      //  "bomb click");
         if(GameManager.instance.TurnPhaseBegin == false) return;
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
-
-//        Debug.Log(direction);
         if(direction.x == 0)
             GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
         
@@ -124,10 +118,7 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             {
                 ParentCell.MoveTo();
             }       
-          //  Debug.Log("to nie tura ruchu");
-
         }   
-
     }
     public void Use()
     {
@@ -136,7 +127,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
         if(IsUsed == true) return;
 
         IsUsed = true;
-       // Debug.LogError("WYBUCH BOMBY !");
         AddCellsToDestroyList(ParentCell.CurrentPosition, Vector2Int.zero);
         foreach(var cell in CellsToDestroy.Where(cell=> cell != null))
         {   
@@ -150,14 +140,12 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
                     NotificationManger.AlertCategory.ExplosionDamage,
                     TARGET_BaseCEll: cell.SpecialTile 
                 );
-             //   GridManager.instance.DamageMap.Add((cell.SpecialTile as ILivingThing, BombDamage));
                 continue;
             } 
             if(cell.SpecialTile is Bomb_Cell)
             {
                 if((cell.SpecialTile as IUsable).IsUsed ==false)
                 {
-                   // Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
                     (cell.SpecialTile as IUsable).Use();
                 }
             } 
@@ -169,7 +157,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 
     public List<CellScript> GetDestroyedCellsFromCascadeContinueExploding()
     {
-        //Debug.LogError("GetDestroyedCellsFromCascadeContinueExploding");
         List<CellScript> result = new List<CellScript>();
 
         if(IsImpactAreaHighlihted)
@@ -200,7 +187,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             {
                 if((cell.SpecialTile as IUsable).IsUsed ==false)
                 {
-                   // Debug.LogError("bomba do odstrzału => "+cell.CurrentPosition);
                     result.AddRange(GetDestroyedCellsFromCascadeContinueExploding());
                 }
             } 
@@ -238,7 +224,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
 
     public void SwitchHighlightImpactArea()
     {
-       // Debug.Log($"switch impact area range from {IsImpactAreaHighlihted} to {!IsImpactAreaHighlihted}");
         if(IsImpactAreaHighlihted == false)
         {
             IsImpactAreaHighlihted = true;

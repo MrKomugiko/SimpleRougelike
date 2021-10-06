@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class ProjectileScript : MonoBehaviour
 {
-    // Update is called once per frame
-    [SerializeField] Transform projectileTransform;
-    [SerializeField] SpriteRenderer ProjectileSprite;
-    public Vector3 mainGridWorldDestination;
-    public int projectileSpeed = 6;
+    public int ProjectileSpeed = 6;
+    public List<Vector2> TargetsPositionsList = new List<Vector2>();
+    public Vector3 MainTarget_GridCoord;
+    [SerializeField] private Transform projectileTransform;
+    [SerializeField] private SpriteRenderer ProjectileSprite;
     public Vector2Int movingDirection;
-    private Vector2Int shooterStaringWorldPosition;
+    private Vector2Int Origin_GridCoord;
     private AnimationsEventsScript animatorEvents;
-
     private int distanceTraveled = 0;
-
+    public void ShootProjectile(Vector2Int shooterPosition)
+    {
+        distanceTraveled = 0;
+        Origin_GridCoord = shooterPosition;
+        animatorEvents = GetComponentInParent<AnimationsEventsScript>();
+        
+        SetFlyingAngle(movingDirection);
+        StartCoroutine(FlyingTowardDirection(movingDirection));
+    }
     private void SetFlyingAngle(Vector2Int direction)
     {
         float angle = 0;
@@ -32,46 +39,29 @@ public class ProjectileScript : MonoBehaviour
 
         ProjectileSprite.transform.Rotate(0,0,angle);
     }
-    public void ShootProjectile(Vector2Int shooterPosition)
+    private IEnumerator FlyingTowardDirection(Vector2Int direction)
     {
-        distanceTraveled = 0;
-        shooterStaringWorldPosition = shooterPosition;
-        animatorEvents = GetComponentInParent<AnimationsEventsScript>();
-        Debug.Log("wystrzal obiektu");
-        SetFlyingAngle(movingDirection);
-        StartCoroutine(FlyingTowardDirection(movingDirection));
-    }
-    public List<Vector2> TargetsPositionsList = new List<Vector2>();
-    public IEnumerator FlyingTowardDirection(Vector2Int direction)
-    {
-        Vector3 projectileGridWorldPosition = new Vector3(shooterStaringWorldPosition.x+(direction.x*distanceTraveled),shooterStaringWorldPosition.y+(direction.y*distanceTraveled),0);
+        Vector3 projectileGridWorldPosition = new Vector3(Origin_GridCoord.x+(direction.x*distanceTraveled),Origin_GridCoord.y+(direction.y*distanceTraveled),0);
        
-        if(projectileGridWorldPosition == mainGridWorldDestination)
+        if(projectileGridWorldPosition == MainTarget_GridCoord)
         {
-            // zniszczenie obiektu strzały
             Destroy(this.gameObject);
-            // pocisk dotart do celu / zanotowanie trafienia
             animatorEvents.Attack_Hit_1();
-            Debug.Log("final hit");
-            // wykonanie "eksplozji" TODO:
             animatorEvents.AttackAnimationFinished();
-            // zakończenie animacji = nowa tura
             yield break;
         }
         else if (TargetsPositionsList.Contains(projectileGridWorldPosition))
         {
             animatorEvents.Attack_Hit_1();
-            Debug.Log("pocisk przeszywajacy");
         }
 
         Vector3 currentProjectileobjectposition = new Vector3(projectileTransform.localPosition.x,projectileTransform.localPosition.y,0);
         Vector3 nextdestination = (currentProjectileobjectposition + new Vector3(direction.x,direction.y,0));
 
         float movingProgress = 0f;
-        for(float i = 0f; i<=projectileSpeed; i++)
+        for(float i = 0f; i<=ProjectileSpeed; i++)
         {
-            movingProgress = i/projectileSpeed;
-            //Debug.Log("arrow  current position = "+ projectileTransform.localPosition + " arrow new position = "+Vector3.Lerp(projectileGridWorldPosition,nextdestination,movingProgress)+ " [ moving progress ="+movingProgress+"]");
+            movingProgress = i/ProjectileSpeed;
             projectileTransform.localPosition = Vector3.Lerp(currentProjectileobjectposition,nextdestination,movingProgress);
             yield return new WaitForFixedUpdate();
         }

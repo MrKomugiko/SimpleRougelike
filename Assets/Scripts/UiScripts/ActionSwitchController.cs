@@ -23,10 +23,8 @@ public class ActionSwitchController : MonoBehaviour
         {
             if(EquipmentScript.AssignationItemToQuickSlotIsActive)
             {
-                //Debug.Log("quit from AssignationItemToQuickSlotIsActive mode");
                 EquipmentScript.QuitFromQuickbarSelectionMode();
             }
-
         }
         AnimationIsRunning = true;
         StartCoroutine(AnimateSelection(selectedButton));
@@ -50,7 +48,6 @@ public class ActionSwitchController : MonoBehaviour
     
     public void ConfigurePlayerButtons(ISpecialTile cell,string actionNameString="")
     {
-        //Debug.LogWarning("Configure default-empty PlayerButtons"); 
         int i =0;
         foreach(var button in actionButtonsList)
         {
@@ -67,13 +64,11 @@ public class ActionSwitchController : MonoBehaviour
                     singleAction: cell.AvaiableActions[i].singleAction,
                     actionNameString: actionNameString);
             }
-           // print(button.name);
             i++;
         }         
     }       
     public void Configure(ISpecialTile cell)
     {
-       // Debug.LogWarning("coonfig");
         int i =0;
         ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
         actionButtonsList.CopyTo(temp);
@@ -108,7 +103,6 @@ public class ActionSwitchController : MonoBehaviour
     {
         if(cell is Player_Cell) return;
 
-        //Debug.LogWarning("Refresh opened window in ACTION BUTTONS");
         int i =0;
         ActionButtonScript[] temp = new ActionButtonScript[actionButtonsList.Count];
         actionButtonsList.CopyTo(temp);
@@ -118,7 +112,6 @@ public class ActionSwitchController : MonoBehaviour
             if(cell.AvaiableActions == null) continue;
             if(i<cell.AvaiableActions.Count)
             {
-              //  button.gameObject.SetActive(true);
                 button.ConfigureIconButtonClick(
                     action:()=>OnClick_SelectActionIcon(button),
                     cell.AvaiableActions[i].icon
@@ -131,7 +124,6 @@ public class ActionSwitchController : MonoBehaviour
             }
             else
             {
-
                 actionButtonsList.Remove(button);
                 Destroy(button.gameObject);
             }
@@ -141,8 +133,6 @@ public class ActionSwitchController : MonoBehaviour
     }
     private IEnumerator AnimateSelection(ActionButtonScript selectedButton)
     {
-      //  print("AnimateSelection = change color");
-        // make others semi transparent 
         float colorIncrementvalue = 1f/(float)ColorDimmingSteps;
         var endColor = new Color32(255,255,255,90);
         float currentIncrement = 0;
@@ -159,7 +149,6 @@ public class ActionSwitchController : MonoBehaviour
                     
                     continue;
                 }
-                //print(Color32.Lerp(Color.white,endColor,currentIncrement));
                 button.ButtonIcon_IMG.color = Color32.Lerp(Color.white,endColor,currentIncrement);        
             }
         }
@@ -178,9 +167,6 @@ public class ActionSwitchController : MonoBehaviour
     }
     private IEnumerator AnimateDeselection(ActionButtonScript selectedButton)
     {
-        
-      //  ("AnimateDeselection => change color ");
-        // make others semi transparent 
         float colorIncrementvalue = 1f/(float)ColorDimmingSteps;
         var startColor = new Color32(255,255,255,90);
         float currentIncrement = 0;
@@ -197,22 +183,17 @@ public class ActionSwitchController : MonoBehaviour
 
         while(true)
         {
-        //    print(currentIncrement);
-
             if(currentIncrement >1)
                 break;
-            
             currentIncrement+=colorIncrementvalue;
             yield return new WaitForFixedUpdate();
 
             foreach(var button in actionButtonsList)
             {
                 if(button == selectedButton) continue;
-             //   print(Color32.Lerp(startColor,Color.white,currentIncrement));
                 button.ButtonIcon_IMG.color =  Color32.Lerp(startColor, Color.white,currentIncrement);        
             }            
         }
         AnimationIsRunning = false;
     }
-
 }

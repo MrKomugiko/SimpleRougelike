@@ -36,7 +36,6 @@ public class GridManager : MonoBehaviour
     [ContextMenu("RESET")]
     public void ResetGridToDefault()
     {
-        //Debug.Log("reset");
         foreach(var cell in CellGridTable)
         {
             cell.Value.SpecialTile = null;

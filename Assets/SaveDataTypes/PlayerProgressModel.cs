@@ -60,8 +60,6 @@ using static EquipmentScript;
         CurrentHealth = MaxHealth;
         CurrentStamina = MaxStamina;
         CurrentEnergy = MaxEnergy;
-
-       // Debug.Log("Created PPMData with nick: "+_nickname);
     }
 
     // ----------------------------- ARCHIVMENTS PROGRES ----------

@@ -13,7 +13,6 @@ public class NodeGrid : MonoBehaviour
     {
         GridSize = GridManager.instance._gridSize;
         MAPDATA = new Node[GridSize.x,GridSize.y];
-        // create empty grid
 
         for (int x = 0; x < GridSize.x; x++)
         {
@@ -22,16 +21,11 @@ public class NodeGrid : MonoBehaviour
                MAPDATA[x,y] = new Node(x,y,_isWalkable: true, false);                
             }
         }
-     //   Debug.Log("liczba dostępnych nodów w MAPDATA =  "+MAPDATA.Length);
-
     }
     public static void UpdateMapObstacleData(bool passTroughtMonsters = false)
     {
         if(MAPDATA == null)
             CreateNodesMap();
-
-       // print("odświeżono nodeGrid'a o aktualną pozycje ścian na mapie");
-        // set all to true
         foreach(var node in MAPDATA)
         {
             node.walkable = true;

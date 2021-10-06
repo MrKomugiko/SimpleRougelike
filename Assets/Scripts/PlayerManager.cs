@@ -70,7 +70,6 @@ public class PlayerManager: MonoBehaviour
             
             if(StaminaConsumeEnabled == false) 
             {
-                Debug.Log("stamina nie została zużyta");
                 return;
             }
 
@@ -89,13 +88,7 @@ public class PlayerManager: MonoBehaviour
                 value = maxEnergy;
             if(value < 0)
                 value = 0;
-            
-            // if(EnergyConsumeEnabled == false) 
-            // {
-            //     Debug.Log("energia nie została zużyta");
-            //     return;
-            // }
-
+           
             _currentEnergy = value; 
             UIManager.instance.Energy_Bar.UpdateBar(_currentEnergy,Mathf.RoundToInt(STATS.MaxEnergyPoints));
         }
@@ -103,8 +96,6 @@ public class PlayerManager: MonoBehaviour
 
     public Coroutine currentAutopilot = null;
     public bool playerCurrentlyMoving = false;
-
-
     public IEnumerator Autopilot(CellScript target)
     {
         int i = 0;
@@ -171,13 +162,8 @@ public class PlayerManager: MonoBehaviour
         {
             weaponSprite = null;
         }
-        if(GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite != null) 
-            print("current weapon sprite: "+GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite.name);
-        else
-            print("brak widocznej broni");
 
         GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = weaponSprite==null?null:weaponSprite;
-        
     }
 
     internal void RegenerateResourcesAtTurnStart()
@@ -188,17 +174,11 @@ public class PlayerManager: MonoBehaviour
 
     public void LoadPlayerData(PlayerProgressModel _progressData)
     {
-        // clear extra data from items and perks before load new data from saveFile
         STATS.ResetExtraValues(); 
 
-        // wyczyszczenie dunga przed załądowaniem danych nowego gracza
         DungeonManager.instance.maxDungeonTraveledDistance = _progressData.maxDungeonTraveledDistance;      
-        Debug.LogError("load dungeon level =" + _progressData.maxDungeonTraveledDistance);
         DungeonManager.instance.DungeonClearAndGoToCamp();
 
-       // Debug.Log("Load data from player progress file");
-        // progress & resources 
-        // Debug.LogError("wczytanie expa:"+_progressData.Experience);
         NickName                  =  _progressData.NickName;                    
         STATS.Level               =  _progressData.Level;       
         STATS.Experience          =  _progressData.Experience;                 
@@ -217,11 +197,8 @@ public class PlayerManager: MonoBehaviour
         STATS.MaxHealthPoints        =  _progressData.MaxHealth;
         CurrentHealth             =  _progressData.CurrentHealth;  
         CurrentStamina            =  _progressData.CurrentStamina;                  
-            //UIManager.instance.Health_Bar.UpdateBar(CurrentHealth,Mathf.RoundToInt(STATS.HealthPoints));   // TODO:
-    
 
         STATS.dataLoaded = true;         
-
         
         _mainBackpack.GenerateEquipment();
         _EquipedItems.GenerateEquipment();
@@ -229,33 +206,27 @@ public class PlayerManager: MonoBehaviour
  
     public void LoadPlayerItensAndEq(PlayerProgressModel _progressData, string equipmentTypeTarget)
     {
-      //  Debug.Log("LOAD ITEMS");
-
        List<ItemData> itemsDatabase = Resources.LoadAll<ItemData>("Items").ToList();
        if(equipmentTypeTarget == "MainBackpack")
        {
-     //   Debug.Log("dodawanie itemkow z save'a do backpacka");
         foreach(var data in _progressData.BagpackItems)
         {
             if(data.Count == 0) continue;
             var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
             
             ItemPack loadedItem = new ItemPack(data.Count, item);
-//            Debug.Log(loadedItem.item.name);
             _mainBackpack.ItemSlots[data.SlotID].AddNewItemToSlot(loadedItem);
         }
        }
 
         if(equipmentTypeTarget == "PlayerEQ")
         {
-            // wyczyszczenie aktualnie zalozonych itemkow gracza
             _EquipedItems.ItemSlots.ForEach(i=>i.ITEM = new ItemPack(0,null));
             foreach(var data in _progressData.EquipedItems)
             {           
                 if(data.Count == 0) continue;
                 var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
                 ItemPack loadedItem = new ItemPack(data.Count, item);
-            //    Debug.Log("equip => "+loadedItem.item.name);
                 _EquipedItems.LoadItemInPlayerEq(data.SlotID, loadedItem);
             }
         }
@@ -279,20 +250,11 @@ public class PlayerManager: MonoBehaviour
     }
     public void SetPlayerManager(Player_Cell parentCell)
     {
-       
         _playerCell = parentCell;
-        //_mainBackpack = GameObject.Find("Content_EquipmentTab").GetComponent<EquipmentScript>();
-
         var uicontroller = Instantiate(GraphicSwitchPrefab,_playerCell.playerSpriteObject.transform);
-       // var playerAnimatorController = Instantiate(AnimatorControllerPrefab,_playerCell.playerSpriteObject.transform);
-        GraphicSwitch = uicontroller.GetComponent<PlayerEquipmentVisualSwitchScript>();
-       // PlayerAnimator = playerAnimatorController.GetComponent<PlayerAnimatorController>();
-        
         MovmentValidator = GetComponentInChildren<MoveValidatorScript>();
         MovmentValidator.ParentPathfinder = parentCell._pathfinder;
-
         Invoke("RefreshWearedEquipmentUIonMap",0.1f);
-       
     }
     public void Reset_QuickSlotToDefault(int quickslotID)
     {
@@ -395,9 +357,6 @@ public class PlayerManager: MonoBehaviour
         yield return null;
     }
 
-
-
-    [ContextMenu("Wykonaj zrzut danych gracza")]
     public void SavePlayerData()
     {
       //  Debug.LogError("ZAPISANIE POSTEPOW GRACZA");

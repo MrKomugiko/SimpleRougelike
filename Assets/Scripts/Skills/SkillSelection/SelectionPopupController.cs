@@ -38,9 +38,6 @@ public class SelectionPopupController : MonoBehaviour
                 DuplicateSelectedNodeAndCenter();
                 if(value.node_data.Childs.Count > 0)
                 {
-                    Debug.Log("wybrany node - parent");
-                    //---------------------------------------------------------------------------------
-                    // Sprawdzenie wymagan, i policzenie ile skili zostanie pokazanych 
                     List<SkillNode> enabledSkillsList = new List<SkillNode>();
                     foreach(var skill in value.node_data.Childs)
                     {
@@ -50,9 +47,7 @@ public class SelectionPopupController : MonoBehaviour
                         }
                         else if(skill.Skill.CheckRequirmentsToEnableSkill())
                             enabledSkillsList.Add(skill);
-                        
                     }
-                    //---------------------------------------------------------------------------------
                     CurrentOpenedNodeslist = enabledSkillsList;
 
                     foreach(var node in AttackOptionsNodes)
@@ -69,7 +64,6 @@ public class SelectionPopupController : MonoBehaviour
     private void DuplicateSelectedNodeAndCenter()
     {
        var currentCenterNode = CenterTreeObject.GetComponentInChildren<SelectionPopupNodeScript>();
-       // odznaczenie wczesniej wybranego skilla powiązanego z obiektem w srodku ( to jego klon, ale ID takie samo )
   
         if(currentCenterNode != null)
             Destroy(currentCenterNode.gameObject);
@@ -81,16 +75,11 @@ public class SelectionPopupController : MonoBehaviour
 
     public void RebuildTree(List<SkillNode> skillList)
     {
-        Debug.Log("rebuld");
-       // if new selected node is parent of any other nodes, rebuild tree
-        // REmove existing nodes objects
         foreach (var node in AttackOptionsNodes)
         {
             DestroyImmediate(node.gameObject);
         }
         AttackOptionsNodes.Clear();
-
-        // Midddle = przeznaczony dla quit, back,exit ?
     
         int backnodeIndex = skillList.Count / 2;
 
@@ -113,7 +102,6 @@ public class SelectionPopupController : MonoBehaviour
     {
         if(CenterTreeObject.transform.childCount == 1 )
         {
-            Debug.Log("clear center");
             Destroy(CenterTreeObject.transform.GetChild(0).gameObject);
         }
         _selectedNode = null;
@@ -133,7 +121,6 @@ public class SelectionPopupController : MonoBehaviour
         }
         AttackOptionsNodes.Clear();
 
-        //---------------------------------------------------------------------------------
         List<SkillNode> enabledSkillsList = new List<SkillNode>();
         if(parentNode.Parent == null)
         {
@@ -160,8 +147,6 @@ public class SelectionPopupController : MonoBehaviour
         }
         CurrentOpenedNodeslist = enabledSkillsList;
 
-        //-------------------------------------------------------------------------------------------
-        // sprawdzenie czy rodzic do ktorego sie cofnelismy jest dzieckiem innego node'a, zeby wstawic go odrazu na srodku
         var currentCenterNode = CenterTreeObject.GetComponentInChildren<SelectionPopupNodeScript>();
         if(parentNode.Parent != null)
         {
@@ -192,16 +177,12 @@ public class SelectionPopupController : MonoBehaviour
 
     public void OPENandSpawnInitNodesTree()
     {
-        Debug.Log("open");
         this.gameObject.SetActive(true);
-        // REmove existing nodes objects
         foreach (var node in AttackOptionsNodes)
         {
             DestroyImmediate(node.gameObject);
         }
         AttackOptionsNodes.Clear();
-        //---------------------------------------------------------------------------------
-        // Sprawdzenie wymagan, i policzenie ile skili zostanie pokazanych 
         List<SkillNode> enabledSkillsList = new List<SkillNode>();
         foreach(var skill in SkillsManager.ROOT_SKILLTREE.Childs)
         {
@@ -213,9 +194,7 @@ public class SelectionPopupController : MonoBehaviour
             if(skill.Skill.CheckRequirmentsToEnableSkill())
                 enabledSkillsList.Add(skill);
         }
-        //---------------------------------------------------------------------------------
         CurrentOpenedNodeslist = enabledSkillsList;
-        //---------------------------------------------------------------------------------
         int backnodeIndex = enabledSkillsList.Count / 2;
         int index = 0;
         foreach(var skill in enabledSkillsList)

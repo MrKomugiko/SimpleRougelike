@@ -7,10 +7,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName="Skill_Punch",menuName="GameData/Skill/Punch")]
 public class Skill_Punch : SkillBase, ISkill
 {
-    
     public Skill_Punch()
     {
-        Debug.Log("przypisanie logiki skila Punch");
         base.SkillLogic = this;
     }
 
@@ -18,29 +16,22 @@ public class Skill_Punch : SkillBase, ISkill
     {
         if(base.isCategoryType) return;
 
-        Debug.Log($"Select skill to execute: {base.Name}");
         ShowAvailableTargets();
         SkillsManager.SelectedAttackSkill = Execute;
     }
-
     public void Execute(Monster_Cell target)
     {
         SkillsManager.Hit1ImpactTrigger = false;
         SkillsManager.Hit2ImpactTrigger = false;
 
         AssignSkillAnimations(target.ParentCell.CurrentPosition);
-        Debug.Log("prepare for EXECUTE SKILL");
-        //lock turn routine
         SkillsManager.SkillAnimationFinished = false;
-
         GameManager.instance.StartCoroutine(ProcessSkillRoutine(target));
 
-        // after select skill - hide popup and reset centered skill
         GameObject.Find("ActionsPopUp").GetComponent<SelectionPopupController>().ClearCenteredNode();
         GameObject.Find("ActionsPopUp").GetComponent<SelectionPopupController>().gameObject.SetActive(false);
         PlayerManager.instance.CurrentStamina-=base.StaminaCost;
 
-        // reset skill's cooldown time 
         base.ResetCooldown();
     }
 

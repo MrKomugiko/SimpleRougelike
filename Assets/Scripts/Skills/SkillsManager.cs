@@ -37,8 +37,6 @@ public class SkillsManager : MonoBehaviour
             }
             else
             {
-               //Debug.Log(skill.ParentName);
-                List<string> path = skill.ParentName.Split(char.Parse("/")).ToList();
 
                 SkillNode parentNode = ROOT_SKILLTREE;
                 foreach(var node in path)
@@ -62,7 +60,6 @@ public class SkillsManager : MonoBehaviour
 
     public void TickSkillsCooldowns()
     {
-        //Debug.Log("skills tick cooldown +1");
         foreach(var skill in AllSkills)
         {
             skill.TickCooldown();

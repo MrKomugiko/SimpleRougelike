@@ -19,7 +19,7 @@ public class DungeonManager : MonoBehaviour
     public int currentDungeonDistance = 0;
 
     [SerializeField] private GameObject DungeonCanvas;
-    public void OpenDungeon(/* dungeondata */ )
+    public void OpenDungeon()
     {
         currentDungeonDistance = DungeonManager.instance.maxDungeonTraveledDistance;
 
@@ -31,7 +31,6 @@ public class DungeonManager : MonoBehaviour
 
         GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
 
-        //GameManager.instance.CurrentTurnNumber = 1;
         GameManager.instance.PlayerMoved = false;
         GameManager.instance.PlayerAttacked = false;
         GameManager.instance.MonstersMoved = false;
@@ -39,15 +38,11 @@ public class DungeonManager : MonoBehaviour
 
         PlayerManager.instance.RegenerateFullStamina();
         
-        Debug.Log("open dungeon");
         StartCoroutine(GameManager.instance.AddTurn());
-
     }
-
     
     public void DungeonClearAndGoToCamp()
     {
-        // poodpinanie zalozonych itemkow w quickslocie gracza
         PlayerManager.instance._mainBackpack.ItemSlots.ForEach(slot =>
             {
                 if (slot.IsInQuickSlot)
@@ -56,11 +51,6 @@ public class DungeonManager : MonoBehaviour
                 }
             }
         );
-
-//        Debug.Log("DUNGEON CLEAR AND BACK TO CAMP");
-        //  recentDungeonStage = dungeonData.stage;
-        //recentDungeonStage++; // tymczasowe
-
         GameManager.instance._chestLootScript.Clear();
         if (NotificationManger.instance != null)
         {
@@ -78,15 +68,11 @@ public class DungeonManager : MonoBehaviour
         DungeonCanvas.SetActive(false);
 
         maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
-        Debug.LogError("refreshed max distance :"+maxDungeonTraveledDistance);
-        //maxDungeonTraveledDistance = maxDungeonTraveledDistance; // updated
     }
     [SerializeField] Image RoomWallsSprite;
     public Vector2Int CurrentLocation;
-    [ContextMenu("1. create current map backup")]
     public void MakeCurrentMapBackup(Room _room)
     {
-        //Debug.LogWarning("zrzut danych dla pokoju: "+_room.position);
         Dictionary<Vector2Int, MonsterBackupData> _backup_Monsters = new Dictionary<Vector2Int, MonsterBackupData>();
         Dictionary<Vector2Int, TreasureBackupData> _backup_Treasures = new Dictionary<Vector2Int, TreasureBackupData>();
         Dictionary<Vector2Int, BombData> _backup_Bombs = new Dictionary<Vector2Int, BombData>();
@@ -97,20 +83,15 @@ public class DungeonManager : MonoBehaviour
             if (cell.Value.SpecialTile is Monster_Cell)
             {
                 var monster = (cell.Value.SpecialTile as Monster_Cell);
-
                 _backup_Monsters.Add(cell.Key, (monster.SaveAndGetCellProgressData()) as MonsterBackupData);
-               
                 continue;
             }
 
             if (cell.Value.SpecialTile is Treasure_Cell)
             {
-
                 var treasure = (cell.Value.SpecialTile as Treasure_Cell);
 
                 _backup_Treasures.Add(cell.Key, (treasure.SaveAndGetCellProgressData()) as TreasureBackupData);
-               
-                // Debug.LogWarning("make backup "+ ((cell.Value.SpecialTile as Treasure_Cell).SaveAndGetCellProgressData() as TreasureData).SavedContent.Count+" items stored");
                 continue;
             }
 
@@ -129,7 +110,6 @@ public class DungeonManager : MonoBehaviour
         RoomGridData _roomBackupData = new RoomGridData(_backup_Monsters, _backup_Treasures, _backup_Bombs, _wallPositions);
         _room.DATA = _roomBackupData;
     }
-    [ContextMenu("2. Regenerate map from backup")]
     public void LoadGridForRoomData(Room _room)
     {
         foreach (var cell in GridManager.CellGridTable)
@@ -175,7 +155,6 @@ public class DungeonManager : MonoBehaviour
             }
         }
 
-        // map border => invicible walls  excepted doors entrace
         GridManager.CellGridTable[new Vector2Int(0, 4)].AssignType(TileTypes.grass);
         GridManager.CellGridTable[new Vector2Int(0, 4)].isWalkable = true;
 
@@ -198,7 +177,6 @@ public class DungeonManager : MonoBehaviour
     }
     public void GenerateAndEnterDungeon()
     {
-     //   Debug.Log("generate dungeon rooms");
         DungeonRoomScript.GenerateDungeonRooms();
         OpenDungeon();
         CurrentLocation = Vector2Int.zero;
@@ -248,20 +226,16 @@ public class DungeonManager : MonoBehaviour
         {             
             currentDungeonDistance = DungeonRoomScript.Dungeon[newLocationCoord].DistanceFromCenter;
             maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
-          
-            Debug.Log("currentDungeonDistance' "+currentDungeonDistance+"/ Max saved distance: "+maxDungeonTraveledDistance);
 
             CurrentLocation = newLocationCoord;
             RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates.Where(t => t.name == DungeonRoomScript.Dungeon[newLocationCoord].doorsNameCode + "_OPEN").First();
             if(DungeonRoomScript.Dungeon[newLocationCoord].WasVisited == false)
             {
-                // PIERWSZE WEJSCIE DO TEGO POKOJU W DUNGEONIE
                 GridManager.instance.ResetGridToDefault();
                 GridManager.instance.RandomizeDataOnGrid();
             }
             else
             {
-                // KOLEJNE WEJSCIE DO TEGO SAMEGO POKOJU, RAZ JUZ ODWIEDZONEGO
                 GridManager.instance.ResetGridToDefault();
                 LoadGridForRoomData(DungeonRoomScript.Dungeon[newLocationCoord]);
             }
@@ -277,7 +251,6 @@ public class DungeonManager : MonoBehaviour
             RestartTurnRoutine();
             ConfigureNextRoomButtons(newLocation: newLocationCoord);
 
-           // Dungeon[newLocationCoord].SetStateDoorByVector(-moveFromDirection,true); // <- w nowym pokoju będą odblokowane drzwi przeciwne do drzwi przez ktore sie weszło , wchodzisz z prawej, nowy pokoj, odblokowane z lewej
             DungeonRoomScript.Dungeon[newLocationCoord].WasVisited = true;
             ShowMinimap();
         }
@@ -288,7 +261,6 @@ public class DungeonManager : MonoBehaviour
     public void EnableTeleportButton(string direction)
     {
         var teleport = telerpotButtons.Where(n=>n.name == direction).First();
-        //Debug.Log("włączenie teleportu:"+teleport.name);
         teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = true;
         teleport.GetComponent<Button>().interactable = true;
         teleport.GetComponent<Image>().raycastTarget = true;       
@@ -298,7 +270,6 @@ public class DungeonManager : MonoBehaviour
     {
         foreach(var teleport in telerpotButtons)
         {
-            //Debug.Log("wylaczenie teleportu:"+teleport.name);
             teleport.transform.Find("Teleport_ON").GetComponent<SpriteRenderer>().enabled = false;
             teleport.GetComponent<Button>().interactable = false;
             teleport.GetComponent<Image>().raycastTarget = false;
@@ -311,13 +282,11 @@ public class DungeonManager : MonoBehaviour
 
         GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
 
-        //GameManager.instance.CurrentTurnNumber = 1;
         GameManager.instance.PlayerMoved = false;
         GameManager.instance.PlayerAttacked = false;
         GameManager.instance.MonstersMoved = false;
         GameManager.instance.MonsterAttack = false;
 
-        Debug.Log("restart turn routine");
         StartCoroutine(GameManager.instance.AddTurn());
         
     }
@@ -355,11 +324,8 @@ public class DungeonManager : MonoBehaviour
     public GameObject MinimapTilePrefab;
     private Dictionary<Vector2Int,Image> minimapTiles = new Dictionary<Vector2Int,Image>();
 
-    [ContextMenu("Show minimap")]
     public void ShowMinimap()
     {
-       
-        // one tile size 55x55 => zmiesci cala mape 9x9 pokoi
         minimapTiles.Values.ToList().ForEach(c=>Destroy(c.gameObject));
         minimapTiles.Clear();
 
@@ -371,7 +337,6 @@ public class DungeonManager : MonoBehaviour
             {
                 AddMinimapTile(size, room.Key, doorsExitsCode:room.Value.doorsNameCode);
 
-                // spawn "?" dla nieokrytych ale świadomych istnienia pomieszczeń
                 foreach(var directionExit in room.Value.doorsNameCode.ToCharArray())
                 {
                     if(directionExit == Char.Parse("W"))
@@ -403,19 +368,14 @@ public class DungeonManager : MonoBehaviour
                     }
                 }
             }
-
-
         }
 
-        // WYŚRODKOWANIE WZGLĘDEM AKTUALNEJ POZYCJI
 
         foreach(var tile in minimapTiles)
         {
             tile.Value.transform.localPosition = new Vector3((tile.Key.x-CurrentLocation.x) * size, (tile.Key.y-CurrentLocation.y) * size, 0);
         }
-
         MinimapSpawnContainer.parent.transform.GetComponent<RectTransform>().localPosition = new Vector3(244.74f,-247.55f,0);
-       
 
         void AddMinimapTile(int size, Vector2Int roomLocation, string doorsExitsCode = "", bool markAsRevealed = false)
         {
@@ -427,7 +387,6 @@ public class DungeonManager : MonoBehaviour
                     return;
                 }
                 room_minimap= Instantiate(MinimapTilePrefab, MinimapSpawnContainer).GetComponent<Image>();
-               // room_minimap.transform.localPosition = new Vector3(roomLocation.x * size, roomLocation.y * size, 0);
                 room_minimap.name = roomLocation.ToString();
 
                 room_minimap.enabled = false;
@@ -445,7 +404,6 @@ public class DungeonManager : MonoBehaviour
                 }
                 
                 room_minimap = Instantiate(MinimapTilePrefab, MinimapSpawnContainer).GetComponent<Image>();;
-               // room_minimap.transform.localPosition = new Vector3(roomLocation.x * size, roomLocation.y * size, 0);
                 room_minimap.name = roomLocation.ToString();
                 
                 room_minimap.enabled = true;
@@ -453,9 +411,7 @@ public class DungeonManager : MonoBehaviour
                 room_minimap.color = roomLocation==CurrentLocation?Color.green:defaultColor;
                 room_minimap.transform.GetChild(0).GetComponent<Image>().enabled = false;
             }
-
              minimapTiles.Add(roomLocation,room_minimap);
-           
         }
     }
 

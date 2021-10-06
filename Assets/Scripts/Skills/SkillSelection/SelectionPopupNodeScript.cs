@@ -17,12 +17,10 @@ public class SelectionPopupNodeScript : MonoBehaviour
 
     public void AdjustImageRotation()
     {
-        // counter-rotate
         Content.transform.Rotate(0,0,-this.transform.localEulerAngles.z);
     }
     public void HideProgressBar()
     {
-        // counter-rotate
         RoundProgressBarContainer.SetActive(false);
     }
 
@@ -30,7 +28,6 @@ public class SelectionPopupNodeScript : MonoBehaviour
     {
         if(node_data.Skill.ReadyToUse == false)
         {
-            Debug.Log("skill nie jest gotowy do uzycia");
             return;
         }
         if(node_data.Skill.IsEnoughtResourcesToUse == true)
@@ -46,7 +43,6 @@ public class SelectionPopupNodeScript : MonoBehaviour
     {
        // EnableSelectionDarkOverlay(false);
         this.gameObject.name = "centeredNode";
-        Debug.Log("centrowanie nowego noda");
         var _rect = GetComponent<RectTransform>();
         _rect.anchorMin = new Vector2(.5f,.5f);
         _rect.anchorMax = new Vector2(.5f,.5f);
@@ -135,8 +131,6 @@ public class SelectionPopupNodeScript : MonoBehaviour
     {   
         if(node_data.Skill.isObtained && node_data.Skill.isCategoryType == false)
         {
-            //Debug.Log("sprawdzanie czy stac nas na skila");
-            // wskaznikiem  czy sa zasoby bedzie kolor paska łądowania wokół = czwerowny pełny, git, ale nie stac cie na niego xd
             if(node_data.Skill.isLocked)
             {
                 GetComponentInChildren<SkillRoundProgressBar>().fillProgressBarIMG.color = Color.black;
@@ -170,7 +164,6 @@ public class SelectionPopupNodeScript : MonoBehaviour
         if(SelectedOverlay.gameObject == null)
             return;
             
-       // Debug.Log("przelaczenie przyciemnienia:"+value+" dla "+node_data.Node_Name);
         SelectedOverlay.SetActive(value);
     }
 }

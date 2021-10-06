@@ -25,32 +25,20 @@ public class EquipmentItem : ItemData
     public bool Equip(ItemSlot slot)
     {
         var MoveItemTo = slot.ParentStorage.StorageName=="Player"?PlayerManager.instance._mainBackpack:PlayerManager.instance._EquipedItems;
-        
         var result = slot.ParentStorage.EquipItemFromSlot(slot, MoveItemTo);
-
             if(result == true)
             {
                 if(MoveItemTo == PlayerManager.instance._EquipedItems ) 
                 {
                     {PlayerManager.instance.STATS.EquipItem_UpdateStatistics(this);}
                     PlayerManager.instance.RefreshWearedEquipmentUIonMap();
-                    // Sprite Weapon_Sprite = PlayerManager.instance._EquipedItems.GetEquipmentItemFromSlotName(EquipmentType.PrimaryWeapon).ItemCoreSettings.Item_Sprite;
-                    // GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = Weapon_Sprite==null?null:Weapon_Sprite;
-                    Debug.Log("załozenie - podmiana sprite'a [eqitemscript]");
                 }
                
                if(MoveItemTo == PlayerManager.instance._mainBackpack ) 
                {
                     {PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(this);}
                     PlayerManager.instance.RefreshWearedEquipmentUIonMap();
-
-                    //   Sprite Weapon_Sprite = PlayerManager.instance._EquipedItems.GetEquipmentItemFromSlotName(EquipmentType.PrimaryWeapon).ItemCoreSettings.Item_Sprite;
-                    // GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = Weapon_Sprite==null?null:Weapon_Sprite;
-                    Debug.Log("zdjęcie - podmiana sprite'a [eqitemscript]");
-
                }
-
-
             }
         return result;
     }

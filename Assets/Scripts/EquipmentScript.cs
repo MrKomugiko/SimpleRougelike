@@ -27,24 +27,17 @@ public class EquipmentScript : MonoBehaviour
     }
     public void GenerateEquipment() 
     {
-        
-      Debug.Log("Generate EQUIPMENT SCRIPT");
-
-        if(PLAYER_EQUIPMENTSLOT == false) // poniewaz eq gracza jest juz na scenie nie trzeba go znowu generowac
         { 
             if(ItemSlots.Count>0)
             {
-                // gra juz załadowana, ponowne wejscie, reset backpacka
                 foreach(var slot in ItemSlots)
                 {
                     slot.ITEM = null;
                     slot.UpdateItemAmount(0);
                 }
-              //     Debug.Log("zresetowano backpack");
             }
             else
             {
-            //    Debug.Log("Create grid");
                 for(int i = 0; i< MaxCapacity; i++)
                 {
                     StorageName = "Backpack";
@@ -62,14 +55,12 @@ public class EquipmentScript : MonoBehaviour
         if(PLAYER_EQUIPMENTSLOT)
         {   
             StorageName = "Player";
-        //    Debug.Log("ŁADOWANIE ITEMKOW ZALOZONEGO EQ GRACZA");
             ItemSlots.ForEach(slot=>slot.ParentStorage = this);
             ItemSlots.ForEach(slot=>slot.PLAYER_BACKPACK = true);
             PlayerManager.instance.LoadPlayerItensAndEq(GameManager.instance.PLAYER_PROGRESS_DATA,"PlayerEQ");
         }
         else
         {
-         //   Debug.Log("ŁADOWANIE ITEMKOW W PLECAKU");
             PlayerManager.instance.LoadPlayerItensAndEq(GameManager.instance.PLAYER_PROGRESS_DATA,"MainBackpack");
         }
     }
@@ -88,7 +79,6 @@ public class EquipmentScript : MonoBehaviour
 
     public static void AssignItemToActionSlot(int quickslotID) 
     {
-      //  print("AssignItemToActionSlot");
         if(AssignationItemToQuickSlotIsActive) 
         {    
             PlayerManager.instance._actionController.actionButtonsList[quickslotID].Description_TMP.SetText("Tap to Add Item");
@@ -122,8 +112,6 @@ public class EquipmentScript : MonoBehaviour
     }
     public static void QuitFromQuickbarSelectionMode()
     {
-     //   print("QuitFromQuickbarSelectionMode");
-        
         if(AssignationItemToQuickSlotIsActive == true)
         {
             if(PlayerManager.instance._actionController.actionButtonsList[(int)CurrentSelectedActionButton].Description_TMP.text.Contains("Cancel"))
@@ -131,7 +119,6 @@ public class EquipmentScript : MonoBehaviour
                 PlayerManager.instance._actionController.actionButtonsList[(int)CurrentSelectedActionButton].Description_TMP.SetText("Tap to Add Item");
             }
         }
-
         foreach(var btn in turnOffButtonsList)
         {
             btn.interactable = true;
@@ -153,29 +140,22 @@ public class EquipmentScript : MonoBehaviour
 
     public bool AddSingleItemPackToBackpack(ItemPack item, int slotIndex)
     {
-     //   print("AddSingleItemPackToBackpack");
         int avaiableSpace = ItemSlots.Count - ItemSlots.Where(s=>s.IsLocked).Count();
         if(avaiableSpace-1 < slotIndex) 
         {
-        //    print("avaiableSpace-1 < slotindex => "+(avaiableSpace-1)+" < "+ slotIndex);
-          //  Debug.LogWarning("Not enought space");
             return false;
         }
         if(slotIndex != -1)
             ItemSlots[slotIndex].AddNewItemToSlot(item);
         else
         {
-            //ItemSlots[slotIndex].UpdateItemAmount(1);
-           // Debug.LogError(("add item to backpack index -1 ?"));
                 return false;
-
         }
         return true;
     }
     
     public void LoadItemInPlayerEq( int asociatedSlotId, ItemPack _item )
     {
-        Debug.Log("load equiped items");
         EquipmentItem itemEq = _item.item as EquipmentItem;
         PlayerManager.instance.STATS.EquipItem_UpdateStatistics(itemEq);
         this.ItemSlots[asociatedSlotId].AddNewItemToSlot(_item);
@@ -199,22 +179,18 @@ public class EquipmentScript : MonoBehaviour
         bool _equipItem = toEquipment.StorageName == "Player";
         var equipmentItem = fromSlot.ITEM.item as EquipmentItem;
         ItemPack ItemCopy = new ItemPack(fromSlot.ITEM.Count,fromSlot.ITEM.item);
-       // Debug.Log(fromSlot.ITEM.Count +"szt => "+fromSlot.ITEM.item.name);
         if(_equipItem)
         {
             if(fromSlot.ITEM.item.CheckRequirments() == false) return false;
             int matchEqSlotIndex = toEquipment.ItemSlots.Where(s=>s.ItemContentRestricion == equipmentItem.eqType).First().itemSlotID;
             if(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count == 0)
             {
-            //    print("nie masz tego rodzaju itemka zalozonego");
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
                 toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
             }
             else
             {
-            //    print("posiadasz juz zalozony item tego typu");
                 ItemPack currentEquipedItemCopy = new ItemPack(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count,toEquipment.ItemSlots[matchEqSlotIndex].ITEM.item);
-                // ItemPack currentEquipedItemCopy = toEquipment.ItemSlots[matchEqSlotIndex].ITEM;
                 toEquipment.ItemSlots[matchEqSlotIndex].UpdateItemAmount(-1);
                 PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(currentEquipedItemCopy.item as EquipmentItem);   
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
@@ -236,12 +212,10 @@ public class EquipmentScript : MonoBehaviour
         {
             if(toEquipment.GetNextEmptySlot() != -1)
             {
-                // ZDEJMOWANIE ITEMKA
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
             }
             else
             {
-                Debug.Log("brak wolnego slotu - nie mozna zdjac itemka");
                 return false;
             }
 
@@ -254,15 +228,12 @@ public class EquipmentScript : MonoBehaviour
               PlayerManager.instance.ArmorIMG.enabled = false;
             PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
             return true; // END succes item z eq gracza zdjęty do plecaka
-
         }
-        
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
         return false;
     }
     public (bool result,bool update, int index) CheckWhereCanYouFitThisItemInBackpack(ItemPack _itemToStack)
     {
-        
         bool IsThereAny_NonFullAndUnlocked_Slot = ItemSlots.Where(slot=>slot.IsFull == false && slot.IsLocked==false).Any();
         if(IsThereAny_NonFullAndUnlocked_Slot == false) 
         {
@@ -296,18 +267,11 @@ public class EquipmentScript : MonoBehaviour
                 else
                     return (false,false,-1);   
             }
-
-           // Debug.Log("dodanie istniejacego slota z tym itemkiem");
-           // Debug.Log(slot.ITEM.Count+"szt -> "+slot.ITEM.item.name);
     
             if(slot.IsEmpty == true)
             {
-                // true = mozna wlozyc
-                // false = trzeba nadpisac bo slot jest juz pusty ( zuzyty potek np.)
                 return (true,false,slot.itemSlotID);   
             }
-            // true = znaleziono miejsce
-            // true = wystarczy tylko dodac 1 szt do tego slota
             return (true,true,slot.itemSlotID);   
         }
 

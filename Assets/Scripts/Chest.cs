@@ -11,38 +11,26 @@ public class Chest : IChest
     public bool ContentAlreadyGenerateed = false;
     public Chest(ISpecialTile source, List<ItemPack> contentItems )
     {
-        //Debug.Log("utworzenie chest");
         Parent = source;
         ContentItems = contentItems;
         
         if(ContentItems.Count == 0) return;
         Action action = ()=>GenerateChestLootWindowPopulatedWithItems(this, ContentItems);
-        // Debug.Log("skrzynka w gotowosci");
         
         Parent.AvaiableActions.Add((action, "Open Chest",ActionIcon.OpenChest,true));
     }    
     public void GenerateChestLootWindowPopulatedWithItems(IChest source, List<ItemPack> items)
     {
-        
-     
         AnimateWindowScript.instance.SwitchTab("EquipmentTab");
-        // Close map borders if open
         NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,true));    
-
-      //  Debug.Log("TU BEDZIE SKRZYNECZKA");
         ChestLootWindow = GameManager.instance.ContentLootWindow.GetComponent<ChestLootWindowScript>();
         ChestLootWindow.gameObject.SetActive(true);
-       // if(ContentAlreadyGenerateed == false)
-       // {
-            ChestLootWindow.Clear();
-            ChestLootWindow.PopulateChestWithItems(source,items);
-            ChestLootWindow.TotalValueText.SetText(TotalValue.ToString());
-      //  }
-
+        ChestLootWindow.Clear();
+        ChestLootWindow.PopulateChestWithItems(source,items);
+        ChestLootWindow.TotalValueText.SetText(TotalValue.ToString());
     }
     public void SynchronizeItemDataWithParentCell()
     {
-      //  Debug.Log("sync");
         List<ItemPack> updatedContent = new List<ItemPack>();
         ChestLootWindow.ItemSlots.ForEach(item=>updatedContent.Add(item.ITEM));
         ContentItems = updatedContent; 

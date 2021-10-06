@@ -77,7 +77,6 @@ public class ChestLootWindowScript : MonoBehaviour
     }
     public void CloseChestWindow()
     {
-      //  Debug.Log("Close Empty chest window");
         this.gameObject.SetActive(false);
         NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,false));    
     }
@@ -96,7 +95,6 @@ public class ChestLootWindowScript : MonoBehaviour
             GridManager.CellGridTable[currentPosition].SpecialTile = null;
             GridManager.CellGridTable[currentPosition].SetCell(currentPosition, false);
             GridManager.CellGridTable[currentPosition].AssignType(TileTypes.grass,null);
-         //   Debug.Log("Remove empty chest from map");
         }
     }
 }

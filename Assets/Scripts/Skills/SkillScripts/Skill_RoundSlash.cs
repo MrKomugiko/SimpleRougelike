@@ -17,7 +17,6 @@ public class Skill_RoundSlash : SkillBase, ISkill
 
     public Skill_RoundSlash()
     {
-        Debug.Log("przypisanie logiki skila round slash");
         base.SkillLogic = this;
     }
 
@@ -25,7 +24,6 @@ public class Skill_RoundSlash : SkillBase, ISkill
     {
         if(base.isCategoryType) return;
 
-        Debug.Log($"Select skill to execute: {this.GetType()}");
         ShowAvailableTargets();
         SkillsManager.SelectedAttackSkill = Execute;
     }
@@ -35,7 +33,6 @@ public class Skill_RoundSlash : SkillBase, ISkill
         SkillsManager.Hit1ImpactTrigger = false;
 
         AssignSkillAnimations(target.ParentCell.CurrentPosition);
-        Debug.Log("prepare for EXECUTE SKILL");
         //lock turn routine
         SkillsManager.SkillAnimationFinished = false;
 

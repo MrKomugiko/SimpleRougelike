@@ -19,8 +19,7 @@ public class Statistics : MonoBehaviour
         get => _level;
         set
         {
-          //  Debug.Log("LEVEL UP!");
-            // w przypadku awansu o 2 poziomy , dostanie sie 12 punktow do rozdania
+          //  "LEVEL UP!");
             AvailablePoints += (value-_level) * 6;
             _level = value;
             UIManager.instance.Level_TMP.SetText(Level.ToString());
@@ -36,13 +35,11 @@ public class Statistics : MonoBehaviour
         get => _strength; 
         set {
             _strength = value; 
-             // wartośc przy przycisku sie odświezy
              CoreStatButtonsList.Where(b => b.transform.parent.name == "Strength")
                 .First().transform.parent.transform.Find("Value")
                 .GetComponent<TextMeshProUGUI>()
                 .SetText(Strength.ToString());
 
-            // refresh
             Critical_Hit_Damage = Critical_Hit_Damage;
             MaxStaminaPoints = MaxStaminaPoints;
             StaminaRegeneration = StaminaRegeneration;
@@ -54,13 +51,11 @@ public class Statistics : MonoBehaviour
         set
         {
             _dexterity = value;
-            // wartośc przy przycisku sie odświezy
             CoreStatButtonsList.Where(b => b.transform.parent.name == "Dexterity")
                 .First().transform.parent.transform.Find("Value")
                 .GetComponent<TextMeshProUGUI>()
                 .SetText(Dexterity.ToString());
 
-            // refresh
             Critical_Hit_Damage = Critical_Hit_Damage;
             Critical_Hit_Rate = Critical_Hit_Rate;
             Accuracy = Accuracy;
@@ -73,14 +68,12 @@ public class Statistics : MonoBehaviour
         set
         {
             _inteligence = value;
-            // wartośc przy przycisku sie odświezy
             CoreStatButtonsList.Where(b => b.transform.parent.name == "Inteligence")
                 .First().transform.parent.transform.Find("Value")
                 .GetComponent<TextMeshProUGUI>()
                 .SetText(Inteligence.ToString());
 
             //TODO: magic damage
-            // refresh
             Critical_Hit_Damage = Critical_Hit_Damage;
             Critical_Hit_Rate = Critical_Hit_Rate;
             MaxEnergyPoints = MaxEnergyPoints;
@@ -92,13 +85,11 @@ public class Statistics : MonoBehaviour
         set
         {
             _vitality = value;
-            // wartośc przy przycisku sie odświezy
             CoreStatButtonsList.Where(b => b.transform.parent.name == "Vitality")
                 .First().transform.parent.transform.Find("Value")
                 .GetComponent<TextMeshProUGUI>()
                 .SetText(Vitality.ToString());
 
-            // refresh
             BlockChance = BlockChance;
             MaxHealthPoints = MaxHealthPoints;
             HealthRegeneration = HealthRegeneration;
@@ -147,13 +138,11 @@ public class Statistics : MonoBehaviour
         set
         {
             _experience = value;
-            // ExperienceCounter_TMP.SetText(Experience.ToString());
             if (Experience >= NextLevelExperience)
             {
                 _experience = NextLevelExperience - Experience;
 
                 Level++;
-                // print("Level UP");
                 if (_experience < 0) _experience = 1;
                 UIManager.instance.Experience_Bar.UpdateBar(_experience, NextLevelExperience);
             } 
@@ -196,7 +185,6 @@ public class Statistics : MonoBehaviour
         {
             _baseDamage = 1+(Dexterity*.05f)+(Strength*.1f); 
             BaseDamage_TMP.SetText(BaseDamage.ToString("N2")+"DMG");
-            //refresh
             TotalDamage = TotalDamage;
         } 
     }
@@ -260,7 +248,6 @@ public class Statistics : MonoBehaviour
         set
         {
             _armor = value;
-            // refreshes
             DamageReduction = DamageReduction;
             Armor_TMP.SetText(_armor.ToString());
         }
@@ -282,7 +269,6 @@ public class Statistics : MonoBehaviour
         set {
              _extraDamage = value;  
              BaseDamage_TMP.SetText(BaseDamage.ToString("N2")+"DMG");
-             //refresh
              TotalDamage = TotalDamage;
         }
     }
@@ -291,7 +277,6 @@ public class Statistics : MonoBehaviour
     private set 
     {
         _extra_HealthPoints = value; 
-        //refresh
         MaxHealthPoints = MaxHealthPoints;
     } 
 }
@@ -300,7 +285,6 @@ public class Statistics : MonoBehaviour
         private set 
         {
             _extra_StaminaPoints = value; 
-            //refresh
             MaxStaminaPoints = MaxStaminaPoints;
         } 
     }
@@ -309,7 +293,6 @@ public class Statistics : MonoBehaviour
     private  set 
         {
             _extra_EnergyPoints = value; 
-            //refresh
             MaxEnergyPoints = MaxEnergyPoints;
         } 
     }
@@ -318,7 +301,6 @@ public class Statistics : MonoBehaviour
         set 
         {
             _extra_Critical_Hit_Rate = value; 
-            //refresh
             Critical_Hit_Rate = Critical_Hit_Rate;
         } 
     }
@@ -327,7 +309,6 @@ public class Statistics : MonoBehaviour
         set 
         {
             _extra_Critical_Hit_Damage = value; 
-            //refresh;
             Critical_Hit_Damage = Critical_Hit_Damage;
         }
     }
@@ -336,7 +317,6 @@ public class Statistics : MonoBehaviour
         set
         {
             _extra_Accuracy = value;
-            //refresh
             Accuracy = Accuracy; 
         }
     }
@@ -345,7 +325,6 @@ public class Statistics : MonoBehaviour
         set
         {
             _extra_Evasion = value;
-            //refresh
             Evasion = Evasion; 
         }
     }
@@ -377,7 +356,6 @@ public class Statistics : MonoBehaviour
 
     public void AddValue(string statname, float statisticChangeValue = 1)
     {
-       // Debug.Log("add value +1 to "+statname);
         switch (statname)
         {
             case "INT":
@@ -411,25 +389,20 @@ public class Statistics : MonoBehaviour
         Extra_StaminaPoints = 0;
         Extra_EnergyPoints = 0;    
     }
-    
-
     public void EquipItem_UpdateStatistics(EquipmentItem item)
     {
-       // Debug.Log("Zalozenie ITEMKA - staty w gore");
         item.MainPerks.ForEach(perk=>AddValueByPerkData(perk));
         item.ExtraPerks.ForEach(perk=>AddValueByPerkData(perk));
     }
 
     public void UnequipItem_UpdateStatistics(EquipmentItem item)
     {
-       // Debug.Log("Zdjęcie ITEMKA - staty w dol");
         item.MainPerks.ForEach(perk=>SubtractValueByPerkData(perk));
         item.ExtraPerks.ForEach(perk=>SubtractValueByPerkData(perk));
     }
 
     private void AddValueByPerkData(Perk perk)
     {
-        //Debug.Log("ADD: "+perk.type.ToString()+" "+perk.value.ToString());
         switch(perk.type)
         {
             case PerkType.MinAttack:
@@ -483,7 +456,6 @@ public class Statistics : MonoBehaviour
     }
     private void SubtractValueByPerkData(Perk perk)
     {
-        // Debug.Log("MINUS: "+perk.type.ToString()+" "+perk.value.ToString());
         switch(perk.type)
         {
             case PerkType.MinAttack:

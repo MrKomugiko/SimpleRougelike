@@ -107,10 +107,7 @@ public class HeroDataController : MonoBehaviour
     } 
     public void CreateNewHero(int slotID)
     {
-       // Debug.Log("tworzenie nowego bohatera.");
-
         string nickname = GameObject.Find("InputField_NewHeroNickName").GetComponent<InputField>().text;
-        //  sprawdzenie czy taki bohater juz istnieje
         if(storedHeroesCard.Any(hero=>hero.Value.data.NickName == nickname))  
         {
             Debug.LogError("hero with this name already exist");
@@ -122,27 +119,20 @@ public class HeroDataController : MonoBehaviour
 
         PlayerProgressModel newCreatedHero = new PlayerProgressModel(nickname, slotID);
         string JSONresult = JsonConvert.SerializeObject(newCreatedHero);
-        // nadpisanie pliku
 
         if(File.Exists(Application.persistentDataPath + $"/[{slotID}]_Hero__EMPTY_.json"))
         {
-          //  print("podmianka pliku emptyy");
             File.Move(Application.persistentDataPath + $"/[{slotID}]_Hero__EMPTY_.json",Application.persistentDataPath + $"/[{slotID}]_Hero_{nickname}.json");
         }
         if(File.Exists(Application.persistentDataPath + $"/[{slotID}]_Hero__DELETED_.json"))
         {
-          //  print("podmianka usunietego pliku");
             File.Move(Application.persistentDataPath + $"/[{slotID}]_Hero__DELETED_.json",Application.persistentDataPath + $"/[{slotID}]_Hero_{nickname}.json");
         }
 
-        //print("zapisanie danych do pliku");
         File.WriteAllText(Application.persistentDataPath + $"/[{slotID}]_Hero_{nickname}.json", JSONresult);
 
-        Debug.Log(JSONresult);
-        
         LoadHeroesDataFromDevice();
         LoadPlayerDataInGame(newCreatedHero);
-     //   Debug.Log("przejscie do gry");
         MenuScript.instance.OpenCampScene();
 
     }
@@ -153,12 +143,9 @@ public class HeroDataController : MonoBehaviour
             GameManager.instance.PLAYER_PROGRESS_DATA = heroData;
             PlayerManager.instance.LoadPlayerData(heroData);
         }
-
     }  
     public void RemoveHeroFromDevice(PlayerProgressModel data)
     {
-        //print("usuwanie gracza z pamieci");
-
         if (GameManager.instance.PLAYER_PROGRESS_DATA.NickName == data.NickName)
         {
             MenuScript.instance.HEROESLISTWINDOW_RemoveConfirmButton.transform.parent.gameObject.SetActive(true);
@@ -171,7 +158,6 @@ public class HeroDataController : MonoBehaviour
                     MenuScript.instance.SetButtonState("Continue", false);
                 }
                 );
-            //wyswietlenie ostrzerzenia ze usuwane jest aktualnie zalogowane konto,
             MenuScript.instance.HEROESLISTWINDOW_RemoveConfirmButton.transform.parent.GetComponentInChildren<TextMeshProUGUI>().SetText($"This Hero <b>({data.NickName})</b> is currently logged.\n\nAre you shure You want to delete this account?\n\n<b>[This operation is permanent!]</b>");
             return;
         }
@@ -188,7 +174,6 @@ public class HeroDataController : MonoBehaviour
         string JSONresult = JsonConvert.SerializeObject(blank_emptyhero);
         if (File.Exists(Application.persistentDataPath + $"/[{data.SlotID}]_Hero_{data.NickName}.json"))
         {
-            //  print("podmianka pliku emptyy");
             File.Move(Application.persistentDataPath + $"/[{data.SlotID}]_Hero_{data.NickName}.json", Application.persistentDataPath + $"/[{data.SlotID}]_Hero__EMPTY_.json");
         }
         File.WriteAllText(Application.persistentDataPath + $"/[{data.SlotID}]_Hero__EMPTY_.json", JSONresult);
@@ -201,14 +186,12 @@ public class HeroDataController : MonoBehaviour
         if(storedHeroesCard.Any(hero=>hero.Value.data.NickName == _updatedData.NickName))  
         {
             Debug.LogError("ZAPISANIE POSTEPOW NA URZADZENIU - w pliku");
-          //  Debug.LogError("hero exist, overrite data");
             string JSONresult = JsonConvert.SerializeObject(_updatedData);
 
             File.WriteAllText(Application.persistentDataPath + $"/[{_updatedData.SlotID}]_Hero_{_updatedData.NickName}.json", JSONresult);
 
             LoadHeroesDataFromDevice();
 
-         //   Debug.Log(JSONresult);
             return;
         }
     }

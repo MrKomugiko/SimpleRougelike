@@ -134,14 +134,12 @@ public partial class NotificationManger : MonoBehaviour
 
         existingnotification = NotificationManger.instance.NotificationList.Where(n=>n == notification).First();
         notification.PossibleActions.GetComponent<ActionSwitchController>().ConfigurePlayerButtons((cellRelated as ISpecialTile), "default");
-       // Debug.Log("dodanie canvas'a do quickslota gracza");
         var canvas = existingnotification.gameObject.AddComponent<Canvas>();
         NotificationManger.instance.StartCoroutine(NotificationManger.instance.DoWhenActiveInHierarchy(canvas.gameObject, 
         ()=>{
             canvas.overrideSorting = true;
             canvas.sortingOrder = 21;}
             ));
-        //Debug.LogError(canvas.gameObject.activeInHierarchy);
         existingnotification.gameObject.AddComponent<GraphicRaycaster>();
 
     }
@@ -160,9 +158,6 @@ public partial class NotificationManger : MonoBehaviour
                 {
                     oldHierarhyPosition = existingnotification.transform.parent.GetSiblingIndex();
                     Destroy(existingnotification.gameObject.transform.parent.gameObject);
-                //    var x = existingnotification.PossibleActions.GetComponent<ActionSwitchController>();
-                //    x.Configure((cellRelated as ISpecialTile));
-                //     return; // nie dodawaj tego samego 
                 }
             GameObject notificationObject = Instantiate(NotificationManger.instance.NotificationPrefab,NotificationManger.instance.transform);
             notificationObject.transform.SetSiblingIndex(oldHierarhyPosition);
@@ -178,23 +173,14 @@ public partial class NotificationManger : MonoBehaviour
                     notification.PossibleActions.SetActive(!notification.PossibleActions.activeSelf);
                     if(notification.PossibleActions.activeSelf == true) 
                     {   
-                        // print("reset to default, okno possible actions jest nieaktywne");
-                       // print("click");
                         notification.PossibleActions.GetComponent<ActionSwitchController>().ResetToDefault();
-        
-
-                
                     }
                }
             );
-             
         }
         catch (System.Exception)
         {
-            
-           // Debug.LogError("blad"+ex.Message);
         }
-        
     }
     public static void HighlightElementSwitch(NotificationScript notification, bool? state = null)
     {
@@ -233,8 +219,6 @@ public partial class NotificationManger : MonoBehaviour
         ISelectable selectableCell = (notification.BaseCell.SpecialTile as ISelectable);
         if(selectableCell == null)
         {
-            
-            // Debug.LogError("O CO CHODZI ?");
             return;
         } 
 
@@ -285,7 +269,6 @@ public partial class NotificationManger : MonoBehaviour
             ActionSwitchController.Destroy(temporaryBorder);
         }
     }
-
     public static void HideBorder(ISelectable cell, float timeDelay)
     {
         if(cell == null) return;
@@ -297,7 +280,6 @@ public partial class NotificationManger : MonoBehaviour
         }
         else
         {
-
             GameObject.Destroy(cell.Border, timeDelay);
         }
 
@@ -363,69 +345,54 @@ public partial class NotificationManger : MonoBehaviour
     }
     catch (System.Exception)
     {
-        
-       // Debug.LogError(ex.Message);
     }
-       
     }
     private static void Configure_Info_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification, string message)
     {
-        // Przypisanie odpowiedniego koloru ramce.
         Color32 color = Color.white;
         GameObject Alert = instance.AlertPrefab;
         Alert.GetComponent<AlertScript>().Color = color;
 
-        // usunięcie ewentualnego duplikatu wcześniejszym powiadomieniem na tej samej karcie.
         AlertScript existingNotificationAlert = invoker_Notification.transform.parent.GetComponentInChildren<AlertScript>();
         if (existingNotificationAlert != null)
             Destroy(existingNotificationAlert);
 
-        // Spawn obiektu powiadomienia wyłącznie na panelu list i umieszczenie go nad innymi, z wierzchu.
         var newNotificationOverlay = Instantiate(Alert, invoker_Notification.transform.parent.gameObject.transform);
         newNotificationOverlay.transform.SetAsLastSibling();
         newNotificationOverlay.GetComponent<AlertScript>().text.SetText(message);
 
-        // Spawn borderka na mapie i usuniecie po 1s.
         ShowBorder(invoker_BaseCell as ISelectable, color);
         HideBorder(invoker_BaseCell as ISelectable, .5f);
     }
     private static void Configure_ExplosionDamage_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification,ISpecialTile target_BaseCell, NotificationScript target_Notification)
     {
-         // Pobranie ataku jaki posiada przeciwnik.
         if(target_BaseCell is ILivingThing == false)
         {
-          //  Debug.LogError($"cos nie tak dla {Invoker_BaseCell.ParentCell.name} ",context:Invoker_BaseCell.ParentCell.gameObject);
             return;
         }
         int damageValue = (invoker_BaseCell as Bomb_Cell).BombDamage * -1;
 
-        // Przypisanie odpowiedniego koloru ramce.
         Color32 color = Color.magenta;
         GameObject Alert = instance.AlertPrefab;
         Alert.GetComponent<AlertScript>().Color = color;
 
-        // usunięcie ewentualnego duplikatu wcześniejszym powiadomieniem na tej samej karcie.
         AlertScript existingNotificationAlert = target_Notification.transform.parent.GetComponentInChildren<AlertScript>();
         if (existingNotificationAlert != null)
             Destroy(existingNotificationAlert);
 
-        // Spawn obiektu powiadomienia wyłącznie na panelu list i umieszczenie go nad innymi, z wierzchu.
         var newNotificationOverlay = Instantiate(Alert, target_Notification.transform.parent.gameObject.transform);
         newNotificationOverlay.transform.SetAsLastSibling();
         newNotificationOverlay.GetComponent<AlertScript>().text.SetText($"Explosion damaged: {-damageValue} DMG.");
 
-        // Spawn borderka na mapie i usuniecie po 1s.
         ShowBorder(target_BaseCell as ISelectable, color);
         HideBorder(target_BaseCell as ISelectable, .5f);
 
         if (target_BaseCell.Type != TileTypes.player) return;
-        // sekcja głównych statystyk: HP , jeżeli obiekty sie stakują, przes usunięciem duplikatu, dodaj jego wartość i zostaw tylko jednego z sumą wcześniejszych
-        AddValueTo_Health_Notification(damageValue);
+       // AddValueTo_Health_Notification(damageValue);
 
     }
     private static void Configure_PlayerAttack_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification)
     {
-       // Debug.LogWarning("PLAYER NOTIFICATION");
         float damageValue =  (invoker_BaseCell as ILivingThing).Damage;
         Color32 color = Color.yellow;
 
@@ -440,53 +407,43 @@ public partial class NotificationManger : MonoBehaviour
     }
     private static void Configure_Loot_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification)
     {
-        // przypisanie odpowiedniego koloru ramce
         Color32 color = Color.yellow;
         GameObject Alert = instance.AlertPrefab;
         Alert.GetComponent<AlertScript>().Color = color;
 
-        // usunięcie ewentualnego duplikatu wcześniejszym powiadomieniem na tej samej karcie.
         AlertScript existingNotificationAlert = invoker_Notification.transform.parent.GetComponentInChildren<AlertScript>();
         if(existingNotificationAlert != null)
             Destroy(existingNotificationAlert);
         
-        // Spawn obiektu powiadomienia wyłącznie na panelu list i umieszczenie go nad innymi, z wierzchu.
         GameObject newNotificationOverlay = Instantiate(Alert, invoker_Notification.transform.parent.gameObject.transform);
         newNotificationOverlay.transform.SetAsLastSibling();
         newNotificationOverlay.GetComponent<AlertScript>().text.SetText($"Monster defeated !"); 
 
-        // Spawn borderka na mapie i usuniecie po 1s.
         ShowBorder(invoker_BaseCell as ISelectable,color);
         HideBorder(invoker_BaseCell as ISelectable,.5f);
     }
     private static void Configure_Attack_Notification(ISpecialTile invoker_BaseCell, NotificationScript invoker_Notification)
     {
-        // Pobranie ataku jaki posiada przeciwnik.
         float damageValue = (invoker_BaseCell as ICreature).Damage *-1;
 
-        // Przypisanie odpowiedniego koloru ramce.
         Color32 color = Color.red;
         GameObject Alert = instance.AlertPrefab;
         Alert.GetComponent<AlertScript>().Color = color;
 
-        // usunięcie ewentualnego duplikatu wcześniejszym powiadomieniem na tej samej karcie.
         AlertScript existingNotificationAlert = invoker_Notification.transform.parent.GetComponentInChildren<AlertScript>();
         if(existingNotificationAlert != null)
             Destroy(existingNotificationAlert);
         
-        // Spawn obiektu powiadomienia wyłącznie na panelu list i umieszczenie go nad innymi, z wierzchu.
         var newNotificationOverlay = Instantiate(Alert, invoker_Notification.transform.parent.gameObject.transform);
             newNotificationOverlay.transform.SetAsLastSibling();
             newNotificationOverlay.GetComponent<AlertScript>().text.SetText($"Dealt {-damageValue} DMG.");
 
-        // Spawn borderka na mapie i usuniecie po 1s.
         ShowBorder(invoker_BaseCell as ISelectable,color);
         HideBorder(invoker_BaseCell as ISelectable,.5f);
 
-        AddValueTo_Health_Notification(Mathf.RoundToInt(damageValue));
+      //  AddValueTo_Health_Notification(Mathf.RoundToInt(damageValue));
     }
 
-    // -------------------- [Player related UI notification] --------------------
     public static void AddValueTo_Health_Notification(int damageValue)
     {
         // AlertScript notificationToModife = null;

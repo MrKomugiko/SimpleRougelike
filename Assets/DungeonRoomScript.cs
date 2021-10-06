@@ -27,8 +27,6 @@ public class DungeonRoomScript : MonoBehaviour
     [ContextMenu("SpawnFirstRoom")]
     public static void GenerateDungeonRooms()
     {
-        // create init center room
-       
         Room MainRoom = new Room(Vector2Int.zero,"WDSA");
         Dungeon.Clear();
         Dungeon.Add(Vector2Int.zero,MainRoom);
@@ -37,9 +35,6 @@ public class DungeonRoomScript : MonoBehaviour
             CreateRoom(from: MainRoom.position, directionsDict[dirChar.ToString()]);
         }
         Dungeon[Vector2Int.zero].DistanceFromCenter = DungeonManager.instance.maxDungeonTraveledDistance;
-        Debug.LogWarning("przypisanie początkowej wartości 'trudnosci' dla dungeona maksylanie uzyskana wartoscia:"+DungeonManager.instance.maxDungeonTraveledDistance);
-
-        // checking distances
        
         var parentloc = Vector2Int.zero;
 
@@ -53,7 +48,6 @@ public class DungeonRoomScript : MonoBehaviour
     {
         if(Dungeon[currentloc].DistanceFromCenter != -1)
         {
-            // sprawdzenie czy podmieniamy dystans na mniejszy czy wiekszy = wybierz mniejszy i zakończ dzialanie
             if(Dungeon[currentloc].DistanceFromCenter > Dungeon[fromposition].DistanceFromCenter)
             {
                 Dungeon[currentloc].DistanceFromCenter =Dungeon[fromposition].DistanceFromCenter+1;
@@ -81,7 +75,6 @@ public class DungeonRoomScript : MonoBehaviour
    
     private static void CreateRoom(Vector2Int from, Vector2Int direction)
     {
-//        print("create new room from " + from + " in direction:" + direction);
         var newLocation = from + direction;
         if (Dungeon.ContainsKey(newLocation))
             return;      
@@ -161,7 +154,6 @@ public class DungeonRoomScript : MonoBehaviour
             this.position = position;
             this.doorsNameCode = doorsNameCode;
             
-           // Debug.Log("Room Created: "+position+" ["+doorsNameCode+"]");
             foreach(var doorCode in doorsNameCode.ToCharArray().ToList())
             {
                 DoorStatesList.Add(doorCode.ToString(),false);
@@ -175,7 +167,6 @@ public class DungeonRoomScript : MonoBehaviour
 
 
             DoorStatesList[code] = state;
-            // and unlock door from next room side on opposite direction
             DungeonManager.SetNeighourRoomsDoorsState(this, new List<Vector2Int>(){directionsDict[code]});
         }
         public void SetStateDoorByVector(Vector2Int direction, bool state)
@@ -186,7 +177,6 @@ public class DungeonRoomScript : MonoBehaviour
             if(DoorStatesList[code] == false && state == false) return; 
 
             DoorStatesList[code] = state;
-            // and unlock door from next room side on opposite direction
             DungeonManager.SetNeighourRoomsDoorsState(this, new List<Vector2Int>(){directionsDict[code]});
         }
         public void SetAllDoorsState(bool state = true)
@@ -230,10 +220,6 @@ public class DungeonRoomScript : MonoBehaviour
             WallPositions = wallPositions;
         }
     }
-
-   
-   
-   
    
     [ContextMenu("Generate full dungeon data")]
     [Obsolete] public void GenerateFullData()
@@ -258,7 +244,6 @@ public class DungeonRoomScript : MonoBehaviour
                     rows = 7;
                 }
             }   
-          //  Debug.LogError(roomData);
             FULLDATA+=roomData+"\n\n";
         }
 
@@ -286,35 +271,6 @@ public class DungeonRoomScript : MonoBehaviour
 
         return TileTypes.undefined.ToString();
     }
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     #region  wizualizacja
@@ -393,8 +349,6 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (existingRooms.ContainsKey(location + Vector2Int.up))
         {
-          //  print("jest sąsiad u góry" + existingRooms[location + Vector2Int.up].sprite.name.Replace("_OPEN", ""));
-
             if (existingRooms[location + Vector2Int.up].Item1.sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("S"))))
                 W = "W";
             else
@@ -403,8 +357,6 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (existingRooms.ContainsKey(location + Vector2Int.right))
         {
-         //   print("jest sąsiad po prawej" + existingRooms[location + Vector2Int.right].sprite.name.Replace("_OPEN", ""));
-
             if (existingRooms[location + Vector2Int.right].Item1.sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("A"))))
                 D = "D";
             else
@@ -413,8 +365,6 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (existingRooms.ContainsKey(location + Vector2Int.down))
         {
-        //    print("jest sąsiad na dole" + existingRooms[location + Vector2Int.down].sprite.name.Replace("_OPEN", ""));
-
             if (existingRooms[location + Vector2Int.down].Item1.sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("W"))))
                 S = "S";
             else
@@ -423,8 +373,6 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (existingRooms.ContainsKey(location + Vector2Int.left))
         {
-          //  print("jest sąsiad po lewej" + existingRooms[location + Vector2Int.left].sprite.name.Replace("_OPEN", ""));
-
             if (existingRooms[location + Vector2Int.left].Item1.sprite.name.Replace("_OPEN", "").ToCharArray().ToList().Contains((Char.Parse("D"))))
                 A = "A";
             else
@@ -432,7 +380,6 @@ public class DungeonRoomScript : MonoBehaviour
         }
 
         var spriteName = $"{W}{D}{S}{A}_OPEN";
-       // print(" MUST HAVE => " + spriteName);
         return roomsTemplates.Where(s => s.name == spriteName).First();
     }
     
@@ -454,10 +401,8 @@ public class DungeonRoomScript : MonoBehaviour
         foreach (var room in distanceDir)
         {
             int longestdistance = distanceDir.OrderByDescending(v=>v.Value).First().Value;
-          //  Debug.Log($"Position:{room.Key} Distance:{room.Value.Item2}");
             var x = Instantiate(ImageColorIndicator,existingRooms[room.Key].Item1.gameObject.transform);
             float progressfillcolor = ((float)room.Value / (float)longestdistance);
-            Debug.Log(progressfillcolor);
             x.GetComponent<Image>().color = Color32.Lerp(Color.white,Color.red,progressfillcolor);
         }
     }
@@ -466,7 +411,6 @@ public class DungeonRoomScript : MonoBehaviour
     {
         if(distanceDir.ContainsKey(currentloc))
         {
-            // sprawdzenie czy podmieniamy dystans na mniejszy czy wiekszy = wybierz mniejszy i zakończ dzialanie
             if(distanceDir[currentloc] > distanceDir[fromposition])
             {
                 distanceDir[currentloc] = distanceDir[fromposition]+1;
@@ -491,7 +435,6 @@ public class DungeonRoomScript : MonoBehaviour
             }
         }
     }
-
 
     #endregion
 }

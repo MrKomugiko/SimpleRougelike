@@ -23,16 +23,13 @@ public class MoveValidatorScript : MonoBehaviour
             All_GridIndicators.Add(cell.CurrentPosition,mark.GetComponent<SpriteRenderer>());
             All_GridIndicators[cell.CurrentPosition].color = Color.clear;
         }
-        //Debug.LogError("spawn siatki");
     }
     public void HighlightValidMoveGrid(bool _restrictedByStaminavalue){
         validMovePosiitonsCounter = 0;
-        Debug.LogError("HighlightValidMoveGrid"+_restrictedByStaminavalue);
         foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
         {
             monster.Value.IsWalkable = false;
         }
-
         NodeGrid.UpdateMapObstacleData();
 
         foreach(var cell in GridManager.CellGridTable.Values)
@@ -49,7 +46,6 @@ public class MoveValidatorScript : MonoBehaviour
                     Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);   
                     validMovePosiitonsCounter++; 
                 }
-                
             }
             else if (ParentPathfinder.FinalPath.Count <= (_restrictedByStaminavalue?PlayerManager.instance.CurrentStamina:PlayerManager.instance.MoveRange))
             {
@@ -66,7 +62,6 @@ public class MoveValidatorScript : MonoBehaviour
         {
             monster.Value.IsWalkable = true;
         }
-    
     }
     public int HighlightValidAttackGridGlobal(int? overteDistanceCheck = null)
     {
@@ -81,26 +76,21 @@ public class MoveValidatorScript : MonoBehaviour
         }
         foreach(var checkedMonster in monsterList)
         {
-            // monsterList.ForEach(m=>m.Value.IsWalkable = false);
-            NodeGrid.UpdateMapObstacleData();
             checkedMonster.Value.IsWalkable = true;
             
             ParentPathfinder.FindPath(checkedMonster.Value);
             if(ParentPathfinder.FinalPath.Count >0 && ParentPathfinder.FinalPath.Count<=(overteDistanceCheck==null?PlayerManager.instance.AttackRange:(int)overteDistanceCheck))
             {
                 _monstersInRange++;
-            Debug.LogWarning("ZAZNACZONO monster z pozycji"+checkedMonster.Key+" dystans do gracza = "+ParentPathfinder.FinalPath.Count);
                 Attack_Indicators[checkedMonster.Key].color = Color.red; 
                 Attack_Indicators[checkedMonster.Key].gameObject.SetActive(true);
             }
             else
             {
-                Debug.LogWarning("NIE ZAZNACZONO monster z pozycji"+checkedMonster.Key+" dystans do gracza = "+ParentPathfinder.FinalPath.Count);
                 Attack_Indicators[checkedMonster.Key].gameObject.SetActive(false);          
             }        
         }
         monsterList.ForEach(m=>m.Value.IsWalkable = false);
-        Debug.LogError("_monstersinrange = "+_monstersInRange);
         return _monstersInRange;   
     }
     public (int count,List<CellScript> targets) HighlightValidAttackGridNearPlayer(List<Vector2Int> vectorsforpossibleattackCheck)
@@ -115,11 +105,6 @@ public class MoveValidatorScript : MonoBehaviour
             {
                 monsterList.Add(GridManager.CellGridTable[PlayerPosition+vector]);
             }
-            // else
-            // {
-            //     monsterList.Add(null);
-            // }
-            
         }
         int _validTargets = monsterList.Count();
 
@@ -140,18 +125,12 @@ public class MoveValidatorScript : MonoBehaviour
                                                                 bool isPenetrationEnabled = false, 
                                                                 bool isFlyAboweWalls = false)
     {
-        // if(isPenetrationEnabled)
-        // {
-        //     return HighlightValidAttackGridNearPlayer(vectorsforpossibleattackCheck);
-        // }
-
         var monsterList = new List<CellScript>();
         var PlayerPosition = PlayerManager.instance._playerCell.ParentCell.CurrentPosition;
 
         List<Vector2> directionsBloced = new List<Vector2>();
         foreach(var vector in vectorsforpossibleattackCheck)
         {
-            
             //TODO: !! to dziala tak dlugo jak podane vektorki są posortowane od odleglosci od centrum (gracza) rosnąco
             var checkingPosition = PlayerPosition+vector;
             if(GridManager.CellGridTable.ContainsKey(checkingPosition) == false) continue; 
@@ -167,7 +146,6 @@ public class MoveValidatorScript : MonoBehaviour
                 checkingDirection.y = 1;    
             else if( vector.y < 0)
                 checkingDirection.y = -1;
-            
 
             if(directionsBloced.Contains(checkingDirection)) continue;
 
@@ -175,13 +153,10 @@ public class MoveValidatorScript : MonoBehaviour
             {
                 if(isFlyAboweWalls == false)
                 {   
-                    // napotkano na drodze sciane, koniec szukania dla teko kierunku lotu
                     directionsBloced.Add(checkingDirection);
-                    Debug.Log("wall: "+checkingPosition+" stop moving -> "+checkingDirection);
+                    "wall: "+checkingPosition+" stop moving -> "+checkingDirection);
                     continue;                    
                 }
-                // przelatywanie nad ścianami, szukamy celu dalej mimo wystapienia sciany po drodze
-                 Debug.Log("wall passed: "+checkingPosition +" continue moving -> "+checkingDirection);
                 continue;  
             }
 
@@ -189,22 +164,16 @@ public class MoveValidatorScript : MonoBehaviour
             {
                 if(isPenetrationEnabled == false)  
                 {
-                    // zapisujemy pierwszy cel 
                     monsterList.Add(GridManager.CellGridTable[checkingPosition]);
-                    // i blokujemy dalsza droge
                     directionsBloced.Add(checkingDirection);
-                    Debug.Log("First monster Hit"+ checkingPosition +" stop moving -> "+checkingDirection);
                     continue;
                 }
-                // gdy przebijanie jest mozliwe, dodajemy kazdego mobka w zasiegu i w lini niezaleznie od tego czy jest zasloniety innym
                 monsterList.Add(GridManager.CellGridTable[checkingPosition]);
-                Debug.Log("add hit monster: "+ checkingPosition +" moving -> "+checkingDirection);
                 continue;
             }
         }
         int _validTargets = monsterList.Count();
 
-        // sekcja podświetlania siadki z mobami ktore mozna zaatakowac
         foreach(var monster in monsterList)
         {
             if(Attack_Indicators.ContainsKey(monster.CurrentPosition)) continue;
@@ -251,13 +220,11 @@ public class MoveValidatorScript : MonoBehaviour
         Move_Indicators.Clear();
     }
 
-    [ContextMenu("Show combined grid")]
-    public void ShowValidAttackAndMoveCombinedGrid(bool staminaRestriction)
+   [Obsolete] public void ShowValidAttackAndMoveCombinedGrid(bool staminaRestriction)
     {
         DestroyAllGridObjects();
         SpawnMarksOnGrid();
         
-        // POPRAWKA NA AKTUALNIE POSIADANE ZASOBY (STAMINE)
         HighlightValidMoveGrid(_restrictedByStaminavalue: staminaRestriction);
 
         int intStaminaValue = Mathf.FloorToInt(PlayerManager.instance.CurrentStamina);

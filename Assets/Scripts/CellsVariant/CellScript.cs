@@ -123,10 +123,6 @@ public class CellScript : MonoBehaviour
                     SlideAnimation( _recTransform.localPosition,  new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y))
                 );
             }
-            
-            //this._recTransform.localPosition =  new Vector2(value.x * _recTransform.rect.size.x, value.y * _recTransform.rect.size.y);
-        
-
         }
     }
     public bool IsWalkable
@@ -158,7 +154,6 @@ public class CellScript : MonoBehaviour
         {
             if(SpecialTile.ParentCell == null) 
             {
-              //  Debug.LogWarning("cell ze specialtilesem ale bez parenta ?");
                 return;
             }
 
@@ -186,7 +181,6 @@ public class CellScript : MonoBehaviour
     }
     private IEnumerator SlideAnimation(Vector3 startingPosition, Vector3 endPosition)
     {
-       // Debug.Log("slide");
         if(SpecialTile is Player_Cell)
         {
             Vector2Int direction = Vector2Int.CeilToInt(startingPosition-endPosition);
@@ -218,43 +212,25 @@ public class CellScript : MonoBehaviour
     
     public void MoveTo()
     {
-      //  try
-      //  {
-            if(this.gameObject.transform.Find("MarkSign(Clone)").GetComponent<SpriteRenderer>().color == Color.clear) 
-            {
-                Debug.LogError("yr not allowed to move this spot");
-                return;
-            }
-             
-       // }
-      //  catch (System.Exception)
-      //  {
-      //      Debug.LogError("error?");
-      //      return;
-      //  }
-
-      //  Debug.Log("click on cell "+CurrentPosition);
-        if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
-        {
-            //print("trwa inna faza niz ruchu gracza");
+    
+        if(this.gameObject.transform.Find("MarkSign(Clone)").GetComponent<SpriteRenderer>().color == Color.clear) 
             return;
-        }
+            
+        if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerMovement) 
+            return;
 
         if(PlayerManager.instance.playerCurrentlyMoving == true)
-        {
-            //Debug.Log("player currenly moving");
             return;
-        }
 
-            GameManager.instance.MovingRequestTriggered = true;
-         //   print("spokojnie mozna sie ruszyc");
-            StartCoroutine(PlayerManager.instance.Autopilot(this));
+        GameManager.instance.MovingRequestTriggered = true;
+        StartCoroutine(PlayerManager.instance.Autopilot(this));
         
     }
     internal void AddEffectImage(GameObject sprite)
     {
         Trash.Add(Instantiate(sprite, this._recTransform));
     }
+
     public void AssignType(TileTypes _type, ISpecialTile _specialTile = null)
     {
         this.Type = _type;

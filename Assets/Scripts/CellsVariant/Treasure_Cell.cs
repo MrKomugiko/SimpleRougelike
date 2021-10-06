@@ -41,30 +41,17 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             if(goldReward == null)
             {
                 RandomGeneratedLoot.Add(new ItemPack(GoldValue,_data.PossibleLootItems.Where(item=>item is GoldItem).First()));
-                // foreach(var item in RandomGeneratedLoot)
-                // {
-                //     Debug.Log("* "+item.Count + " / "+ item.item.name);
-                // }
             }
-            // else
-            // {
-            //     RandomGeneratedLoot.Where(item=>item.item is GoldItem).FirstOrDefault().Count = GoldValue;
-            // }
         }
 
         var treasureObject = GameObject.Instantiate(Icon_Sprite, ParentCell.transform);
         
         if(RandomGeneratedLoot.Count==1)
         {
-         //   Debug.Log("RandomGeneratedLoot.Count == 1");
-            // przypadek tylko golda w środku
             treasureObject.GetComponent<SpriteRenderer>().sprite = RandomGeneratedLoot[0].item.ItemCoreSettings.Item_Sprite;
-           // RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
         }
         else
         {
-           // Debug.Log("RandomGeneratedLoot.Count > 1");
-         //   RandomGeneratedLoot.ForEach(item=>Debug.Log("Content: "+item.item.name));
             treasureObject.GetComponent<SpriteRenderer>().sprite = this.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
             chest = new Chest(source:this,RandomGeneratedLoot);
         }
@@ -78,9 +65,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
                 }
             } ,"Collect Only",ActionIcon.Pick,
             true));
-
-        //NotificationManger.CreateNewNotificationElement(this);
-    
         
         ParentCell.Trash.Add(treasureObject);
         RemoveFromMapIfChesIsEmpty();
@@ -90,7 +74,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     {   
         if(chest!= null)
         {
-            //Debug.Log("zapisanie aktualne wyposazenia skrzynki");
             TreasureBackupData savedValues = new TreasureBackupData(this.ID, chest.ContentItems);
             return savedValues;
         }
@@ -101,7 +84,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public void OnClick_MakeAction()
     {
         Vector2Int direction = GameManager.Player_CELL.CurrentPosition - this.ParentCell.CurrentPosition;
-       // Debug.Log(direction);
 
         if(direction.x == 0)
             GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";

@@ -26,7 +26,6 @@ public class BombData : ScriptableObject
     {
         var VectorArea = new List<Vector2Int>(); 
 
-//        Debug.Log($"generowanie obszaru wybuchu dla {_pattern.ToString()} o zasięgu {Size} ");
         switch(_pattern)
         {
             case ExplosionPatterns.SimpleCross:
@@ -56,7 +55,6 @@ public class BombData : ScriptableObject
                 {    
                     VectorArea.Add( Vector2Int.zero + (Vector2Int.up * i) );
                     VectorArea.Add( Vector2Int.zero + (Vector2Int.down * i) );
-
                 }
                 break;
 
@@ -69,8 +67,6 @@ public class BombData : ScriptableObject
                 }
                 break;
         }
-
-     //   Debug.Log("zawiera: "+VectorArea.Count());
         return VectorArea.Distinct<Vector2Int>().ToList();
     }
 }
