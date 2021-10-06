@@ -13,13 +13,12 @@ MonoBehaviour:
   m_Name: Equipment_9_BetterBow
   m_EditorClassIdentifier: 
   ItemCoreSettings:
-    Item_Sprite: {fileID: -239750703, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+    Item_Sprite: {fileID: 1940328643, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
     ItemID: 8
-    Name: Simple bow
+    Name: BetterBow
     GoldValue: 1000
-    Description: dangerous ranged weapon rope and stick, high class goblins' manufacture
-      xD
-    Rarity: 2
+    Description: well made bow with fancy ormaments and useless spikes ;d
+    Rarity: 4
     Type: 2
   DropSettings:
     minCount: 1
@@ -37,13 +36,11 @@ MonoBehaviour:
   eqType: 6
   MainPerks:
   - type: 0
-    value: 1
+    value: 5
   - type: 3
-    value: 10
+    value: 20
   ExtraPerks:
   - type: 9
-    value: 50
-  - type: 12
     value: 100
   FrontSprite: {fileID: 0}
   BackSprite: {fileID: 0}

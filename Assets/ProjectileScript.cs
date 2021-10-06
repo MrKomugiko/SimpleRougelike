@@ -6,6 +6,7 @@ public class ProjectileScript : MonoBehaviour
 {
     // Update is called once per frame
     [SerializeField] Transform projectileTransform;
+    [SerializeField] SpriteRenderer ProjectileSprite;
     public Vector3 mainGridWorldDestination;
     public int projectileSpeed = 6;
     public Vector2Int movingDirection;
@@ -14,12 +15,30 @@ public class ProjectileScript : MonoBehaviour
 
     private int distanceTraveled = 0;
 
+    private void SetFlyingAngle(Vector2Int direction)
+    {
+        float angle = 0;
+        if(direction == Vector2Int.up)
+                angle = 180;        
+
+        if(direction == Vector2Int.right)
+                angle = 90;      
+
+        if(direction == Vector2Int.down)
+                angle = 0;       
+
+        if(direction == Vector2Int.left)
+                angle = -90;        
+
+        ProjectileSprite.transform.Rotate(0,0,angle);
+    }
     public void ShootProjectile(Vector2Int shooterPosition)
     {
         distanceTraveled = 0;
         shooterStaringWorldPosition = shooterPosition;
         animatorEvents = GetComponentInParent<AnimationsEventsScript>();
         Debug.Log("wystrzal obiektu");
+        SetFlyingAngle(movingDirection);
         StartCoroutine(FlyingTowardDirection(movingDirection));
     }
     public List<Vector2> TargetsPositionsList = new List<Vector2>();

@@ -28,6 +28,6 @@ MonoBehaviour:
   _cooldownLeftToBeReady: 0
   SkillAnimationLayer: 4
   ProjectilePrefab: {fileID: 3154681924480877445, guid: 3f951fbddac845c408c573d8aa3dbfee, type: 3}
-  FlyAboweWallsAndEnemiesEnabled: 0
-  PenetrationEnabled: 0
+  FlyAboweWallsAndEnemiesEnabled: 1
+  PenetrationEnabled: 1
   MultipleTargetsEnabled: 0
