@@ -169,6 +169,11 @@ public class Monster_Cell :ICreature
             // 1 . upewnienie sie czy klikniete pole jest w zasięgu ("czy jest podswietlone na czerwono)
             if(PlayerManager.instance.MovmentValidator.Attack_Indicators.ContainsKey(ParentCell.CurrentPosition))
             {
+                if(PlayerManager.instance.MovmentValidator.Attack_Indicators[ParentCell.CurrentPosition].color == Color.clear)
+                {
+                 //   Debug.Log("nie mozna zaatakowac - pole nie jest czerwone ;d?");
+                    return;
+                }
                 GameManager.instance.NextTarget = this.OnClick_MakeAction; 
 
                 //gracz ma w tej turze ( ruchu ) ropzpoczac ruch do pola -1 od wybranego celu
@@ -176,13 +181,27 @@ public class Monster_Cell :ICreature
 
                 GridManager.CellGridTable[_pathfinder.FinalPath[0].Coordination].MoveTo();
             }
-
-
             return;
         }
+
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerAttack)
         {
-            Debug.Log($"trwa innna tura({GameManager.instance.CurrentTurnPhase.ToString()}) niż tura ataku");
+            
+           // Debug.Log($"trwa innna tura({GameManager.instance.CurrentTurnPhase.ToString()}) niż tura ataku");
+            return;
+        }
+
+        if(PlayerManager.instance.MovmentValidator.Attack_Indicators.ContainsKey(ParentCell.CurrentPosition))
+        {
+            if(PlayerManager.instance.MovmentValidator.Attack_Indicators[ParentCell.CurrentPosition].color == Color.clear)
+            {
+              //  Debug.Log("nie mozna zaatakowac - pole nie jest czerwone ;d?");
+                return;
+            }
+        }
+        else
+        {
+          //  Debug.Log("nie mozna zaatakowac, brak znaczika celu na mapie pod wybranym mobem");
             return;
         }
         if(GameManager.instance.TurnPhaseBegin == false) return;
@@ -193,25 +212,27 @@ public class Monster_Cell :ICreature
         if(direction.y == 0)  GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
-        if(GridManager.DistanceCheck(this) == false) {
-             NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");
-             return;
-        }
+        // if(GridManager.DistanceCheck(this) == false) {
+        //      NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Creature is too far away.");
+        //      return;
+        // }
 
         SkillsManager.SelectedAttackSkill(this);
 
-        NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
+        // NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.PlayerAttack);
 
        // PlayerManager.instance.StartCoroutine(PlayerManager.instance.PerformRegularAttackAnimation(PlayerManager.instance._playerCell.ParentCell,this.ParentCell,GameManager.instance.attackAnimationFrames));     
     }
     public void TakeDamage(float damage, string source, bool _idCritical = false)
     {
-        Debug.Log("monster otrzymal obrazenia");
+       // Debug.Log("monster otrzymal obrazenia");
         OnMonsterTakeDamageEvent?.Invoke(this,(ParentCell,Int32.Parse(damage.ToString()),_idCritical,false,false));
 
         HealthPoints -= Mathf.RoundToInt(damage);
      
         var IMPORTANTCHECKTOTRIGGERGETTER = IsAlive;
+
+        SkillsManager.Hit1ImpactTrigger = false;
             //Debug.Log($"Monster HP decerase from [{HealthPoints + damage}] to [{HealthPoints}] by <{source}>");    
     }
     public bool TryAttack(CellScript _target)

@@ -135,7 +135,7 @@ public class SelectionPopupNodeScript : MonoBehaviour
     {   
         if(node_data.Skill.isObtained && node_data.Skill.isCategoryType == false)
         {
-            Debug.Log("sprawdzanie czy stac nas na skila");
+            //Debug.Log("sprawdzanie czy stac nas na skila");
             // wskaznikiem  czy sa zasoby bedzie kolor paska łądowania wokół = czwerowny pełny, git, ale nie stac cie na niego xd
             if(node_data.Skill.isLocked)
             {
@@ -157,7 +157,7 @@ public class SelectionPopupNodeScript : MonoBehaviour
     public void CheckIfSkillIsLocked()
     {   
         node_data.Skill.SetLockedStatusBasedOnPlayerLevel();
-        
+
         if(node_data.Skill.isLocked == true)
         {
             Content.GetComponent<Button>().onClick.RemoveAllListeners();

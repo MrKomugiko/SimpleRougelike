@@ -110,15 +110,15 @@ public class MoveValidatorScript : MonoBehaviour
 
         foreach(var vector in vectorsforpossibleattackCheck)
         {
-            if(GridManager.CellGridTable.ContainsKey(PlayerPosition+vector) == false) continue;
+            if(GridManager.CellGridTable.ContainsKey(PlayerPosition+vector) == false) continue; 
             if(GridManager.CellGridTable[PlayerPosition+vector].SpecialTile is Monster_Cell)
             {
                 monsterList.Add(GridManager.CellGridTable[PlayerPosition+vector]);
             }
-            else
-            {
-                monsterList.Add(null);
-            }
+            // else
+            // {
+            //     monsterList.Add(null);
+            // }
             
         }
         int _validTargets = monsterList.Count();
@@ -126,6 +126,87 @@ public class MoveValidatorScript : MonoBehaviour
         foreach(var monster in monsterList)
         {
             if(monster == null) continue;
+            if(Attack_Indicators.ContainsKey(monster.CurrentPosition)) continue;
+
+            Attack_Indicators.Add(monster.CurrentPosition, All_GridIndicators[monster.CurrentPosition]);
+            Attack_Indicators.Last().Value.gameObject.SetActive(true);
+            Attack_Indicators.Last().Value.color = Color.red; 
+        }
+        return (_validTargets,monsterList);   
+    }
+
+    public (int count,List<CellScript> targets) HighlightValidAttackGridStraightProjectile(
+                                                    List<Vector2Int> vectorsforpossibleattackCheck, 
+                                                                bool isPenetrationEnabled = false, 
+                                                                bool isFlyAboweWalls = false)
+    {
+        // if(isPenetrationEnabled)
+        // {
+        //     return HighlightValidAttackGridNearPlayer(vectorsforpossibleattackCheck);
+        // }
+
+        var monsterList = new List<CellScript>();
+        var PlayerPosition = PlayerManager.instance._playerCell.ParentCell.CurrentPosition;
+
+        List<Vector2> directionsBloced = new List<Vector2>();
+        foreach(var vector in vectorsforpossibleattackCheck)
+        {
+            
+            //TODO: !! to dziala tak dlugo jak podane vektorki są posortowane od odleglosci od centrum (gracza) rosnąco
+            var checkingPosition = PlayerPosition+vector;
+            if(GridManager.CellGridTable.ContainsKey(checkingPosition) == false) continue; 
+
+            Vector2Int checkingDirection = Vector2Int.zero;
+
+            if(vector.x > 0)     
+                checkingDirection.x = 1;    
+            else if( vector.x < 0)
+                checkingDirection.x = -1;
+            
+            if(vector.y > 0)     
+                checkingDirection.y = 1;    
+            else if( vector.y < 0)
+                checkingDirection.y = -1;
+            
+
+            if(directionsBloced.Contains(checkingDirection)) continue;
+
+            if(GridManager.CellGridTable[checkingPosition].Type == TileTypes.wall)
+            {
+                if(isFlyAboweWalls == false)
+                {   
+                    // napotkano na drodze sciane, koniec szukania dla teko kierunku lotu
+                    directionsBloced.Add(checkingDirection);
+                    Debug.Log("wall: "+checkingPosition+" stop moving -> "+checkingDirection);
+                    continue;                    
+                }
+                // przelatywanie nad ścianami, szukamy celu dalej mimo wystapienia sciany po drodze
+                 Debug.Log("wall passed: "+checkingPosition +" continue moving -> "+checkingDirection);
+                continue;  
+            }
+
+            if(GridManager.CellGridTable[checkingPosition].SpecialTile is Monster_Cell)
+            {
+                if(isPenetrationEnabled == false)  
+                {
+                    // zapisujemy pierwszy cel 
+                    monsterList.Add(GridManager.CellGridTable[checkingPosition]);
+                    // i blokujemy dalsza droge
+                    directionsBloced.Add(checkingDirection);
+                    Debug.Log("First monster Hit"+ checkingPosition +" stop moving -> "+checkingDirection);
+                    continue;
+                }
+                // gdy przebijanie jest mozliwe, dodajemy kazdego mobka w zasiegu i w lini niezaleznie od tego czy jest zasloniety innym
+                monsterList.Add(GridManager.CellGridTable[checkingPosition]);
+                Debug.Log("add hit monster: "+ checkingPosition +" moving -> "+checkingDirection);
+                continue;
+            }
+        }
+        int _validTargets = monsterList.Count();
+
+        // sekcja podświetlania siadki z mobami ktore mozna zaatakowac
+        foreach(var monster in monsterList)
+        {
             if(Attack_Indicators.ContainsKey(monster.CurrentPosition)) continue;
 
             Attack_Indicators.Add(monster.CurrentPosition, All_GridIndicators[monster.CurrentPosition]);

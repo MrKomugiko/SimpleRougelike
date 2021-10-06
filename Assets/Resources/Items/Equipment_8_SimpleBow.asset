@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2830f37d3fc36846bc09ef240db0d67, type: 3}
-  m_Name: Equipment_1_Dagger 1
+  m_Name: Equipment_8_SimpleBow
   m_EditorClassIdentifier: 
   ItemCoreSettings:
-    Item_Sprite: {fileID: -1059138478, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
-    ItemID: 1
-    Name: Dagger
+    Item_Sprite: {fileID: -239750703, guid: eab4da8f3dd104841b4e2e5694397baa, type: 3}
+    ItemID: 8
+    Name: Simple bow
     GoldValue: 1000
-    Description: Looks like small sword. But isnt should be sharp?
+    Description: dangerous ranged weapon rope and stick, high class goblins' manufacture
+      xD
     Rarity: 2
     Type: 2
   DropSettings:
@@ -32,17 +33,18 @@ MonoBehaviour:
     Inteligence: 0
     Dexterity: 0
   CanBeAssignToQuickActions: 0
+  EquipmentSpecificType: 3
   eqType: 6
   MainPerks:
   - type: 0
     value: 1
   - type: 3
-    value: 3
+    value: 10
   ExtraPerks:
-  - type: 5
-    value: 5
-  - type: 14
-    value: 1
+  - type: 9
+    value: 50
+  - type: 12
+    value: 100
   FrontSprite: {fileID: 0}
   BackSprite: {fileID: 0}
   LeftSprite: {fileID: 0}

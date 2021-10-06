@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: simplifed-punch-up
+  m_Name: simplifed-arrowshoot-up
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -1011,13 +1011,6 @@ AnimationClip:
   m_Events:
   - time: 0
     functionName: AttackAnimationStarted
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0
-    functionName: ShootProjectile
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

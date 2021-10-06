@@ -44,8 +44,13 @@ public class SelectionPopupController : MonoBehaviour
                     List<SkillNode> enabledSkillsList = new List<SkillNode>();
                     foreach(var skill in value.node_data.Childs)
                     {
-                        if(skill.Skill.CheckRequirmentsToEnableSkill())
+                        if(skill.Skill == null)
+                        {
                             enabledSkillsList.Add(skill);
+                        }
+                        else if(skill.Skill.CheckRequirmentsToEnableSkill())
+                            enabledSkillsList.Add(skill);
+                        
                     }
                     //---------------------------------------------------------------------------------
                     CurrentOpenedNodeslist = enabledSkillsList;
@@ -134,8 +139,15 @@ public class SelectionPopupController : MonoBehaviour
         {
             foreach(var skill in SkillsManager.ROOT_SKILLTREE.Childs)
             {
-                if(skill.Skill.CheckRequirmentsToEnableSkill())
+                if(skill.Skill != null)
+                {
+                    if(skill.Skill.CheckRequirmentsToEnableSkill())
+                        enabledSkillsList.Add(skill);
+                }
+                else
+                {
                     enabledSkillsList.Add(skill);
+                }
             }
         }
         else

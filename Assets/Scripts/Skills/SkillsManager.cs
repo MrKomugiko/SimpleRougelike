@@ -15,6 +15,7 @@ public class SkillsManager : MonoBehaviour
 
     public static bool Hit1ImpactTrigger;
     public static bool Hit2ImpactTrigger;
+    public static bool ProjectileReleased;
 
     private void Start() 
     {
@@ -26,7 +27,7 @@ public class SkillsManager : MonoBehaviour
         ROOT_SKILLTREE = new SkillNode(0,"ROOT",parent:null,null);
 
         ROOT_SKILLTREE.Childs.Add((new SkillNode(0,"EXIT",parent:null,null)));
-        var AvailableskillsList = new List<SkillNode>();
+        // var AvailableskillsList = new List<SkillNode>();
         foreach(var skill in AllSkills)
         {
             if(skill.ParentName=="ROOT")
@@ -36,7 +37,7 @@ public class SkillsManager : MonoBehaviour
             }
             else
             {
-                Debug.Log(skill.ParentName);
+               //Debug.Log(skill.ParentName);
                 List<string> path = skill.ParentName.Split(char.Parse("/")).ToList();
 
                 SkillNode parentNode = ROOT_SKILLTREE;
@@ -61,7 +62,7 @@ public class SkillsManager : MonoBehaviour
 
     public void TickSkillsCooldowns()
     {
-        Debug.Log("skills tick cooldown +1");
+        //Debug.Log("skills tick cooldown +1");
         foreach(var skill in AllSkills)
         {
             skill.TickCooldown();

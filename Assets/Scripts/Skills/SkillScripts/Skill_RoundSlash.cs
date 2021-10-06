@@ -87,7 +87,7 @@ public class Skill_RoundSlash : SkillBase, ISkill
         }
 
         PlayerManager.instance.AtackAnimationInProgress = false;
-        SkillsManager.SelectedAttackSkill = null;;
+        SkillsManager.SelectedAttackSkill = null;
         SkillsManager.SkillAnimationFinished = true;
         GameManager.instance.PlayerAttacked = true;
         yield break;

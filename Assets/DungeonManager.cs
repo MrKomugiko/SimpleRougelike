@@ -39,7 +39,9 @@ public class DungeonManager : MonoBehaviour
 
         PlayerManager.instance.RegenerateFullStamina();
         
+        Debug.Log("open dungeon");
         StartCoroutine(GameManager.instance.AddTurn());
+
     }
 
     
@@ -315,6 +317,7 @@ public class DungeonManager : MonoBehaviour
         GameManager.instance.MonstersMoved = false;
         GameManager.instance.MonsterAttack = false;
 
+        Debug.Log("restart turn routine");
         StartCoroutine(GameManager.instance.AddTurn());
         
     }

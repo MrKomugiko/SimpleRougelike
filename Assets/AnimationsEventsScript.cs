@@ -8,6 +8,7 @@ public class AnimationsEventsScript : MonoBehaviour
     public bool AttackAnimationsFinished = true;
 
     public bool AnimationInProgress = false;
+
     public void AttackAnimationFinished()
     {
        // Debug.LogWarning("Attack start");
@@ -15,6 +16,7 @@ public class AnimationsEventsScript : MonoBehaviour
         {
             AnimationInProgress = true;
             AttackAnimationsFinished = true;
+            SkillsManager.ProjectileReleased = false;
         }
     }
 
@@ -40,5 +42,11 @@ public class AnimationsEventsScript : MonoBehaviour
         Debug.Log("IMPACK POINT 2nd hit");
         SkillsManager.Hit2ImpactTrigger = true;
         
+    }
+
+    public void ShootProjectile()
+    {
+        Debug.Log("spawn -> wystrzelenie strzały");
+        SkillsManager.ProjectileReleased = true;
     }
 }

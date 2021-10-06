@@ -83,7 +83,6 @@ public class GameManager : MonoBehaviour
              if(PlayerManager.instance.MovmentValidator.validMovePosiitonsCounter == 1)
             {
                 PlayerManager.instance.MovmentValidator.HighlightValidMoveGrid(true);
-                Debug.Log("tylko 1 pole na ruch, opcja wyboru pozycji jest pominięta");
                 PlayerMoved = true;
                 TurnPhaseBegin = true;
                 roomIsCleared = false;
@@ -111,13 +110,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 if(roomIsCleared == false)
-                     _SkillsManager.TickSkillsCooldowns();
-
-                
+                     _SkillsManager.TickSkillsCooldowns();  
             }
-        
-       
-       
 
             TurnPhaseBegin = true;
 
@@ -141,29 +135,18 @@ public class GameManager : MonoBehaviour
             TurnPhaseBegin = true;
             if(roomIsCleared)
             {
-                // skip attack turn;
-                Debug.Log("room is cleared");
                 EndPlayerAttackTurn();
                 yield break;
             }
 
-
             if(PlayerManager.instance.CurrentStamina >= 1) 
             {
-                Debug.Log("attack turn - current stamina >=1");
                 attackSelectorPopup.OPENandSpawnInitNodesTree();
-
-               // yield return new WaitWhile(()=>PlayerManager.instance.AtackAnimationInProgress);
                 yield return new WaitUntil(()=>GameManager.instance.PlayerAttacked);
-                Debug.Log("czekam za koncem animacji ataku");
-
                 yield return new WaitUntil(()=>SkillsManager.SkillAnimationFinished);
-                Debug.Log("koniec animacji ataku, przejscie do tury ruchu mobkow");
             }
             else
             {
-                // brak staminy na cokolwiek
-                Debug.Log("brak staminy end of attack turn");
                 EndPlayerAttackTurn();
                 yield break;
             }
@@ -222,7 +205,6 @@ public class GameManager : MonoBehaviour
 
             foreach (var creature in tempCurrentCreatureList)
             {
-
                 if(creature.ISReadyToMakeAction == false) continue;
                 if(creature.TryAttack(GameManager.Player_CELL))
                 {
@@ -265,7 +247,8 @@ public class GameManager : MonoBehaviour
         CurrentTurnPhase = TurnPhase.MonsterMovement;
         PlayerAttacked = false;
         TurnPhaseBegin = false;
-        StartCoroutine(AddTurn());
+       StopAllCoroutines();
+       StartCoroutine(AddTurn());
     }
 
     [SerializeField] TextMeshProUGUI DELETECONSOLELOGS;
@@ -282,11 +265,9 @@ public class GameManager : MonoBehaviour
         {
             string logs = "";
             foreach(var file in files)
-            {
                 logs += file.ToString().Replace(Application.persistentDataPath,"...")+"\n";
-            }
+            
             DELETECONSOLELOGS.SetText(logs);
-
             DELETECONSOLE_BTNTEXT.SetText("Tap to confirm");
             return;
         }
@@ -317,6 +298,7 @@ public class GameManager : MonoBehaviour
 
        public void CloseClearWindowBackToDungeon()
     {
+        Debug.LogError(("click"));
         TurnPhaseBegin = false;
         PlayerMoved = false;
         PlayerAttacked = false;
