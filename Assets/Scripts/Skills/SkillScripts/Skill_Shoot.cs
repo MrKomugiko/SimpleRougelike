@@ -74,6 +74,7 @@ public class Skill_Shoot : SkillBase, ISkill
         }
 
         ProjectileScript _projectileScript = ConfigureProjectileObject(target.ParentCell.CurrentPosition,ConfirmedTargets.Select(t=>(Vector2)t.CurrentPosition).ToList(), OriginShootDirection);
+        _projectileScript.TargetsPositionsList = ConfirmedTargets.Select(t=>(Vector2)(t.CurrentPosition)).ToList();
 
         PlayerManager.instance.StartCoroutine(ProcessSkillRoutine(_projectileScript));
 

@@ -27,6 +27,7 @@ public class EquipmentScript : MonoBehaviour
     }
     public void GenerateEquipment() 
     {
+        if(PLAYER_EQUIPMENTSLOT == false)
         { 
             if(ItemSlots.Count>0)
             {

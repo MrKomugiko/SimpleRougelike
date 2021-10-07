@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     internal Action NextTarget;
     internal Action NextMoveLocation;
 
-    [SerializeField] SelectionPopupController attackSelectorPopup;
+    [SerializeField] public SelectionPopupController attackSelectorPopup;
     public IEnumerator AddTurn()
     {      
         if(CurrentTurnPhase == TurnPhase.PlayerMovement && PlayerMoved == false)

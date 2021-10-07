@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: classic
   DamageMultiplifer: 1
-  StaminaCost: 1
+  StaminaCost: 2
   Cooldown: 1
   ParentName: ROOT/RANGED
   SkillIcon: {fileID: 972639367, guid: 114226b8d549f4d4ca871770c06d7eee, type: 3}
@@ -25,7 +25,7 @@ MonoBehaviour:
   MinPlayerLevel: 0
   RestrictedByPrimaryWeaponType: 3
   _isEnoughtResourcesToUse: 1
-  _cooldownLeftToBeReady: 1
+  _cooldownLeftToBeReady: 0
   SkillAnimationLayer: 4
   ProjectilePrefab: {fileID: 3154681924480877445, guid: 3f951fbddac845c408c573d8aa3dbfee, type: 3}
   FlyAboweWallsAndEnemiesEnabled: 0

@@ -24,14 +24,12 @@ public class SelectionPopupController : MonoBehaviour
 
             if(value != null && value != _selectedNode)
             {
-                // szukanie wczesniejszczego wybranego node'a ( z listy, ogolnej )
                 if(_selectedNode != null)
                 {
                     var x = AttackOptionsNodes.Where(c=>c.node_data.Node_ID == _selectedNode.node_data.Node_ID).FirstOrDefault();
                     if(x != null) 
                         x.EnableSelectionDarkOverlay(false);
                 }
-
 
                 _selectedNode = value;
 
@@ -56,6 +54,12 @@ public class SelectionPopupController : MonoBehaviour
                     }
                     RebuildTree(CurrentOpenedNodeslist);
                     return;
+                }
+
+                if(value.node_data.Skill != null)
+                {
+                    Debug.Log("select skill"); 
+                    value.node_data.Skill.SkillLogic.Select();
                 }
             }
         }
@@ -107,8 +111,18 @@ public class SelectionPopupController : MonoBehaviour
         _selectedNode = null;
     }
 
+    [ContextMenu("refresh skills requirments cheks")]
+    public void RefreshSkillsRequirmentCheck()
+    {
+        foreach (var node in AttackOptionsNodes)
+        {
+            node.SelfConfigure(node.node_data);
+        }
+    }
     public void RebuildTree_BackButton(SkillNode parentNode)
     {
+        SkillsManager.SelectedAttackSkill = null;   // reset
+
         if(parentNode == null)
         {
             this.gameObject.SetActive(false);
@@ -133,7 +147,7 @@ public class SelectionPopupController : MonoBehaviour
                 }
                 else
                 {
-                    enabledSkillsList.Add(skill);
+                    enabledSkillsList.Add(skill); // pusty node back/exit
                 }
             }
         }
@@ -154,9 +168,9 @@ public class SelectionPopupController : MonoBehaviour
                 Destroy(currentCenterNode.gameObject);
 
             var GrandpaNode = Instantiate(PopupNodeObjectPrefab, CenterTreeObject.transform);
-            GrandpaNode.GetComponent<SelectionPopupNodeScript>().SelfConfigure(parentNode.Parent);
-            GrandpaNode.GetComponent<SelectionPopupNodeScript>().ConfigureNodeForCenterPosition();
             _selectedNode =  GrandpaNode.GetComponent<SelectionPopupNodeScript>();
+            _selectedNode.SelfConfigure(parentNode.Parent);
+            _selectedNode.ConfigureNodeForCenterPosition();
         }
         else
         {
@@ -175,8 +189,12 @@ public class SelectionPopupController : MonoBehaviour
         }
     }
 
+    [ContextMenu("openandspawnskillsnodetree")]
     public void OPENandSpawnInitNodesTree()
     {
+        ClearCenteredNode();
+        SkillsManager.SelectedAttackSkill = null;   // reset
+
         this.gameObject.SetActive(true);
         foreach (var node in AttackOptionsNodes)
         {
@@ -208,5 +226,7 @@ public class SelectionPopupController : MonoBehaviour
             nodeScript.SelfConfigure(skill);
             index++;
         }
+
+    
     }
 }

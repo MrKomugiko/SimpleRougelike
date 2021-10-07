@@ -212,7 +212,8 @@ public class CellScript : MonoBehaviour
     
     public void MoveTo()
     {
-    
+        if(this.gameObject.transform.Find("MarkSign(Clone)").GetComponent<SpriteRenderer>() == null) return;
+
         if(this.gameObject.transform.Find("MarkSign(Clone)").GetComponent<SpriteRenderer>().color == Color.clear) 
             return;
             

@@ -21,6 +21,8 @@ public class Skill_Punch : SkillBase, ISkill
     }
     public void Execute(Monster_Cell target)
     {
+        PlayerManager.instance.MovmentValidator.DestroyAllGridObjects();
+
         SkillsManager.Hit1ImpactTrigger = false;
         SkillsManager.Hit2ImpactTrigger = false;
 

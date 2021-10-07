@@ -12,17 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9977bdb8bf5a4a44b2733585d524f7c, type: 3}
   m_Name: Skill_4_FireBall_WALLPASS
   m_EditorClassIdentifier: 
-  Name: wallpass
-  DamageMultiplifer: 1
-  StaminaCost: 1
-  Cooldown: 1
+  Name: High Arrow
+  DamageMultiplifer: 2
+  StaminaCost: 2
+  Cooldown: 3
   ParentName: ROOT/RANGED
   SkillIcon: {fileID: 668645930, guid: 114226b8d549f4d4ca871770c06d7eee, type: 3}
   isCategoryType: 0
   isLocked: 0
   isObtained: 1
   Range: 7
-  MinPlayerLevel: 0
+  MinPlayerLevel: 2
   RestrictedByPrimaryWeaponType: 3
   _isEnoughtResourcesToUse: 1
   _cooldownLeftToBeReady: 0

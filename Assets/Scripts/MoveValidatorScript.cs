@@ -76,6 +76,7 @@ public class MoveValidatorScript : MonoBehaviour
         }
         foreach(var checkedMonster in monsterList)
         {
+            NodeGrid.UpdateMapObstacleData();
             checkedMonster.Value.IsWalkable = true;
             
             ParentPathfinder.FindPath(checkedMonster.Value);
@@ -154,7 +155,6 @@ public class MoveValidatorScript : MonoBehaviour
                 if(isFlyAboweWalls == false)
                 {   
                     directionsBloced.Add(checkingDirection);
-                    "wall: "+checkingPosition+" stop moving -> "+checkingDirection);
                     continue;                    
                 }
                 continue;  

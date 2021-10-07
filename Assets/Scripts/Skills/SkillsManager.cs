@@ -9,13 +9,26 @@ public class SkillsManager : MonoBehaviour
     public static bool SkillAnimationFinished = true;
     public static SkillNode CurrentSelectedSkill;
     public static SkillNode ROOT_SKILLTREE;
-    public static Action<Monster_Cell> SelectedAttackSkill = null;
+    private static Action<Monster_Cell> _selectedAttackSkill = null;
 
     public List<SkillBase> AllSkills = new List<SkillBase>();
 
     public static bool Hit1ImpactTrigger;
     public static bool Hit2ImpactTrigger;
     public static bool ProjectileReleased;
+
+    public static Action<Monster_Cell> SelectedAttackSkill { 
+        get => _selectedAttackSkill; 
+        set
+        {
+            if(value == null)
+            {
+                PlayerManager.instance.MovmentValidator.DestroyAllGridObjects();
+                Debug.Log("Odświeżenie okna skili - aktualnie wybrany skill i jego podświetlenie dostępnych celów została zrestartowana");
+            }
+            _selectedAttackSkill = value; 
+        }
+    }
 
     private void Start() 
     {
@@ -37,7 +50,7 @@ public class SkillsManager : MonoBehaviour
             }
             else
             {
-
+                List<string> path = skill.ParentName.Split(char.Parse("/")).ToList();
                 SkillNode parentNode = ROOT_SKILLTREE;
                 foreach(var node in path)
                 {

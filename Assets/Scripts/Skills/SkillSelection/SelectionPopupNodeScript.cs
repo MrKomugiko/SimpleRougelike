@@ -17,7 +17,11 @@ public class SelectionPopupNodeScript : MonoBehaviour
 
     public void AdjustImageRotation()
     {
-        Content.transform.Rotate(0,0,-this.transform.localEulerAngles.z);
+        if(rotationFixed == false)
+        {
+            Content.transform.Rotate(0,0,-this.transform.localEulerAngles.z);
+            rotationFixed = true;
+        }
     }
     public void HideProgressBar()
     {
@@ -53,13 +57,16 @@ public class SelectionPopupNodeScript : MonoBehaviour
 
         GetComponentInChildren<Button>().onClick.RemoveAllListeners();
         if(node_data.Childs.Count > 0)
+        {
             CircleMainImage.transform.parent.GetComponent<Image>().sprite = null;
+        }
 
         IsSelected = true;
 
-        GetComponentInChildren<Button>().onClick.AddListener(()=>node_data.Skill.SkillLogic.Select());
+      // GetComponentInChildren<Button>().onClick.AddListener(()=>node_data.Skill.SkillLogic.Select());
     }
 
+    bool rotationFixed = false;
     internal void SelfConfigure(SkillNode selectionPopupNode)
     {
         node_data = selectionPopupNode;

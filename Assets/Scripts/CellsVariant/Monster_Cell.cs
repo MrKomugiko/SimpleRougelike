@@ -199,7 +199,6 @@ public class Monster_Cell :ICreature
         if(direction.y == 0)  GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
         PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
-
         SkillsManager.SelectedAttackSkill(this);
     }
     public void TakeDamage(float damage, string source, bool _idCritical = false)

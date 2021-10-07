@@ -42,6 +42,7 @@ public class PotionItem : ItemData, IConsumable
         }
 
         PlayerManager.instance._mainBackpack.ItemSlots[itemSlotID].UpdateItemAmount(-1);
+        GameManager.instance.attackSelectorPopup.RefreshSkillsRequirmentCheck();
 
         return true; 
     }

@@ -32,12 +32,14 @@ public class EquipmentItem : ItemData
                 {
                     {PlayerManager.instance.STATS.EquipItem_UpdateStatistics(this);}
                     PlayerManager.instance.RefreshWearedEquipmentUIonMap();
+                    GameManager.instance.attackSelectorPopup.OPENandSpawnInitNodesTree();
                 }
                
                if(MoveItemTo == PlayerManager.instance._mainBackpack ) 
                {
                     {PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(this);}
                     PlayerManager.instance.RefreshWearedEquipmentUIonMap();
+                    GameManager.instance.attackSelectorPopup.OPENandSpawnInitNodesTree();
                }
             }
         return result;
