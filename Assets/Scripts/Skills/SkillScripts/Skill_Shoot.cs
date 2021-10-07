@@ -67,8 +67,16 @@ public class Skill_Shoot : SkillBase, ISkill
             {
                 Vector2Int checkingDirection = GetDirectionVector(from:PlayerManager.instance._playerCell.ParentCell , target:possibleTarget);
                 if (possibleTarget == null) continue;
-                if (OriginShootDirection == checkingDirection)            
+                
+                if (OriginShootDirection == checkingDirection)   
+                {
                     UpdatedTargetList.Add(possibleTarget);
+                    if(possibleTarget.CurrentPosition == target.ParentCell.CurrentPosition)
+                    {
+                        // nie przeszywamy przeciwników dalej za celem
+                        break;
+                    }
+                }
             }
             ConfirmedTargets = UpdatedTargetList;
         }
