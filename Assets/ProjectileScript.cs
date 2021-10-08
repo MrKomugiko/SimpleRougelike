@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProjectileScript : MonoBehaviour
 {
-    public int ProjectileSpeed = 6;
+    public int ProjectileSpeed = 4;
     public List<Vector2> TargetsPositionsList = new List<Vector2>();
     public Vector3 MainTarget_GridCoord;
     [SerializeField] private Transform projectileTransform;
@@ -26,16 +26,28 @@ public class ProjectileScript : MonoBehaviour
     {
         float angle = 0;
         if(direction == Vector2Int.up)
-                angle = 180;        
+        {
+            ProjectileSprite.transform.localPosition = new Vector3(0f,1f,0);
+            angle = 180;        
+        }
 
         if(direction == Vector2Int.right)
-                angle = 90;      
+        {          
+            ProjectileSprite.transform.localPosition = new Vector3(.732f,.5f,0);
+            angle = 90;      
+        }
 
         if(direction == Vector2Int.down)
-                angle = 0;       
+        {
+            ProjectileSprite.transform.localPosition = new Vector3(0,0,0);
+            angle = 0;       
+        }
 
         if(direction == Vector2Int.left)
-                angle = -90;        
+        {
+            ProjectileSprite.transform.localPosition = new Vector3(-.5f,.5f,0);
+            angle = -90;        
+        }
 
         ProjectileSprite.transform.Rotate(0,0,angle);
     }
@@ -47,7 +59,9 @@ public class ProjectileScript : MonoBehaviour
         {
             Destroy(this.gameObject);
             animatorEvents.Attack_Hit_1();
-            animatorEvents.AttackAnimationFinished();
+
+            animatorEvents.AllProjectilesReachTarget = true;
+            Debug.Log("wszytskie pociski dotarly do celu");
             yield break;
         }
         else if (TargetsPositionsList.Contains(projectileGridWorldPosition))
@@ -63,7 +77,7 @@ public class ProjectileScript : MonoBehaviour
         {
             movingProgress = i/ProjectileSpeed;
             projectileTransform.localPosition = Vector3.Lerp(currentProjectileobjectposition,nextdestination,movingProgress);
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
 
         distanceTraveled++;

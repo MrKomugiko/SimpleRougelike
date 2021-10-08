@@ -73,7 +73,7 @@ public class Skill_Shoot : SkillBase, ISkill
                     UpdatedTargetList.Add(possibleTarget);
                     if(possibleTarget.CurrentPosition == target.ParentCell.CurrentPosition)
                     {
-                        // nie przeszywamy przeciwników dalej za celem
+                        // nie przeszywamy przeciwników dalej za celemp
                         break;
                     }
                 }
@@ -83,7 +83,7 @@ public class Skill_Shoot : SkillBase, ISkill
 
         ProjectileScript _projectileScript = ConfigureProjectileObject(target.ParentCell.CurrentPosition,ConfirmedTargets.Select(t=>(Vector2)t.CurrentPosition).ToList(), OriginShootDirection);
         _projectileScript.TargetsPositionsList = ConfirmedTargets.Select(t=>(Vector2)(t.CurrentPosition)).ToList();
-
+        SkillsManager.ProjectileReleased = false;
         PlayerManager.instance.StartCoroutine(ProcessSkillRoutine(_projectileScript));
 
         GameObject.Find("ActionsPopUp").GetComponent<SelectionPopupController>().ClearCenteredNode();
