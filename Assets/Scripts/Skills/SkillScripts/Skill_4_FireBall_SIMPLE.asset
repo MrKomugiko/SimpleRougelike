@@ -27,6 +27,7 @@ MonoBehaviour:
   _isEnoughtResourcesToUse: 1
   _cooldownLeftToBeReady: 0
   SkillAnimationLayer: 4
+  AmmunitionsNeeded: 1
   ProjectilePrefab: {fileID: 3154681924480877445, guid: 3f951fbddac845c408c573d8aa3dbfee, type: 3}
   FlyAboweWallsAndEnemiesEnabled: 0
   PenetrationEnabled: 0

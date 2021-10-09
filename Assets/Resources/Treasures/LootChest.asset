@@ -19,6 +19,7 @@ MonoBehaviour:
   Type: 5
   IsWalkable: 1
   PossibleLootItems:
+  - {fileID: 11400000, guid: b21aef56dd60f154e8444903511df72b, type: 2}
   - {fileID: 11400000, guid: 5f8ce3ecfcf2d514790e7b9cf665885d, type: 2}
   - {fileID: 11400000, guid: f58baac47246f234b96fa090de803624, type: 2}
   - {fileID: 11400000, guid: 9e57d90ac3761e548a7faaaa388913c3, type: 2}

@@ -118,13 +118,11 @@ public class ItemSlot : MonoBehaviour
            
         }
     }
-    public void ChangeItemCount(int value)
+    private void ChangeItemCount(int value)
     {
         var _item = ITEM;
         _item.Count+=value;
-        ITEM = _item;
-
-        
+        ITEM = _item;       
     }
     
     TextMeshProUGUI _counterBox_TMP;
@@ -202,6 +200,12 @@ public class ItemSlot : MonoBehaviour
         chest.LootChest.SynchronizeItemDataWithParentCell();
         
         chest.IfEmptyRemoveEmptyChestFromMap();
+
+        if(PLAYER_BACKPACK==false && ITEM.item is AmmunitionItem)
+        {
+            Debug.Log("Podniesienie pierwszego itemku typu amunicja");
+            SkillsManager.RefreshAmmoDatafromBackPack();
+        }
     }
     public void UpdateItemAmount(int value)
     {
@@ -230,6 +234,12 @@ public class ItemSlot : MonoBehaviour
             _counterBox.SetActive(true);
             string countLeft = ITEM.Count.ToString();
             _counterBox_TMP.SetText(countLeft); 
+        }
+
+        if(PLAYER_BACKPACK && ITEM.item is AmmunitionItem)
+        {
+            Debug.Log("zmiana ilosci itemu typu amunicja");
+            SkillsManager.RefreshAmmoDatafromBackPack();
         }
     }
     public bool IsInQuickSlot = false;

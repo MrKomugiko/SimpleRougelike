@@ -13,15 +13,18 @@ MonoBehaviour:
   m_Name: Skill_2_Slash
   m_EditorClassIdentifier: 
   Name: Slash
-  DamageMultiplifer: 2
+  BaseDamageMultiplifer: 3
   StaminaCost: 3
   Cooldown: 3
-  Range: 1
   ParentName: ROOT
   SkillIcon: {fileID: -1685602112, guid: 114226b8d549f4d4ca871770c06d7eee, type: 3}
   isCategoryType: 0
   isLocked: 0
   isObtained: 1
-  _cooldownLeftToBeReady: 3
+  Range: 1
+  MinPlayerLevel: 0
+  RestrictedByPrimaryWeaponType: 1
+  CurrentDamageMultiplifer: 1
   _isEnoughtResourcesToUse: 1
+  _cooldownLeftToBeReady: 0
   SkillAnimationLayer: 2

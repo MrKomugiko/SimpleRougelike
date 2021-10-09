@@ -28,6 +28,14 @@ public class EquipmentItem : ItemData
         var result = slot.ParentStorage.EquipItemFromSlot(slot, MoveItemTo);
             if(result == true)
             {
+                if(GameManager.instance.CurrentTurnPhase == GameManager.TurnPhase.PlayerAttack)
+                {
+                    // broń została podmieniona w czasie tury ataku więc, wyłącz podswietlenie celow w przyapdku gdy te jest wlaczone
+                    Debug.Log("hide attack grid , podczas zakladania ekwipunku");
+                    PlayerManager.instance.MovmentValidator.HideAttackGrid();
+                }
+                
+
                 if(MoveItemTo == PlayerManager.instance._EquipedItems ) 
                 {
                     {PlayerManager.instance.STATS.EquipItem_UpdateStatistics(this);}

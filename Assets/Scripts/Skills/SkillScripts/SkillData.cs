@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class SkillData : ScriptableObject
 {
     public string Name = "Skill Name";
-    public float DamageMultiplifer = 1f;
+    public float BaseDamageMultiplifer = 1f;
     public int StaminaCost = 1;
     public int Cooldown = 1;
     public string ParentName = "ROOT/...";
@@ -30,6 +30,7 @@ public abstract class SkillData : ScriptableObject
 
         if(RestrictedByPrimaryWeaponType == EquipmentSpecifiedType.NoRestriction)
         {
+            Debug.Log($"skill [{Name}] nie wymaga zadnej broni do uzycia");
             weaponValidationRequired = false;   // sprawdzanie pod kątem rodzaju zalozonej broni nie wymagane
         }
             
@@ -37,14 +38,24 @@ public abstract class SkillData : ScriptableObject
         {
             if(PlayerManager.instance._EquipedItems.GetEquipmentItemFromSlotType(EquipmentType.PrimaryWeapon) != null)
             {    
-                if(RestrictedByPrimaryWeaponType != PlayerManager.instance._EquipedItems.GetEquipmentItemFromSlotType(EquipmentType.PrimaryWeapon).EquipmentSpecificType) 
-                    return false; // skill wymaga innego rodzaju broni głownej do poprawnego dzialania
+                if(RestrictedByPrimaryWeaponType == PlayerManager.instance._EquipedItems.GetEquipmentItemFromSlotType(EquipmentType.PrimaryWeapon).EquipmentSpecificType) 
+                {   
+                    Debug.Log("gracz ma zalozony wlasciwy item do uzycia skila "+Name);
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("skill wymaga innego rodzaju broni głownej do poprawnego dzialania "+Name);
+                    return false; // 
+                }
             }
             else
             {
-                return false; // gracz nie ma broni a mimo to skil ma jakies ograniczeni ewymagajace uzycia konkretnej broni
+                Debug.Log($"gracz nie ma broni a mimo to skil [{Name}] ma jakies ograniczeni ewymagajace uzycia jakiejkolwiek broni");
+                return false; 
             }
         }
+        
         
         return true;
     }

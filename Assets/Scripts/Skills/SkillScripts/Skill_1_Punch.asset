@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill_1_Punch
   m_EditorClassIdentifier: 
   Name: Punch
-  DamageMultiplifer: 0.75
+  BaseDamageMultiplifer: 1
   StaminaCost: 0
   Cooldown: 0
   ParentName: ROOT
@@ -24,6 +24,7 @@ MonoBehaviour:
   Range: 1
   MinPlayerLevel: 0
   RestrictedByPrimaryWeaponType: 0
+  CurrentDamageMultiplifer: 1
   _isEnoughtResourcesToUse: 1
   _cooldownLeftToBeReady: 0
   SkillAnimationLayer: 0

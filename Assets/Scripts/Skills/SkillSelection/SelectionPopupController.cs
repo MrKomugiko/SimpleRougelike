@@ -104,10 +104,18 @@ public class SelectionPopupController : MonoBehaviour
 
     internal void ClearCenteredNode()
     {
-        if(CenterTreeObject.transform.childCount == 1 )
-        {
-            Destroy(CenterTreeObject.transform.GetChild(0).gameObject);
-        }
+        if(CenterTreeObject == null) return;
+
+        var currentCenterNode = CenterTreeObject.GetComponentInChildren<SelectionPopupNodeScript>();
+  
+        if(currentCenterNode != null)
+            Destroy(currentCenterNode.gameObject);
+
+
+        // if(CenterTreeObject.transform.childCount == 1 )
+        // {
+        //     Destroy(CenterTreeObject.transform.GetChild(0).gameObject);
+        // }
         _selectedNode = null;
     }
 
@@ -192,6 +200,20 @@ public class SelectionPopupController : MonoBehaviour
     [ContextMenu("openandspawnskillsnodetree")]
     public void OPENandSpawnInitNodesTree()
     {
+        // otworzy okno skili tylko w czasie 'gry'
+        if(GameManager.Player_CELL == null)
+        {
+            Debug.Log("pole gracza nie zostało jeszcze zainicjowane - gra nie wlaczona");
+            return;
+        }
+        if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerAttack)
+        {
+            Debug.Log("nie otwieraj okna skili, nadal trwa faza ruchu gracza");
+            return;
+        }
+        
+
+        SkillsManager.RefreshAmmoDatafromBackPack();
         ClearCenteredNode();
         SkillsManager.SelectedAttackSkill = null;   // reset
 

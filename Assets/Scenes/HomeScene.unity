@@ -29269,6 +29269,10 @@ PrefabInstance:
       propertyPath: ItemDetailsWindow
       value: 
       objectReference: {fileID: 897030158}
+    - target: {fileID: 1571893566413960954, guid: 62f7cf9a5529bd04c9cc49b27f6f8971, type: 3}
+      propertyPath: NumberOfUnlockedSlots
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1581460820715752036, guid: 62f7cf9a5529bd04c9cc49b27f6f8971, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

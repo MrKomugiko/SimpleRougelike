@@ -21,6 +21,9 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private GameObject DungeonCanvas;
     public void OpenDungeon()
     {
+        GameManager.instance.attackSelectorPopup.ClearCenteredNode();
+        GameManager.instance.attackSelectorPopup.gameObject.SetActive(false);
+
         currentDungeonDistance = DungeonManager.instance.maxDungeonTraveledDistance;
 
         DungeonSelectionWindow.SetActive(false);

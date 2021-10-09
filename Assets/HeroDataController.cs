@@ -133,6 +133,7 @@ public class HeroDataController : MonoBehaviour
 
         LoadHeroesDataFromDevice();
         LoadPlayerDataInGame(newCreatedHero);
+        
         MenuScript.instance.OpenCampScene();
 
     }

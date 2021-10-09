@@ -4,7 +4,6 @@ using UnityEngine;
 
 public abstract class ItemData : ScriptableObject
 {
-    
     public ItemCoreSettingsData ItemCoreSettings;
     public DropSettingsData DropSettings;
     public StackSettingsData StackSettings;
@@ -58,21 +57,22 @@ public class StackSettingsData
 }
 
 public enum RarityTypes
-    {
-        Common,
-        Rare,
-        Epic,
-        Legend,
-        Ancient
-    }
+{
+    Common,
+    Rare,
+    Epic,
+    Legend,
+    Ancient
+}
 public enum ItemType
-    {
-        Default,
-        Consumable,
-        Equipment,
-        CraftComponent,
-        Trash,
-        Gold
+{
+    Default,
+    Consumable,
+    Equipment,
+    CraftComponent,
+    Trash,
+    Gold,
+    Ammunition
 }
 [Serializable]
 public class RequirmentsSettingsData

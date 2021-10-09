@@ -26,6 +26,7 @@ public class NodeGrid : MonoBehaviour
     {
         if(MAPDATA == null)
             CreateNodesMap();
+            
         foreach(var node in MAPDATA)
         {
             node.walkable = true;

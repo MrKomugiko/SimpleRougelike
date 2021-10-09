@@ -163,7 +163,10 @@ public class PlayerManager: MonoBehaviour
             weaponSprite = null;
         }
 
-        GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = weaponSprite==null?null:weaponSprite;
+        if(GameObject.FindGameObjectWithTag("WEAPON") != null)
+        {
+            GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = weaponSprite==null?null:weaponSprite;
+        }
     }
 
     internal void RegenerateResourcesAtTurnStart()
@@ -244,7 +247,18 @@ public class PlayerManager: MonoBehaviour
          }
         damage = Mathf.RoundToInt(dmg);
     }
-
+    internal void CalculateAttackHit_NOWEAPON(out int damage, out bool isCritical)
+    {
+        float dmg = PlayerManager.instance.STATS.BaseDamage;
+         //critical hit chance 
+         isCritical = STATS.Critical_Hit_Rate*10>= UnityEngine.Random.Range(0,1000);
+         if(isCritical)
+         {
+             damage = Mathf.RoundToInt(dmg*(STATS.Critical_Hit_Damage/100f));
+             return;
+         }
+        damage = Mathf.RoundToInt(dmg);
+    }
     private void Awake() {
          instance = this;
     }

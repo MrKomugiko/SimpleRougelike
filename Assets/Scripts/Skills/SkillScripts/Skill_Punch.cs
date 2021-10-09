@@ -9,6 +9,7 @@ public class Skill_Punch : SkillBase, ISkill
 {
     public Skill_Punch()
     {
+        CurrentDamageMultiplifer = BaseDamageMultiplifer;
         base.SkillLogic = this;
     }
 
@@ -54,8 +55,15 @@ public class Skill_Punch : SkillBase, ISkill
     private IEnumerator ProcessSkillRoutine(Monster_Cell target)
     {
          int _damage; bool _isCritical;
-        PlayerManager.instance.CalculateAttackHit(out _damage, out _isCritical);
-        _damage = Mathf.RoundToInt(base.DamageMultiplifer*_damage);
+         if(RestrictedByPrimaryWeaponType == EquipmentSpecifiedType.NoRestriction)
+         {
+            PlayerManager.instance.CalculateAttackHit_NOWEAPON(out _damage, out _isCritical); 
+         }
+         else
+         {
+            PlayerManager.instance.CalculateAttackHit(out _damage, out _isCritical);
+         }
+        _damage = Mathf.RoundToInt(base.CurrentDamageMultiplifer*_damage);
 
         yield return new WaitUntil(()=>SkillsManager.Hit1ImpactTrigger == true);
             target.TakeDamage(_damage, "Attacked by player",_isCritical);

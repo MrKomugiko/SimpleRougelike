@@ -25,7 +25,7 @@ public class PlayerEquipmentVisualSwitchScript : MonoBehaviour
     public Sprite LeftSprite;
     public Sprite RightSprite;
 
-    public void UpdatePlayerGraphics()
+    [Obsolete("juz nie używane nigdzie")] public void UpdatePlayerGraphics()
     {
 
         // try

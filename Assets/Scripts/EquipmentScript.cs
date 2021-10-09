@@ -111,6 +111,16 @@ public class EquipmentScript : MonoBehaviour
             }
         }
     }
+
+    public void TakeItemFromBackpack(int _takeCount, ItemData _findingItem)
+    {
+        // ściągniecie ze stanu wybranego itemka z pierwszego dostepnego slotu do wyczerpania zasobu
+        var slotWithItem = ItemSlots.Where(slot=>slot.ITEM.item == _findingItem && slot.ITEM.Count != 0).First();
+        slotWithItem.UpdateItemAmount(-_takeCount);
+     
+        Debug.Log("uzyto "+_takeCount+ " "+_findingItem.ItemCoreSettings.Name);
+    }
+
     public static void QuitFromQuickbarSelectionMode()
     {
         if(AssignationItemToQuickSlotIsActive == true)
@@ -136,9 +146,6 @@ public class EquipmentScript : MonoBehaviour
         EquipmentScript.AssignationItemToQuickSlotIsActive = false;
         CurrentSelectedActionButton = null;
     }
-
-
-
     public bool AddSingleItemPackToBackpack(ItemPack item, int slotIndex)
     {
         int avaiableSpace = ItemSlots.Count - ItemSlots.Where(s=>s.IsLocked).Count();
@@ -153,8 +160,7 @@ public class EquipmentScript : MonoBehaviour
                 return false;
         }
         return true;
-    }
-    
+    } 
     public void LoadItemInPlayerEq( int asociatedSlotId, ItemPack _item )
     {
         EquipmentItem itemEq = _item.item as EquipmentItem;
@@ -171,9 +177,34 @@ public class EquipmentScript : MonoBehaviour
     }
     public EquipmentItem GetEquipmentItemFromSlotType(EquipmentType eqType)
     {
-         int slotIndex  = this.ItemSlots.Where(s=>s.ItemContentRestricion == eqType).First().itemSlotID;
-         var equipmentItem = ItemSlots[slotIndex].ITEM.item as EquipmentItem;
+        int slotIndex  = this.ItemSlots.Where(s=>s.ItemContentRestricion == eqType).First().itemSlotID;
+        var equipmentItem = ItemSlots[slotIndex].ITEM.Count == 0?null:ItemSlots[slotIndex].ITEM.item as EquipmentItem;
         return equipmentItem;
+    }
+
+    public List<ItemPack> GetSumListAvailableAmmunition()
+    {
+        var ammunitionList = new List<ItemPack>();
+
+        foreach(var slot in ItemSlots.Where(i => i.ITEM != null))
+        {
+            var ammo = ammunitionList.FirstOrDefault(i=>i.item == slot.ITEM.item);
+            if(ammo != null)
+            {
+                ammo.Count += slot.ITEM.Count;
+            }
+            else
+            {
+                // brak aktualnego wpisu itemku na liscie, dodanie nowego
+                if( slot.ITEM.item is AmmunitionItem )
+                {
+                    if(slot.ITEM.Count > 0)
+                        ammunitionList.Add(slot.ITEM);
+                }
+            }
+        }
+
+        return ammunitionList; 
     }
     public bool EquipItemFromSlot(ItemSlot fromSlot, EquipmentScript toEquipment)
     {

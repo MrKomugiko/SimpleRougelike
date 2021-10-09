@@ -6,6 +6,7 @@ using UnityEngine;
 public class SkillBase : SkillData
 {   
     public ISkill SkillLogic;
+    public float CurrentDamageMultiplifer;
     [SerializeField] private bool _isEnoughtResourcesToUse;
     [SerializeField] private int _cooldownLeftToBeReady;
     public int CooldownLeftToBeReady 
@@ -17,7 +18,15 @@ public class SkillBase : SkillData
         }
     }
     public int SkillAnimationLayer;
-    public bool IsEnoughtResourcesToUse =>  _isEnoughtResourcesToUse = (PlayerManager.instance.CurrentStamina >= this.StaminaCost);
+
+    public virtual bool IsEnoughtResourcesToUse {
+        get
+        {   
+            // Check for ammunitions of correct type and available to use
+            var staminaCheck = (PlayerManager.instance.CurrentStamina >= this.StaminaCost);
+            return _isEnoughtResourcesToUse = staminaCheck;
+        }    
+    }
     public bool ReadyToUse => CooldownLeftToBeReady==0?true:false;
 
     public void TickCooldown(int timeReduction = 1)

@@ -92,7 +92,10 @@ public class SelectionPopupNodeScript : MonoBehaviour
                 Content.GetComponentInChildren<TextMeshProUGUI>().SetText("End turn.");
                 Content.GetComponent<Button>().onClick.AddListener(()=>GameManager.instance.EndPlayerAttackTurn());
                 Content.GetComponent<Button>().onClick.AddListener(()=>this.transform.parent.gameObject.SetActive(false));
-                GetComponentInParent<SelectionPopupController>().ClearCenteredNode();
+                if(GetComponentInParent<SelectionPopupController>() != null)
+                {
+                    GetComponentInParent<SelectionPopupController>().ClearCenteredNode();
+                }
                 SkillsManager.SelectedAttackSkill=null;
                 CircleMainImage.sprite = null;
             }

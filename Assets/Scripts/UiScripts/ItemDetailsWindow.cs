@@ -189,13 +189,17 @@ public class ItemDetailsWindow : MonoBehaviour
 
     public void CheckButtons_ItemCount()
     {
-        foreach(var btn in ButtonsList)
+        // foreach(var btn in ButtonsList)
+        // {
+        //         btn.GetComponent<Button>().interactable = false;
+        //         btn.GetComponentInChildren<TextMeshProUGUI>().alpha = .75f;
+        //     }
+        // }
+
+        if(PlayerManager.instance._mainBackpack.ItemSlots[ParentSlot.itemSlotID].ITEM.Count == 0)
         {
-            if(PlayerManager.instance._mainBackpack.ItemSlots[ParentSlot.itemSlotID].ITEM.Count == 0)
-            {
-                btn.GetComponent<Button>().interactable = false;
-                btn.GetComponentInChildren<TextMeshProUGUI>().alpha = .75f;
-            }
+            ResetToDefault();
+            this.gameObject.SetActive(false);
         }
     }
 

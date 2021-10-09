@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static AmmunitionItem;
 
 [CreateAssetMenu(fileName="Skill_Shoot",menuName="GameData/Skill/Shoot")]
 public class Skill_Shoot : SkillBase, ISkill
 {
+    public int AmmunitionsNeeded = 1;
     public GameObject ProjectilePrefab;
     public bool FlyAboweWallsAndEnemiesEnabled = false;   // ignore walls on the way
     public bool PenetrationEnabled = false;     // ignore fact passing other mobs on way
     public bool MultipleTargetsEnabled = false; // allow attack every mob in shoot direction
-    
     private List<Vector2Int> AreaTargetsCheckVectors = new List<Vector2Int>();
     private List<CellScript> ConfirmedTargets = new List<CellScript>();
     
@@ -20,6 +21,15 @@ public class Skill_Shoot : SkillBase, ISkill
         PenetrationEnabled = MultipleTargetsEnabled==true?true:PenetrationEnabled;
 
         base.SkillLogic = this;
+    }
+    public override bool IsEnoughtResourcesToUse
+    {
+        get
+        {
+            var basecheck = base.IsEnoughtResourcesToUse;
+            var ammoCheck = SkillsManager.CheckAmmunitionCount(default,AmmunitionsNeeded); 
+            return (basecheck==true && ammoCheck) == true ? true : false;
+        }
     }
 
     public void Select()
@@ -83,13 +93,18 @@ public class Skill_Shoot : SkillBase, ISkill
 
         ProjectileScript _projectileScript = ConfigureProjectileObject(target.ParentCell.CurrentPosition,ConfirmedTargets.Select(t=>(Vector2)t.CurrentPosition).ToList(), OriginShootDirection);
         _projectileScript.TargetsPositionsList = ConfirmedTargets.Select(t=>(Vector2)(t.CurrentPosition)).ToList();
+        _projectileScript.LoadAmmoByType(skill:this, ammoType:AmmunitionType.Default);
+        
         SkillsManager.ProjectileReleased = false;
         PlayerManager.instance.StartCoroutine(ProcessSkillRoutine(_projectileScript));
 
-        GameObject.Find("ActionsPopUp").GetComponent<SelectionPopupController>().ClearCenteredNode();
-        GameObject.Find("ActionsPopUp").GetComponent<SelectionPopupController>().gameObject.SetActive(false);
+        
+        GameManager.instance.attackSelectorPopup.ClearCenteredNode();
+        GameManager.instance.attackSelectorPopup.gameObject.SetActive(false);
         
         PlayerManager.instance.CurrentStamina-=base.StaminaCost;
+
+        SkillsManager.RefreshAmmoDatafromBackPack();
 
         base.ResetCooldown();
     }
@@ -124,7 +139,7 @@ public class Skill_Shoot : SkillBase, ISkill
     {
         int _damage; bool _isCritical;
         PlayerManager.instance.CalculateAttackHit(out _damage, out _isCritical);
-        _damage = Mathf.RoundToInt(base.DamageMultiplifer*_damage);
+        _damage = Mathf.RoundToInt(base.BaseDamageMultiplifer*_damage);
         yield return new WaitUntil(()=>SkillsManager.ProjectileReleased == true);
         _projectile.gameObject.SetActive(true);
         _projectile.ShootProjectile(shooterPosition: PlayerManager.instance._playerCell.ParentCell.CurrentPosition);
@@ -134,7 +149,7 @@ public class Skill_Shoot : SkillBase, ISkill
         {   
             yield return new WaitUntil(()=>SkillsManager.Hit1ImpactTrigger == true);
             if(ConfirmedTargets.Count-1 >= currentTargetIndex)
-                (ConfirmedTargets[currentTargetIndex].SpecialTile as Monster_Cell).TakeDamage(_damage, "Attacked by player",_isCritical);            
+                (ConfirmedTargets[currentTargetIndex].SpecialTile as Monster_Cell).TakeDamage(_damage*CurrentDamageMultiplifer, "Attacked by player",_isCritical);            
             
             SkillsManager.Hit1ImpactTrigger = false;
             currentTargetIndex++;

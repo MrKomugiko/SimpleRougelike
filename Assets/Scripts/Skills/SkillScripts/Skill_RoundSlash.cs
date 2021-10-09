@@ -17,6 +17,7 @@ public class Skill_RoundSlash : SkillBase, ISkill
 
     public Skill_RoundSlash()
     {
+        CurrentDamageMultiplifer = BaseDamageMultiplifer;
         base.SkillLogic = this;
     }
 
@@ -67,7 +68,7 @@ public class Skill_RoundSlash : SkillBase, ISkill
     {
          int _damage; bool _isCritical;
         PlayerManager.instance.CalculateAttackHit(out _damage, out _isCritical);
-        _damage = Mathf.RoundToInt(base.DamageMultiplifer*_damage);
+        _damage = Mathf.RoundToInt(base.CurrentDamageMultiplifer*_damage);
 
         int currentTargetIndex = 0;
         while(true)

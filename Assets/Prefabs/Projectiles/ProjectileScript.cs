@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static AmmunitionItem;
 
 public class ProjectileScript : MonoBehaviour
 {
@@ -85,4 +87,18 @@ public class ProjectileScript : MonoBehaviour
         StartCoroutine(FlyingTowardDirection(direction));
         yield break;
     } 
+
+    public void LoadAmmoByType( SkillBase skill, AmmunitionType ammoType)
+    {
+        var availableAmmunition = SkillsManager.CurrentAvailableAmmo;
+        
+        Debug.Log("Wybranie amunicji, - aktualnie pierwsze dostępne ammo");
+        AmmunitionItem selectedAmmo = availableAmmunition.First().Key;
+
+        // ściągniecie ze stanu konkretnego itemka 
+        PlayerManager.instance._mainBackpack.TakeItemFromBackpack(_takeCount:1, _findingItem: selectedAmmo);
+        
+        // change skill damage based on ammunition damage
+        skill.CurrentDamageMultiplifer = skill.BaseDamageMultiplifer + selectedAmmo.BaseDamageMultiplifer;
+    }
 }

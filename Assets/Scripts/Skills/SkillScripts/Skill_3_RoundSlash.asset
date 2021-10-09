@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill_3_RoundSlash
   m_EditorClassIdentifier: 
   Name: Round Slash
-  DamageMultiplifer: 1.5
+  BaseDamageMultiplifer: 2
   StaminaCost: 4
   Cooldown: 5
   ParentName: ROOT
@@ -24,6 +24,7 @@ MonoBehaviour:
   Range: 1
   MinPlayerLevel: 2
   RestrictedByPrimaryWeaponType: 1
+  CurrentDamageMultiplifer: 1
   _isEnoughtResourcesToUse: 0
   _cooldownLeftToBeReady: 0
   SkillAnimationLayer: 3
