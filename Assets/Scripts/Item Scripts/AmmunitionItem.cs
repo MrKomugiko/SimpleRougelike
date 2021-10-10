@@ -42,9 +42,9 @@ public class AmmunitionItem : ItemData
     {
         Default,
         StandardArrow,
-        CrossbowBolts,
         BrokenArrow,
-        DamagedBolts
+        CrossbowBelt,
+        DamagedBelts
 
         // rock
         // inne śmieci ?

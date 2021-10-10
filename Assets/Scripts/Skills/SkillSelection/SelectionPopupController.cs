@@ -197,22 +197,21 @@ public class SelectionPopupController : MonoBehaviour
         }
     }
 
-    [ContextMenu("openandspawnskillsnodetree")]
     public void OPENandSpawnInitNodesTree()
     {
         // otworzy okno skili tylko w czasie 'gry'
         if(GameManager.Player_CELL == null)
         {
-            Debug.Log("pole gracza nie zostało jeszcze zainicjowane - gra nie wlaczona");
+            // Debug.Log("pole gracza nie zostało jeszcze zainicjowane - gra nie wlaczona");
             return;
         }
         if(GameManager.instance.CurrentTurnPhase != GameManager.TurnPhase.PlayerAttack)
         {
-            Debug.Log("nie otwieraj okna skili, nadal trwa faza ruchu gracza");
+            // Debug.Log("nie otwieraj okna skili, nadal trwa faza ruchu gracza");
             return;
         }
 
-        SkillsManager.RefreshAmmoDatafromBackPack();
+        AmmunitionManagerScript.RefreshAmmoDatafromBackPack();
         ClearCenteredNode();
         SkillsManager.SelectedAttackSkill = null;   // reset
 

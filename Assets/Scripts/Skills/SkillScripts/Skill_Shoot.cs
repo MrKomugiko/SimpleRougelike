@@ -28,7 +28,7 @@ public class Skill_Shoot : SkillBase, ISkill
         get
         {
             var basecheck = base.IsEnoughtResourcesToUse;
-            var ammoCheck = SkillsManager.CheckAmmunitionCount(RequiredAmmoType,AmmunitionsNeeded); 
+            var ammoCheck = AmmunitionManagerScript.CheckAmmunitionCount(RequiredAmmoType,AmmunitionsNeeded); 
             return (basecheck==true && ammoCheck) == true ? true : false;
         }
     }
@@ -105,7 +105,7 @@ public class Skill_Shoot : SkillBase, ISkill
         
         PlayerManager.instance.CurrentStamina-=base.StaminaCost;
 
-        SkillsManager.RefreshAmmoDatafromBackPack();
+        AmmunitionManagerScript.RefreshAmmoDatafromBackPack();
 
         base.ResetCooldown();
     }

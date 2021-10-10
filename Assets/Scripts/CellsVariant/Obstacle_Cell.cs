@@ -41,7 +41,6 @@ public class Obstacle_Cell : ISpecialTile
         
         if(direction.y == 0)
             GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
-        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
     }
 
   

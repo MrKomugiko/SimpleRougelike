@@ -25,7 +25,7 @@ MonoBehaviour:
     maxCount: 5
   StackSettings:
     IsStackable: 1
-    StackSize: 50
+    StackSize: 10
   RequirmentsSettings:
     Level: 0
     Strength: 0

@@ -52,6 +52,7 @@ public class ProjectileScript : MonoBehaviour
         }
 
         ProjectileSprite.transform.Rotate(0,0,angle);
+       
     }
     private IEnumerator FlyingTowardDirection(Vector2Int direction)
     {
@@ -89,11 +90,11 @@ public class ProjectileScript : MonoBehaviour
     } 
 
     public void LoadAmmoByType( SkillBase skill, AmmunitionType ammoType)
-    {
-        var availableAmmunition = SkillsManager.CurrentAvailableAmmo;
-        
+    {        
+        ProjectileSprite.sprite = AmmunitionManagerScript.CurrentDefault.ItemCoreSettings.Item_Sprite;
+
         Debug.Log("Wybranie amunicji, - aktualnie pierwsze dostępne ammo");
-        AmmunitionItem selectedAmmo = availableAmmunition.First(ammo=>ammo.Key._Type == ammoType).Key;
+        AmmunitionItem selectedAmmo = AmmunitionManagerScript.GetCurrentSelectedAmmunition(ammoType);
 
         // ściągniecie ze stanu konkretnego itemka 
         PlayerManager.instance._mainBackpack.TakeItemFromBackpack(_takeCount:1, _findingItem: selectedAmmo);

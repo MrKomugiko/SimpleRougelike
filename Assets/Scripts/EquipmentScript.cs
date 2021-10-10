@@ -10,6 +10,7 @@ using static Treasure_Cell;
 
 public class EquipmentScript : MonoBehaviour
 {
+    public AmmunitionManagerScript AmmoManager;
     public string StorageName;
     [SerializeField] public bool PLAYER_EQUIPMENTSLOT;
     [SerializeField] GameObject ItemSlotPrefab;
@@ -172,8 +173,6 @@ public class EquipmentScript : MonoBehaviour
         
         if(_item.item.ItemCoreSettings.Name == "Roma Armor")
             PlayerManager.instance.ArmorIMG.enabled = true;
-        
-        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
     }
     public EquipmentItem GetEquipmentItemFromSlotType(EquipmentType eqType)
     {
@@ -187,12 +186,13 @@ public class EquipmentScript : MonoBehaviour
     {
         var ammunitionList = new List<ItemPack>();
 
-        foreach(var slot in ItemSlots.Where(i => i.ITEM != null))
+        foreach(var slot in ItemSlots.Where(i => i.ITEM.Count > 0))
         {
-            var ammo = ammunitionList.FirstOrDefault(i=>i.item == slot.ITEM.item);
-            if(ammo != null)
+            int count = slot.ITEM.Count;
+            var existingAmmoRecord = ammunitionList.Where(a=>a.item.name == slot.ITEM.item.name).FirstOrDefault();
+            if(existingAmmoRecord != null)
             {
-                ammo.Count += slot.ITEM.Count;
+                ammunitionList.First(a=>a == existingAmmoRecord).Count += count;
             }
             else
             {
@@ -200,7 +200,7 @@ public class EquipmentScript : MonoBehaviour
                 if( slot.ITEM.item is AmmunitionItem )
                 {
                     if(slot.ITEM.Count > 0)
-                        ammunitionList.Add(slot.ITEM);
+                        ammunitionList.Add(new ItemPack(slot.ITEM.Count, slot.ITEM.item));
                 }
             }
         }
@@ -224,12 +224,13 @@ public class EquipmentScript : MonoBehaviour
             }
 
             int matchEqSlotIndex = toEquipment.ItemSlots.Where(s=>s.ItemContentRestricion == equipmentItem.eqType).First().itemSlotID;
+
             if(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count == 0)
             {
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
                 toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
             }
-            else
+            else 
             {
                 ItemPack currentEquipedItemCopy = new ItemPack(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count,toEquipment.ItemSlots[matchEqSlotIndex].ITEM.item);
                 toEquipment.ItemSlots[matchEqSlotIndex].UpdateItemAmount(-1);
@@ -263,6 +264,7 @@ public class EquipmentScript : MonoBehaviour
     {
         EquipmentItem PrimaryWeapon_Item= default;
         EquipmentItem SecondaryWeapon_Item = default;
+
         bool isAvailableExtraSlotInCaseOfUnequip = PlayerManager.instance._mainBackpack.GetNextEmptySlot() != -1;
 
         var CurrentPrimaryWeapon_Slot = GetPlayerEqSlotByEqtype(EquipmentType.PrimaryWeapon);
@@ -282,7 +284,6 @@ public class EquipmentScript : MonoBehaviour
             else
                 SecondaryWeapon_Item = null;
         }
-
         if(recentEquippedSpecificType == EquipmentSpecifiedType.Sword)
         {
             if(SecondaryWeapon_Item == null)
@@ -321,7 +322,6 @@ public class EquipmentScript : MonoBehaviour
                 return false;
             }
         }
-
         if(recentEquippedSpecificType == EquipmentSpecifiedType.Shield)
         {
             if(PrimaryWeapon_Item == null)

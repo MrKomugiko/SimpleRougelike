@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: Ammo_1_SteelArrow
   m_EditorClassIdentifier: 
   ItemCoreSettings:
-    Item_Sprite: {fileID: 21300000, guid: dcb087c91e496fc4fa48fb385770fa9d, type: 3}
+    Item_Sprite: {fileID: 21300000, guid: 5b240841a0123e446a1f2a09749dd6fd, type: 3}
     ItemID: 1
     Name: Steel Arrow
     GoldValue: 0
     Description: 
-    Rarity: 1
+    Rarity: 2
     Type: 6
   DropSettings:
     minCount: 1
     maxCount: 1
   StackSettings:
     IsStackable: 1
-    StackSize: 50
+    StackSize: 10
   RequirmentsSettings:
     Level: 0
     Strength: 0
     Inteligence: 0
     Dexterity: 0
   CanBeAssignToQuickActions: 0
-  _Type: 2
+  _Type: 1
   BaseDamageMultiplifer: 3

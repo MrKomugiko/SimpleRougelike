@@ -16,7 +16,7 @@ public class MoveValidatorScript : MonoBehaviour
     public int validMovePosiitonsCounter = 0;
     public void SpawnMarksOnGrid()
     {
-        Debug.Log("spawn marks on grid");
+        //Debug.Log("spawn marks on grid");
         DestroyAllGridObjects();
         foreach(var cell in GridManager.CellGridTable.Values)
         {
@@ -67,7 +67,7 @@ public class MoveValidatorScript : MonoBehaviour
     }
     public int HighlightValidAttackGridGlobal(int? overteDistanceCheck = null)
     {
-        Debug.Log("HighlightValidAttackGridGlobal");
+        //Debug.Log("HighlightValidAttackGridGlobal");
         int _monstersInRange = 0;
         var monsterList = GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster).ToList();
         foreach(var monster in monsterList)
@@ -99,7 +99,7 @@ public class MoveValidatorScript : MonoBehaviour
     }
     public (int count,List<CellScript> targets) HighlightValidAttackGridNearPlayer(List<Vector2Int> vectorsforpossibleattackCheck)
     {
-        Debug.Log("HighlightValidAttackGridNearPlayer");
+        //Debug.Log("HighlightValidAttackGridNearPlayer");
         var monsterList = new List<CellScript>();
         var PlayerPosition = PlayerManager.instance._playerCell.ParentCell.CurrentPosition;
 
@@ -130,7 +130,7 @@ public class MoveValidatorScript : MonoBehaviour
                                                                 bool isPenetrationEnabled = false, 
                                                                 bool isFlyAboweWalls = false)
     {
-        Debug.Log("HighlightValidAttackGridStraightProjectile");
+        //Debug.Log("HighlightValidAttackGridStraightProjectile");
         var monsterList = new List<CellScript>();
         var PlayerPosition = PlayerManager.instance._playerCell.ParentCell.CurrentPosition;
 
@@ -192,7 +192,7 @@ public class MoveValidatorScript : MonoBehaviour
 
     public void HideAllGrid()
     {
-        Debug.Log("hide all grid");
+        //Debug.Log("hide all grid");
         foreach (var grid in All_GridIndicators.Values)
         {
             grid.gameObject.SetActive(false);
@@ -200,7 +200,7 @@ public class MoveValidatorScript : MonoBehaviour
     }
     public void HideMoveGrid()
     {
-         Debug.Log("hide move grid");
+        // Debug.Log("hide move grid");
         foreach (var grid in Move_Indicators.Values)
         {
             if(grid == null) continue;
@@ -210,7 +210,7 @@ public class MoveValidatorScript : MonoBehaviour
     }
     public void HideAttackGrid()
     {
-        Debug.Log("hide attack grid");
+       //Debug.Log("hide attack grid");
         foreach (var grid in Attack_Indicators.Values)
         {
             grid.gameObject.SetActive(false);
@@ -218,7 +218,7 @@ public class MoveValidatorScript : MonoBehaviour
     }
     public void DestroyAllGridObjects()
     {
-        Debug.Log("destroy all grid objects");
+        //Debug.Log("destroy all grid objects");
         foreach (var grid in All_GridIndicators.Values)
         {
             if(grid == null) continue;
@@ -231,7 +231,7 @@ public class MoveValidatorScript : MonoBehaviour
 
    [Obsolete] public void ShowValidAttackAndMoveCombinedGrid(bool staminaRestriction)
     {
-        Debug.Log("ShowValidAttackAndMoveCombinedGrid");
+       // Debug.Log("ShowValidAttackAndMoveCombinedGrid");
         DestroyAllGridObjects();
         SpawnMarksOnGrid();
         

@@ -42,13 +42,13 @@ public class AnimationsEventsScript : MonoBehaviour
 
     public void Attack_Hit_1()
     {
-        Debug.Log("trafienie ");
+        //Debug.Log("trafienie ");
         SkillsManager.Hit1ImpactTrigger = true;
     }
 
     public void ShootProjectile()
     {
-        Debug.Log("wystrzal pocisku");
+       // Debug.Log("wystrzal pocisku");
         SkillsManager.ProjectileReleased = true;
     }
 

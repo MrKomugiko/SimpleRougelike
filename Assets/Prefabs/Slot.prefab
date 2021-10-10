@@ -774,4 +774,5 @@ MonoBehaviour:
     count: 0
     item: {fileID: 0}
   rarityBackgroundColor: {fileID: 7657739491439348055}
+  _counterBox_TMP: {fileID: 3184945518911720840}
   IsInQuickSlot: 0

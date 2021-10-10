@@ -66,7 +66,7 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] public Image _itemIcon;
     [SerializeField] public Image _emptyBackground;
     [SerializeField] private Image _lockedBackground;
-    [SerializeField] private GameObject _counterBox;
+    [SerializeField] public GameObject _counterBox;
     [SerializeField] public GameObject _selectionBorder;
     [SerializeField] private ItemPack iTEM;
     [SerializeField] private Image rarityBackgroundColor;
@@ -76,7 +76,7 @@ public class ItemSlot : MonoBehaviour
     { 
         get => iTEM; 
         set
-        {
+        { 
             if(value == null)
             {
                 value = new ItemPack(0,null);
@@ -107,12 +107,15 @@ public class ItemSlot : MonoBehaviour
             if(value.Count == 0)
             {
                 _btn.onClick.RemoveAllListeners();
-                _itemIcon.sprite = _emptyBackground.sprite;
+                _itemIcon.enabled = false;
+                rarityBackgroundColor.enabled = false;
             }
             else
             {
-
+                _itemIcon.enabled = true;
+                rarityBackgroundColor.enabled = true;
                 _itemIcon.sprite = value.item.ItemCoreSettings.Item_Sprite;
+
             }
 
            
@@ -125,7 +128,7 @@ public class ItemSlot : MonoBehaviour
         ITEM = _item;       
     }
     
-    TextMeshProUGUI _counterBox_TMP;
+    public TextMeshProUGUI _counterBox_TMP;
     public void AddNewItemToSlot(ItemPack _item)
     {
         ITEM = _item;
@@ -148,6 +151,15 @@ public class ItemSlot : MonoBehaviour
         
         if(PLAYER_BACKPACK)
         {
+            if(ParentStorage.StorageName == "Player") 
+            {
+                if(_item.item is AmmunitionItem)
+                {
+                    _btn.onClick.AddListener(()=>ParentStorage.AmmoManager.OpenAmmoSelectionWindow());
+                    return;
+                }
+            }
+
             _btn.onClick.AddListener(()=>ShowDetailsWindow());   
         }
     }
@@ -203,8 +215,8 @@ public class ItemSlot : MonoBehaviour
 
         if(PLAYER_BACKPACK==false && ITEM.item is AmmunitionItem)
         {
-            Debug.Log("Podniesienie pierwszego itemku typu amunicja");
-            SkillsManager.RefreshAmmoDatafromBackPack();
+            //Debug.Log("Podniesienie pierwszego itemku typu amunicja");
+            AmmunitionManagerScript.RefreshAmmoDatafromBackPack();
         }
     }
     public void UpdateItemAmount(int value)
@@ -239,7 +251,7 @@ public class ItemSlot : MonoBehaviour
         if(PLAYER_BACKPACK && ITEM.item is AmmunitionItem)
         {
             Debug.Log("zmiana ilosci itemu typu amunicja");
-            SkillsManager.RefreshAmmoDatafromBackPack();
+            AmmunitionManagerScript.RefreshAmmoDatafromBackPack();
         }
     }
     public bool IsInQuickSlot = false;

@@ -102,8 +102,6 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
         
         if(direction.y == 0)
             GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
-            
-        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
         if(IsReadyToUse == true) 
         {

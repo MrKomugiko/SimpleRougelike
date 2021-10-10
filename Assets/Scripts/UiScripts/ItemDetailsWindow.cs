@@ -118,6 +118,24 @@ public class ItemDetailsWindow : MonoBehaviour
             ButtonsList.Add(button);
             ConfigureEquipmentDetails(DATA as EquipmentItem);
         }
+        if(DATA is AmmunitionItem)
+        {
+            string newButtonName = "Set as Default";
+
+            button = Instantiate(Button_Prefab, ButtonSection.transform);
+                button.GetComponentInChildren<TextMeshProUGUI>().SetText(newButtonName);
+                button.GetComponent<Button>().onClick.RemoveAllListeners();
+                button.GetComponent<Button>().onClick.AddListener(
+                    ()=>
+                        {
+                            AmmunitionManagerScript.SetAmmoItemAsDefault(DATA as AmmunitionItem);
+                            this.gameObject.SetActive(false);
+                        }
+                    );
+                button.name = "SetAsDefault";
+                
+            ButtonsList.Add(button);
+        }
 
         button = Instantiate(Button_Prefab, ButtonSection.transform);
             button.GetComponent<Button>().onClick.RemoveAllListeners();

@@ -31,13 +31,13 @@ public class EquipmentItem : ItemData
                 if(GameManager.instance.CurrentTurnPhase == GameManager.TurnPhase.PlayerAttack)
                 {
                     // broń została podmieniona w czasie tury ataku więc, wyłącz podswietlenie celow w przyapdku gdy te jest wlaczone
-                    Debug.Log("hide attack grid , podczas zakladania ekwipunku");
+                   // Debug.Log("hide attack grid , podczas zakladania ekwipunku");
                     PlayerManager.instance.MovmentValidator.HideAttackGrid();
                 }
 
                 if(MoveItemTo == PlayerManager.instance._EquipedItems ) 
                 {
-                    Debug.Log("zakladanie itemka "+this.name);
+                   // Debug.Log("zakladanie itemka "+this.name);
                     {PlayerManager.instance.STATS.EquipItem_UpdateStatistics(this);}
                     PlayerManager.instance.RefreshWearedEquipmentUIonMap();
                     GameManager.instance.attackSelectorPopup.OPENandSpawnInitNodesTree();
@@ -45,9 +45,10 @@ public class EquipmentItem : ItemData
                
                if(MoveItemTo == PlayerManager.instance._mainBackpack ) 
                {
-                    Debug.Log("zdejmowanie itemka "+this.name);
+                   // Debug.Log("zdejmowanie itemka "+this.name);
 
                     {PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(this);}
+                    PlayerManager.instance._EquipedItems.AmmoManager.RefreshAmmoCounter();
                     PlayerManager.instance.RefreshWearedEquipmentUIonMap();
                     GameManager.instance.attackSelectorPopup.OPENandSpawnInitNodesTree();
                }
@@ -75,7 +76,7 @@ public class EquipmentItem : ItemData
     {
         Armor,                  SecondaryWeapon,    Helmet,
         Shoulders,              Shoes,              Belt,
-        PrimaryWeapon,          Gloves,
+        PrimaryWeapon,          Gloves,             Ammunition,
     }
 
     public enum EquipmentSpecifiedType

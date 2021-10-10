@@ -35,19 +35,6 @@ public class SkillsManager : MonoBehaviour
         GenerateFullSkillTree();
     }
 
-    public static void RefreshAmmoDatafromBackPack()
-    {
-        Debug.Log("ammo info refreshed");
-        CurrentAvailableAmmo.Clear();
-
-        foreach(var ammopack in PlayerManager.instance._mainBackpack.GetSumListAvailableAmmunition())
-        {
-            CurrentAvailableAmmo.Add(ammopack.item as AmmunitionItem, ammopack.Count);
-        }
-
-        GameManager.instance.attackSelectorPopup.RefreshSkillsRequirmentCheck();
-    
-    }
     public  List<SkillNode> GenerateFullSkillTree()
     {        
         ROOT_SKILLTREE = new SkillNode(0,"ROOT",parent:null,null);
@@ -84,36 +71,7 @@ public class SkillsManager : MonoBehaviour
         return ROOT_SKILLTREE.Childs;
     }
 
-    public static Dictionary<AmmunitionItem, int> CurrentAvailableAmmo = new Dictionary<AmmunitionItem, int>();
-    public static bool CheckAmmunitionCount(AmmunitionType specificAmmoType = 0, int ammoValue = 0)
-    {
-        if(ammoValue == 0)
-        {
-            Debug.Log("skill nie wymaga uzycia amunicji");
-            return true;
-        }
-
-        if(specificAmmoType != 0)
-        {
-            if(CurrentAvailableAmmo.Any(a=>a.Key._Type == specificAmmoType && a.Value >= ammoValue))
-            {
-                 Debug.Log("W PLECAKU ZNAJDUJE SIE WYBRANA AMUNICJA W MINUMALNEJ POTRZEBNEJ DO UZYCIA ILOSCI");
-                return true; // 
-            }
-            Debug.Log("brak wymaganej ilości konkretnej amunicji");
-            return false;
-        }
-        else
-        {
-            if(CurrentAvailableAmmo.Any(a=>a.Value >= ammoValue))
-            {
-                Debug.Log("jest na stanie jakakolwiek amunicja o wymaganej iloscic");
-                return true; //  
-            }
-            Debug.Log("Brak wymaganej ilosci amunicji");
-            return false;  
-        }
-    }
+   
 
     public void TickSkillsCooldowns()
     {
