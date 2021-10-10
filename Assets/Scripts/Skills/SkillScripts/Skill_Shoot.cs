@@ -9,6 +9,7 @@ using static AmmunitionItem;
 public class Skill_Shoot : SkillBase, ISkill
 {
     public int AmmunitionsNeeded = 1;
+    public AmmunitionType RequiredAmmoType = AmmunitionType.StandardArrow;
     public GameObject ProjectilePrefab;
     public bool FlyAboweWallsAndEnemiesEnabled = false;   // ignore walls on the way
     public bool PenetrationEnabled = false;     // ignore fact passing other mobs on way
@@ -27,7 +28,7 @@ public class Skill_Shoot : SkillBase, ISkill
         get
         {
             var basecheck = base.IsEnoughtResourcesToUse;
-            var ammoCheck = SkillsManager.CheckAmmunitionCount(default,AmmunitionsNeeded); 
+            var ammoCheck = SkillsManager.CheckAmmunitionCount(RequiredAmmoType,AmmunitionsNeeded); 
             return (basecheck==true && ammoCheck) == true ? true : false;
         }
     }
@@ -93,7 +94,7 @@ public class Skill_Shoot : SkillBase, ISkill
 
         ProjectileScript _projectileScript = ConfigureProjectileObject(target.ParentCell.CurrentPosition,ConfirmedTargets.Select(t=>(Vector2)t.CurrentPosition).ToList(), OriginShootDirection);
         _projectileScript.TargetsPositionsList = ConfirmedTargets.Select(t=>(Vector2)(t.CurrentPosition)).ToList();
-        _projectileScript.LoadAmmoByType(skill:this, ammoType:AmmunitionType.Default);
+        _projectileScript.LoadAmmoByType(skill:this, RequiredAmmoType);
         
         SkillsManager.ProjectileReleased = false;
         PlayerManager.instance.StartCoroutine(ProcessSkillRoutine(_projectileScript));

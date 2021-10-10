@@ -32,6 +32,7 @@ MonoBehaviour:
     Inteligence: 0
     Dexterity: 0
   CanBeAssignToQuickActions: 0
+  EquipmentSpecificType: 0
   eqType: 0
   MainPerks:
   - type: 7

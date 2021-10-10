@@ -76,10 +76,7 @@ public class ItemDetailsWindow : MonoBehaviour
         ItemIcon_IMG.sprite = DATA.ItemCoreSettings.Item_Sprite;
 
         // 2. dodanie opisu przedmiotu
-        Description_TMP.SetText(DATA.ItemCoreSettings.Description);
-
-        
-
+        Description_TMP.SetText(DATA.ItemCoreSettings.Description);     
 
         // spawn przycisków
         GameObject button;
@@ -122,17 +119,6 @@ public class ItemDetailsWindow : MonoBehaviour
             ConfigureEquipmentDetails(DATA as EquipmentItem);
         }
 
-        // Spawn statystyk
-        // ostatnia pozycja jest value , przed nią spacja
-        var emptystat = Instantiate(EmptySpace_Prefab,StatsSection.transform);
-        StatList.Add(emptystat);
-
-        var stat = Instantiate(BasicStat_Prefab,StatsSection.transform);
-            stat.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Value:");
-            stat.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(DATA.ItemCoreSettings.GoldValue.ToString()+" Gold");
-            stat.transform.SetAsLastSibling();
-        StatList.Add(stat);
-
         button = Instantiate(Button_Prefab, ButtonSection.transform);
             button.GetComponent<Button>().onClick.RemoveAllListeners();
                button.GetComponent<Button>().onClick.AddListener(
@@ -147,6 +133,35 @@ public class ItemDetailsWindow : MonoBehaviour
             button.name = "SellButton";
             
         ButtonsList.Add(button);
+        if(ParentSlot.ITEM.Count >1)
+        {
+            button = Instantiate(Button_Prefab, ButtonSection.transform);
+            button.GetComponent<Button>().onClick.RemoveAllListeners();
+            button.GetComponent<Button>().onClick.AddListener(
+                ()=>
+                    {
+                        DATA.SellAll(ParentSlot);
+                        CheckButtons_ItemCount();
+                    }
+                );
+
+            button.GetComponentInChildren<TextMeshProUGUI>().SetText("Sell all");
+            button.name = "SellAllButton";
+            
+        ButtonsList.Add(button);
+        }
+
+        // Spawn statystyk
+        // ostatnia pozycja jest value , przed nią spacja
+        var emptystat = Instantiate(EmptySpace_Prefab,StatsSection.transform);
+        StatList.Add(emptystat);
+
+        var stat = Instantiate(BasicStat_Prefab,StatsSection.transform);
+            stat.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText("Value:");
+            stat.transform.GetChild(1).GetComponent<TextMeshProUGUI>().SetText(DATA.ItemCoreSettings.GoldValue.ToString()+" Gold");
+            stat.transform.SetAsLastSibling();
+        StatList.Add(stat);
+
 
         // konfiguracja wymagań
         string level = DATA.RequirmentsSettings.Level <= PlayerManager.instance.STATS.Level?$"<color={RequirmentGood_colorHex}>{DATA.RequirmentsSettings.Level}</color>":$"<color={RequirmentFail_colorHex}>{DATA.RequirmentsSettings.Level}</color>";

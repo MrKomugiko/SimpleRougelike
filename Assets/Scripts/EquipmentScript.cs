@@ -181,6 +181,7 @@ public class EquipmentScript : MonoBehaviour
         var equipmentItem = ItemSlots[slotIndex].ITEM.Count == 0?null:ItemSlots[slotIndex].ITEM.item as EquipmentItem;
         return equipmentItem;
     }
+    public static ItemSlot GetPlayerEqSlotByEqtype(EquipmentType eqType) => PlayerManager.instance._EquipedItems.ItemSlots.Where(s=>s.ItemContentRestricion == eqType).FirstOrDefault();
 
     public List<ItemPack> GetSumListAvailableAmmunition()
     {
@@ -214,6 +215,14 @@ public class EquipmentScript : MonoBehaviour
         if(_equipItem)
         {
             if(fromSlot.ITEM.item.CheckRequirments() == false) return false;
+
+            if(equipmentItem.eqType == EquipmentType.SecondaryWeapon || equipmentItem.eqType == EquipmentType.PrimaryWeapon)
+            {
+                bool synergyunquipcheck = CheckWeaponsTypeSynergies(equipmentItem.EquipmentSpecificType);
+                if(synergyunquipcheck == false)
+                    return false;
+            }
+
             int matchEqSlotIndex = toEquipment.ItemSlots.Where(s=>s.ItemContentRestricion == equipmentItem.eqType).First().itemSlotID;
             if(toEquipment.ItemSlots[matchEqSlotIndex].ITEM.Count == 0)
             {
@@ -228,19 +237,12 @@ public class EquipmentScript : MonoBehaviour
                 this.ItemSlots[fromSlot.itemSlotID].UpdateItemAmount(-1);
                 this.ItemSlots[fromSlot.itemSlotID].AddNewItemToSlot(currentEquipedItemCopy);
                 toEquipment.ItemSlots[(int)matchEqSlotIndex].AddNewItemToSlot(ItemCopy);
-
             }
-            if(ItemCopy.item.ItemCoreSettings.Name == "Roma Helmet")  
-                PlayerManager.instance.HelmetIMG.enabled = true;
-            
-            if(ItemCopy.item.ItemCoreSettings.Name == "Roma Armor")
-                PlayerManager.instance.ArmorIMG.enabled = true;
-            
-            PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
+
             return true;
         }
         
-        if(_equipItem == false)
+        if(_equipItem == false) // zdejmowanie
         {
             if(toEquipment.GetNextEmptySlot() != -1)
             {
@@ -250,19 +252,98 @@ public class EquipmentScript : MonoBehaviour
             {
                 return false;
             }
-
             toEquipment.ItemSlots[toEquipment.GetNextEmptySlot()].AddNewItemToSlot(ItemCopy);
             
-            if(ItemCopy.item.ItemCoreSettings.Name == "Roma Helmet")
-              PlayerManager.instance.HelmetIMG.enabled = false;
-
-            if(ItemCopy.item.ItemCoreSettings.Name == "Roma Armor")
-              PlayerManager.instance.ArmorIMG.enabled = false;
-            PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
             return true; // END succes item z eq gracza zdjęty do plecaka
         }
-        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
         return false;
+    }
+
+    public bool CheckWeaponsTypeSynergies(EquipmentSpecifiedType recentEquippedSpecificType)
+    {
+        EquipmentItem PrimaryWeapon_Item= default;
+        EquipmentItem SecondaryWeapon_Item = default;
+        bool isAvailableExtraSlotInCaseOfUnequip = PlayerManager.instance._mainBackpack.GetNextEmptySlot() != -1;
+
+        var CurrentPrimaryWeapon_Slot = GetPlayerEqSlotByEqtype(EquipmentType.PrimaryWeapon);
+        if(CurrentPrimaryWeapon_Slot != null )
+        {
+            if(CurrentPrimaryWeapon_Slot.ITEM.Count >0)
+                PrimaryWeapon_Item = (CurrentPrimaryWeapon_Slot.ITEM.item as EquipmentItem);
+            else
+                PrimaryWeapon_Item = null;
+        }
+
+        var CurrentSecondaryWeapon_Slot = GetPlayerEqSlotByEqtype(EquipmentType.SecondaryWeapon);
+        if(CurrentSecondaryWeapon_Slot != null)
+        {
+            if(CurrentSecondaryWeapon_Slot.ITEM.Count >0)
+                SecondaryWeapon_Item = (CurrentSecondaryWeapon_Slot.ITEM.item as EquipmentItem);
+            else
+                SecondaryWeapon_Item = null;
+        }
+
+        if(recentEquippedSpecificType == EquipmentSpecifiedType.Sword)
+        {
+            if(SecondaryWeapon_Item == null)
+                return true; // jest git, nie ma zalozonej pobocznej broni, nie ma co sprawdzac
+            
+            if(SecondaryWeapon_Item.EquipmentSpecificType == EquipmentSpecifiedType.NoRestriction || SecondaryWeapon_Item.EquipmentSpecificType == EquipmentSpecifiedType.Shield )
+                return true; // miecz moze wystąpić tylko gdy poboczna bron to nic lub tarcza
+    
+            // w przeciwnym wypadku, konieczne jest zdjęcie pobocznej broni
+            if(isAvailableExtraSlotInCaseOfUnequip)
+            {
+                SecondaryWeapon_Item.Equip(CurrentSecondaryWeapon_Slot);
+                return true;
+            }
+            else
+            {   
+                return false;
+            }
+        }
+        if(recentEquippedSpecificType == EquipmentSpecifiedType.Bow)
+        {
+            if(SecondaryWeapon_Item == null)
+                return true; // jest git, nie ma zalozonej pobocznej broni, nie ma co sprawdzac
+            
+            if(SecondaryWeapon_Item.EquipmentSpecificType == EquipmentSpecifiedType.NoRestriction)
+                return true; // miecz moze wystąpić tylko gdy poboczna bron to nic lub tarcza
+    
+            // w przeciwnym wypadku, konieczne jest zdjęcie pobocznej broni
+            if(isAvailableExtraSlotInCaseOfUnequip)
+            {
+                SecondaryWeapon_Item.Equip(CurrentSecondaryWeapon_Slot);
+                return true;
+            }
+            else
+            {   
+                return false;
+            }
+        }
+
+        if(recentEquippedSpecificType == EquipmentSpecifiedType.Shield)
+        {
+            if(PrimaryWeapon_Item == null)
+                return true; // jest git, nie ma zalozonej głównej broni, nie ma co sprawdzac
+            
+            if(PrimaryWeapon_Item.EquipmentSpecificType == EquipmentSpecifiedType.NoRestriction || PrimaryWeapon_Item.EquipmentSpecificType == EquipmentSpecifiedType.Sword )
+                return true; // tarcza moze wystąpić tylko gdy głowna bron to sword lub nic
+    
+            // w przeciwnym wypadku, konieczne jest zdjęcie aktualnie zaloznej glownej broni tj łuk lub rozdzka
+            if(isAvailableExtraSlotInCaseOfUnequip)
+            {
+                PrimaryWeapon_Item.Equip(CurrentPrimaryWeapon_Slot);
+                return true;
+            }
+            else
+            {   
+                return false;
+            }
+        }    
+
+        // reszta eq nie ma ograniczen na przebywanie miedzy sobą
+        return true;
     }
     public (bool result,bool update, int index) CheckWhereCanYouFitThisItemInBackpack(ItemPack _itemToStack)
     {

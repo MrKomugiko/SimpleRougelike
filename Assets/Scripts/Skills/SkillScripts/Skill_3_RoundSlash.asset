@@ -15,17 +15,17 @@ MonoBehaviour:
   Name: Round Slash
   BaseDamageMultiplifer: 2
   StaminaCost: 4
-  Cooldown: 5
+  Cooldown: 0
   ParentName: ROOT
   SkillIcon: {fileID: 110746913, guid: 114226b8d549f4d4ca871770c06d7eee, type: 3}
   isCategoryType: 0
-  isLocked: 1
+  isLocked: 0
   isObtained: 1
   Range: 1
   MinPlayerLevel: 2
   RestrictedByPrimaryWeaponType: 1
   CurrentDamageMultiplifer: 1
-  _isEnoughtResourcesToUse: 0
+  _isEnoughtResourcesToUse: 1
   _cooldownLeftToBeReady: 0
   SkillAnimationLayer: 3
   AreaTargetsCheckVectors:

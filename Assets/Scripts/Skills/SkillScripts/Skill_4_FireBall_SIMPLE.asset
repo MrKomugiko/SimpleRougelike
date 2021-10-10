@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill_4_FireBall_SIMPLE
   m_EditorClassIdentifier: 
   Name: classic
-  DamageMultiplifer: 1
+  BaseDamageMultiplifer: 1
   StaminaCost: 2
   Cooldown: 1
   ParentName: ROOT/RANGED
@@ -23,7 +23,8 @@ MonoBehaviour:
   isObtained: 1
   Range: 7
   MinPlayerLevel: 0
-  RestrictedByPrimaryWeaponType: 3
+  RestrictedByPrimaryWeaponType: 2
+  CurrentDamageMultiplifer: 0
   _isEnoughtResourcesToUse: 1
   _cooldownLeftToBeReady: 0
   SkillAnimationLayer: 4

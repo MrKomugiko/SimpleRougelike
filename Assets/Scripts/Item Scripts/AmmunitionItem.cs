@@ -41,9 +41,10 @@ public class AmmunitionItem : ItemData
     public enum AmmunitionType
     {
         Default,
-        WoodenArrow,
         StandardArrow,
-        BrokenArrow
+        CrossbowBolts,
+        BrokenArrow,
+        DamagedBolts
 
         // rock
         // inne śmieci ?

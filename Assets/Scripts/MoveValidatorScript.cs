@@ -52,6 +52,7 @@ public class MoveValidatorScript : MonoBehaviour
             {
                 if(Move_Indicators.ContainsKey(cell.CurrentPosition) == false)
                 {
+                    
                     Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
                 }   
                 Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);    

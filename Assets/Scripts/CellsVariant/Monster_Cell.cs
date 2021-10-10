@@ -197,7 +197,6 @@ public class Monster_Cell :ICreature
 
         if(direction.x == 0)  GameManager.LastPlayerDirection = direction.y<0?"Back":"Front";
         if(direction.y == 0)  GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
-        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
         SkillsManager.SelectedAttackSkill(this);
     }

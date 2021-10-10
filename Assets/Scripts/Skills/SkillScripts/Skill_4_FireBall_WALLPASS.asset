@@ -23,7 +23,7 @@ MonoBehaviour:
   isObtained: 1
   Range: 7
   MinPlayerLevel: 2
-  RestrictedByPrimaryWeaponType: 3
+  RestrictedByPrimaryWeaponType: 2
   CurrentDamageMultiplifer: 1
   _isEnoughtResourcesToUse: 1
   _cooldownLeftToBeReady: 0

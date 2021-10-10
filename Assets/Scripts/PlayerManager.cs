@@ -115,12 +115,10 @@ public class PlayerManager: MonoBehaviour
         }
        // print("wystartowanie autopilota");
         playerCurrentlyMoving = true;
-        PlayerManager.instance.MovmentValidator.HideAllGrid();
+        
         yield return new WaitUntil(()=>GameManager.instance.TurnPhaseBegin );
         foreach(var path in  PlayerManager.instance._playerCell._pathfinder.FinalPath)
         {
-            PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
-
             if(i < PlayerManager.instance._playerCell._pathfinder.FinalPath.Count)
             {
                 if(GameManager.instance.SwapTilesAsDefault)
@@ -147,6 +145,7 @@ public class PlayerManager: MonoBehaviour
         GameManager.instance.PlayerMoved = true;
         PlayerManager.instance.MovmentValidator.HideAllGrid();
         GameManager.instance.MovingRequestTriggered = false;
+
 
         yield return null;
     }

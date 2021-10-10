@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 666a302cc2ee11a44b5c8289f7fc6847, type: 3}
-  m_Name: Ammo_0_WoodenArrow
+  m_Name: Ammo_1_SteelArrow
   m_EditorClassIdentifier: 
   ItemCoreSettings:
     Item_Sprite: {fileID: 21300000, guid: dcb087c91e496fc4fa48fb385770fa9d, type: 3}
-    ItemID: 0
-    Name: WoodenArrow
-    GoldValue: 1
+    ItemID: 1
+    Name: Steel Arrow
+    GoldValue: 0
     Description: 
-    Rarity: 0
+    Rarity: 1
     Type: 6
   DropSettings:
     minCount: 1
-    maxCount: 5
+    maxCount: 1
   StackSettings:
     IsStackable: 1
     StackSize: 50
@@ -32,5 +32,5 @@ MonoBehaviour:
     Inteligence: 0
     Dexterity: 0
   CanBeAssignToQuickActions: 0
-  _Type: 1
-  BaseDamageMultiplifer: 1
+  _Type: 2
+  BaseDamageMultiplifer: 3

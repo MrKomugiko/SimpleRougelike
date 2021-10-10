@@ -17,6 +17,15 @@ public abstract class ItemData : ScriptableObject
         PlayerManager.instance.AddGold(ItemCoreSettings.GoldValue);
         from.UpdateItemAmount(-1);
     }
+    public void SellAll(ItemSlot from)
+    {
+        if(from.ITEM.Count <= 0) 
+            return;
+
+        int ItemsToSellCount = from.ITEM.Count; 
+        PlayerManager.instance.AddGold(ItemCoreSettings.GoldValue * ItemsToSellCount);
+        from.UpdateItemAmount(-ItemsToSellCount);
+    }
     public bool CheckRequirments()
     {
         if(PlayerManager.instance.STATS.Level < RequirmentsSettings.Level)

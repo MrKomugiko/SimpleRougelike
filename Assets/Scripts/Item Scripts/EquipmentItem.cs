@@ -22,7 +22,7 @@ public class EquipmentItem : ItemData
         ItemCoreSettings.Type = ItemType.Equipment;
         CanBeAssignToQuickActions = false;
     }
-    public bool Equip(ItemSlot slot)
+    public bool Equip(ItemSlot slot) // autodetct equip/unequip deppend of slot parent
     {
         var MoveItemTo = slot.ParentStorage.StorageName=="Player"?PlayerManager.instance._mainBackpack:PlayerManager.instance._EquipedItems;
         var result = slot.ParentStorage.EquipItemFromSlot(slot, MoveItemTo);
@@ -34,10 +34,10 @@ public class EquipmentItem : ItemData
                     Debug.Log("hide attack grid , podczas zakladania ekwipunku");
                     PlayerManager.instance.MovmentValidator.HideAttackGrid();
                 }
-                
 
                 if(MoveItemTo == PlayerManager.instance._EquipedItems ) 
                 {
+                    Debug.Log("zakladanie itemka "+this.name);
                     {PlayerManager.instance.STATS.EquipItem_UpdateStatistics(this);}
                     PlayerManager.instance.RefreshWearedEquipmentUIonMap();
                     GameManager.instance.attackSelectorPopup.OPENandSpawnInitNodesTree();
@@ -45,6 +45,8 @@ public class EquipmentItem : ItemData
                
                if(MoveItemTo == PlayerManager.instance._mainBackpack ) 
                {
+                    Debug.Log("zdejmowanie itemka "+this.name);
+
                     {PlayerManager.instance.STATS.UnequipItem_UpdateStatistics(this);}
                     PlayerManager.instance.RefreshWearedEquipmentUIonMap();
                     GameManager.instance.attackSelectorPopup.OPENandSpawnInitNodesTree();
@@ -80,13 +82,10 @@ public class EquipmentItem : ItemData
     {
         NoRestriction,
         Sword,
-        LongSword,
         Bow,
         Crossbow, // kusza
         Wand,   // rozdzka
         Shield,
-        Dagger,
-        Axe,
         Grimoire, // księga czarów
         Quiver // kołczan
 

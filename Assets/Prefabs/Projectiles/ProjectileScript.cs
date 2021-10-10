@@ -93,7 +93,7 @@ public class ProjectileScript : MonoBehaviour
         var availableAmmunition = SkillsManager.CurrentAvailableAmmo;
         
         Debug.Log("Wybranie amunicji, - aktualnie pierwsze dostępne ammo");
-        AmmunitionItem selectedAmmo = availableAmmunition.First().Key;
+        AmmunitionItem selectedAmmo = availableAmmunition.First(ammo=>ammo.Key._Type == ammoType).Key;
 
         // ściągniecie ze stanu konkretnego itemka 
         PlayerManager.instance._mainBackpack.TakeItemFromBackpack(_takeCount:1, _findingItem: selectedAmmo);

@@ -90,7 +90,6 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         
         if(direction.y == 0)
             GameManager.LastPlayerDirection = direction.x<0?"Right":"Left";
-        PlayerManager.instance.GraphicSwitch.UpdatePlayerGraphics();
 
         if(chest != null){
             if(chest.ContentItems.Count>0){

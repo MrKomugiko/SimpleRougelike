@@ -211,7 +211,6 @@ public class SelectionPopupController : MonoBehaviour
             Debug.Log("nie otwieraj okna skili, nadal trwa faza ruchu gracza");
             return;
         }
-        
 
         SkillsManager.RefreshAmmoDatafromBackPack();
         ClearCenteredNode();
