@@ -7,6 +7,7 @@ using UnityEngine;
 public class AmmunitionItem : ItemData
 {
     public AmmunitionType _Type = AmmunitionType.StandardArrow;
+    public float ChanceToSelfDestroy = 0.50f;  
     public float BaseDamageMultiplifer = 1f;
     public void Awake() 
     {
@@ -35,8 +36,8 @@ public class AmmunitionItem : ItemData
         //     }
         // return result;
    // }
-   return false;
-}
+    return false;
+    }
 
     public enum AmmunitionType
     {
@@ -49,4 +50,10 @@ public class AmmunitionItem : ItemData
         // rock
         // inne śmieci ?
     }
+
+    internal bool CheckIfArrowBreak()
+    {
+        return UnityEngine.Random.Range(0f,1f) > ChanceToSelfDestroy;
+    }
+    
 }

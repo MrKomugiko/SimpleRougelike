@@ -250,7 +250,7 @@ public class ItemSlot : MonoBehaviour
 
         if(PLAYER_BACKPACK && ITEM.item is AmmunitionItem)
         {
-            Debug.Log("zmiana ilosci itemu typu amunicja");
+            //Debug.Log("zmiana ilosci itemu typu amunicja");
             AmmunitionManagerScript.RefreshAmmoDatafromBackPack();
         }
     }

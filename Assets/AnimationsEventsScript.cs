@@ -25,13 +25,13 @@ public class AnimationsEventsScript : MonoBehaviour
 
     public IEnumerator WaitForAllProjetileHit()
     {   
-        Debug.Log("czekanie az wszystkie pociski dosięgną celu");
+        //Debug.Log("czekanie az wszystkie pociski dosięgną celu");
         yield return new WaitUntil(()=>AllProjectilesReachTarget);
         AttackAnimationFinished();
     }
     public void AttackAnimationStarted()
     {
-        Debug.Log("animacja wystartowala");
+        //Debug.Log("animacja wystartowala");
        
         SkillsManager.Hit1ImpactTrigger = false;
         SkillsManager.Hit2ImpactTrigger = false;

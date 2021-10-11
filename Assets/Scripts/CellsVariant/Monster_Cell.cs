@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static Chest;
 
 public class Monster_Cell :ICreature
 {
@@ -42,6 +43,7 @@ public class Monster_Cell :ICreature
     }
     public event EventHandler<(CellScript parent, int damageTaken, bool criticalHit,bool blockedHit, bool dodgedHit)> OnMonsterTakeDamageEvent;
     public event EventHandler<string> OnMonsterDieEvent;
+    private List<ItemPack> ExtraLootContent = new List<ItemPack>();
     public bool IsAlive
     {
         get
@@ -52,12 +54,34 @@ public class Monster_Cell :ICreature
             {
                 OnMonsterDieEvent?.Invoke(this,Name+" died.");
                 PlayerManager.instance.AddExperience(ExperiencePoints);
-                ChangeIntoTreasureObject(_data: lootID);
+                ChangeIntoTreasureObject(_data: lootID, ExtraLootContent);
                 return  false;
             }
         }
     }
-   
+    public void StickArrowInMonster(ItemPack itemToputInMonsterLoot)
+    {
+
+        if(itemToputInMonsterLoot.item is AmmunitionItem)
+        {
+            if((itemToputInMonsterLoot.item as AmmunitionItem).CheckIfArrowBreak())
+            {
+                itemToputInMonsterLoot = new ItemPack(itemToputInMonsterLoot.Count,GameManager.ItemsDatabase.First(item=>item.name == itemToputInMonsterLoot.item.name+"_Broken"));
+                Debug.Log("strzała się złamała ;c");
+            }
+        }
+
+        var match = ExtraLootContent.FirstOrDefault(item=>item.item == itemToputInMonsterLoot.item);
+        // check if arrow break or no
+        if(match == null)
+        {
+            ExtraLootContent.Add(itemToputInMonsterLoot);
+        }
+        else
+        {
+            match.Count += itemToputInMonsterLoot.Count;
+        }
+    }
     public int TurnsRequiredToMakeAction {get; private set;}
     public TreasureData lootID { get; private set; }
     public int Level {get;set;}
@@ -235,7 +259,7 @@ public class Monster_Cell :ICreature
         }
         return false;
     }
-    public void ChangeIntoTreasureObject(TreasureData _data)
+    public void ChangeIntoTreasureObject(TreasureData _data, List<ItemPack> extraLootContent)
     {
         PlayerManager.instance.CumulativeMonsterKilled++;
         
@@ -244,7 +268,7 @@ public class Monster_Cell :ICreature
 
         ParentCell.Type = TileTypes.treasure;
         ParentCell.IsWalkable = true;
-        ParentCell.SpecialTile = new Treasure_Cell(ParentCell, _data);
+        ParentCell.SpecialTile = new Treasure_Cell(ParentCell, _data, _extraItemsToChest:extraLootContent);
 ;       (ParentCell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
         if (Border != null)
         {

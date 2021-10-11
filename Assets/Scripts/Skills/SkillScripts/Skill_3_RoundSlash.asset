@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Round Slash
   BaseDamageMultiplifer: 2
   StaminaCost: 4
-  Cooldown: 0
+  Cooldown: 3
   ParentName: ROOT
   SkillIcon: {fileID: 110746913, guid: 114226b8d549f4d4ca871770c06d7eee, type: 3}
   isCategoryType: 0

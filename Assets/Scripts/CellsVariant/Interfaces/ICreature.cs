@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using static Chest;
 
 internal interface ICreature : ISpecialTile, ISelectable, ILivingThing
 {
@@ -8,7 +10,7 @@ internal interface ICreature : ISpecialTile, ISelectable, ILivingThing
     int TurnsRequiredToMakeAction { get; }
     int TurnsElapsedCounter { get; set; }
     bool ISReadyToMakeAction { get; }
-    void ChangeIntoTreasureObject(TreasureData _data);
+    void ChangeIntoTreasureObject(TreasureData _data, List<ItemPack> extraLootContent);
     bool TryAttack(CellScript target);
     bool TryMove(CellScript target);
 }

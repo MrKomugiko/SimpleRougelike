@@ -29,6 +29,7 @@ public class AmmunitionManagerScript : MonoBehaviour
     {
         CurrentDefault = selectedAmmoItem;
         Debug.Log("zmiana defaultowej amunicji na" + CurrentDefault.name);
+       PlayerManager.instance._EquipedItems.AmmoManager.RefreshAmmoCounter();
     }
 
     public void RefreshAmmoCounter() {
@@ -102,7 +103,7 @@ public class AmmunitionManagerScript : MonoBehaviour
     }
     public static void RefreshAmmoDatafromBackPack()
     {
-        Debug.Log("ammo info refreshed");
+        //Debug.Log("ammo info refreshed");
         CurrentAvailableAmmo.Clear();
 
         foreach(var ammopack in PlayerManager.instance._mainBackpack.GetSumListAvailableAmmunition())
@@ -116,10 +117,7 @@ public class AmmunitionManagerScript : MonoBehaviour
     internal static AmmunitionItem GetCurrentSelectedAmmunition(AmmunitionType ammoType)
     {
         RefreshAmmoDatafromBackPack();
-        foreach(var ammoelement in CurrentAvailableAmmo )
-        {
-            Debug.Log("Ammo: "+ammoelement.Key.name);
-        }
+
         if(CurrentDefault == null)
         {
             // przypisanie startowego defaultoweego wyboru
@@ -136,9 +134,7 @@ public class AmmunitionManagerScript : MonoBehaviour
             // przypisanie startowego defaultoweego wyboru gdy ten wybrany przez gracza sie skończy
              CurrentDefault = CurrentAvailableAmmo.First(ammo=>ammo.Key._Type == ammoType).Key;
         }
-        // First try pick selectedtype arrows
 
-        Debug.Log("zaladowano pocisk: "+CurrentDefault.name);
         return CurrentDefault;
     }
 }

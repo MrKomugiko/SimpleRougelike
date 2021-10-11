@@ -75,9 +75,9 @@ public class ChestLootWindowScript : MonoBehaviour
             slotIndex++;
         }
         IfEmptyRemoveEmptyChestFromMap();
-        
     }
-    public void CloseChestWindow()
+
+        public void CloseChestWindow()
     {
         this.gameObject.SetActive(false);
         NotificationManger.instance.NotificationList.ForEach(n=>NotificationManger.TemporaryHideBordersOnMap(n,false));    

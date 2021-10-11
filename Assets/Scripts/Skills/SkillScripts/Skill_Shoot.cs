@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static AmmunitionItem;
+using static Chest;
 
 [CreateAssetMenu(fileName="Skill_Shoot",menuName="GameData/Skill/Shoot")]
 public class Skill_Shoot : SkillBase, ISkill
@@ -99,6 +100,7 @@ public class Skill_Shoot : SkillBase, ISkill
         SkillsManager.ProjectileReleased = false;
         PlayerManager.instance.StartCoroutine(ProcessSkillRoutine(_projectileScript));
 
+        target.StickArrowInMonster(new ItemPack(AmmunitionsNeeded,_projectileScript.GetLastLoadedAmmoItem()));
         
         GameManager.instance.attackSelectorPopup.ClearCenteredNode();
         GameManager.instance.attackSelectorPopup.gameObject.SetActive(false);
@@ -140,7 +142,7 @@ public class Skill_Shoot : SkillBase, ISkill
     {
         int _damage; bool _isCritical;
         PlayerManager.instance.CalculateAttackHit(out _damage, out _isCritical);
-        _damage = Mathf.RoundToInt(base.BaseDamageMultiplifer*_damage);
+        _damage = Mathf.RoundToInt(_damage*CurrentDamageMultiplifer);
         yield return new WaitUntil(()=>SkillsManager.ProjectileReleased == true);
         _projectile.gameObject.SetActive(true);
         _projectile.ShootProjectile(shooterPosition: PlayerManager.instance._playerCell.ParentCell.CurrentPosition);
@@ -150,7 +152,7 @@ public class Skill_Shoot : SkillBase, ISkill
         {   
             yield return new WaitUntil(()=>SkillsManager.Hit1ImpactTrigger == true);
             if(ConfirmedTargets.Count-1 >= currentTargetIndex)
-                (ConfirmedTargets[currentTargetIndex].SpecialTile as Monster_Cell).TakeDamage(_damage*CurrentDamageMultiplifer, "Attacked by player",_isCritical);            
+                (ConfirmedTargets[currentTargetIndex].SpecialTile as Monster_Cell).TakeDamage(_damage, "Attacked by player",_isCritical);            
             
             SkillsManager.Hit1ImpactTrigger = false;
             currentTargetIndex++;

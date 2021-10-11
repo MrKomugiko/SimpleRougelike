@@ -64,7 +64,7 @@ public class ProjectileScript : MonoBehaviour
             animatorEvents.Attack_Hit_1();
 
             animatorEvents.AllProjectilesReachTarget = true;
-            Debug.Log("wszytskie pociski dotarly do celu");
+            //Debug.Log("wszytskie pociski dotarly do celu");
             yield break;
         }
         else if (TargetsPositionsList.Contains(projectileGridWorldPosition))
@@ -80,7 +80,7 @@ public class ProjectileScript : MonoBehaviour
         {
             movingProgress = i/ProjectileSpeed;
             projectileTransform.localPosition = Vector3.Lerp(currentProjectileobjectposition,nextdestination,movingProgress);
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
 
         distanceTraveled++;
@@ -89,17 +89,26 @@ public class ProjectileScript : MonoBehaviour
         yield break;
     } 
 
+    private AmmunitionItem LastLoadedAmmoItem = null;
     public void LoadAmmoByType( SkillBase skill, AmmunitionType ammoType)
     {        
-        ProjectileSprite.sprite = AmmunitionManagerScript.CurrentDefault.ItemCoreSettings.Item_Sprite;
 
-        Debug.Log("Wybranie amunicji, - aktualnie pierwsze dostępne ammo");
+        //Debug.Log("Wybranie amunicji, - aktualnie pierwsze dostępne ammo");
         AmmunitionItem selectedAmmo = AmmunitionManagerScript.GetCurrentSelectedAmmunition(ammoType);
-
+        LastLoadedAmmoItem = selectedAmmo;
         // ściągniecie ze stanu konkretnego itemka 
         PlayerManager.instance._mainBackpack.TakeItemFromBackpack(_takeCount:1, _findingItem: selectedAmmo);
         
         // change skill damage based on ammunition damage
-        skill.CurrentDamageMultiplifer = skill.BaseDamageMultiplifer + selectedAmmo.BaseDamageMultiplifer;
+        skill.CurrentDamageMultiplifer = skill.BaseDamageMultiplifer * selectedAmmo.BaseDamageMultiplifer;
+
+        ProjectileSprite.sprite = AmmunitionManagerScript.CurrentDefault.ItemCoreSettings.Item_Sprite;
+        
+    }
+
+    public AmmunitionItem GetLastLoadedAmmoItem()
+    {
+        Debug.Log("ostania wystrzelona strzała to: "+LastLoadedAmmoItem.name);
+        return LastLoadedAmmoItem;
     }
 }

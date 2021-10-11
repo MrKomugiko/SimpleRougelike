@@ -58,7 +58,7 @@ public class SelectionPopupController : MonoBehaviour
 
                 if(value.node_data.Skill != null)
                 {
-                    Debug.Log("select skill"); 
+                    //Debug.Log("select skill"); 
                     value.node_data.Skill.SkillLogic.Select();
                 }
             }

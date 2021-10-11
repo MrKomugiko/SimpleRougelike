@@ -25,7 +25,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
     public TreasureBackupData TreasureData_Backup_DATA;
 
     public IChest chest {get;} = null;
-    public Treasure_Cell(CellScript parent, TreasureData _data, TreasureBackupData _restoredData = null)
+    public Treasure_Cell(CellScript parent, TreasureData _data, TreasureBackupData _restoredData = null, List<ItemPack> _extraItemsToChest = null)
     {
         this.ParentCell             =       parent;
         this.ID                     =       _data.ID;
@@ -35,6 +35,7 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         this.GoldValue              =       _data.GuarantedGoldReward;
         this.RandomGeneratedLoot    =       _restoredData==null?_data.GetRandomizeLootPacks():_restoredData.RestoredItemsContent;
 
+        
         if(_restoredData == null)
         {
             var goldReward = RandomGeneratedLoot.Where(item=>item.item is GoldItem).FirstOrDefault();
@@ -54,6 +55,14 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
         {
             treasureObject.GetComponent<SpriteRenderer>().sprite = this.Icon_Sprite.GetComponent<SpriteRenderer>().sprite;
             chest = new Chest(source:this,RandomGeneratedLoot);
+        }
+
+        if(_extraItemsToChest != null)
+        {
+            if(chest == null)
+                chest = new Chest(source:this,new List<ItemPack>());
+                
+            (chest as Chest).AddItemsToContent(_extraItemsToChest);
         }
 
         AvaiableActions.Add((  ()=>{

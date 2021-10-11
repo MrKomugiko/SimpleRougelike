@@ -208,13 +208,12 @@ public class PlayerManager: MonoBehaviour
  
     public void LoadPlayerItensAndEq(PlayerProgressModel _progressData, string equipmentTypeTarget)
     {
-       List<ItemData> itemsDatabase = Resources.LoadAll<ItemData>("Items").ToList();
        if(equipmentTypeTarget == "MainBackpack")
        {
         foreach(var data in _progressData.BagpackItems)
         {
             if(data.Count == 0) continue;
-            var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
+            var item = GameManager.ItemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
             
             ItemPack loadedItem = new ItemPack(data.Count, item);
             _mainBackpack.ItemSlots[data.SlotID].AddNewItemToSlot(loadedItem);
@@ -227,7 +226,7 @@ public class PlayerManager: MonoBehaviour
             foreach(var data in _progressData.EquipedItems)
             {           
                 if(data.Count == 0) continue;
-                var item = itemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
+                var item = GameManager.ItemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
                 ItemPack loadedItem = new ItemPack(data.Count, item);
                 _EquipedItems.LoadItemInPlayerEq(data.SlotID, loadedItem);
             }

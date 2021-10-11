@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static List<ItemData> ItemsDatabase;
+
     public int CurrentStageLevel = 1;
     public int CurrentStageFloor = 1;
     [SerializeField] public SkillsManager _SkillsManager;
@@ -332,10 +334,14 @@ public class GameManager : MonoBehaviour
     }
     private void Awake()
     {
+        ItemsDatabase = Resources.LoadAll<ItemData>("Items").ToList();
+
         if (instance == null)
             instance = this;
         else
             Destroy(this);
+
+
     }
 
     public void Init_PlacePlayerOnGrid(Vector2Int playerStatingPositon)

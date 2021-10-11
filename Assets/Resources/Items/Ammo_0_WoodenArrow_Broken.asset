@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 666a302cc2ee11a44b5c8289f7fc6847, type: 3}
-  m_Name: Ammo_1_SteelArrow
+  m_Name: Ammo_0_WoodenArrow_Broken
   m_EditorClassIdentifier: 
   ItemCoreSettings:
-    Item_Sprite: {fileID: 68446773, guid: dcb087c91e496fc4fa48fb385770fa9d, type: 3}
-    ItemID: 1
-    Name: Steel Arrow
-    GoldValue: 0
+    Item_Sprite: {fileID: -1678500524, guid: dcb087c91e496fc4fa48fb385770fa9d, type: 3}
+    ItemID: 0
+    Name: Broken Wooden Arrow
+    GoldValue: 1
     Description: 
-    Rarity: 2
+    Rarity: 0
     Type: 6
   DropSettings:
     minCount: 1
-    maxCount: 1
+    maxCount: 5
   StackSettings:
     IsStackable: 1
-    StackSize: 10
+    StackSize: 100
   RequirmentsSettings:
     Level: 0
     Strength: 0
     Inteligence: 0
     Dexterity: 0
   CanBeAssignToQuickActions: 0
-  _Type: 1
-  ChanceToSelfDestroy: 0.25
-  BaseDamageMultiplifer: 3
+  _Type: 2
+  ChanceToSelfDestroy: 1
+  BaseDamageMultiplifer: 0

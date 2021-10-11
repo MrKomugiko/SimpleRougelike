@@ -383,6 +383,7 @@ public class Statistics : MonoBehaviour
         Extra_Critical_Hit_Damage = 0;
         Extra_Critical_Hit_Rate = 0;
         Extra_Damage = (0,0);
+        TotalDamage = (0,0);
         Armor = 0;
         Extra_DamageReduction = 0;
         Extra_HealthPoints = 0;
