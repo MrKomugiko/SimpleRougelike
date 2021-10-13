@@ -2215,6 +2215,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: sword_slash_effect_up_1
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 387
+        width: 44
+        height: 38
+      alignment: 9
+      pivot: {x: 0.5543532, y: 0.86501914}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 504f8a2588bd8774e8ecaf8eeface692
+      internalID: -442806783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sword_slash_effect_up_2
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 371
+        width: 25
+        height: 61
+      alignment: 9
+      pivot: {x: 0.942771, y: 0.63329726}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da525a91195804d478a3ecc529c6997e
+      internalID: 1766485089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sword_slash_effect_up_3
+      rect:
+        serializedVersion: 2
+        x: 643
+        y: 395
+        width: 65
+        height: 45
+      alignment: 9
+      pivot: {x: 0.68028283, y: 0.17050442}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5086a2a883133c1428050e58064910d4
+      internalID: -2030842213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -2310,6 +2373,7 @@ TextureImporter:
       SIMPLE_ATTACK_DOWN_35: 782542731
       simple_walk_right_3: -1856630972
       simple_punch_down_6: 843477648
+      sword_slash_effect_up_3: -2030842213
       simple_punch_right_10: -448706089
       simple_punch_up_5: -400798530
       simple_walk_up_1: -1306745756
@@ -2318,9 +2382,11 @@ TextureImporter:
       SIMPLE_ATTACK_DOWN_13: -1983785890
       SIMPLE_ATTACK_DOWN_33: 472873388
       simple_walk_up_2: 389013499
+      sword_slash_effect_up_1: -442806783
       simple_punch_up_6: -1758178565
       simple_punch_left_2: -1660612497
       simple_punch_left_5: 2058564844
+      sword_slash_effect_up_2: 1766485089
       simple_punch_down_1: -486649383
       simple_punch_down_9: 553138805
       SIMPLE_ATTACK_DOWN_22: -1638667057

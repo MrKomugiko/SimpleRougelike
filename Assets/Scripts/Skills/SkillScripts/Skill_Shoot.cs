@@ -64,7 +64,8 @@ public class Skill_Shoot : SkillBase, ISkill
         {
             if(FlyAboweWallsAndEnemiesEnabled == false)
             {
-                ConfirmedTargets = new List<CellScript>(){ConfirmedTargets.First()};
+                ConfirmedTargets.Clear(); 
+                ConfirmedTargets.Add(target.ParentCell);
             }
             else
             {

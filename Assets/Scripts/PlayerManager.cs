@@ -152,20 +152,31 @@ public class PlayerManager: MonoBehaviour
 
     internal void RefreshWearedEquipmentUIonMap()
     {
+        Debug.Log("refresh weapon sprite image");
         Sprite weaponSprite;
         if(PlayerManager.instance._EquipedItems.GetEquipmentItemFromSlotType(EquipmentType.PrimaryWeapon) != null)
         {
              weaponSprite = _EquipedItems.GetEquipmentItemFromSlotType(EquipmentType.PrimaryWeapon).ItemCoreSettings.Item_Sprite;
+             
         }
         else
         {
             weaponSprite = null;
+            Debug.Log("weaponsprite = null");
         }
 
         if(GameObject.FindGameObjectWithTag("WEAPON") != null)
         {
-            GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = weaponSprite==null?null:weaponSprite;
+            SpriteRenderer weaponimage =GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>();
+            Debug.Log("current weaponsprite = "+weaponimage.sprite.name);
+            GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = weaponSprite;
+            Debug.Log("new weaponsprite = "+weaponimage.sprite.name);
         }
+        else
+        {
+            Debug.Log("weaponobject not found");
+        }
+
     }
 
     internal void RegenerateResourcesAtTurnStart()

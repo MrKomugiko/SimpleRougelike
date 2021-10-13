@@ -4168,6 +4168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AmmoSlot: {fileID: 2078352227570075038}
+  AmmoList: {fileID: 0}
 --- !u!1 &3868321870959746483
 GameObject:
   m_ObjectHideFlags: 0
