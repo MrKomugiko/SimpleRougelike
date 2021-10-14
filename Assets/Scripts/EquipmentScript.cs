@@ -10,7 +10,7 @@ using static Treasure_Cell;
 
 public class EquipmentScript : MonoBehaviour
 {
-    public AmmunitionManagerScript AmmoManager;
+    [SerializeField] public AmmunitionManagerScript AmmoManager;
     public string StorageName;
     [SerializeField] public bool PLAYER_EQUIPMENTSLOT;
     [SerializeField] GameObject ItemSlotPrefab;
@@ -446,6 +446,19 @@ public class EquipmentScript : MonoBehaviour
         }
         
         return _quickslotbackup;
+    }
+
+    public void OnClick_ArrangeItems()
+    {
+        Debug.Log("poprawne ulozenie itemkow");
+    }
+    public void OnClick_AutosellTrashItems()
+    {
+        Debug.Log("Sprzedanie złomu, kosci i scrolle jak narazie");
+    }
+    public void OnClick_ExtendBackpack()
+    {
+        Debug.Log("Dokupienie slotow w plecaku- odblokowanie");
     }
 
     [Serializable]
