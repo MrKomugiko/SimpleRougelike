@@ -51,6 +51,8 @@ using static EquipmentScript;
    public List<ItemBackupData> EquipedItems = new List<ItemBackupData>();
    public List<ItemBackupData> BagpackItems = new List<ItemBackupData>();
 
+   public int NumberOfUnlockedSlots = 24;
+
     public PlayerProgressModel(string _nickname,int _slotId)
     {
         NickName = _nickname;

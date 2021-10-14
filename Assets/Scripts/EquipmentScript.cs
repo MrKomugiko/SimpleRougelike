@@ -15,7 +15,7 @@ public class EquipmentScript : MonoBehaviour
     [SerializeField] public bool PLAYER_EQUIPMENTSLOT;
     [SerializeField] GameObject ItemSlotPrefab;
     [SerializeField] int MaxCapacity;
-    [SerializeField] int NumberOfUnlockedSlots;
+    [SerializeField] public int NumberOfUnlockedSlots;
     [SerializeField] GameObject ItemsContainer;
     [SerializeField] public GameObject ItemDetailsWindow;
     [SerializeField] public List<ItemSlot> ItemSlots = new List<ItemSlot>();
@@ -30,16 +30,18 @@ public class EquipmentScript : MonoBehaviour
     {
         if(PLAYER_EQUIPMENTSLOT == false)
         { 
-            if(ItemSlots.Count>0)
-            {
-                foreach(var slot in ItemSlots)
-                {
-                    slot.ITEM = null;
-                    slot.UpdateItemAmount(0);
-                }
-            }
-            else
-            {
+            // if(ItemSlots.Count>0)
+            // {
+            //     foreach(var slot in ItemSlots)
+            //     {
+            //         slot.ITEM = null;
+            //         slot.UpdateItemAmount(0);
+            //     }
+            // }
+            // else
+            // {
+                ItemSlots.ForEach(slot=>Destroy(slot.gameObject));
+                ItemSlots.Clear();
                 for(int i = 0; i< MaxCapacity; i++)
                 {
                     StorageName = "Backpack";
@@ -51,7 +53,7 @@ public class EquipmentScript : MonoBehaviour
                     itemSlot.ParentStorage = this;
                     itemSlot.IsInQuickSlot = false;
                 }
-            }
+            
         }
 
         if(PLAYER_EQUIPMENTSLOT)
@@ -450,7 +452,14 @@ public class EquipmentScript : MonoBehaviour
 
     public void OnClick_ArrangeItems()
     {
+        var sortedList = this.GetItemListSortyBy();
+        for (int i = 0; i < sortedList.Count; i++)
+        {
+            ItemSlots[i].AddNewItemToSlot(sortedList[i]);
+        }
+
         Debug.Log("poprawne ulozenie itemkow");
+
     }
     public void OnClick_AutosellTrashItems()
     {
@@ -459,6 +468,30 @@ public class EquipmentScript : MonoBehaviour
     public void OnClick_ExtendBackpack()
     {
         Debug.Log("Dokupienie slotow w plecaku- odblokowanie");
+        // 1k == 1 slot ?
+        var lockedSlot = ItemSlots.FirstOrDefault(s=>s.IsLocked);
+        if(lockedSlot!=null)
+            lockedSlot.IsLocked = false;
+
+        NumberOfUnlockedSlots++;
+        Debug.Log("NumberOfUnlockedSlots == "+NumberOfUnlockedSlots);
+    }
+
+    private List<ItemPack> GetItemListSortyBy(/*ITEMTYPES AND RARITY -> ALL IN ONE*/)
+    {
+        var currentList = ItemSlots.Where(i=>i.ITEM != null).Where(i=>i.ITEM.Count > 0).Select(i=>i.ITEM).ToList();
+        var sortedEquipment = currentList.Where(i=>i.item is EquipmentItem).OrderBy(i=>(i.item as EquipmentItem).EquipmentSpecificType).ThenBy(i=>i.item.ItemCoreSettings.Rarity).ToList();
+        var sortedmmunitions =  currentList.Where(i=>i.item is AmmunitionItem).OrderBy(i=>(i.item as AmmunitionItem)._Type).ThenBy(i=>i.item.ItemCoreSettings.Rarity).ToList();
+        var sortedpotions =  currentList.Where(i=>i.item is PotionItem).OrderBy(i=>(i.item as PotionItem).TypeOfPotion).ThenBy(i=>i.item.ItemCoreSettings.Rarity).ToList();
+        var sortedTrash =  currentList.Where(i=>i.item is DefaultItem).OrderBy(i=>(i.item as DefaultItem).ItemCoreSettings.GoldValue).ThenBy(i=>i.item.ItemCoreSettings.Rarity).ToList();
+
+        List<ItemPack> FullSortedListByTypesAndRarities = new List<ItemPack>(sortedEquipment.Count+sortedmmunitions.Count+sortedpotions.Count+sortedTrash.Count);
+        FullSortedListByTypesAndRarities.AddRange(sortedEquipment);
+        FullSortedListByTypesAndRarities.AddRange(sortedmmunitions);
+        FullSortedListByTypesAndRarities.AddRange(sortedpotions);
+        FullSortedListByTypesAndRarities.AddRange(sortedTrash);
+
+        return FullSortedListByTypesAndRarities;
     }
 
     [Serializable]

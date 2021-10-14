@@ -212,8 +212,9 @@ public class PlayerManager: MonoBehaviour
         CurrentStamina            =  _progressData.CurrentStamina;                  
 
         STATS.dataLoaded = true;         
-        
+        _mainBackpack.NumberOfUnlockedSlots = _progressData.NumberOfUnlockedSlots;
         _mainBackpack.GenerateEquipment();
+
         _EquipedItems.GenerateEquipment();
     }
  
@@ -421,19 +422,23 @@ public class PlayerManager: MonoBehaviour
         _updatedData.AvailablePoints =          this.STATS.AvailablePoints;
 
 
-        _updatedData.ItemAssignedToAuicslot_0 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(0);
-        _updatedData.ItemAssignedToAuicslot_1 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(1);
-        _updatedData.ItemAssignedToAuicslot_2 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(2);
-        _updatedData.ItemAssignedToAuicslot_3 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(3);
-        _updatedData.ItemAssignedToAuicslot_4 = PlayerManager.instance._mainBackpack.GetItemsAssignedToQuickslot(4);
+        _updatedData.ItemAssignedToAuicslot_0 = _mainBackpack.GetItemsAssignedToQuickslot(0);
+        _updatedData.ItemAssignedToAuicslot_1 = _mainBackpack.GetItemsAssignedToQuickslot(1);
+        _updatedData.ItemAssignedToAuicslot_2 = _mainBackpack.GetItemsAssignedToQuickslot(2);
+        _updatedData.ItemAssignedToAuicslot_3 = _mainBackpack.GetItemsAssignedToQuickslot(3);
+        _updatedData.ItemAssignedToAuicslot_4 = _mainBackpack.GetItemsAssignedToQuickslot(4);
     // ----------------------------- EQUIPMENT --------------------
-        _updatedData.EquipedItems = (PlayerManager.instance._EquipedItems.GetBackupListOfItemsAndSlots());
-        _updatedData.BagpackItems = (PlayerManager.instance._mainBackpack.GetBackupListOfItemsAndSlots());
+        _updatedData.EquipedItems =  _EquipedItems.GetBackupListOfItemsAndSlots();
+        _updatedData.BagpackItems =  _mainBackpack.GetBackupListOfItemsAndSlots();
 
     // zapisanie aktualnego stanu poziomu trudnosci mapy
         _updatedData.maxDungeonTraveledDistance = DungeonManager.instance.maxDungeonTraveledDistance;
         Debug.LogError("save  dungeon level ="+DungeonManager.instance.maxDungeonTraveledDistance);
+        
+        _updatedData.NumberOfUnlockedSlots = _mainBackpack.NumberOfUnlockedSlots;
+        Debug.Log("_updatedData.NumberOfUnlockedSlots = "+ _updatedData.NumberOfUnlockedSlots);
         HeroDataController.instance.UpdatePlayerDataFileOnDevice(_updatedData);
+
 
          // ponowne zalozenie itemkow bo po zapisie gry nadal mozna grac dalej
         foreach(var data in PlayerManager.instance._EquipedItems.ItemSlots)
