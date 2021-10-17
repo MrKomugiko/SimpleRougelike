@@ -447,6 +447,10 @@ public class PlayerManager: MonoBehaviour
                 PlayerManager.instance.STATS.EquipItem_UpdateStatistics(itemEq);
             }
         }
+
+        // zapisanie aktualnego stanu pokoju przed zapisem
+        DungeonManager.instance.MakeCurrentMapBackup(DungeonRoomScript.Dungeon[DungeonManager.instance.CurrentLocation]);
+        DungeonManager.instance.GenerateFullDungeonBackupData();
     }
 
 

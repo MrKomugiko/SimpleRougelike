@@ -85,6 +85,7 @@ public class DungeonManager : MonoBehaviour
     public Vector2Int CurrentLocation;
     public void MakeCurrentMapBackup(Room _room)
     {
+        Debug.Log("Aktualizowanie danych pokoju: "+_room.position);
         Dictionary<string, MonsterBackupData> _backup_Monsters = new Dictionary<string, MonsterBackupData>();
         Dictionary<string, TreasureBackupData> _backup_Treasures = new Dictionary<string, TreasureBackupData>();
         Dictionary<string, PortalBackupData> _backup_Portals = new Dictionary<string, PortalBackupData>();
@@ -112,7 +113,7 @@ public class DungeonManager : MonoBehaviour
             {
                 var portal = (cell.Value.SpecialTile as Portal_Cell);
 
-                _backup_Portals.Add(cell.Key.ToString(), (portal.SaveAndGetCellProgressData()) as PortalBackupData);
+                _backup_Portals.Add(_room.position.ToString(), (portal.SaveAndGetCellProgressData()) as PortalBackupData);
                 continue;
             }
 
@@ -158,16 +159,10 @@ public class DungeonManager : MonoBehaviour
                 if (_room.DATA.Backup_Treasures.ContainsKey(cell.Key.ToString()))
                 {
                     var treasurebackup =_room.DATA.Backup_Treasures[cell.Key.ToString()];
-                    GridManager.CellGridTable[cell.Key].SpecialTile = new Treasure_Cell(parent: cell.Value, GameManager.instance.GetTreasureData(treasurebackup.TreasureDataID),treasurebackup);
-                    GridManager.CellGridTable[cell.Key].Type = TileTypes.treasure;
-                    cell.Value.SetCell(cell.Key, false);
-                }
+                    treasurebackup.LoadDataFromBackup();
 
-                if (_room.DATA.Backup_Portals.ContainsKey(cell.Key.ToString()))
-                {
-                    var portalbackup =_room.DATA.Backup_Portals[cell.Key.ToString()];
-                    GridManager.CellGridTable[cell.Key].SpecialTile = new Portal_Cell(parentCell: cell.Value, GameManager.instance.GetPortalData(portalbackup.PortalID),DungeonRoomScript.Dungeon[GameManager.ConvertToVector2Int(portalbackup.StartLocation)],DungeonRoomScript.Dungeon[GameManager.ConvertToVector2Int(portalbackup.EndLocation)]);
-                    GridManager.CellGridTable[cell.Key].Type = TileTypes.portal;
+                    GridManager.CellGridTable[cell.Key].SpecialTile = new Treasure_Cell(parent: cell.Value, GameManager.instance.GetTreasureData(treasurebackup.TreasureDataID), treasurebackup);
+                    GridManager.CellGridTable[cell.Key].Type = TileTypes.treasure;
                     cell.Value.SetCell(cell.Key, false);
                 }
 
@@ -180,14 +175,19 @@ public class DungeonManager : MonoBehaviour
                     cell.Value.SetCell(cell.Key, false);
                 }
 
-
                 if (_room.DATA.WallPositions.Contains(cell.Key.ToString()))
                 {
                     cell.Value.AssignType(TileTypes.wall);
                     cell.Value.SetCell(cell.Key, false);
                 }
-
             }
+        }
+        
+        if (_room.DATA.Backup_Portals.ContainsKey(_room.position.ToString()))
+        {
+            Debug.Log("Spawn portalu");
+            var portalbackup =_room.DATA.Backup_Portals[_room.position.ToString()];
+            PlaceAndConfigurePortal(GameManager.ConvertToVector2Int(_room.position), portalbackup);     
         }
 
         GridManager.CellGridTable[new Vector2Int(0, 4)].AssignType(TileTypes.grass);
@@ -231,6 +231,20 @@ public class DungeonManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("ZrzutDungeonaZDanymi")]
+    public void GenerateFullDungeonBackupData()
+    {
+        JSONDUNGEONDATACLASS DungDataBackup = new JSONDUNGEONDATACLASS(
+                PlayerManager.instance._playerCell.ParentCell.CurrentPosition.ToString(), 
+                DungeonManager.instance.CurrentLocation.ToString(), 
+                DungeonRoomScript.Dungeon);
+
+        string JSONresult = JsonConvert.SerializeObject(DungDataBackup);
+        Directory.CreateDirectory(Application.persistentDataPath + $"/DUNGEONS_DATA");
+        File.WriteAllText(Application.persistentDataPath + $"/DUNGEONS_DATA/DUNGEON_1.json", JSONresult);
+
+    }
+
     [ContextMenu("LoadDungeonFromFile")]
     public void LoadDungeonFromFile()
     {
@@ -239,34 +253,34 @@ public class DungeonManager : MonoBehaviour
         Debug.Log("data count "+DungDataBackup.data.Count);
         DungeonRoomScript.Dungeon = DungDataBackup.ConvertDatatoVectorKeys(DungDataBackup.data);
 
-            string[]temp=DungDataBackup.PlayerDungeonLocation.ToString().Substring(1,DungDataBackup.PlayerDungeonLocation.ToString().Length-2).Split(',');
-            CurrentLocation = new Vector2Int(Int32.Parse(temp[0]),Int32.Parse(temp[1]));
+        string[]temp=DungDataBackup.PlayerDungeonLocation.ToString().Substring(1,DungDataBackup.PlayerDungeonLocation.ToString().Length-2).Split(',');
+        CurrentLocation = new Vector2Int(Int32.Parse(temp[0]),Int32.Parse(temp[1]));
         // -------------------------------------------------------------------------------------------
         
-            GameManager.instance.attackSelectorPopup.ClearCenteredNode();
-            GameManager.instance.attackSelectorPopup.gameObject.SetActive(false);
+        GameManager.instance.attackSelectorPopup.ClearCenteredNode();
+        GameManager.instance.attackSelectorPopup.gameObject.SetActive(false);
 
-            currentDungeonDistance = DungeonManager.instance.maxDungeonTraveledDistance;
+        currentDungeonDistance = DungeonManager.instance.maxDungeonTraveledDistance;
 
-            DungeonSelectionWindow.SetActive(false);
-            DungeonCanvas.SetActive(true);
+        DungeonSelectionWindow.SetActive(false);
+        DungeonCanvas.SetActive(true);
 
-            GridManager.instance.CreateEmptyGrid();
-            GridManager.instance.RandomizeDataOnGrid(); // TODO:
+        GridManager.instance.CreateEmptyGrid();
+        //GridManager.instance.RandomizeDataOnGrid(); // TODO:
 
-            temp=DungDataBackup.PlayerRoomPosition.ToString().Substring(1,DungDataBackup.PlayerRoomPosition.ToString().Length-2).Split(',');
-            ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(Int32.Parse(temp[0]),Int32.Parse(temp[1])),CurrentLocation);
+        temp=DungDataBackup.PlayerRoomPosition.ToString().Substring(1,DungDataBackup.PlayerRoomPosition.ToString().Length-2).Split(',');
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(Int32.Parse(temp[0]),Int32.Parse(temp[1])),CurrentLocation);
 
-            GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
+        GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
 
-            GameManager.instance.PlayerMoved = false;
-            GameManager.instance.PlayerAttacked = false;
-            GameManager.instance.MonstersMoved = false;
-            GameManager.instance.MonsterAttack = false;
+        GameManager.instance.PlayerMoved = false;
+        GameManager.instance.PlayerAttacked = false;
+        GameManager.instance.MonstersMoved = false;
+        GameManager.instance.MonsterAttack = false;
 
-            PlayerManager.instance.RegenerateFullStamina();
-            
-            StartCoroutine(GameManager.instance.AddTurn());
+        PlayerManager.instance.RegenerateFullStamina();
+        
+        StartCoroutine(GameManager.instance.AddTurn());
         
         // ----------------------------------------------------------------------------------------------
         
@@ -310,7 +324,11 @@ public class DungeonManager : MonoBehaviour
             Debug.Log($"room {randomLocationStart.position} <====> room {randomLocationEnd.position}");
 
             randomLocationStart.ContainPortal = true;
+            randomLocationStart.DATA.Backup_Portals.Add(randomLocationStart.position.ToString(), new PortalBackupData(1,"open",randomLocationStart.position.ToString(),randomLocationEnd.position.ToString()));
+
             randomLocationEnd.ContainPortal = true;
+            randomLocationEnd.DATA.Backup_Portals.Add(randomLocationEnd.position.ToString(), new PortalBackupData(1,"open",randomLocationEnd.position.ToString(),randomLocationStart.position.ToString()));
+
             portalConnectionDict.Add(randomLocationStart,randomLocationEnd);            
         }
     }
@@ -381,15 +399,26 @@ public class DungeonManager : MonoBehaviour
 
 
     }
-    private void PlaceAndConfigurePortal(Vector2Int roomLocation)
+    private void PlaceAndConfigurePortal(Vector2Int roomLocation, PortalBackupData portalDataFromBackup = null)
     {   
         Vector2Int center = new Vector2Int(4,4);
         var cell = GridManager.CellGridTable[center];
+        if(portalDataFromBackup != null)
+        {
+            // załądowanie info o teleporcie z pliku
+            var startingRoom = Dungeon[GameManager.ConvertToVector2Int(portalDataFromBackup.StartLocation)];
+            var endingRoom = Dungeon[GameManager.ConvertToVector2Int(portalDataFromBackup.EndLocation)];
+
+            if(portalConnectionDict.ContainsKey(startingRoom) == false && portalConnectionDict.ContainsKey(endingRoom) == false)
+            {
+                portalConnectionDict.Add(startingRoom,endingRoom);
+            }
+        }
         var portal = portalConnectionDict.Where(k=>k.Key.position == roomLocation.ToString() || k.Value.position == roomLocation.ToString()).FirstOrDefault();
+
+        Debug.Log(portal.Key.ToString()+"portal do położenia, spawn na środku pokoju: "+roomLocation.ToString());
         if(portal.Key != null)
         {
-            Debug.Log("portal do położenia, spawn na środku ");
-
             GridManager.CellGridTable[center].SpecialTile = new Portal_Cell(parentCell: cell, GameManager.instance.GetPortalData(0),portal.Key,portal.Value);
             GridManager.CellGridTable[center].Type = TileTypes.portal;
             cell.SetCell(center, false);

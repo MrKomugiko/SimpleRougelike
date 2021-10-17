@@ -142,20 +142,6 @@ public partial class DungeonRoomScript : MonoBehaviour
 
         return $"{W}{D}{S}{A}";
     }
-    
-    [ContextMenu("ZrzutDungeonaZDanymi")]
-    public void GenerateFullDungeonBackupData()
-    {
-        JSONDUNGEONDATACLASS DungDataBackup = new JSONDUNGEONDATACLASS(
-                PlayerManager.instance._playerCell.ParentCell.CurrentPosition.ToString(), 
-                DungeonManager.instance.CurrentLocation.ToString(), 
-                DungeonRoomScript.Dungeon);
-
-        string JSONresult = JsonConvert.SerializeObject(DungDataBackup);
-        Directory.CreateDirectory(Application.persistentDataPath + $"/DUNGEONS_DATA");
-        File.WriteAllText(Application.persistentDataPath + $"/DUNGEONS_DATA/DUNGEON_1.json", JSONresult);
-
-    }
     public class JSONDUNGEONDATACLASS
     {
         public int TotalRoomsCount;
@@ -170,7 +156,7 @@ public partial class DungeonRoomScript : MonoBehaviour
             {
                 _dungeonData = new Dictionary<Vector2Int, Room>();
             }
-            
+
             PlayerRoomPosition = playerRoomPosition;
             PlayerDungeonLocation = playerDungeonLocation;
             Debug.Log("_dungeondata"+_dungeonData.Count());

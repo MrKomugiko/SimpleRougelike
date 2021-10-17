@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
+using static Chest;
 using static EquipmentScript;
 
 [Serializable]
@@ -21,15 +22,32 @@ public class TreasureBackupData
 {   
     public int TreasureDataID;
 
-    public List<Chest.ItemPack> RestoredItemsContent;
+   [JsonIgnore] public List<Chest.ItemPack> RestoredItemsContent = new List<Chest.ItemPack>();
 
     public List<ItemBackupData> TreasureContent_Data = new List<ItemBackupData>();
 
     public TreasureBackupData(int _treasureDataID, List<Chest.ItemPack> _restoredItemsContent)
     {
         TreasureDataID = _treasureDataID;
-       RestoredItemsContent = _restoredItemsContent;
+        RestoredItemsContent = _restoredItemsContent;
         TreasureContent_Data = GenerateSerializableItemsBackupData();
+        if(TreasureContent_Data.Count > 0)
+        {
+            LoadDataFromBackup();
+        }
+    }
+
+    public void LoadDataFromBackup()
+    {
+        RestoredItemsContent = new List<ItemPack>();
+        foreach(var data in TreasureContent_Data)
+        {
+            if(data.Count == 0) continue;
+            var item = GameManager.ItemsDatabase.Where(i=>i.name == data.ScriptableObjectName).First();
+            
+            ItemPack loadedItempack = new ItemPack(data.Count, item);
+            RestoredItemsContent.Add(loadedItempack);
+        }
     }
 
     private List<ItemBackupData> GenerateSerializableItemsBackupData()
@@ -37,14 +55,12 @@ public class TreasureBackupData
         List<ItemBackupData> data_jsonproof = new List<ItemBackupData>();
         int index = 0;
         if(RestoredItemsContent != null)
-        {
-                
+        {     
             foreach(var item in RestoredItemsContent.Where(item=>item.Count >0))
             {
                 data_jsonproof.Add(new ItemBackupData(index,item.Count,item.item.name));
                 index++;
             }
-
         }
         return data_jsonproof;
     }

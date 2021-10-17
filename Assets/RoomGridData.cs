@@ -26,5 +26,14 @@ public partial class DungeonRoomScript
             WallPositions = wallPositions;
             Backup_Portals = backup_portals;
         }
+
+        public RoomGridData()
+        {
+            Backup_Monsters = new Dictionary<string, MonsterBackupData>();
+            Backup_Treasures = new Dictionary<string, TreasureBackupData>();
+            Backup_Bombs = new Dictionary<string, BombBackupData>();
+            WallPositions = new HashSet<string>();
+            Backup_Portals = new Dictionary<string, PortalBackupData>();
+        }
     }
 }

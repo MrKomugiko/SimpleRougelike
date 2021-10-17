@@ -11,7 +11,7 @@ public partial class DungeonRoomScript
         public bool WasVisited = false;
         public string position;
         public String doorsNameCode;
-        public RoomGridData DATA;
+        public RoomGridData DATA = new RoomGridData();
         public Room(string position, string doorsNameCode)
         {
             this.position = position.ToString();

@@ -528,9 +528,6 @@ public class GameManager : MonoBehaviour
     {
         text = text.Trim();
         string[]temp=text.Substring(1,text.Length-2).Split(',');
-        Debug.Log(temp[0]);
-        Debug.Log(temp[1]);
-
         return new Vector2Int(Int32.Parse(temp[0].Trim()),Int32.Parse(temp[1].Trim()));
     }
 }
