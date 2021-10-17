@@ -344,6 +344,7 @@ public class GameManager : MonoBehaviour
 
     }
 
+
     public void Init_PlacePlayerOnGrid(Vector2Int playerStatingPositon)
     {
         Player_CELL = GridManager.CellGridTable[playerStatingPositon];
@@ -449,6 +450,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<MonsterData> MonsterVariants = new List<MonsterData>();
     [SerializeField] private List<TreasureData> TreasureVariants = new List<TreasureData>();
     [SerializeField] private List<BombData> BombVariants = new List<BombData>();
+    [SerializeField] private List<PortalData> PortalVariants = new List<PortalData>();
+
+    
     [SerializeField] public GameObject WALLSPRITE;
     internal static string LastPlayerDirection;
 
@@ -501,10 +505,32 @@ public class GameManager : MonoBehaviour
             return BombVariants.Where(m=>m.ID == BombID).First();
     }
 
+    internal PortalData GetPortalData(int PortalID = -1)
+    {
+        if(PortalID == -1)
+        {
+            var randomIndex = UnityEngine.Random.Range(0,PortalVariants.Count);
+            return PortalVariants[randomIndex];
+        }
+        else
+            return PortalVariants.Where(m=>m.ID == PortalID).First();
+    }
+
+
     public void GameOver()
     {
         DungeonManager.instance.DungeonClearAndGoToCamp();
         PlayerManager.instance.SavePlayerData();
         MenuScript.instance.KickToMenuAfterDeath(); 
+    }
+
+    public static Vector2Int ConvertToVector2Int(string text)
+    {
+        text = text.Trim();
+        string[]temp=text.Substring(1,text.Length-2).Split(',');
+        Debug.Log(temp[0]);
+        Debug.Log(temp[1]);
+
+        return new Vector2Int(Int32.Parse(temp[0].Trim()),Int32.Parse(temp[1].Trim()));
     }
 }

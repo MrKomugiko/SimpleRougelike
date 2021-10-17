@@ -6,5 +6,6 @@ public enum TileTypes
     grass,
     bomb,
     treasure,
-    monster
+    monster,
+    portal
 }

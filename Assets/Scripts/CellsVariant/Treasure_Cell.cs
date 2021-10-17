@@ -65,15 +65,15 @@ public class Treasure_Cell : ISpecialTile, IValuable, ISelectable
             (chest as Chest).AddItemsToContent(_extraItemsToChest);
         }
 
-        AvaiableActions.Add((  ()=>{
-            bool result;
-            Pick(out result);
-            if(result == false)
-                {
-                    NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Cannot pick, item is too far.");
-                }
-            } ,"Collect Only",ActionIcon.Pick,
-            true));
+        // AvaiableActions.Add((  ()=>{
+        //     bool result;
+        //     Pick(out result);
+        //     if(result == false)
+        //         {
+        //             NotificationManger.TriggerActionNotification(this,NotificationManger.AlertCategory.Info, "Cannot pick, item is too far.");
+        //         }
+        //     } ,"Collect Only",ActionIcon.Pick,
+        //     true));
         
         ParentCell.Trash.Add(treasureObject);
         RemoveFromMapIfChesIsEmpty();

@@ -25,7 +25,7 @@ public class TreasureData : ScriptableObject
         int itemInChest = Random.Range(0,PossibleLootItems.Count+1);
         HashSet<int> randomIndexes = new HashSet<int>();
 
-        for(int i = randomIndexes.Count; i< itemInChest; )
+        for(int i = 0; i< (itemInChest>9?9:itemInChest); )
         {
             randomIndexes.Add(Random.Range(0,PossibleLootItems.Count));
             i = randomIndexes.Count;

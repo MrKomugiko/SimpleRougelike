@@ -453,10 +453,18 @@ public class EquipmentScript : MonoBehaviour
     public void OnClick_ArrangeItems()
     {
         var sortedList = this.GetItemListSortyBy();
-        for (int i = 0; i < sortedList.Count; i++)
+        for (int i = 0; i < NumberOfUnlockedSlots; i++)
         {
-            ItemSlots[i].AddNewItemToSlot(sortedList[i]);
+            if(i < sortedList.Count)
+            {
+                ItemSlots[i].AddNewItemToSlot(sortedList[i]);
+            }
+            else
+            {
+                ItemSlots[i].ITEM = null;
+            }
         }
+
 
         Debug.Log("poprawne ulozenie itemkow");
 
@@ -464,6 +472,12 @@ public class EquipmentScript : MonoBehaviour
     public void OnClick_AutosellTrashItems()
     {
         Debug.Log("Sprzedanie złomu, kosci i scrolle jak narazie");
+        var currentList = ItemSlots.Where(i=>i.ITEM != null).Where(i=>i.ITEM.Count > 0);
+        var trashSlots =  currentList.Where(i=>i.ITEM.item is DefaultItem);
+        foreach(var slot in trashSlots)
+        {
+            slot.ITEM.item.SellAll(slot);
+        }
     }
     public void OnClick_ExtendBackpack()
     {

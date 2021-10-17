@@ -7070,6 +7070,8 @@ MonoBehaviour:
   BombVariants:
   - {fileID: 11400000, guid: 67684d9b16044314b873c6c8d9fa623e, type: 2}
   - {fileID: 11400000, guid: 33379aa124dbe5042b7fbc769dea702a, type: 2}
+  PortalVariants:
+  - {fileID: 11400000, guid: d8be2c63b84508642a4f16e6c393d5cd, type: 2}
   WALLSPRITE: {fileID: 1533482603691778679, guid: 5804502043985d343b2b3773c72385c1, type: 3}
   MonstersMoved: 0
   PlayerAttacked: 0
@@ -7107,6 +7109,7 @@ MonoBehaviour:
     AvailablePoints: 0
     EquipedItems: []
     BagpackItems: []
+    NumberOfUnlockedSlots: 0
     ItemAssignedToAuicslot_0:
       SlotID: 0
       Count: 0
@@ -23942,7 +23945,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 1000}
+  m_SizeDelta: {x: 1250, y: 1250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1741629350
 GameObject:

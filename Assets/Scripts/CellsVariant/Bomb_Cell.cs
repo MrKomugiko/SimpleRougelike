@@ -83,13 +83,13 @@ public class Bomb_Cell : ISpecialTile, IFragile, IUsable, ISelectable
             this.TickCounter.parent = ParentCell;
         }
 
-        AvaiableActions.Add((()=>Use(),"Detonate", ActionIcon.Bomb, true));
-        AvaiableActions.Add((()=>SwitchHighlightImpactArea(),"Show Inpact Area",ActionIcon.Flag, false));
+      //  AvaiableActions.Add((()=>Use(),"Detonate", ActionIcon.Bomb, true));
+       // AvaiableActions.Add((()=>SwitchHighlightImpactArea(),"Show Inpact Area",ActionIcon.Flag, false));
     }
 
     public object SaveAndGetCellProgressData()
     {
-     return null;
+        return new BombBackupData(BombID);
     }
     
     public void OnClick_MakeAction()

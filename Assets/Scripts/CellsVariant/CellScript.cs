@@ -262,6 +262,7 @@ public class CellScript : MonoBehaviour
                 case TileTypes.bomb:
                     this.SpecialTile = new Bomb_Cell(parent: this, GameManager.instance.GetBombData());             return;
 
+               
             };
         }
         else

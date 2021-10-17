@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class Chest : IChest
@@ -115,7 +116,7 @@ public class Chest : IChest
     public class ItemPack
     {
         [SerializeField] private int count;
-        public ItemData item;
+       [JsonIgnore] public ItemData item;
 
         public int Count { get => count; set => count = value; }
 

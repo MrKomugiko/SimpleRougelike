@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 using static DungeonRoomScript;
@@ -43,7 +45,14 @@ public class DungeonManager : MonoBehaviour
         
         StartCoroutine(GameManager.instance.AddTurn());
     }
-    
+
+    internal void TeleportTo(Room from, Room to)
+    {
+        MakeCurrentMapBackup(from);
+        Vector2Int newLocationCoord = GameManager.ConvertToVector2Int(to.position);
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(4, 3),newLocationCoord);
+    }
+
     public void DungeonClearAndGoToCamp()
     {
         PlayerManager.instance._mainBackpack.ItemSlots.ForEach(slot =>
@@ -76,17 +85,18 @@ public class DungeonManager : MonoBehaviour
     public Vector2Int CurrentLocation;
     public void MakeCurrentMapBackup(Room _room)
     {
-        Dictionary<Vector2Int, MonsterBackupData> _backup_Monsters = new Dictionary<Vector2Int, MonsterBackupData>();
-        Dictionary<Vector2Int, TreasureBackupData> _backup_Treasures = new Dictionary<Vector2Int, TreasureBackupData>();
-        Dictionary<Vector2Int, BombData> _backup_Bombs = new Dictionary<Vector2Int, BombData>();
-        HashSet<Vector2Int> _wallPositions = new HashSet<Vector2Int>();
+        Dictionary<string, MonsterBackupData> _backup_Monsters = new Dictionary<string, MonsterBackupData>();
+        Dictionary<string, TreasureBackupData> _backup_Treasures = new Dictionary<string, TreasureBackupData>();
+        Dictionary<string, PortalBackupData> _backup_Portals = new Dictionary<string, PortalBackupData>();
+        Dictionary<string, BombBackupData> _backup_Bombs = new Dictionary<string, BombBackupData>();
+        HashSet<string> _wallPositions = new HashSet<string>();
         
         foreach (var cell in GridManager.CellGridTable)
         {
             if (cell.Value.SpecialTile is Monster_Cell)
             {
                 var monster = (cell.Value.SpecialTile as Monster_Cell);
-                _backup_Monsters.Add(cell.Key, (monster.SaveAndGetCellProgressData()) as MonsterBackupData);
+                _backup_Monsters.Add(cell.Key.ToString(), (monster.SaveAndGetCellProgressData()) as MonsterBackupData);
                 continue;
             }
 
@@ -94,23 +104,33 @@ public class DungeonManager : MonoBehaviour
             {
                 var treasure = (cell.Value.SpecialTile as Treasure_Cell);
 
-                _backup_Treasures.Add(cell.Key, (treasure.SaveAndGetCellProgressData()) as TreasureBackupData);
+                _backup_Treasures.Add(cell.Key.ToString(), (treasure.SaveAndGetCellProgressData()) as TreasureBackupData);
+                continue;
+            }
+
+            if (cell.Value.SpecialTile is Portal_Cell)
+            {
+                var portal = (cell.Value.SpecialTile as Portal_Cell);
+
+                _backup_Portals.Add(cell.Key.ToString(), (portal.SaveAndGetCellProgressData()) as PortalBackupData);
                 continue;
             }
 
             if (cell.Value.SpecialTile is Bomb_Cell)
             {
-                _backup_Bombs.Add(cell.Key, (cell.Value.SpecialTile as Bomb_Cell).BombData_Backup_DATA);
+                 var bomb = (cell.Value.SpecialTile as Bomb_Cell);
+
+                _backup_Bombs.Add(cell.Key.ToString(),(bomb.SaveAndGetCellProgressData()) as BombBackupData);
                 continue;
             }
 
             if (cell.Value.Type == TileTypes.wall)
             {
-                _wallPositions.Add(cell.Key);
+                _wallPositions.Add(cell.Key.ToString());
                 continue;
             }
         }
-        RoomGridData _roomBackupData = new RoomGridData(_backup_Monsters, _backup_Treasures, _backup_Bombs, _wallPositions);
+        RoomGridData _roomBackupData = new RoomGridData(_backup_Monsters, _backup_Treasures, _backup_Bombs, _backup_Portals, _wallPositions);
         _room.DATA = _roomBackupData;
     }
     public void LoadGridForRoomData(Room _room)
@@ -127,34 +147,46 @@ public class DungeonManager : MonoBehaviour
             }
             else
             {
-                if (_room.DATA.Backup_Monsters.ContainsKey(cell.Key))
+                if (_room.DATA.Backup_Monsters.ContainsKey(cell.Key.ToString()))
                 {
-                    var monsterbackup =_room.DATA.Backup_Monsters[cell.Key];
+                    var monsterbackup =_room.DATA.Backup_Monsters[cell.Key.ToString()];
                     GridManager.CellGridTable[cell.Key].SpecialTile = new Monster_Cell(parent: cell.Value, GameManager.instance.GetMonsterData(monsterbackup.MonsterDataID),monsterbackup);
                     GridManager.CellGridTable[cell.Key].Type = TileTypes.monster;
                     cell.Value.SetCell(cell.Key, false);
                 }
 
-                if (_room.DATA.Backup_Treasures.ContainsKey(cell.Key))
+                if (_room.DATA.Backup_Treasures.ContainsKey(cell.Key.ToString()))
                 {
-                    var treasurebackup =_room.DATA.Backup_Treasures[cell.Key];
+                    var treasurebackup =_room.DATA.Backup_Treasures[cell.Key.ToString()];
                     GridManager.CellGridTable[cell.Key].SpecialTile = new Treasure_Cell(parent: cell.Value, GameManager.instance.GetTreasureData(treasurebackup.TreasureDataID),treasurebackup);
                     GridManager.CellGridTable[cell.Key].Type = TileTypes.treasure;
                     cell.Value.SetCell(cell.Key, false);
                 }
 
-                if (_room.DATA.Backup_Bombs.ContainsKey(cell.Key))
+                if (_room.DATA.Backup_Portals.ContainsKey(cell.Key.ToString()))
                 {
-                    GridManager.CellGridTable[cell.Key].SpecialTile = new Bomb_Cell(parent: cell.Value, _room.DATA.Backup_Bombs[cell.Key]);
+                    var portalbackup =_room.DATA.Backup_Portals[cell.Key.ToString()];
+                    GridManager.CellGridTable[cell.Key].SpecialTile = new Portal_Cell(parentCell: cell.Value, GameManager.instance.GetPortalData(portalbackup.PortalID),DungeonRoomScript.Dungeon[GameManager.ConvertToVector2Int(portalbackup.StartLocation)],DungeonRoomScript.Dungeon[GameManager.ConvertToVector2Int(portalbackup.EndLocation)]);
+                    GridManager.CellGridTable[cell.Key].Type = TileTypes.portal;
+                    cell.Value.SetCell(cell.Key, false);
+                }
+
+                if (_room.DATA.Backup_Bombs.ContainsKey(cell.Key.ToString()))
+                {
+                    var bombbackup =_room.DATA.Backup_Bombs[cell.Key.ToString()];
+
+                    GridManager.CellGridTable[cell.Key].SpecialTile = new Bomb_Cell(parent: cell.Value, GameManager.instance.GetBombData(bombbackup.BombId));
                     GridManager.CellGridTable[cell.Key].Type = TileTypes.bomb;
                     cell.Value.SetCell(cell.Key, false);
                 }
 
-                if (_room.DATA.WallPositions.Contains(cell.Key))
+
+                if (_room.DATA.WallPositions.Contains(cell.Key.ToString()))
                 {
                     cell.Value.AssignType(TileTypes.wall);
                     cell.Value.SetCell(cell.Key, false);
                 }
+
             }
         }
 
@@ -175,12 +207,15 @@ public class DungeonManager : MonoBehaviour
     {
         foreach(var changeddoordir in listchangedDoors)
         {
-            DungeonRoomScript.Dungeon[changesFromRoom.position+changeddoordir].SetStateDoorByVector( (-changeddoordir), true);
+            DungeonRoomScript.Dungeon[GameManager.ConvertToVector2Int(changesFromRoom.position)+changeddoordir].SetStateDoorByVector( (-changeddoordir), true);
         }
     }
     public void GenerateAndEnterDungeon()
     {
         DungeonRoomScript.GenerateDungeonRooms();
+
+        RandomizePortalsConnections(connectionsNumber: 3);
+        
         OpenDungeon();
         CurrentLocation = Vector2Int.zero;
 
@@ -195,35 +230,120 @@ public class DungeonManager : MonoBehaviour
             (monsterCell.Value.SpecialTile as Monster_Cell).AdjustByMapDificultyLevel(Dungeon[Vector2Int.zero].DistanceFromCenter);
         }
     }
+
+    [ContextMenu("LoadDungeonFromFile")]
+    public void LoadDungeonFromFile()
+    {
+        string JSONresult = File.ReadAllText(Application.persistentDataPath + $"/DUNGEONS_DATA/DUNGEON_1.json");
+        JSONDUNGEONDATACLASS DungDataBackup = JsonConvert.DeserializeObject<JSONDUNGEONDATACLASS>(JSONresult);  
+        Debug.Log("data count "+DungDataBackup.data.Count);
+        DungeonRoomScript.Dungeon = DungDataBackup.ConvertDatatoVectorKeys(DungDataBackup.data);
+
+            string[]temp=DungDataBackup.PlayerDungeonLocation.ToString().Substring(1,DungDataBackup.PlayerDungeonLocation.ToString().Length-2).Split(',');
+            CurrentLocation = new Vector2Int(Int32.Parse(temp[0]),Int32.Parse(temp[1]));
+        // -------------------------------------------------------------------------------------------
+        
+            GameManager.instance.attackSelectorPopup.ClearCenteredNode();
+            GameManager.instance.attackSelectorPopup.gameObject.SetActive(false);
+
+            currentDungeonDistance = DungeonManager.instance.maxDungeonTraveledDistance;
+
+            DungeonSelectionWindow.SetActive(false);
+            DungeonCanvas.SetActive(true);
+
+            GridManager.instance.CreateEmptyGrid();
+            GridManager.instance.RandomizeDataOnGrid(); // TODO:
+
+            temp=DungDataBackup.PlayerRoomPosition.ToString().Substring(1,DungDataBackup.PlayerRoomPosition.ToString().Length-2).Split(',');
+            ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(Int32.Parse(temp[0]),Int32.Parse(temp[1])),CurrentLocation);
+
+            GameManager.instance.CurrentTurnPhase = TurnPhase.PlayerMovement;
+
+            GameManager.instance.PlayerMoved = false;
+            GameManager.instance.PlayerAttacked = false;
+            GameManager.instance.MonstersMoved = false;
+            GameManager.instance.MonsterAttack = false;
+
+            PlayerManager.instance.RegenerateFullStamina();
+            
+            StartCoroutine(GameManager.instance.AddTurn());
+        
+        // ----------------------------------------------------------------------------------------------
+        
+
+        RoomWallsSprite.sprite = DungeonRoomScript.instance.roomsTemplates
+            .Where(t => t.name == DungeonRoomScript.Dungeon[CurrentLocation].doorsNameCode + "_OPEN")
+            .First();
+
+        currentDungeonDistance = DungeonRoomScript.Dungeon[CurrentLocation].DistanceFromCenter;
+        maxDungeonTraveledDistance = currentDungeonDistance > maxDungeonTraveledDistance ? currentDungeonDistance : maxDungeonTraveledDistance;
+
+        foreach(var monsterCell in GridManager.CellGridTable.Where(c=>c.Value.SpecialTile is Monster_Cell))
+        {
+            (monsterCell.Value.SpecialTile as Monster_Cell).AdjustByMapDificultyLevel(Dungeon[Vector2Int.zero].DistanceFromCenter);
+        }
+
+        ShowMinimap();
+    }
+
+    Dictionary<Room,Room> portalConnectionDict = new Dictionary<Room, Room>();
+    private void RandomizePortalsConnections(int connectionsNumber)
+    {
+        portalConnectionDict.Clear();
+        
+        while(portalConnectionDict.Count-1 <= connectionsNumber)
+        {
+            
+            Room randomLocationStart = DungeonRoomScript.Dungeon.ElementAt(UnityEngine.Random.Range(0,DungeonRoomScript.Dungeon.Count-1)).Value;
+            Room randomLocationEnd = DungeonRoomScript.Dungeon.ElementAt(UnityEngine.Random.Range(0,DungeonRoomScript.Dungeon.Count-1)).Value;
+
+            if(portalConnectionDict.ContainsKey(randomLocationStart) || portalConnectionDict.ContainsKey(randomLocationEnd))
+            {
+                continue;
+            }
+
+            if(portalConnectionDict.Where(r=>r.Value.position == randomLocationStart.position).Any() || portalConnectionDict.Where(r=>r.Value.position == randomLocationEnd.position).Any())
+            {
+                continue;
+            }
+
+            Debug.Log($"room {randomLocationStart.position} <====> room {randomLocationEnd.position}");
+
+            randomLocationStart.ContainPortal = true;
+            randomLocationEnd.ContainPortal = true;
+            portalConnectionDict.Add(randomLocationStart,randomLocationEnd);            
+        }
+    }
+
     public void MoveNExtRoom_Up()
     {
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
         var vector = Vector2Int.up;
         Vector2Int newLocationCoord = CurrentLocation + vector;
-        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(4,0),newLocationCoord, moveFromDirection: vector);
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(4,0),newLocationCoord);
     }
     public void MoveNExtRoom_Right()
     {
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
         var vector = Vector2Int.right;
         Vector2Int newLocationCoord = CurrentLocation + vector;
-        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(0,4),newLocationCoord, moveFromDirection: vector);
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(0,4),newLocationCoord);
     }
     public void MoveNExtRoom_Down()
     {
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
         var vector = Vector2Int.down;
         Vector2Int newLocationCoord = CurrentLocation + vector;
-        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(4,8),newLocationCoord, moveFromDirection: vector);
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(4,8),newLocationCoord);
     }
     public void MoveNExtRoomLeftP()
     {
         MakeCurrentMapBackup(DungeonRoomScript.Dungeon[CurrentLocation]);
         var vector = Vector2Int.left;
         Vector2Int newLocationCoord = CurrentLocation + vector;
-        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(8, 4),newLocationCoord, moveFromDirection: vector);
+        ManageRoomDorsAndPlayerSpawn(playerPosition:new Vector2Int(8, 4),newLocationCoord);
     }
-    private void ManageRoomDorsAndPlayerSpawn(Vector2Int playerPosition, Vector2Int newLocationCoord, Vector2Int moveFromDirection)
+    private void ManageRoomDorsAndPlayerSpawn(Vector2Int playerPosition, Vector2Int newLocationCoord)
     {
         if (DungeonRoomScript.Dungeon.ContainsKey(newLocationCoord))
         {             
@@ -236,6 +356,7 @@ public class DungeonManager : MonoBehaviour
             {
                 GridManager.instance.ResetGridToDefault();
                 GridManager.instance.RandomizeDataOnGrid();
+                PlaceAndConfigurePortal(newLocationCoord);
             }
             else
             {
@@ -260,6 +381,21 @@ public class DungeonManager : MonoBehaviour
 
 
     }
+    private void PlaceAndConfigurePortal(Vector2Int roomLocation)
+    {   
+        Vector2Int center = new Vector2Int(4,4);
+        var cell = GridManager.CellGridTable[center];
+        var portal = portalConnectionDict.Where(k=>k.Key.position == roomLocation.ToString() || k.Value.position == roomLocation.ToString()).FirstOrDefault();
+        if(portal.Key != null)
+        {
+            Debug.Log("portal do położenia, spawn na środku ");
+
+            GridManager.CellGridTable[center].SpecialTile = new Portal_Cell(parentCell: cell, GameManager.instance.GetPortalData(0),portal.Key,portal.Value);
+            GridManager.CellGridTable[center].Type = TileTypes.portal;
+            cell.SetCell(center, false);
+        }
+    }
+
     [SerializeField] public List<GameObject> telerpotButtons = new List<GameObject>();
     public void EnableTeleportButton(string direction)
     {
@@ -338,7 +474,7 @@ public class DungeonManager : MonoBehaviour
         {
             if(room.Value.WasVisited)
             {
-                AddMinimapTile(size, room.Key, doorsExitsCode:room.Value.doorsNameCode);
+                AddMinimapTile(room.Key, doorsExitsCode:room.Value.doorsNameCode);
 
                 foreach(var directionExit in room.Value.doorsNameCode.ToCharArray())
                 {
@@ -346,33 +482,39 @@ public class DungeonManager : MonoBehaviour
                     {
                         var vectorToSpottedRoom = Vector2Int.up;
                         Vector2Int positiotn = room.Key + vectorToSpottedRoom;
-                        AddMinimapTile(size, positiotn, markAsRevealed:true);
+                        AddMinimapTile(positiotn, markAsRevealed:true);
                     }
 
                     if (directionExit == Char.Parse("D"))
                     {
                         var vectorToSpottedRoom = Vector2Int.right;
                         Vector2Int positiotn = room.Key + vectorToSpottedRoom;
-                       AddMinimapTile(size, positiotn, markAsRevealed:true);
+                       AddMinimapTile(positiotn, markAsRevealed:true);
                     }
 
                     if(directionExit == Char.Parse("S"))
                     {
                         var vectorToSpottedRoom = Vector2Int.down;
                         Vector2Int positiotn = room.Key + vectorToSpottedRoom;
-                        AddMinimapTile(size, positiotn, markAsRevealed:true);
+                        AddMinimapTile(positiotn, markAsRevealed:true);
                     }
 
                     if(directionExit == Char.Parse("A"))
                     {
                         var vectorToSpottedRoom = Vector2Int.left;
                         Vector2Int positiotn = room.Key + vectorToSpottedRoom;
-                        AddMinimapTile(size, positiotn, markAsRevealed:true);
+                        AddMinimapTile(positiotn, markAsRevealed:true);
                     }
                 }
             }
+            if(room.Value.ContainPortal)
+            {
+                AddMinimapTile(room.Key, markAsRevealed:room.Value.WasVisited);
+                minimapTiles[room.Key].GetComponent<Image>().enabled = room.Value.WasVisited;
+                minimapTiles[room.Key].transform.GetChild(0).GetComponent<Image>().enabled = false;
+                minimapTiles[room.Key].transform.GetChild(1).GetComponent<Image>().enabled = true;
+            }
         }
-
 
         foreach(var tile in minimapTiles)
         {
@@ -380,7 +522,7 @@ public class DungeonManager : MonoBehaviour
         }
         MinimapSpawnContainer.parent.transform.GetComponent<RectTransform>().localPosition = new Vector3(244.74f,-247.55f,0);
 
-        void AddMinimapTile(int size, Vector2Int roomLocation, string doorsExitsCode = "", bool markAsRevealed = false)
+        void AddMinimapTile(Vector2Int roomLocation, string doorsExitsCode = "", bool markAsRevealed = false)
         {
             Image room_minimap = null;
             if(markAsRevealed)
@@ -400,21 +542,21 @@ public class DungeonManager : MonoBehaviour
                 if(minimapTiles.ContainsKey(roomLocation))
                 {
                     minimapTiles[roomLocation].enabled = true;
-                    minimapTiles[roomLocation].sprite = minimapimageList.Where(img=>img.name == doorsExitsCode+"_OPEN").First();
+                    minimapTiles[roomLocation].sprite = minimapimageList.Where(img=>img.name == doorsExitsCode+"_OPEN").FirstOrDefault();
                     minimapTiles[roomLocation].color = roomLocation==CurrentLocation?Color.green:defaultColor;
                     minimapTiles[roomLocation].transform.GetChild(0).GetComponent<Image>().enabled = false;
                     return;
                 }
-                
-                room_minimap = Instantiate(MinimapTilePrefab, MinimapSpawnContainer).GetComponent<Image>();;
+
+                room_minimap = Instantiate(MinimapTilePrefab, MinimapSpawnContainer).GetComponent<Image>();
                 room_minimap.name = roomLocation.ToString();
                 
                 room_minimap.enabled = true;
-                room_minimap.sprite = minimapimageList.Where(img=>img.name == doorsExitsCode+"_OPEN").First();
+                room_minimap.sprite = minimapimageList.Where(img=>img.name == doorsExitsCode+"_OPEN").FirstOrDefault();
                 room_minimap.color = roomLocation==CurrentLocation?Color.green:defaultColor;
                 room_minimap.transform.GetChild(0).GetComponent<Image>().enabled = false;
             }
-             minimapTiles.Add(roomLocation,room_minimap);
+            minimapTiles.Add(roomLocation,room_minimap);
         }
     }
 

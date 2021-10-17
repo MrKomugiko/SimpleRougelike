@@ -168,9 +168,7 @@ public class PlayerManager: MonoBehaviour
         if(GameObject.FindGameObjectWithTag("WEAPON") != null)
         {
             SpriteRenderer weaponimage =GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>();
-            Debug.Log("current weaponsprite = "+weaponimage.sprite.name);
             GameObject.FindGameObjectWithTag("WEAPON").GetComponent<SpriteRenderer>().sprite = weaponSprite;
-            Debug.Log("new weaponsprite = "+weaponimage.sprite.name);
         }
         else
         {
@@ -434,7 +432,7 @@ public class PlayerManager: MonoBehaviour
     // zapisanie aktualnego stanu poziomu trudnosci mapy
         _updatedData.maxDungeonTraveledDistance = DungeonManager.instance.maxDungeonTraveledDistance;
         Debug.LogError("save  dungeon level ="+DungeonManager.instance.maxDungeonTraveledDistance);
-        
+
         _updatedData.NumberOfUnlockedSlots = _mainBackpack.NumberOfUnlockedSlots;
         Debug.Log("_updatedData.NumberOfUnlockedSlots = "+ _updatedData.NumberOfUnlockedSlots);
         HeroDataController.instance.UpdatePlayerDataFileOnDevice(_updatedData);

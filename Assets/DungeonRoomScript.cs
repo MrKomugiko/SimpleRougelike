@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DungeonRoomScript : MonoBehaviour
+public partial class DungeonRoomScript : MonoBehaviour
 {
     [SerializeField] GameObject ImageColorIndicator;
     public static DungeonRoomScript instance;
@@ -23,16 +25,14 @@ public class DungeonRoomScript : MonoBehaviour
         {"A",Vector2Int.left}
     };
     public static Dictionary<Vector2Int, Room> Dungeon = new Dictionary<Vector2Int, Room>();
-    
-    [ContextMenu("SpawnFirstRoom")]
     public static void GenerateDungeonRooms()
     {
-        Room MainRoom = new Room(Vector2Int.zero,"WDSA");
+        Room MainRoom = new Room(Vector2Int.zero.ToString(),"WDSA");
         Dungeon.Clear();
         Dungeon.Add(Vector2Int.zero,MainRoom);
         foreach(var dirChar in "WDSA".ToCharArray().ToList())
         {
-            CreateRoom(from: MainRoom.position, directionsDict[dirChar.ToString()]);
+            CreateRoom(from: GameManager.ConvertToVector2Int(MainRoom.position), directionsDict[dirChar.ToString()]);
         }
         Dungeon[Vector2Int.zero].DistanceFromCenter = DungeonManager.instance.maxDungeonTraveledDistance;
        
@@ -81,12 +81,12 @@ public class DungeonRoomScript : MonoBehaviour
         else
         {
             string doorsNameCode = AdjustDorrsBasedOnNeighbours(newLocation);
-            var room = new Room(newLocation, doorsNameCode);
+            var room = new Room(newLocation.ToString(), doorsNameCode);
             Dungeon.Add(newLocation, room);
 
             foreach(var dirChar in doorsNameCode.ToCharArray().ToList())
             {
-                CreateRoom(from: room.position, directionsDict[dirChar.ToString()]);
+                CreateRoom(from: GameManager.ConvertToVector2Int(room.position), directionsDict[dirChar.ToString()]);
             }
         }
     }
@@ -97,9 +97,9 @@ public class DungeonRoomScript : MonoBehaviour
         string S = "";
         string A = "";
 
-        if (location.x >= -10 && location.x <= 10)
+        if (location.x >= -7 && location.x <= 7)
         {
-            if (location.y >= -10 && location.y <= 10)
+            if (location.y >= -7 && location.y <= 7)
             {
                 W = UnityEngine.Random.Range(0, 100) < 50 ? "W" : "";
                 D = UnityEngine.Random.Range(0, 100) < 50 ? "D" : "";
@@ -142,86 +142,70 @@ public class DungeonRoomScript : MonoBehaviour
 
         return $"{W}{D}{S}{A}";
     }
-    public class Room
+    
+    [ContextMenu("ZrzutDungeonaZDanymi")]
+    public void GenerateFullDungeonBackupData()
     {
-        public int DistanceFromCenter = -1;
-        public bool WasVisited = false;
-        public Vector2Int position;
-        public String doorsNameCode;
-        public RoomGridData DATA;
-        public Room(Vector2Int position, string doorsNameCode)
+        JSONDUNGEONDATACLASS DungDataBackup = new JSONDUNGEONDATACLASS(
+                PlayerManager.instance._playerCell.ParentCell.CurrentPosition.ToString(), 
+                DungeonManager.instance.CurrentLocation.ToString(), 
+                DungeonRoomScript.Dungeon);
+
+        string JSONresult = JsonConvert.SerializeObject(DungDataBackup);
+        Directory.CreateDirectory(Application.persistentDataPath + $"/DUNGEONS_DATA");
+        File.WriteAllText(Application.persistentDataPath + $"/DUNGEONS_DATA/DUNGEON_1.json", JSONresult);
+
+    }
+    public class JSONDUNGEONDATACLASS
+    {
+        public int TotalRoomsCount;
+        public int ExploredRoomCount;
+        public string PlayerRoomPosition;
+        public string PlayerDungeonLocation;
+        public Dictionary<string, Room> data = new Dictionary<string, Room>();
+
+        public JSONDUNGEONDATACLASS(string playerRoomPosition, string playerDungeonLocation, Dictionary<Vector2Int, Room> _dungeonData)
         {
-            this.position = position;
-            this.doorsNameCode = doorsNameCode;
-            
-            foreach(var doorCode in doorsNameCode.ToCharArray().ToList())
+            if(_dungeonData == null)
             {
-                DoorStatesList.Add(doorCode.ToString(),false);
-            }
-        }
-        public Dictionary<string,bool> DoorStatesList = new Dictionary<string, bool>();
-        public void SetStateDoorByCode(string code, bool state)
-        {
-            if(DoorStatesList[code] == true && state == true) return; 
-            if(DoorStatesList[code] == false && state == false) return; 
-
-
-            DoorStatesList[code] = state;
-            DungeonManager.SetNeighourRoomsDoorsState(this, new List<Vector2Int>(){directionsDict[code]});
-        }
-        public void SetStateDoorByVector(Vector2Int direction, bool state)
-        {
-            string code = directionsDict.Where(v=>v.Value == direction).First().Key;
-
-            if(DoorStatesList[code] == true && state == true) return; 
-            if(DoorStatesList[code] == false && state == false) return; 
-
-            DoorStatesList[code] = state;
-            DungeonManager.SetNeighourRoomsDoorsState(this, new List<Vector2Int>(){directionsDict[code]});
-        }
-        public void SetAllDoorsState(bool state = true)
-        {
-            if(DoorStatesList.Values.Where(v=>v == false).Count() == 0 && state == true) return; 
-            if(DoorStatesList.Values.Where(v=>v == true).Count() == 0 && state == false) return; 
-
-            List<Vector2Int> listchangedDoors = new List<Vector2Int>();
-            foreach(var doorCode in doorsNameCode.ToCharArray().ToList())
-            {
-                DoorStatesList[doorCode.ToString()] = state;
-                listchangedDoors.Add(directionsDict[doorCode.ToString()]);
+                _dungeonData = new Dictionary<Vector2Int, Room>();
             }
             
-            DungeonManager.SetNeighourRoomsDoorsState(this, listchangedDoors);
-        }
-        public List<Room> GetNeighbourRooms()
-        {
-            List<Room> neigbours = new List<Room>();
-            foreach(var doorcode in doorsNameCode)
+            PlayerRoomPosition = playerRoomPosition;
+            PlayerDungeonLocation = playerDungeonLocation;
+            Debug.Log("_dungeondata"+_dungeonData.Count());
+            data = ConvertDatatoStringKeys(_dungeonData);
+            if(data.Count>0)
             {
-                neigbours.Add(Dungeon[position + directionsDict[doorcode.ToString()]]);
+                TotalRoomsCount = data.Count;
+                ExploredRoomCount = data.Count(d=>d.Value.WasVisited);
             }
-            return neigbours;
         }
-    }
-    public class RoomGridData
-    {
-        public Dictionary<Vector2Int,MonsterBackupData> Backup_Monsters = new Dictionary<Vector2Int, MonsterBackupData>();
-        public Dictionary<Vector2Int,TreasureBackupData> Backup_Treasures = new Dictionary<Vector2Int,TreasureBackupData >();
-        public Dictionary<Vector2Int,BombData> Backup_Bombs = new Dictionary<Vector2Int, BombData>();
-        public HashSet<Vector2Int> WallPositions = new HashSet<Vector2Int>();
-        public RoomGridData(Dictionary<Vector2Int, MonsterBackupData> backup_Monsters, 
-                    Dictionary<Vector2Int, TreasureBackupData> backup_Treasures, 
-                    Dictionary<Vector2Int, BombData> backup_Bombs, 
-                    HashSet<Vector2Int> wallPositions)
+
+        public Dictionary<Vector2Int, Room> ConvertDatatoVectorKeys(Dictionary<string, Room> _data)
         {
-            Backup_Monsters = backup_Monsters;
-            Backup_Treasures = backup_Treasures;
-            Backup_Bombs = backup_Bombs;
-            WallPositions = wallPositions;
+            Dictionary<Vector2Int, Room> _dungeon = new Dictionary<Vector2Int, Room>();
+            foreach(var room in _data)
+            {
+                string[]temp=room.Key.ToString().Substring(1,room.Key.ToString().Length-2).Split(',');
+                Vector2Int newkey = new Vector2Int(Int32.Parse(temp[0]),Int32.Parse(temp[1]));
+                _dungeon.Add(newkey,room.Value);
+            }
+            return _dungeon;
+        }
+
+        public Dictionary<string, Room> ConvertDatatoStringKeys(Dictionary<Vector2Int, Room> _data)
+        {
+            Dictionary<string, Room> _dungeon = new Dictionary<string, Room>();
+            foreach(var room in _data)
+            {
+                _dungeon.Add(room.Key.ToString(),room.Value);
+            }
+            return _dungeon;
         }
     }
-   
-    [ContextMenu("Generate full dungeon data")]
+    
+
     [Obsolete] public void GenerateFullData()
     {
         GenerateDungeonRooms();
@@ -271,8 +255,6 @@ public class DungeonRoomScript : MonoBehaviour
 
         return TileTypes.undefined.ToString();
     }
-
-
     #region  wizualizacja
     [ContextMenu("SpawnFirstRoom-Visual")]
     public void SpawnRoomVisual()
@@ -302,7 +284,6 @@ public class DungeonRoomScript : MonoBehaviour
     }
     public void CreateNewRoom_OLD(Vector2Int from, Vector2Int direction)
     {
- 
     //    print("create new room from " + from + " in direction:" + direction);
         var newLocation = from + direction;
         if (existingRooms.ContainsKey(newLocation))
@@ -382,7 +363,6 @@ public class DungeonRoomScript : MonoBehaviour
         var spriteName = $"{W}{D}{S}{A}_OPEN";
         return roomsTemplates.Where(s => s.name == spriteName).First();
     }
-    
     Dictionary<Vector2Int,int> globalDistanceDict = new Dictionary<Vector2Int, int>();
     Dictionary<Vector2Int,int> distanceDir = new Dictionary<Vector2Int, int>();        
     [ContextMenu("visualise color images - distance")]
@@ -406,7 +386,6 @@ public class DungeonRoomScript : MonoBehaviour
             x.GetComponent<Image>().color = Color32.Lerp(Color.white,Color.red,progressfillcolor);
         }
     }
-
     private void UpdateDistance_OLD(Vector2Int fromposition, Vector2Int currentloc)
     {
         if(distanceDir.ContainsKey(currentloc))

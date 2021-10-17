@@ -58,6 +58,7 @@ public class GridManager : MonoBehaviour
             }
             else
             {
+                
                 var randomCelltype = GetRandomType();
                 if(cell.Key.x == GridManager.instance._gridSize.x/2 || cell.Key.y == GridManager.instance._gridSize.y/2)
                 {
@@ -90,8 +91,6 @@ public class GridManager : MonoBehaviour
                 (cell.SpecialTile as Treasure_Cell).RemoveFromMapIfChesIsEmpty();
             }
         }
-
-        
     }
     public static TileTypes GetRandomType()
     {

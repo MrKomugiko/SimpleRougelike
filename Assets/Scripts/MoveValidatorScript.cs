@@ -26,6 +26,10 @@ public class MoveValidatorScript : MonoBehaviour
         }
     }
     public void HighlightValidMoveGrid(bool _restrictedByStaminavalue){
+
+        DestroyAllGridObjects();
+        SpawnMarksOnGrid();
+
         validMovePosiitonsCounter = 0;
         foreach(var monster in GridManager.CellGridTable.Where(c=>c.Value.Type == TileTypes.monster))
         {
@@ -38,21 +42,28 @@ public class MoveValidatorScript : MonoBehaviour
             ParentPathfinder.FindPath(cell);
             if(ParentPathfinder.FinalPath.Count == 0 && ParentPathfinder.FinalPath.Count < (_restrictedByStaminavalue?PlayerManager.instance.CurrentStamina:PlayerManager.instance.MoveRange))
             {
+
                 if(cell.Type == TileTypes.player)
                 {
-                    if(Move_Indicators.ContainsKey(cell.CurrentPosition) == false)
+                    try
                     {
-                        Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
-                    }                        
-                    Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);   
-                    validMovePosiitonsCounter++; 
+                        if(Move_Indicators.ContainsKey(cell.CurrentPosition) == false)
+                        {
+                            Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
+                        }                        
+                        Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);   
+                        validMovePosiitonsCounter++; 
+                    }
+                    catch (System.Exception)
+                    {
+                        Debug.Log("erorr");
+                    }
                 }
             }
             else if (ParentPathfinder.FinalPath.Count <= (_restrictedByStaminavalue?PlayerManager.instance.CurrentStamina:PlayerManager.instance.MoveRange))
             {
                 if(Move_Indicators.ContainsKey(cell.CurrentPosition) == false)
                 {
-                    
                     Move_Indicators.Add(cell.CurrentPosition,All_GridIndicators[cell.CurrentPosition]);
                 }   
                 Move_Indicators[cell.CurrentPosition].color = new Color32(128,255,0,50);    

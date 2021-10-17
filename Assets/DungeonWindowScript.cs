@@ -10,4 +10,9 @@ public class DungeonWindowScript : MonoBehaviour
     private void OnEnable() {
         MaxDistanceTraveled_TMP.SetText("Max distance traveled:\n"+DungeonManager.instance.maxDungeonTraveledDistance);
     }
+
+    public void Continue()
+    {
+       // DungeonManager.instance.LoadGridForRoomData();
+    }
 }
